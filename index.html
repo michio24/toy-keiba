@@ -3510,6 +3510,9 @@ function frame(now) {
   FU.uSat.value = (1.16 + (timeScale < 0.6 ? 0.15 : 0)) * (wxState.sat || 1);
   if (AU.ctx && S.mode === 'race') { AU.ht = (AU.ht || 0) - rdt; if (AU.ht <= 0) { AU.ht = rand(0.05, 0.1) / Math.max(timeScale, 0.3); AU.thump(0.05 + 0.05 * Math.random()); } }
   fxDraw(rdt);
+  // 馬目線ではカメラが自分の馬の頭（輪郭線の殻）に入り込んで視界をふさぐため、自分の馬は描かない
+  const povHorse = S.cam === 'pov' && S.myBet ? S.myBet.h : -1;
+  horses.forEach((H, k) => { H.root.visible = k !== povHorse; });
   composer.render();
 }
 
