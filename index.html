@@ -320,6 +320,44 @@ h2{color:var(--gold);font-size:14px;letter-spacing:.06em}
 #quality{min-height:36px;background:#35204f;color:var(--text);border:1px solid var(--line);border-radius:8px;max-width:95px}
 @media(max-width:760px){#lobbyScroll{max-height:65dvh}#tracks button,#horses button,#chips button,#btype button,#cams button{min-height:44px}#result .panel{max-height:calc(100dvh - 78px)}#guideNote{top:130px}#topR{gap:4px}#brand{font-size:19px}#coins{font-size:16px}#quality{max-width:76px;font-size:11px}#mute{width:36px;height:36px}}
 @media(max-width:380px){#streak{display:none}.pill{padding:5px}#brand{font-size:16px}#stand{width:145px}#rinfo{min-width:0;max-width:calc(100% - 180px)}}
+/* Horse catalog: the transparent middle pane exposes the shared WebGL canvas. */
+#catalog{position:fixed;inset:0;z-index:22;display:grid;grid-template-rows:auto 1fr;background:#ece4fa;color:#302044;padding:14px;gap:12px;box-sizing:border-box}
+#catalog[hidden]{display:none}
+#catalog header{display:flex;align-items:center;justify-content:space-between;gap:12px}
+#catalog h2{color:#604578;font-size:17px;letter-spacing:.04em}
+#catalog button,#catalog input,#catalog select{font:inherit;color:#302044;border:1px solid #bfa5d2;border-radius:10px;background:#fff8ff;padding:10px;min-height:44px;box-sizing:border-box}
+#catalog button:focus-visible,#catalog input:focus-visible,#catalog select:focus-visible{outline:3px solid #8651ad;outline-offset:2px}
+#catalogLayout{display:grid;grid-template-columns:230px minmax(0,1fr) 300px;gap:12px;min-height:0}
+#catalogListPane,#catalogDetails{overflow:auto;background:#ffffffd9;border-radius:16px;padding:14px;overscroll-behavior:contain}
+#catalogSearch,#catalogFilter{width:100%;margin:6px 0 10px}
+#catalogList{display:grid;gap:6px}
+#catalogList button{text-align:left;overflow-wrap:anywhere}
+#catalogList button[aria-pressed=true]{background:#ead7fb;border-color:#8651ad;box-shadow:inset 3px 0 #8651ad}
+#catalogList small{display:block;font-size:11px;color:#705c80}
+#catalogView{position:relative;min-width:0;min-height:0;border-radius:16px;overflow:hidden;background:#eee5fa}
+#catalogView canvas{display:block;width:100%;height:100%;touch-action:none}
+#catalogControls{position:absolute;bottom:10px;left:10px;right:10px;display:flex;flex-wrap:wrap;justify-content:center;gap:6px}
+#catalogControls button[aria-pressed=true]{background:#ead7fb;border-color:#8651ad}
+#catalogViewHint{position:absolute;top:10px;left:10px;right:10px;margin:0;text-align:center;font-size:12px;pointer-events:none}
+#catalogDetails h3{font-family:var(--f-disp);font-size:20px;margin:0 0 8px;overflow-wrap:anywhere}
+#catalogDetails h4{margin:18px 0 6px;color:#70518d}
+#catalogDetails p{font-size:14px;line-height:1.7;margin:8px 0}
+#catalogDetails dl{display:grid;grid-template-columns:auto 1fr;gap:6px 12px;font-size:14px}
+#catalogDetails dd{margin:0}
+.catalogStat{display:grid;grid-template-columns:80px 1fr 24px;align-items:center;gap:8px;font-size:13px;margin:7px 0}
+.catalogStat meter{width:100%;accent-color:#8651ad}
+.catalogNote{color:#786584;font-size:12px!important}
+#catalogOpen{width:100%;padding:12px;background:#583378;border-radius:12px;margin-bottom:12px;color:#fff5fb;font-weight:900}
+@media(max-width:760px){
+ #catalog{padding:10px 10px calc(env(safe-area-inset-bottom,0px) + 10px);gap:8px}
+ #catalogLayout{display:grid;grid-template-columns:1fr;grid-template-rows:minmax(210px,40%) minmax(0,1fr);overflow:auto}
+ #catalogView{grid-row:1;min-height:210px}
+ #catalogBrowse{overflow:auto;min-height:0;overscroll-behavior:contain}
+ #catalogListPane,#catalogDetails{overflow:visible;padding:12px}
+ #catalogList{grid-template-columns:repeat(2,minmax(0,1fr))}
+ #catalog h2{font-size:15px}
+}
+@media(min-width:761px){#catalogBrowse{display:contents}#catalogListPane{grid-column:1;grid-row:1}#catalogView{grid-column:2;grid-row:1}#catalogDetails{grid-column:3;grid-row:1}}
 </style>
 </head>
 <body>
@@ -343,6 +381,7 @@ h2{color:var(--gold);font-size:14px;letter-spacing:.06em}
   <button id="lobbyToggle" aria-expanded="true" aria-controls="lobbyScroll">▼ 選択パネルをたたむ</button>
   <div id="lobbyScroll">
     <div id="rail" class="panel">
+      <button id="catalogOpen" aria-controls="catalog">📖 馬図鑑</button>
       <div id="journey"></div>
       <h2>コース</h2>
       <div id="tracks"></div>
@@ -362,6 +401,26 @@ h2{color:var(--gold);font-size:14px;letter-spacing:.06em}
       <div id="preview"></div>
       <button id="go">出走！</button>
       <p id="hint">レース中：1〜6でカメラ切替／Spaceで応援ブースト</p>
+    </div>
+  </div>
+</section>
+
+<section id="catalog" hidden aria-label="馬図鑑">
+  <header><h2>📖 馬図鑑</h2><button id="catalogClose">ロビーへ戻る</button></header>
+  <div id="catalogLayout">
+    <div id="catalogBrowse">
+      <div id="catalogListPane">
+        <label for="catalogSearch">馬名で検索</label>
+        <input id="catalogSearch" type="search" placeholder="馬の名前" autocomplete="off">
+        <label for="catalogFilter">種類で絞り込み</label>
+        <select id="catalogFilter"><option value="all">すべて</option><option value="motif">名馬モチーフ</option><option value="other">その他</option></select>
+        <p id="catalogCount" role="status"></p><div id="catalogList"></div>
+      </div>
+      <article id="catalogDetails" aria-label="選択した馬の情報"></article>
+    </div>
+    <div id="catalogView">
+      <p id="catalogViewHint">ドラッグで回転・ホイール／ピンチでズーム</p>
+      <div id="catalogControls"><button id="catalogIdle" aria-pressed="true">待機</button><button id="catalogRun" aria-pressed="false">走る</button><button id="catalogReset">視点リセット</button></div>
     </div>
   </div>
 </section>
@@ -566,7 +625,37 @@ const ROSTER = [
     skill: { name: 'ねじ巻き直し', desc: 'スタートはゼンマイ全開。ゆるんできたら、残り40%でもう一度ねじを巻く。', color: '#ff6b5a' },
     blurb: '背中の鍵をぎりぎりまで巻いて出走。カタカタ走る姿がたまらない。' },
 ];
-ROSTER.forEach(h => { h.sk = h.sk || h.kind; h.look = h.look || {}; });
+const HORSE_PROFILES = [
+  ['おっとり優雅。でも勝負どころでは負けず嫌い。', '桜の花びらと朝の散歩'],
+  ['元気いっぱいのせっかちさん。いつも一番乗り。', 'にんじんの小さな輪切り'],
+  ['仲間を見守る、やさしい魔法使い。', '虹が映る水たまり'],
+  ['口数は少ないけれど、頼られると張り切る。', '雪の日の力くらべ'],
+  ['好奇心旺盛で、気分しだいの冒険家。', '砂の上に残るしましまの影'],
+  ['失敗してもめげない、空へのあこがれ屋。', 'ふわふわの雲と追い風'],
+  ['きっちり几帳面。充電すると少しおしゃべり。', 'ネオンの光と満タンのバッテリー'],
+  ['楽天家で、今日こそ大当たりと信じている。', 'きらきら光るラッキーコイン'],
+  ['普段は控えめ。走り出すと夢中になる。', '風に乗って揺れる草原'],
+  ['誇り高く気まぐれ。ほめられると得意顔。', '夕日に輝く自分のたてがみ'],
+  ['食いしん坊で人なつっこい、がんばり屋。', '山盛りのごはんと温かい声援'],
+  ['静かな自由人。誰もいない先頭が落ち着く。', '朝一番のまっすぐな道'],
+  ['いたずら好き。みんなの予想を裏切りたい。', '水遊びとびっくりした顔'],
+  ['おおらかな盛り上げ役。にぎやかな場所が大好き。', 'お祭りの太鼓と大合唱'],
+  ['いつでも笑顔。小さな一歩も楽しめる。', 'ピンクのリボンと拍手'],
+  ['堂々としたリーダー。走ると止まらない。', '青と白のチェック模様'],
+  ['気品あふれる努力家。身だしなみも忘れない。', '磨きたてのティアラ'],
+  ['落ち着いた自信家。毎日の練習を大切にする。', '朝もやの芝と静かな時間'],
+  ['軽やかで明るい、あきらめない挑戦者。', '弾むステップと再会の拍手'],
+  ['責任感の強い王様。困ったときほど冷静。', '王冠のお手入れと知恵くらべ'],
+  ['甘えん坊で、寒い日ほど元気になる。', '涼しい木陰とチョコの香り'],
+  ['まっすぐで集中力抜群。目標へ一直線。', 'ぴかぴかのボディと長い直線'],
+  ['のんびり屋。ゆらゆらしているとご機嫌。', '子ども部屋の子守歌'],
+  ['華やかで踊り好き。みんなを笑顔にしたい。', '遊園地の音楽と色とりどりの灯り'],
+  ['働き者で少し照れ屋。ねじを巻くと張り切る。', '背中の鍵を巻いてもらう時間'],
+];
+ROSTER.forEach((h, i) => {
+  h.sk = h.sk || h.kind; h.look = h.look || {};
+  h.profile = { personality: HORSE_PROFILES[i][0], favorite: HORSE_PROFILES[i][1] };
+});
 let HORSES = [];
 function pickField() {
   const shuf = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = (Math.random() * (i + 1)) | 0; [a[i], a[j]] = [a[j], a[i]]; } return a; };
@@ -1373,12 +1462,15 @@ function animHorse(H, v, dt, t) {
 }
 let horses = [];
 function disposeHorse(H) {
-  scene.remove(H.root);
+  H.root.removeFromParent();
+  const disposed = new Set();
+  const release = o => { if (o && !o.userData.keep && !disposed.has(o)) { disposed.add(o); o.dispose(); } };
   H.root.traverse(o => {
-    if (o.geometry && !o.geometry.userData.keep) o.geometry.dispose();
-    const m = o.material; if (!m || m === OUT || m.userData.keep) return;
-    if (m.map && !m.map.userData.keep) m.map.dispose();
-    m.dispose();
+    release(o.geometry);
+    for (const m of o.material ? (Array.isArray(o.material) ? o.material : [o.material]) : []) {
+      if (m.userData.keep) continue;
+      release(m.map); release(m);
+    }
   });
 }
 function setField() {
@@ -2241,6 +2333,101 @@ function cutin(r) {
 }
 
 /* ============ FLOW ============ */
+/* Catalog owns only its preview; the race and its camera remain untouched. */
+const catalog = { index: null, horse: null, scene: null, camera: null, running: false,
+  yaw: 0.8, pitch: 0.3, zoom: 1, radius: 3, target: new V3(), time: 0, width: 0, height: 0 };
+const catalogText = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function catalogList() {
+  const q = $('#catalogSearch').value.trim().normalize('NFKC').toLocaleLowerCase('ja');
+  const filter = $('#catalogFilter').value;
+  const matches = ROSTER.map((h, i) => ({h, i})).filter(({h}) =>
+    h.name.normalize('NFKC').toLocaleLowerCase('ja').includes(q) && (filter === 'all' || (filter === 'motif' ? h.motif : !h.motif)));
+  $('#catalogCount').textContent = `${matches.length} / ${ROSTER.length}頭`;
+  $('#catalogList').innerHTML = matches.length ? matches.map(({h, i}) =>
+    `<button data-index="${i}" aria-pressed="${i === catalog.index}">${catalogText(h.name)}<small>${catalogText(h.type)}</small></button>`).join('') : '<p>該当する馬がいません。</p>';
+}
+function catalogReset() { catalog.yaw = 0.8; catalog.pitch = 0.3; catalog.zoom = 1; }
+function catalogSelect(i) {
+  const h = ROSTER[i]; if (!h) return;
+  if (catalog.horse) disposeHorse(catalog.horse);
+  catalog.index = i; catalog.horse = buildHorse(h, 0); catalog.scene.add(catalog.horse.root);
+  catalog.horse.root.position.y = 0.2;
+  const box = new THREE.Box3().setFromObject(catalog.horse.root);
+  box.getCenter(catalog.target);
+  // Reserve room for moving wings, tails, and the carousel's bobbing motion.
+  catalog.radius = box.getSize(new V3()).length() * 0.65 + 0.5;
+  catalogReset();
+  const e = catalogText, labs = [['spd','スピード'],['sta','スタミナ'],['acc','加速'],['pow','根性'],['agi','器用さ']];
+  $('#catalogDetails').innerHTML = `<h3>${e(h.name)}</h3><p>${e(h.type)}・${STYLE[h.style]}</p><p>${e(h.blurb)}</p>
+    <h4>プロフィール</h4><p class="catalogNote">このゲームのキャラクターとしての創作設定です。</p>
+    <dl><dt>性格</dt><dd>${e(h.profile.personality)}</dd><dt>好きなもの</dt><dd>${e(h.profile.favorite)}</dd></dl>
+    <h4>能力</h4><p class="catalogNote">ゲーム内の能力値（最大10）です。</p>
+    ${labs.map(([k,l]) => `<div class="catalogStat"><span>${l}</span><meter min="0" max="10" value="${h.st[k]}" aria-label="${l}">${h.st[k]}</meter><b>${h.st[k]}</b></div>`).join('')}
+    <h4>適性</h4><p>${Object.keys(SURF).map(s => `${SURF[s]} ${AFFM[h.aff[s]]}`).join(' ／ ')}<br>道悪 ${AFFM[mudOf(h)]}</p>
+    <p class="catalogNote">✕ 苦手 ／ △ やや苦手 ／ − 標準 ／ ○ 得意 ／ ◎ とても得意</p>
+    <h4>スキル「${e(h.skill.name)}」</h4><p>${e(h.skill.desc)}</p>
+    ${h.motif ? `<h4>名馬モチーフ</h4><p>${e(h.motifNote)}</p>` : ''}`;
+  $('#catalogDetails').scrollTop = 0;
+  catalogList();
+}
+function openCatalog() {
+  if (S.mode !== 'lobby') return;
+  if (!catalog.scene) {
+    catalog.scene = new THREE.Scene(); catalog.scene.background = C('#eee5fa'); catalog.scene.environment = scene.environment;
+    catalog.camera = new THREE.PerspectiveCamera(40, 1, 0.1, 100);
+    catalog.scene.add(new THREE.HemisphereLight('#ffffff', '#a08bb8', 1.5));
+    const light = new THREE.DirectionalLight('#fff6ea', 2); light.position.set(4, 8, 5); catalog.scene.add(light);
+    const fill = new THREE.DirectionalLight('#cbdfff', 1); fill.position.set(-4, 3, -4); catalog.scene.add(fill);
+    const pedestal = new THREE.Mesh(new THREE.CylinderGeometry(3.5, 3.7, 0.2, 64), new THREE.MeshStandardMaterial({color:'#cdb4e5',roughness:0.6}));
+    pedestal.position.y = 0.1; catalog.scene.add(pedestal);
+  }
+  VO.stop(); AU.crowdLvl(0);
+  ptrs.clear(); pinch0 = 0;
+  setMode('catalog'); $('#catalog').hidden = false;
+  $('#top').hidden = true; $('#fx').hidden = true;
+  $('#catalogView').prepend(cv);
+  catalog.width = 0; catalog.height = 0;
+  catalogSelect(catalog.index === null ? ROSTER.indexOf(HORSES[S.sel]) : catalog.index);
+  $('#catalogClose').focus();
+}
+function closeCatalog() {
+  if (S.mode !== 'catalog') return;
+  ptrs.clear(); pinch0 = 0;
+  if (catalog.horse) { disposeHorse(catalog.horse); catalog.horse = null; }
+  stage.appendChild(cv); renderer.setSize(innerWidth, innerHeight);
+  $('#catalog').hidden = true; $('#top').hidden = false; $('#fx').hidden = false;
+  setMode('lobby'); AU.crowdLvl(0.12); $('#catalogOpen').focus();
+}
+function drawCatalog(rdt) {
+  const view = $('#catalogView'), w = view.clientWidth, h = view.clientHeight;
+  if (!w || !h) return;
+  if (w !== catalog.width || h !== catalog.height) {
+    renderer.setSize(w, h); catalog.camera.aspect = w / h; catalog.camera.updateProjectionMatrix();
+    catalog.width = w; catalog.height = h;
+  }
+  catalog.time += rdt; animHorse(catalog.horse, catalog.running ? 14 : 0, rdt, catalog.time);
+  const half = Math.atan(Math.tan(THREE.MathUtils.degToRad(20)) * Math.min(1, w / h));
+  const dist = catalog.radius / Math.sin(half) * catalog.zoom;
+  catalog.camera.position.copy(catalog.target).add(new V3(Math.sin(catalog.yaw) * Math.cos(catalog.pitch), Math.sin(catalog.pitch), Math.cos(catalog.yaw) * Math.cos(catalog.pitch)).multiplyScalar(dist));
+  catalog.camera.lookAt(catalog.target); renderer.render(catalog.scene, catalog.camera);
+}
+$('#catalogOpen').onclick = openCatalog; $('#catalogClose').onclick = closeCatalog;
+$('#catalogSearch').oninput = catalogList; $('#catalogFilter').onchange = catalogList;
+$('#catalogList').onclick = e => {
+  const b = e.target.closest('button[data-index]'); if (!b) return;
+  catalogSelect(+b.dataset.index);
+  $('#catalogList').querySelector(`button[data-index="${catalog.index}"]`)?.focus();
+};
+function catalogMotion(running) {
+  catalog.running = running;
+  $('#catalogIdle').setAttribute('aria-pressed', String(!running)); $('#catalogRun').setAttribute('aria-pressed', String(running));
+}
+$('#catalogIdle').onclick = () => catalogMotion(false); $('#catalogRun').onclick = () => catalogMotion(true);
+$('#catalogReset').onclick = catalogReset;
+$('#catalog').addEventListener('keydown', e => {
+  if (e.key === 'Escape') { e.preventDefault(); closeCatalog(); }
+  e.stopPropagation();
+});
 const cam = { tgt: new V3(), pos: new V3(0, 60, 180), fov: 50, base: 0, yaw: 0.8, pitch: 0.25, dist: 7.5, drag: -10 };
 let timeScale = 1, timeTarget = 1, slowUntil = 0, clock = 0, realClock = 0;
 let hud = { t: 0 }, flags = {};
@@ -2375,6 +2562,7 @@ function showResult() {
 
 /* ============ INPUT ============ */
 addEventListener('keydown', e => {
+  if (S.mode === 'catalog') { if (e.key === 'Escape') { e.preventDefault(); closeCatalog(); } return; }
   if (e.repeat && e.code !== 'Space') return;
   const race = S.mode === 'race' || S.mode === 'finish' || S.mode === 'countdown' || S.mode === 'intro';
   if (race && e.key >= '1' && e.key <= '6') { setCam(CAMS[+e.key - 1][0]); }
@@ -2398,6 +2586,14 @@ cv.addEventListener('pointerdown', e => { cv.setPointerCapture(e.pointerId); ptr
 cv.addEventListener('pointermove', e => {
   const p = ptrs.get(e.pointerId); if (!p) return;
   const dx = e.clientX - p.x, dy = e.clientY - p.y; p.x = e.clientX; p.y = e.clientY;
+  if (S.mode === 'catalog') {
+    if (ptrs.size === 2) {
+      const [a,b] = [...ptrs.values()], d = Math.hypot(a.x - b.x, a.y - b.y);
+      if (pinch0 && d > 0) catalog.zoom = clamp(catalog.zoom * pinch0 / d, 0.65, 2.5);
+      pinch0 = d;
+    } else { catalog.yaw += dx * 0.006; catalog.pitch = clamp(catalog.pitch + dy * 0.004, 0.05, 1.2); }
+    return;
+  }
   if (ptrs.size === 2) { const [a, b] = [...ptrs.values()]; const d = Math.hypot(a.x - b.x, a.y - b.y); if (pinch0) cam.dist = clamp(cam.dist * pinch0 / d, 4, 140); pinch0 = d; return; }
   if (Math.abs(dx) + Math.abs(dy) < 1) return;
   if ((S.mode === 'race' || S.mode === 'finish') && S.cam !== 'free') setCam('free');
@@ -2405,7 +2601,7 @@ cv.addEventListener('pointermove', e => {
 });
 const endPtr = e => { ptrs.delete(e.pointerId); if (ptrs.size < 2) pinch0 = 0; };
 cv.addEventListener('pointerup', endPtr); cv.addEventListener('pointercancel', endPtr);
-cv.addEventListener('wheel', e => { e.preventDefault(); if ((S.mode === 'race' || S.mode === 'finish') && S.cam !== 'free') setCam('free'); cam.dist = clamp(cam.dist * (1 + e.deltaY * 0.0012), 4, 140); cam.drag = realClock; }, { passive: false });
+cv.addEventListener('wheel', e => { e.preventDefault(); if (S.mode === 'catalog') { catalog.zoom = clamp(catalog.zoom * Math.exp(e.deltaY * 0.0012), 0.65, 2.5); return; } if ((S.mode === 'race' || S.mode === 'finish') && S.cam !== 'free') setCam('free'); cam.dist = clamp(cam.dist * (1 + e.deltaY * 0.0012), 4, 140); cam.drag = realClock; }, { passive: false });
 addEventListener('resize', () => {
   camera.aspect = innerWidth / innerHeight; camera.updateProjectionMatrix();
   applyQuality();
@@ -2683,6 +2879,7 @@ let last = performance.now();
 function frame(now) {
   requestAnimationFrame(frame);
   const rdt = Math.min(0.05, (now - last) / 1000); last = now;
+  if (S.mode === 'catalog') { drawCatalog(rdt); return; }
   timeScale = damp(timeScale, timeTarget, 8, rdt);
   const dt = rdt * timeScale; clock += dt; realClock += rdt;
   if (!R) return;
@@ -2705,6 +2902,7 @@ function frame(now) {
 }
 
 function applyQuality() {
+  catalog.width = 0; catalog.height = 0;
   const q = $('#quality').value;
   const light = q === 'low' || (q === 'auto' && matchMedia('(max-width:760px)').matches);
   PR = Math.min(window.devicePixelRatio || 1, light ? 1 : 1.75);
