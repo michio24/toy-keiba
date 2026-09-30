@@ -491,6 +491,17 @@ h2{color:var(--gold);font-size:14px;letter-spacing:.06em}
  #cheer{right:calc(env(safe-area-inset-right,0px) + 8px);bottom:calc(env(safe-area-inset-bottom,0px) + 8px);width:80px;height:80px}#cheer span{width:66px;height:66px;font-size:13px}
  #result .panel{max-height:calc(100dvh - 60px);margin-top:44px;padding:14px;gap:10px}
 }
+/* Crash mode uses the same racecourse and controls. */
+#playTypes{display:flex;gap:6px}#playTypes button{flex:1;min-height:40px;border-radius:12px;background:rgba(255,255,255,.06);border:1px solid var(--line);font-weight:900}#playTypes button[aria-pressed=true]{background:var(--gold);color:var(--ink)}
+#crashSettings{font-size:12px;line-height:1.6}#crashSettings label{display:flex;align-items:center;gap:8px;flex-wrap:wrap}#autoMultiplier{width:90px;padding:8px;border-radius:8px;border:1px solid var(--line);background:var(--ink);color:var(--text);font:700 17px var(--f-num)}#crashRules{color:var(--dim);margin:8px 0 0}#recoveryNote{color:var(--gold);font-size:12px;margin:0}
+#crashHud{position:absolute;left:50%;top:calc(env(safe-area-inset-top,0px) + 118px);transform:translateX(-50%);padding:12px 20px;text-align:center;min-width:230px}#crashMultiplier{display:block;font:800 48px var(--f-num);color:var(--mint)}#crashSpeed{display:block;font-size:12px;color:var(--dim);margin:4px 0}#cashOut{display:block;width:100%;min-height:54px;border-radius:12px;background:linear-gradient(110deg,var(--mint),var(--gold));color:var(--ink);font-weight:900;font-size:18px}#cashOut:disabled{opacity:.5;cursor:not-allowed}
+body[data-play=crash] #guideNote{top:430px}
+@media(max-width:760px){#crashHud{top:auto;bottom:calc(env(safe-area-inset-bottom,0px) + 74px);min-width:0;width:min(250px,calc(100vw - 150px));padding:10px;left:12px;transform:none}#crashMultiplier{font-size:34px}#cashOut{font-size:15px;min-height:48px}body[data-play=crash] #feed{display:none}}
+@media(max-width:760px){body[data-play=crash] #ticker{top:calc(env(safe-area-inset-top,0px) + 316px);bottom:auto;left:12px;right:12px;transform:none;max-width:none;min-width:0;font-size:12px}body[data-play=crash] #myRunner{display:none}body[data-play=crash] #guideNote{top:370px}}
+#crashHud{--pressure-color:var(--mint);--pressure-period:2s;border-color:var(--pressure-color)}#crashHud[data-pressure="1"]{--pressure-color:var(--gold);--pressure-period:1.8s}#crashHud[data-pressure="2"]{--pressure-color:#ff963f;--pressure-period:1.3s}#crashHud[data-pressure="3"]{--pressure-color:var(--candy);--pressure-period:.9s}#crashHud[data-pressure="4"]{--pressure-color:#ff6262;--pressure-period:.65s}#crashHud[data-pressure]:not([data-pressure="0"]){animation:crashPulse var(--pressure-period) ease-in-out infinite}#crashHud #crashMultiplier{color:var(--pressure-color)}
+#crashPressureText{display:block;margin:6px 0;font-size:13px;font-weight:900;color:var(--pressure-color);min-height:2.8em;line-height:1.4;max-width:280px}#crashAtStake{display:block;font:700 14px var(--f-num);color:var(--gold);margin:4px 0 8px}#crashTension{position:fixed;inset:0;pointer-events:none;z-index:6;box-shadow:inset 0 0 90px 16px var(--tension-color,#ff963f);opacity:var(--tension-opacity,0);transition:opacity .6s}
+@keyframes crashPulse{0%,100%{box-shadow:0 0 0 1px var(--pressure-color),0 0 12px color-mix(in srgb,var(--pressure-color) 15%,transparent)}50%{box-shadow:0 0 0 2px var(--pressure-color),0 0 26px color-mix(in srgb,var(--pressure-color) 40%,transparent)}}
+@media(prefers-reduced-motion:reduce){#crashHud[data-pressure]{animation:none!important}#crashTension{transition:none}}
 </style>
 </head>
 <body>
@@ -514,6 +525,8 @@ h2{color:var(--gold);font-size:14px;letter-spacing:.06em}
   <button id="lobbyToggle" aria-expanded="true" aria-controls="lobbyScroll">▼ パネルをたたんでコースを見る</button>
   <div id="lobbyScroll">
     <div id="rail" class="panel">
+      <div id="playTypes" role="group" aria-label="ゲームモード"><button data-play="race" aria-pressed="true">競馬</button><button data-play="crash" aria-pressed="false">クラッシュ</button></div>
+      <p id="recoveryNote" role="status" hidden></p>
       <nav id="menuRow" aria-label="メニュー">
         <button id="catalogOpen" aria-controls="catalog">📖 馬図鑑</button>
         <button id="showGuide">❔ 遊び方</button>
@@ -547,6 +560,10 @@ h2{color:var(--gold);font-size:14px;letter-spacing:.06em}
       <div id="aff"></div>
       <div id="skill"></div>
       <div class="seg" id="btype"></div>
+      <div id="crashSettings" hidden>
+        <label><input id="autoEnabled" type="checkbox">自動キャッシュアウト <input id="autoMultiplier" type="number" min="1.01" max="100" step="0.01" value="2.00" aria-label="自動キャッシュアウト倍率" disabled> x</label>
+        <p id="crashRules">上位ほど倍率が速く上昇。応援で順位を上げ、疾走終了前に確定しよう。先頭のゴールまたは100.00xで自動確定。<br>理論RTP 96.5%。整数丸めにより実際の期待払戻はわずかに下がります。無料補充はRTPに含みません。連勝・実績報酬は対象外です。<br>コインはゲーム内専用です。未確定で再読み込みすると払戻はありません。</p>
+      </div>
       <div class="chips" id="chips"></div>
     </div>
   </div>
@@ -588,11 +605,13 @@ h2{color:var(--gold);font-size:14px;letter-spacing:.06em}
   <div id="ticker" class="panel"><em>実況</em><span id="tickTxt">まもなく発走です</span></div>
   <div id="myRunner" class="panel"><small>あなたの馬</small><strong id="myRank">—</strong><b id="myName"></b></div>
   <div id="stand" class="panel"></div>
+  <div id="crashHud" class="panel" hidden><small>クラッシュ倍率</small><strong id="crashMultiplier">1.00x</strong><span id="crashSpeed"></span><span id="crashPressureText" role="status" aria-live="polite"></span><span id="crashAtStake"></span><button id="cashOut" disabled>キャッシュアウト</button><small id="crashAutoNote"></small></div>
   <div id="feed"></div>
   <div id="cams" class="panel"></div>
   <button id="cheer" aria-label="応援ブースト"><span>応援<small>SPACE</small></span></button>
 </section>
 
+<div id="crashTension" hidden></div>
 <div id="cutin" hidden></div>
 <div id="big"></div>
 <section id="result" hidden></section>
@@ -1088,11 +1107,12 @@ function renderJourney() {
   // ガイドは初回（または「遊び方」押下時）だけ表示し、実績はメニュー行のボタンから開閉する
   const j = $('#journey'); j.hidden = !guiding; $('#showGuide').hidden = guiding;
   j.innerHTML = guiding ? '<b>はじめてのトイ競馬</b><p>①「出走馬」から好きな馬を選ぶ → ②「出走！」 → ③応援ボタンで後押し。コースは「コース」タブで変更できます。コインはゲーム内専用です。</p><div class="jbtns"><button id="easyStart">おまかせで初レース</button><button id="skipGuide">ガイドを終了</button></div>' : '';
+  if (guiding && S.playType === 'crash') j.innerHTML = '<b>競馬クラッシュの遊び方</b><p>①馬と賭け額を選んで出走 → ②応援で順位を上げると倍率が速く上昇 → ③疾走終了前にボタンかEnterで確定。自動確定も設定できます。先頭のゴールで自動確定します。開始直後に終了する場合もあります。未確定で再読み込みすると払戻はありません。</p><div class="jbtns"><button id="easyStart">100コインで初クラッシュ</button><button id="skipGuide">ガイドを終了</button></div>';
   $('#achCount').textContent = `${progress.claimed.length}/${goals.length}`;
   $('#achList').innerHTML = `<p>勝っても負けても、完走で記録が増えます。</p><ul>${goals.map(g => `<li class="${progress.claimed.includes(g.id) ? 'done' : ''}"><span>${progress.claimed.includes(g.id) ? '🏅' : '○'}</span><b>${g.title}</b><small>${g.desc}（${Math.min(g.value(),g.target)}/${g.target}）・${g.reward}コイン</small></li>`).join('')}</ul>`;
   if (guiding) {
-    $('#easyStart').onclick = () => { S.betType = 'place'; S.bet = 100; if (S.ti !== 0) { S.ti = 0; store.set('track',0); enterLobby(true); } renderSlip(); startRace(); };
-    $('#skipGuide').onclick = () => { guiding = false; store.set('guideDone',true); renderJourney(); };
+    $('#easyStart').onclick = () => { S.betType = 'place'; S.bet = 100; if (S.playType === 'crash') { $('#autoEnabled').checked = false; $('#autoMultiplier').disabled = true; } if (S.ti !== 0) { S.ti = 0; store.set('track',0); enterLobby(true); } renderSlip(); startRace(); };
+    $('#skipGuide').onclick = () => { guiding = false; store.set(S.playType === 'crash' ? 'crashGuideDone' : 'guideDone',true); renderJourney(); };
   }
 }
 $('#showGuide').onclick = () => { guiding = true; renderJourney(); $('#rail').scrollTop = 0; };
@@ -1110,12 +1130,77 @@ function completeProgress(me) {
 }
 
 /* ============ STATE ============ */
+// One atomic snapshot keeps the shared balance and an unfinished crash bet together.
+const crashAccount = store.get('crashAccount', null);
 const S = {
   mode: 'loading', ti: clamp(store.get('track', 0) | 0, 0, TRACKS.length - 1), sel: clamp(store.get('sel', 0) | 0, 0, 7),
   betType: 'win', bet: 100, coins: store.get('coins', 1000), streak: store.get('streak', 0),
-  cam: 'broadcast', cheer: 0, muted: store.get('muted', false), odds: null, conds: null, myBet: null
+  cam: 'broadcast', cheer: 0, muted: store.get('muted', false), odds: null, conds: null, myBet: null,
+  playType: store.get('playType', 'race') === 'crash' ? 'crash' : 'race', crash: null,
+  interrupted: !!crashAccount?.pending
 };
+if (Number.isSafeInteger(crashAccount?.coins) && crashAccount.coins >= 0) S.coins = crashAccount.coins;
 if (typeof S.coins !== 'number' || !isFinite(S.coins)) S.coins = 1000;
+
+/* ============ CRASH MATH (independent of horse / visual randomness) ============ */
+const CRASH_RTP = 0.965, CRASH_MAX = 100, CRASH_STEP = 1 / 60;
+function sampleCrashPoint() {
+  const bits = new Uint32Array(1);
+  crypto.getRandomValues(bits);
+  return crashPointFromUniform((bits[0] + 0.5) / 4294967296);
+}
+function createCrashRaceRandom() {
+  const bits = new Uint32Array(1); crypto.getRandomValues(bits);
+  let state = bits[0] || 1;
+  return () => { state ^= state << 13; state ^= state >>> 17; state ^= state << 5; return (state >>> 0) / 4294967296; };
+}
+function crashPointFromUniform(u) {
+  if (!(u > 0 && u < 1)) throw new RangeError('Crash uniform must be between 0 and 1');
+  return CRASH_RTP / u;
+}
+function crashRate(rank) { return (0.08 + 0.005 * (8 - clamp(rank, 1, 8))) / 3; }
+function crashDisplay(multiplier) { return Math.floor((Math.min(CRASH_MAX, multiplier) + 1e-10) * 100) / 100; }
+function crashPayout(amount, multiplier) { return Math.floor((amount * Math.round(multiplier * 100)) / 100); }
+function validCrashAuto(value) {
+  const n = Number(value);
+  return Number.isFinite(n) && n >= 1.01 && n <= CRASH_MAX && Math.abs(n * 100 - Math.round(n * 100)) < 1e-8;
+}
+// Pressure depends only on the visible multiplier, never on the hidden crash point.
+const CRASH_PRESSURE_STEPS = [
+  [1.10, '伸びてきた！どこで確定する？'],
+  [1.25, 'もうひと伸び？それとも今、確定？'],
+  [1.50, '1.5倍突破！迷っている間も倍率は上がる！'],
+  [2, '2倍！ここで確定？まだ走る？'],
+  [3, '3倍突破！この払戻、手放せる？'],
+  [5, '5倍！守るか、さらに伸ばすか！'],
+  [10, '10倍到達！決断の瞬間！'],
+  [20, '20倍！確定ボタンに指を置け！'],
+  [50, '50倍突破！この一瞬、どうする！？']
+];
+function crashPressure(multiplier) {
+  const level = multiplier >= 5 ? 4 : multiplier >= 3 ? 3 : multiplier >= 2 ? 2 : multiplier >= 1.5 ? 1 : 0;
+  let milestone = -1;
+  for (let i = 0; i < CRASH_PRESSURE_STEPS.length; i++) if (multiplier >= CRASH_PRESSURE_STEPS[i][0]) milestone = i;
+  return { level, milestone };
+}
+// Resolve crossings by simulated time, rather than by the order of frame callbacks.
+function advanceCrash(round, rank, dt, goalTime = Infinity) {
+  const rate = crashRate(rank), start = round.multiplier;
+  const crossing = value => Math.max(0, Math.log(value / start) / rate);
+  const events = [
+    { reason: 'crash', time: crossing(round.point), value: Math.max(1, round.point), priority: 0 },
+    { reason: 'auto', time: round.auto == null ? Infinity : crossing(round.auto), value: round.auto, priority: 1 },
+    { reason: 'limit', time: crossing(CRASH_MAX), value: CRASH_MAX, priority: 2 },
+    { reason: 'goal', time: goalTime, priority: 3 }
+  ];
+  events.sort((a, b) => Math.abs(a.time - b.time) < 1e-10 ? a.priority - b.priority : a.time - b.time);
+  const event = events[0];
+  if (event.time <= dt + 1e-10) {
+    const multiplier = event.reason === 'goal' ? start * Math.exp(rate * event.time) : event.value;
+    return { reason: event.reason, elapsed: event.time, multiplier };
+  }
+  return { reason: null, elapsed: dt, multiplier: start * Math.exp(rate * dt) };
+}
 
 /* ============ RENDERER ============ */
 try {
@@ -1421,11 +1506,11 @@ function tp(sa, lane, y = 0) {
 const TOP = d => 21.2 + d.st.spd * 0.18;
 function makeRace(tr, conds, wx) {
   wx = wx || { w: 'sunny', g: 0 };
-  const R = { track: tr, wx, D: tr.def.D, t: 0, s0: tr.closed ? mod(tr.finishS - tr.def.D, tr.L) : tr.finishS - tr.def.D, runners: [], finished: 0, running: false, night: !!tr.def.night || tr.def.theme === 'neon', acc: 0 };
+  const R = { track: tr, wx, D: tr.def.D, t: 0, s0: tr.closed ? mod(tr.finishS - tr.def.D, tr.L) : tr.finishS - tr.def.D, runners: [], finished: 0, running: false, night: !!tr.def.night || tr.def.theme === 'neon', acc: 0, random: S.playType === 'crash' ? createCrashRaceRandom() : Math.random };
   HORSES.forEach((d, i) => {
     const stMax = 60 + d.st.sta * 9;
-    R.runners.push({ def: d, i, s: 0, v: 0, stMax, st: stMax, lane: 1 + i * 1.95, tLane: 1 + i * 1.95, cond: 1 + conds[i] * 0.015, luck: 1 + (Math.random() * 2 - 1) * 0.03,
-      noise: 0, noiseT: 0, noiseTg: 0, fx: [], used: false, fin: false, place: 0, finT: 0, fly: 0, pc: false, dec: Math.random() * 0.4, rank: i + 1 });
+    R.runners.push({ def: d, i, s: 0, v: 0, stMax, st: stMax, lane: 1 + i * 1.95, tLane: 1 + i * 1.95, cond: 1 + conds[i] * 0.015, luck: 1 + (R.random() * 2 - 1) * 0.03,
+      noise: 0, noiseT: 0, noiseTg: 0, fx: [], used: false, fin: false, place: 0, finT: 0, fly: 0, pc: false, dec: R.random() * 0.4, rank: i + 1 });
   });
   R.order = R.runners.slice();
   return R;
@@ -1433,7 +1518,7 @@ function makeRace(tr, conds, wx) {
 function trySkill(r, R, p, dt, full) {
   const note = (txt, good) => { if (full && R.onNote) R.onNote(r, txt, good); };
   const sk = r.def.sk;
-  if (sk === 'goldship' && !r.g1) { r.g1 = true; if (Math.random() < 0.3) { r.fx.push({ mult: 0.5, t: 2.2 }); note('まさかの大出遅れ！', false); } }
+  if (sk === 'goldship' && !r.g1) { r.g1 = true; if (R.random() < 0.3) { r.fx.push({ mult: 0.5, t: 2.2 }); note('まさかの大出遅れ！', false); } }
   if (sk === 'windup' && !r.g1 && r.s > 1) { r.g1 = true; r.fx.push({ mult: 1.1, t: 5, then: { mult: 0.965, t: 999, wind: true } }); }
   if (r.used) return;
   const fire = (mult, t, extra) => { r.used = true; r.fx.push(Object.assign({ mult, t, skill: true }, extra || {})); if (full && R.onSkill) R.onSkill(r); };
@@ -1443,7 +1528,7 @@ function trySkill(r, R, p, dt, full) {
     case 'shiro': if (p >= 0.75 && r.rank > 1) fire(1.1, 5); break;
     case 'unicorn': if (p >= 0.6) { r.st = Math.min(r.stMax, r.st + r.stMax * 0.3); fire(1.05, 6); } break;
     case 'banei': if (p >= 0.7) fire(1.08 + (R.track.def.surf === 'dirt' || R.track.def.surf === 'snow' ? 0.03 : 0), 7); break;
-    case 'zebra': if (p > 0.35 && p < 0.85 && Math.random() < 0.28 * dt) { r.warp = 1; r.s += 6; fire(1.04, 3); } break;
+    case 'zebra': if (p > 0.35 && p < 0.85 && R.random() < 0.28 * dt) { r.warp = 1; r.s += 6; fire(1.04, 3); } break;
     case 'pegasus': { const oc = R.track.onCurve(R.s0 + r.s); if (r.pc && !oc && p > 0.45 && p < 0.92) fire(1.09, 4.2, { fly: true }); r.pc = oc; break; }
     case 'mech': if (p >= 0.5) fire(R.night ? 1.13 : 1.10, 4, { then: { mult: 0.97, t: 3 } }); break;
     case 'redhare': if (r.s > 3) fire(1.1, 7); break;
@@ -1458,12 +1543,12 @@ function trySkill(r, R, p, dt, full) {
     case 'kurofune': if (p >= 0.6) fire(R.track.def.surf === 'dirt' ? 1.1 : 1.06, 6); break;
     case 'equinox': if (p >= 0.7) fire(1.08, 7); break;
     case 'deep': if (p >= 0.78 && r.rank > 1) fire(1.12, 4.5, { fly: true, lift: 0.7 }); break;
-    case 'orfe': if (p >= 0.7) { if (Math.random() < 0.5) { fire(1.14, 5); note('覚醒した！金色の暴君が爆走！', true); } else { r.tLane = W - 0.9; r.dec = 1.8; fire(0.86, 1.8, { then: { mult: 1.14, t: 4.5, skill: true } }); note('外へ逸走！？…いや、猛然と追ってくる！', false); } } break;
+    case 'orfe': if (p >= 0.7) { if (R.random() < 0.5) { fire(1.14, 5); note('覚醒した！金色の暴君が爆走！', true); } else { r.tLane = W - 0.9; r.dec = 1.8; fire(0.86, 1.8, { then: { mult: 1.14, t: 4.5, skill: true } }); note('外へ逸走！？…いや、猛然と追ってくる！', false); } } break;
     case 'oguri': if (p >= 0.8 && r.rank >= 2 && r.rank <= 4 && R.leadS - r.s < 10) fire(1.1, 5); break;
     case 'suzuka': if (r.s > 3) fire(1.1, 7); break;
     case 'goldship': if (p >= 0.5) fire(1.07, 12); break;
     case 'matsuri': if (p >= 0.7 && r.rank === 1) { r.st = Math.min(r.stMax, r.st + r.stMax * 0.25); fire(1.06, 5); } break;
-    case 'urara': if (p >= 0.75) { if (Math.random() < 0.2) { fire(1.38, 6, { jackpot: true }); note('奇跡の一勝へ！みんなの声援が届いた！', true); } else r.used = true; } break;
+    case 'urara': if (p >= 0.75) { if (R.random() < 0.2) { fire(1.38, 6, { jackpot: true }); note('奇跡の一勝へ！みんなの声援が届いた！', true); } else r.used = true; } break;
     case 'big31': if (p >= 0.6 && r.rank === 1) fire(1.1, 7); break;
     case 'queen': if (p >= 0.8) { r.v += 2; fire(1.1, 4); } break;
     case 'unbeaten': if (p >= 0.65) { for (const o of R.runners) if (o !== r && !o.fin && Math.abs(o.s - r.s) < 8) o.fx.push({ mult: 0.97, t: 4 }); fire(1.03, 4); } break;
@@ -1482,7 +1567,7 @@ function trySkill(r, R, p, dt, full) {
     case 'cardboard': if (p >= 0.6) fire(1.1, 6); break;
     case 'waltz': if (p >= 0.45 && R.track.onCurve(R.s0 + r.s)) fire(1.1, 4); break;
     case 'windup': if (p >= 0.6) { r.fx = r.fx.filter(e => !e.wind); fire(1.12, 5); } break;
-    case 'gold': if (p >= 0.8) { if (Math.random() < 0.35) fire(1.26, 6, { jackpot: true }); else { r.used = true; if (full && R.onFail) R.onFail(r); } } break;
+    case 'gold': if (p >= 0.8) { if (R.random() < 0.35) fire(1.26, 6, { jackpot: true }); else { r.used = true; if (full && R.onFail) R.onFail(r); } } break;
   }
 }
 function stepRace(R, dt, full) {
@@ -1496,7 +1581,7 @@ function stepRace(R, dt, full) {
   R.leadS = leadS;
   for (const r of rs) {
     const d = r.def;
-    r.noiseT -= dt; if (r.noiseT <= 0) { r.noiseTg = Math.random() * 2 - 1; r.noiseT = 0.8 + Math.random() * 1.6; }
+    r.noiseT -= dt; if (r.noiseT <= 0) { r.noiseTg = R.random() * 2 - 1; r.noiseT = 0.8 + R.random() * 1.6; }
     r.noise += (r.noiseTg - r.noise) * Math.min(1, dt * 1.3);
     for (const e of r.fx) { e.t -= dt; if (e.t <= 0 && e.then) { const n = e.then; e.then = null; e.mult = n.mult; e.t = n.t; e.skill = !!n.skill; e.fly = false; e.wind = !!n.wind; } }
     r.fx = r.fx.filter(e => e.t > 0);
@@ -1568,7 +1653,7 @@ function stepRace(R, dt, full) {
       const excursion = r.def.sk === 'orfe' && r.fx.some(e => e.skill && e.then);
       if (!excursion && r.dec <= 0.6 && (approaching || !safePath(r.tLane))) r.dec = 0;
       if (r.dec <= 0) {
-        r.dec = 0.35 + Math.random() * 0.25;
+        r.dec = 0.35 + R.random() * 0.25;
         let best = r.lane, bc = 1e9;
         const candidates = [r.tLane, r.lane, 0.9, W - 0.9];
         for (let l = 0.9; l <= W - 0.9; l += 0.7) candidates.push(l);
@@ -2762,15 +2847,21 @@ function drawBoard() {
   g.fillStyle = '#1a0830'; g.font = '38px "Dela Gothic One", sans-serif'; g.fillText(track.def.name, 22, 35);
   g.textAlign = 'right'; g.font = '800 30px "Oxanium", sans-serif';
   const mode = S.mode;
-  if (mode === 'lobby' || mode === 'intro' || mode === 'countdown') {
-    g.fillText('ODDS 単勝', Wd - 22, 35);
+  if (S.playType === 'crash' && mode === 'result') {
+    g.fillText('CRASH RESULT', Wd - 22, 35);
+    g.textAlign = 'center'; g.fillStyle = '#46f0c6'; g.font = '800 100px "Oxanium", sans-serif';
+    g.fillText(S.crash.confirmed == null ? 'CRASH' : S.crash.confirmed.toFixed(2) + 'x', Wd / 2, 200);
+    g.fillStyle = '#fff'; g.font = '36px "Dela Gothic One", sans-serif'; g.fillText(HORSES[S.myBet.h].name, Wd / 2, 310);
+    g.font = '800 48px "Oxanium", sans-serif'; g.fillText(`${fmt(S.crash.pay)} COINS`, Wd / 2, 400);
+  } else if (mode === 'lobby' || mode === 'intro' || mode === 'countdown') {
+    g.fillText(S.playType === 'crash' ? 'CRASH RTP 96.5%' : 'ODDS 単勝', Wd - 22, 35);
     for (let i = 0; i < 8; i++) {
       const col = i < 4 ? 0 : 1, row = i % 4, x = 24 + col * 500, y = 96 + row * 94;
       g.fillStyle = 'rgba(255,255,255,.06)'; roundRect(g, x, y, 476, 80, 12); g.fill();
       g.fillStyle = WAKU[i][0]; roundRect(g, x + 10, y + 12, 56, 56, 10); g.fill();
       g.fillStyle = WAKU[i][1]; g.textAlign = 'center'; g.font = '800 38px "Oxanium", sans-serif'; g.fillText(String(i + 1), x + 38, y + 42);
       g.textAlign = 'left'; g.fillStyle = i === S.sel ? '#ffcf3f' : '#ffffff'; g.font = '30px "Dela Gothic One", sans-serif'; g.fillText(HORSES[i].name, x + 82, y + 42);
-      g.textAlign = 'right'; g.fillStyle = '#ffcf3f'; g.font = '800 40px "Oxanium", sans-serif'; g.fillText(S.odds ? S.odds.win[i].toFixed(1) : '--', x + 462, y + 42);
+      g.textAlign = 'right'; g.fillStyle = '#ffcf3f'; g.font = '800 40px "Oxanium", sans-serif'; g.fillText(S.playType === 'crash' ? '↑' : S.odds ? S.odds.win[i].toFixed(1) : '--', x + 462, y + 42);
     }
   } else if (mode === 'race' || mode === 'finish') {
     g.fillStyle = '#e5243b'; g.beginPath(); g.arc(Wd - 150, 35, 11, 0, 7); g.fill(); g.fillStyle = '#1a0830'; g.fillText('LIVE', Wd - 22, 35);
@@ -2887,7 +2978,7 @@ const VO = {
   }
 };
 VO.init();
-document.addEventListener('visibilitychange', () => { if (document.hidden) VO.stop(); });
+document.addEventListener('visibilitychange', () => { if (document.hidden) VO.stop(); if (S.playType === 'crash') last = performance.now(); });
 window.addEventListener('pagehide', () => VO.stop());
 
 /* ============ FX (2D overlay + 3D bursts) ============ */
@@ -2956,7 +3047,12 @@ function marginTxt(L) {
   if (L < 0.2) return 'ハナ'; if (L < 0.35) return 'アタマ'; if (L < 0.55) return 'クビ'; if (L < 0.8) return '1/2'; if (L < 1.1) return '3/4'; if (L >= 10) return '大差';
   const q = Math.round(L * 4) / 4, w = Math.floor(q), fr = q - w; return `${w}${fr === 0.25 ? ' 1/4' : fr === 0.5 ? ' 1/2' : fr === 0.75 ? ' 3/4' : ''}`;
 }
-function setCoins() { $('#coins').textContent = fmt(S.coins); store.set('coins', S.coins); const st = $('#streak'); st.hidden = S.streak < 1; st.textContent = `${S.streak}連勝中 ×${(1 + 0.1 * S.streak).toFixed(1)}`; store.set('streak', S.streak); }
+function setCoins() {
+  store.set('crashAccount', { coins: S.coins, pending: !!S.crash && !S.crash.settled });
+  $('#coins').textContent = fmt(S.coins); store.set('coins', S.coins);
+  const st = $('#streak'); st.hidden = S.playType === 'crash' || S.streak < 1;
+  st.textContent = `${S.streak}連勝中 ×${(1 + 0.1 * S.streak).toFixed(1)}`; store.set('streak', S.streak);
+}
 const ICON_ON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M19 5a10 10 0 0 1 0 14"/></svg>';
 const ICON_OFF = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="m23 9-6 6M17 9l6 6"/></svg>';
 function setMuteIcon() { $('#mute').innerHTML = S.muted ? ICON_OFF : ICON_ON; }
@@ -3031,6 +3127,10 @@ function renderTracks() {
     `<span class="tgrp">${label}</span>` + courses.filter(({t}) => trackGroupOf(t) === g).sort(sort).map(({t, i}) => tcard(t, i)).join('')).join('');
 }
 function renderLobby() {
+  document.body.dataset.play = S.playType;
+  $('#playTypes').querySelectorAll('button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.play === S.playType)));
+  $('#recoveryNote').hidden = !S.interrupted;
+  $('#recoveryNote').textContent = '前回の未確定クラッシュは終了しました。賭けたコインの払戻はありません。';
   renderJourney();
   renderTracks();
   $('#trackCount').textContent = `${TRACKS.length}`;
@@ -3045,9 +3145,14 @@ function renderLobby() {
     b.style.setProperty('--wc', wc); b.style.setProperty('--gc', gc);
     b.innerHTML = `<span class="ic">${WX_ICON[S.wx.w]}</span><div class="wl"><span><small>天候</small>${WX[S.wx.w]}</span><span><small>馬場</small><span class="gd">${SURF[track.def.surf]}・${GOING[S.wx.g]}</span></span></div><p>${goingNote()}</p>`; }
   $('#horses').innerHTML = HORSES.map((h, i) => `<button class="hrow ${i === S.sel ? 'on' : ''}" data-i="${i}"><span class="num" style="background:${WAKU[i][0]};color:${WAKU[i][1]}">${i + 1}</span><span class="hn"><b>${h.tags?.includes('歴史') ? '<i class="meiba history">歴史</i>' : h.motif ? '<i class="meiba">名馬</i>' : ''}${h.name}</b><small>${h.type}・${STYLE[h.style]}・調子${COND[S.conds[i] + 1]}</small></span><span class="od">${S.odds.win[i].toFixed(1)}<small>単勝・${S.odds.pop[i]}番人気</small></span></button>`).join('');
+  if (S.playType === 'crash') $('#horses').querySelectorAll('.od').forEach(el => { el.innerHTML = '↑<small>上位で倍率加速</small>'; });
   renderSlip();
 }
 function renderSlip() {
+  const crash = S.playType === 'crash';
+  $('#btype').hidden = crash; $('#crashSettings').hidden = !crash;
+  $('#go').textContent = crash ? 'クラッシュ出走！' : '出走！';
+  $('#tabSlip').firstChild.textContent = crash ? 'ベット' : '馬券';
   const i = S.sel, h = HORSES[i], t = TRACKS[S.ti];
   $('#slipHead').innerHTML = `<span class="num" style="background:${WAKU[i][0]};color:${WAKU[i][1]}">${i + 1}</span><div><div class="nm">${h.name}</div><div class="tp">${h.type}・${STYLE[h.style]}・調子 ${COND[S.conds[i] + 1]}・${S.odds.pop[i]}番人気</div></div>`;
   const mo = $('#motif'); mo.hidden = !h.motif; if (h.motif) mo.innerHTML = `<b>名馬モチーフ</b>${h.motifNote}`;
@@ -3062,6 +3167,14 @@ function renderSlip() {
   if (S.bet !== 'ALL' && S.bet > S.coins) S.bet = S.coins >= 100 ? 100 : S.coins;
   $('#chips').innerHTML = amounts.map(a => `<button data-a="${a}" class="${S.bet === a ? 'on' : ''}" ${a !== 'ALL' && a > S.coins ? 'disabled' : ''}>${a === 'ALL' ? 'ALL IN' : fmt(a)}</button>`).join('');
   const amt = betAmt(), odds = S.betType === 'win' ? S.odds.win[i] : S.odds.place[i];
+  if (crash) {
+    const auto = $('#autoEnabled').checked, value = $('#autoMultiplier').value;
+    $('#preview').innerHTML = `<span class="pv1"><span class="num" style="background:${WAKU[i][0]};color:${WAKU[i][1]}">${i + 1}</span><b class="pvn">${h.name}</b></span><span class="pv2">${fmt(amt)}コイン ／ ${auto && validCrashAuto(value) ? `自動確定 ${Number(value).toFixed(2)}x` : auto ? '倍率を1.01〜100.00で入力' : '手動でキャッシュアウト'}</span>`;
+    $('#slipTabNote').textContent = `${i + 1}番・クラッシュ`;
+    $('#go').disabled = amt <= 0 || (auto && !validCrashAuto(value));
+    $('#hint').textContent = 'Enterで確定／Spaceで応援／1〜6でカメラ切替';
+    return;
+  }
   const bonus = 1 + 0.1 * S.streak;
   // 出走バーには「どの馬に・何を・いくら」賭けたかを常に表示する（スマホで別タブにいても確認できるように）
   const bt = S.betType === 'win' ? '単勝' : '複勝';
@@ -3070,6 +3183,16 @@ function renderSlip() {
   $('#go').disabled = amt <= 0;
 }
 const betAmt = () => S.bet === 'ALL' ? S.coins : Math.min(S.bet, S.coins);
+$('#playTypes').addEventListener('click', e => {
+  const b = e.target.closest('[data-play]');
+  if (!b || S.mode !== 'lobby' || S.playType === b.dataset.play) return;
+  S.playType = b.dataset.play; store.set('playType', S.playType);
+  guiding = !store.get(S.playType === 'crash' ? 'crashGuideDone' : 'guideDone', false);
+  AU.init(); AU.pop(); enterLobby(false);
+});
+$('#autoEnabled').onchange = () => { $('#autoMultiplier').disabled = !$('#autoEnabled').checked; renderSlip(); };
+$('#autoMultiplier').oninput = renderSlip;
+$('#cashOut').onclick = cashOutCrash;
 $('#tracks').addEventListener('click', e => { const b = e.target.closest('.tcard'); if (!b) return; const i = +b.dataset.i; if (i === S.ti) return; S.ti = i; store.set('track', i); AU.init(); AU.pop(); enterLobby(true); });
 $('#horses').addEventListener('click', e => { const b = e.target.closest('.hrow'); if (!b) return; selectHorse(+b.dataset.i); });
 $('#btype').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; S.betType = b.dataset.t; AU.init(); AU.pop(); renderSlip(); });
@@ -3212,6 +3335,8 @@ function setMode(m) {
 }
 function enterLobby(rebuild) {
   VO.stop();
+  clearCrashPressure();
+  S.crash = null;
   if (rebuild || !world) buildWorld(S.ti);
   setField();
   S.conds = HORSES.map(() => [-1, 0, 0, 1, 1, 2][(Math.random() * 6) | 0]);
@@ -3228,31 +3353,39 @@ function enterLobby(rebuild) {
   renderLobby();
   setLobbyTab(lobbyTab);
   selectHorse(S.sel, true);
-  $('#hint').textContent = bail ? '救済ボーナス！コインが足りなかったので 500 コインを追加しました。' : 'レース中：1〜6でカメラ切替／Spaceで応援ブースト';
+  $('#hint').textContent = bail ? '救済ボーナス！コインが足りなかったので 500 コインを追加しました。' : S.playType === 'crash' ? 'Enterで確定／Spaceで応援／1〜6でカメラ切替' : 'レース中：1〜6でカメラ切替／Spaceで応援ブースト';
   $('#hint').classList.toggle('bail', bail);
   AU.crowdLvl(0.12);
 }
 function startRace() {
   if (S.mode !== 'lobby') return;
+  if (S.playType === 'crash' && $('#autoEnabled').checked && !validCrashAuto($('#autoMultiplier').value)) return;
   raceCheers = 0;
   $('#guideNote').hidden = !guiding;
   $('#guideNote').textContent = '応援が100%になったら、右下の応援ボタンを押そう！';
   const amt = betAmt(); if (amt <= 0) return;
+  if (S.playType === 'crash') {
+    S.crash = { point: sampleCrashPoint(), multiplier: 1, displayed: 1, auto: $('#autoEnabled').checked ? Number($('#autoMultiplier').value) : null, settled: false, wallAcc: 0 };
+    S.interrupted = false;
+    $('#guideNote').textContent = '応援で順位アップ！疾走終了前にEnterかボタンで確定しよう。';
+  }
   VO.stop();
   RC.reset(R);
   AU.init();
   S.coins -= amt; setCoins();
-  S.myBet = { h: S.sel, type: S.betType, amt, odds: S.betType === 'win' ? S.odds.win[S.sel] : S.odds.place[S.sel], streak: S.streak };
+  S.myBet = { h: S.sel, type: S.playType === 'crash' ? 'crash' : S.betType, amt, odds: S.betType === 'win' ? S.odds.win[S.sel] : S.odds.place[S.sel], streak: S.streak };
   setMode('intro'); S.introT = 0; cam.spr = null; cam.bf = null; flags = {}; S.photoDone = false; S.photoEnd = false; S.cheer = 30; S.photo = false;
   buildHud();
   setCam('broadcast');
   say(`${track.def.name}、天候${WX[S.wx.w]}、馬場は${GOING[S.wx.g]}。本命は${HORSES[S.odds.pop.indexOf(1)].name}！`);
   AU.fanfare(); AU.crowdLvl(0.35);
   R.onSkill = onSkill; R.onFail = r => { if (r.i === S.myBet.h) toast(`<b>${r.def.name}</b> ジャックポットはハズレ…まだ終わってない！`, '#8a8aa8'); else toast(`<b>${r.def.name}</b> の抽選はハズレ`, '#8a8aa8'); };
-  R.onFinish = onFinish;
+  R.onFinish = S.playType === 'crash' ? null : onFinish;
   R.onNote = (r, txt, good) => { toast(`<b>${r.def.name}</b> ${txt}`, good ? r.def.skill.color : '#8a8aa8'); say(`${r.def.name}、${txt}`); if (r.i === S.myBet.h && !good) AU.sad(); };
 }
 function buildHud() {
+  $('#crashHud').hidden = S.playType !== 'crash';
+  if (S.crash) renderCrashHud();
   $('#myName').textContent = `${S.myBet.h + 1}番 ${HORSES[S.myBet.h].name}`;
   $('#myRank').textContent = '—';
   $('#rname').textContent = `${track.def.name}　${SURF[track.def.surf]}${track.def.D}m・${WX[S.wx.w]}・${GOING[S.wx.g]}`;
@@ -3334,10 +3467,85 @@ function showResult() {
   }
 }
 
+function renderCrashHud() {
+  const c = S.crash; if (!c) return;
+  c.displayed = crashDisplay(c.multiplier);
+  const rank = R.runners[S.myBet.h].rank;
+  $('#crashMultiplier').textContent = c.displayed.toFixed(2) + 'x';
+  $('#crashSpeed').textContent = `${rank}位 ／ 上昇速度 ${(crashRate(rank) * 100).toFixed(1)}%/秒（複利）`;
+  $('#cashOut').disabled = S.mode !== 'race' || c.settled;
+  $('#cashOut').textContent = `確定 ${fmt(crashPayout(S.myBet.amt, c.displayed))} コイン`;
+  $('#crashAutoNote').textContent = c.auto == null ? 'Enterで確定 ／ Spaceで応援' : `自動確定 ${c.auto.toFixed(2)}x ／ 手動確定も可能`;
+  updateCrashPressure();
+}
+function clearCrashPressure() {
+  $('#crashTension').hidden = true;
+  $('#crashHud').removeAttribute('data-pressure');
+  $('#crashPressureText').textContent = ''; $('#crashAtStake').textContent = '';
+}
+function updateCrashPressure() {
+  const c = S.crash;
+  if (!c || c.settled || S.mode !== 'race') { clearCrashPressure(); return; }
+  const pressure = crashPressure(c.displayed);
+  const colors = ['#46f0c6', '#ffcf3f', '#ff963f', '#ff4f9a', '#ff6262'];
+  $('#crashHud').dataset.pressure = pressure.level;
+  const edge = $('#crashTension'); edge.hidden = false;
+  edge.style.setProperty('--tension-color', colors[pressure.level]);
+  edge.style.setProperty('--tension-opacity', pressure.level * 0.10);
+  const gain = crashPayout(S.myBet.amt, c.displayed) - S.myBet.amt;
+  $('#crashAtStake').textContent = `未確定の利益 +${fmt(gain)} コイン`;
+  if (pressure.milestone > (c.pressureMilestone ?? -1)) {
+    c.pressureMilestone = pressure.milestone;
+    c.pressureMessage = CRASH_PRESSURE_STEPS[pressure.milestone][1];
+    c.pressureUntil = R.t + 5;
+    say(c.pressureMessage, true);
+    if (!S.muted) { if (pressure.level >= 3) AU.chime(); else AU.coin(); }
+  }
+  const prompts = ['どこで確定する？', '伸びる倍率、迫る決断。', '迷っている間も倍率は上がる！', 'この払戻、手放せる？', '高倍率！守るか、伸ばすか！'];
+  const message = R.t < (c.pressureUntil || 0) ? c.pressureMessage : prompts[pressure.level];
+  if ($('#crashPressureText').textContent !== message) $('#crashPressureText').textContent = message;
+  if (pressure.level > 0 && R.t >= (c.nextPressureBeat || 0)) {
+    c.nextPressureBeat = R.t + [0, 1.8, 1.3, 0.9, 0.65][pressure.level];
+    if (!S.muted) {
+      const t = AU.now(), vol = 0.04 + pressure.level * 0.02;
+      AU.tone(65, t, 0.12, 'sine', vol, 40);
+      AU.tone(60, t + 0.17, 0.1, 'sine', vol * 0.7, 40);
+    }
+  }
+}
+function cashOutCrash() {
+  if (S.mode !== 'race' || !S.crash || S.crash.settled || document.hidden) return;
+  settleCrash('manual', S.crash.displayed);
+}
+function settleCrash(reason, multiplier) {
+  const c = S.crash; if (!c || c.settled) return;
+  c.settled = true; R.running = false;
+  const b = S.myBet, lost = reason === 'crash';
+  const confirmed = lost ? null : reason === 'auto' || reason === 'limit' ? multiplier : crashDisplay(multiplier);
+  const pay = lost ? 0 : crashPayout(b.amt, confirmed);
+  c.reason = reason; c.confirmed = confirmed; c.pay = pay;
+  clearCrashPressure();
+  S.coins += pay; setCoins();
+  guiding = false; store.set('crashGuideDone', true);
+  timeTarget = timeScale = 1; slowUntil = 0; S.photo = false; FX.lines = 0;
+  $('#hot').classList.remove('on'); $('#guideNote').hidden = true; VO.stop();
+  const ordered = R.runners.slice().sort((a, d) => d.s - a.s || a.i - d.i);
+  const rank = ordered.findIndex(r => r.i === b.h) + 1;
+  const labels = { crash: 'クラッシュ — 疾走終了', manual: 'キャッシュアウト成功！', auto: '設定倍率で自動確定！', goal: '先頭ゴールで自動確定！', limit: '100.00x到達で自動確定！' };
+  const net = pay - b.amt;
+  setMode('result');
+  $('#result').innerHTML = `<div class="panel"><div id="resTitle" class="${lost ? '' : 'win'}">${labels[reason]}</div><div class="resultHero"><strong>${lost ? '終了' : confirmed.toFixed(2) + 'x'}</strong><div><small>終了時点 ${rank}位</small><b>${b.h + 1}番 ${HORSES[b.h].name}</b></div></div><p id="resSub">${track.def.name} ／ ${lost ? `終了倍率 ${Math.max(1, multiplier).toFixed(2)}x` : `確定倍率 ${confirmed.toFixed(2)}x`}</p><div id="payout" class="${lost ? 'miss' : ''}"><div class="l"><b>ベット ${fmt(b.amt)} コイン</b><br>払戻（賭け分を含む）<br>差引収支 ${net > 0 ? '+' : ''}${fmt(net)} コイン</div><div class="r">${fmt(pay)}</div></div><p id="rewardNote">理論RTP 96.5%。整数丸めにより実際の期待払戻はわずかに下がります。無料補充は対象外。競馬の連勝・実績は更新されません。</p><div class="rbtns"><button id="again" class="pri">次のクラッシュへ</button><button id="other">次のコースへ</button></div></div>`;
+  $('#again').onclick = () => { AU.pop(); enterLobby(false); };
+  $('#other').onclick = () => { AU.pop(); S.ti = (S.ti + 1) % TRACKS.length; store.set('track', S.ti); enterLobby(true); };
+  if (lost) { big('疾走終了', 'sad', 1300); AU.sad(); }
+  else { big('確定！', '', 1300); AU.jackpot(); confetti(120); coinShower(60); }
+}
+
 /* ============ INPUT ============ */
 addEventListener('keydown', e => {
   if (S.mode === 'catalog') { if (e.key === 'Escape') { e.preventDefault(); closeCatalog(); } return; }
   if (e.repeat && e.code !== 'Space') return;
+  if (e.key === 'Enter' && S.playType === 'crash' && S.mode === 'race') { e.preventDefault(); cashOutCrash(); return; }
   const race = S.mode === 'race' || S.mode === 'finish' || S.mode === 'countdown' || S.mode === 'intro';
   if (race && e.key >= '1' && e.key <= '6') { setCam(CAMS[+e.key - 1][0]); }
   else if (race && (e.key === 'c' || e.key === 'C')) { const i = CAMS.findIndex(c => c[0] === S.cam); setCam(CAMS[(i + 1) % CAMS.length][0]); }
@@ -3506,6 +3714,19 @@ function updCrowd(t, rdt) {
   crowd.instanceMatrix.needsUpdate = true;
 }
 function updRace(dt, rdt) {
+  if (S.playType !== 'crash' || !S.crash || S.crash.settled) { updRaceFrame(dt, rdt); return; }
+  // The wall-clock accumulator also advances slow-motion at fixed intervals.
+  const c = S.crash;
+  c.wallAcc += rdt;
+  while (c.wallAcc + 1e-10 >= CRASH_STEP && !c.settled) {
+    c.wallAcc -= CRASH_STEP;
+    timeScale = damp(timeScale, timeTarget, 8, CRASH_STEP);
+    const simDt = CRASH_STEP * timeScale;
+    clock += simDt; realClock += CRASH_STEP;
+    updRaceFrame(simDt, CRASH_STEP);
+  }
+}
+function updRaceFrame(dt, rdt) {
   if (S.mode === 'intro') {
     S.introT += rdt;
     R.runners.forEach(r => { r.v = r.s < -1.35 ? 3.7 : 0; r.s = Math.min(-1.3, r.s + r.v * rdt); });
@@ -3518,11 +3739,27 @@ function updRace(dt, rdt) {
     if (S.cdT >= 3) {
       setMode('race'); R.running = true; big('GO!!', '', 1000); AU.beep(true); FX.flash = 0.45; FX.shake = 0.5; crowd.userData.exc = 1;
       RC.emit('start', {}, true);
+      if (S.crash && S.crash.point <= 1) { settleCrash('crash', 1); return; }
     }
   }
   if (R.running) {
     R.acc += dt; const h = 1 / 60; let n = 0;
-    while (R.acc >= h && n < 15) { stepRace(R, h, true); R.acc -= h; n++; }
+    while (R.acc + 1e-10 >= h && n < 15 && R.running) {
+      if (S.playType === 'crash') {
+        const positions = R.runners.map(r => r.s), before = R.t;
+        const rank = R.runners.slice().sort((a, b) => b.s - a.s || a.i - b.i).findIndex(r => r.i === S.myBet.h) + 1;
+        stepRace(R, h, true);
+        const goalTime = Math.min(...R.runners.filter(r => r.fin).map(r => Math.max(0, r.finT - before)));
+        const event = advanceCrash(S.crash, rank, h, goalTime);
+        S.crash.multiplier = event.multiplier;
+        if (event.reason) {
+          R.runners.forEach((r, i) => { r.s = lerp(positions[i], r.s, clamp(event.elapsed / h, 0, 1)); });
+          R.t = before + event.elapsed;
+          settleCrash(event.reason, event.multiplier); return;
+        }
+      } else stepRace(R, h, true);
+      R.acc -= h; n++;
+    }
     if (n === 15) R.acc = 0;
     gate.open = Math.min(1, gate.open + rdt * 6); gate.t += dt;
     if (gate.t > 3) { gate.slide = Math.min(1, gate.slide + dt * 0.35); gate.g.position.copy(gate.base).addScaledVector(gate.n, gate.slide * gate.slide * 45); if (gate.slide >= 1) gate.g.visible = false; }
@@ -3674,12 +3911,17 @@ function updRings(rdt) {
 let last = performance.now();
 function frame(now) {
   requestAnimationFrame(frame);
-  const rdt = Math.min(0.05, (now - last) / 1000); last = now;
+  const elapsed = Math.max(0, (now - last) / 1000); last = now;
+  const crashActive = S.playType === 'crash' && S.crash && !S.crash.settled;
+  if (crashActive && document.hidden) return;
+  const rdt = crashActive ? elapsed : Math.min(0.05, elapsed);
   if (S.mode === 'catalog') { drawCatalog(rdt); return; }
-  timeScale = damp(timeScale, timeTarget, 8, rdt);
-  const dt = rdt * timeScale; clock += dt; realClock += rdt;
+  if (!crashActive) timeScale = damp(timeScale, timeTarget, 8, rdt);
+  const dt = rdt * timeScale;
+  if (!crashActive) { clock += dt; realClock += rdt; }
   if (!R) return;
   updRace(dt, rdt);
+  if (crashActive && S.mode !== 'result') renderCrashHud();
   updHorses(dt, rdt);
   if (S.mode !== 'lobby' && S.mode !== 'result') updHud(rdt);
   else if (S.mode === 'lobby' && Math.random() < rdt * 0.4) { /* idle */ }
@@ -3748,6 +3990,7 @@ $('#quality').onchange = () => { store.set('quality',$('#quality').value); apply
 applyQuality();
 
 /* ============ BOOT ============ */
+guiding = !store.get(S.playType === 'crash' ? 'crashGuideDone' : 'guideDone', false);
 setMuteIcon(); setCoins();
 setCam('broadcast');
 enterLobby(true);
