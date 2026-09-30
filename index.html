@@ -482,7 +482,7 @@ const C = c => new THREE.Color(c);
 
 /* ============ DATA ============ */
 const WAKU = [['#f7f7f7','#1a1a1a'],['#1c1c24','#ffffff'],['#e53a2f','#ffffff'],['#2f6fe4','#ffffff'],['#f6d31e','#1a1a1a'],['#27ae4f','#ffffff'],['#f58a1f','#ffffff'],['#f48fb8','#ffffff']];
-const SURF = { turf: '芝', dirt: 'ダート', snow: '雪', sand: '砂' };
+const SURF = { turf: '芝', dirt: 'ダート', snow: '雪', sand: '砂', asphalt: '舗装' };
 const STYLE = { nige: '逃げ', senko: '先行', sashi: '差し', oikomi: '追込' };
 const COND = ['▲', '△', '○', '◎'];
 const GOING = ['良', '稍重', '重', '不良'];
@@ -631,7 +631,7 @@ const ROSTER = [
     skill: { name: 'ちびっこのど根性', desc: '残り25%で先頭にいなければ、短い脚をめいっぱい伸ばして加速。大きな相手にも最後まで食らいつく。', color: '#fff0b3' },
     blurb: '北の小さな牧場からやってきた、まんまるな白い挑戦者。桃色の鼻先を笑われても、黒い好敵手の背中を追い続ける。小さな師匠に教わったのは、ゴールまであきらめないこと。' },
   { name: 'とうふデリバリー', type: 'AE86・ハッチバック', kind: 'car', sk: 'drift', style: 'sashi', body: '#f7f7f2', mane: '#202127', muzzle: '#f7f7f2',
-    mud: -1, st: { spd: 8, sta: 7, acc: 9, pow: 6, agi: 10 }, aff: { turf: 1, dirt: 0, snow: -1, sand: -1 },
+    mud: -1, st: { spd: 8, sta: 7, acc: 9, pow: 6, agi: 10 }, aff: { turf: 1, dirt: 0, snow: -1, sand: -1, asphalt: 2 },
     skill: { name: '慣性ドリフト', desc: 'レース中盤以降のコーナーで、車体を横に向けて一気に加速。4秒間の鋭い立ち上がりで馬群を抜ける。', color: '#a9e8ff' },
     blurb: '白黒のパンダカラーが目印のハッチバック。リトラクタブルライトを開き、豆腐を崩さない絶妙な走りでコーナーを攻める。' },
   // ---- 歴史モチーフ（史料の記述・伝承に基づく。能力と外見は創作） ----
@@ -750,9 +750,19 @@ const TRACKS = [
     motif: 'チャーチルダウンズ競馬場　ダート2000m（ケンタッキーダービー）', motifNote: '左回りの1マイル（約1609m）ダートオーバル。スタンドに2本の尖塔（ツインスパイア）、優勝馬にはバラのレイ。',
     desc: '平坦で素直なダートの楕円。スピードと先行力の真っ向勝負。',
     grad: 'linear-gradient(135deg,#3a4f9a,#ffb27a 55%,#b0392e)' },
+  { name: 'モナコ・ハーバーカップ', theme: 'monaco', surf: 'asphalt', D: 4000, time: '市街地', dir: 'right', kick: 0.8,
+    motif: 'F1 モナコ市街地コース', motifNote: 'ヘアピン、トンネル、港沿いのシケインをゲーム向けにアレンジ。実寸・実形状の完全再現ではありません。',
+    points: [[0,0],[14,-57],[35,-114],[65,-154],[82,-177],[103,-174],[136,-166],[195,-156],[250,-142],[310,-139],[365,-128],[401,-131],[417,-145],[424,-169],[419,-191],[414,-208],[419,-226],[438,-241],[475,-261],[511,-280],[529,-284],[534,-270],[529,-252],[530,-231],[539,-217],[552,-223],[548,-242],[545,-257],[557,-267],[581,-265],[599,-256],[598,-239],[578,-207],[552,-170],[526,-138],[495,-119],[452,-106],[409,-97],[365,-95],[325,-100],[297,-107],[279,-107],[263,-100],[245,-108],[210,-123],[169,-136],[131,-148],[107,-154],[88,-140],[70,-117],[59,-92],[61,-71],[63,-55],[55,-11],[47,15],[29,21],[20,41],[21,74],[30,106],[45,122],[41,133],[19,134],[-3,128],[-9,115],[-4,98],[-8,63],[-7,33]], pointScale: 2,
+    segs: [{ len: 1 }], finish: [0, 105], homeLength: 175, tunnelPoints: [34, 41],
+    elev: [[0,0,0],[0,0.15,9],[0,0.33,13],[0,0.48,3],[0,0.55,0],[0,1,0]], elevEx: 1,
+    desc: '街を駆け上がり、ヘアピンからトンネルへ！ 港のヨットを横目にシケインを抜ける、舗装路の特別レース。とうふデリバリーは舗装路が得意です。',
+    grad: 'linear-gradient(135deg,#219ed0,#f9dfb4 55%,#ef7066)' },
 ];
 
 const THEMES = {
+  monaco: { sky: ['#258bd1', '#b9e6f4', '#d8d6bb'], sun: [0.4, 0.6, -0.8], sunCol: '#fff4d6', sunSize: 900, light: [0.4, 0.9, -0.3],
+    fog: ['#c2e4ec', 400, 1600], hemi: ['#e3f4ff', '#b5b4a0', 0.8], dir: ['#fff2d7', 1.4], exposure: 0.9, bloom: [0.35, 0.5, 1.8], stars: 0,
+    rail: '#e5e9ee', railGlow: 0, ground: 'winter', dust: '#b2b9bf' },
   sakura: { sky: ['#3f8ff5', '#ffd3e8', '#b6dc9a'], sun: [0.35, 0.5, -0.8], sunCol: '#fff0d0', sunSize: 900, light: [0.5, 0.9, 0.35],
     fog: ['#ffdcec', 220, 1150], hemi: ['#d8ecff', '#94cf7c', 0.7], dir: ['#fff0dc', 1.35], exposure: 0.88, bloom: [0.32, 0.5, 1.8], stars: 0,
     rail: '#ffffff', railGlow: 0, ground: 'grass', dust: '#cfe8a0', mount: '#a3b9ea' },
@@ -1007,6 +1017,44 @@ class Track {
       g.len2 = len;
     }
     rk[0] = rk[1];
+    if (def.points) {
+      const controls = def.points.map(([px, pz]) => new V3(px * k * (def.pointScale || 1.6), 0, pz * k * (def.pointScale || 1.6)));
+      let rounded = controls;
+      // Round street junctions before sampling, keeping the narrow hairpin driveable.
+      for (let pass = 0; pass < 2; pass++) {
+        const next = [];
+        for (let i = 0; i < rounded.length; i++) {
+          const a = rounded[i], b = rounded[(i + 1) % rounded.length];
+          next.push(a.clone().lerp(b, 0.25), a.clone().lerp(b, 0.75));
+        }
+        rounded = next;
+      }
+      const curve = new THREE.CatmullRomCurve3(rounded, true, 'centripetal');
+      curve.arcLengthDivisions = 4000;
+      sAcc = curve.getLength();
+      if (def.tunnelPoints) {
+        const pointDistance = index => {
+          let best = Infinity, at = 0;
+          for (let i = 0; i <= 4000; i++) {
+            const distance = curve.getPointAt(i / 4000).distanceToSquared(controls[index]);
+            if (distance < best) { best = distance; at = i / 4000 * sAcc; }
+          }
+          return at;
+        };
+        this.tunnelRange = def.tunnelPoints.map(pointDistance);
+      }
+      const count = Math.ceil(sAcc / 0.25);
+      rx.length = rz.length = rh.length = rk.length = rs.length = 0;
+      let last = 0;
+      for (let i = 0; i <= count; i++) {
+        const u = i / count, q = curve.getPointAt(u), tangent = curve.getTangentAt(u);
+        let heading = Math.atan2(tangent.z, tangent.x);
+        if (i) heading = last + mod(heading - last + Math.PI, Math.PI * 2) - Math.PI;
+        rx.push(q.x); rz.push(q.z); rh.push(heading); rs.push(u * sAcc);
+        rk.push(i ? Math.abs(heading - last) / (sAcc / count) : 0); last = heading;
+      }
+      rk[0] = rk[1]; segs[0].len2 = sAcc; x = z = 0;
+    }
     const L = sAcc; this.L = L; this.segStart = segStart; this.segs = segs;
     if (this.closed) { const gx = x, gz = z; for (let i = 0; i < rx.length; i++) { rx[i] -= gx * rs[i] / L; rz[i] -= gz * rs[i] / L; } }
     // resample uniformly
@@ -1044,7 +1092,7 @@ class Track {
     this.R = minR < 1e8 ? minR : 150;                  // tightest inner-rail radius (infield depth)
     const fin = def.finish || [0, def.S - 25];
     this.finishS = segStart[fin[0]] + fin[1] * (def.segs ? k : 1);
-    const hsg = def.home || 0; this.homeS0 = segStart[hsg]; this.homeS1 = segStart[hsg] + segs[hsg].len2;
+    const hsg = def.home || 0; this.homeS0 = segStart[hsg]; this.homeS1 = segStart[hsg] + (def.homeLength || segs[hsg].len2);
     this.S = this.homeS1 - this.homeS0;
   }
   idx(sa) {
@@ -1163,7 +1211,7 @@ function stepRace(R, dt, full) {
       }
       if (p >= 0.72) { const kk = R.track.def.kick || 1; f = f > 1 ? 1 + (f - 1) * kk : 1 - (1 - f) / kk; }
       if (p > 0.75) f *= 1 + (d.st.pow - 5) * 0.004;
-      f *= 1 + d.aff[R.track.def.surf] * 0.012;
+      f *= 1 + (d.aff[R.track.def.surf] || 0) * 0.012;
       const ku = R.track.curv(R.s0 + r.s);
       if (ku > 1e-4) f *= 1 - 56 * ku * (0.06 - d.st.agi * 0.005);
       const gr = R.track.grade(R.s0 + r.s);
@@ -1692,6 +1740,7 @@ function buildWorld(ti) {
 
   // track surface
   const surfDraw = {
+    asphalt: g => { g.fillStyle = '#555e68'; g.fillRect(0, 0, 256, 256); speck(g, 256, 256, 2400, ['#68717b', '#454d57', '#7c858c'], 1, 2, 0.6); },
     turf: g => { for (let x = 0; x < 256; x += 64) { g.fillStyle = (x / 64) % 2 ? '#55b556' : '#63c761'; g.fillRect(x, 0, 64, 256); } speck(g, 256, 256, 2200, ['#4aa04a', '#79d672', '#8ee383'], 1, 3, 0.55); },
     dirt: g => { g.fillStyle = '#9b6a45'; g.fillRect(0, 0, 256, 256); for (let y = 0; y < 256; y += 6) { g.fillStyle = `rgba(${Math.random() < 0.5 ? '60,35,20' : '190,140,100'},${rand(0.05, 0.14)})`; g.fillRect(0, y, 256, rand(1, 3)); } speck(g, 256, 256, 1600, ['#7a4e30', '#b98559', '#5e3a22'], 1, 3, 0.7); },
     snow: g => { g.fillStyle = '#e6eef9'; g.fillRect(0, 0, 256, 256); for (let y = 0; y < 256; y += 7) { g.fillStyle = `rgba(150,180,220,${rand(0.05, 0.14)})`; g.fillRect(0, y, 256, rand(1, 2.5)); } speck(g, 256, 256, 900, ['#ffffff', '#d6e4f7'], 1, 3, 0.8); },
@@ -1801,7 +1850,7 @@ function buildWorld(ti) {
   buildGate();
 
   // theme decor
-  ({ sakura: decorSakura, neon: decorNeon, aurora: decorAurora, dune: decorDune, tokyo: decorTokyo, nakayama: decorNakayama, kyoto: decorKyoto, niigata: decorNiigata, longchamp: decorLongchamp, churchill: decorChurchill })[def.theme](th);
+  ({ sakura: decorSakura, neon: decorNeon, aurora: decorAurora, dune: decorDune, tokyo: decorTokyo, nakayama: decorNakayama, kyoto: decorKyoto, niigata: decorNiigata, longchamp: decorLongchamp, churchill: decorChurchill, monaco: decorMonaco })[def.theme](th);
 
   FU.uExp.value = th.exposure; bloom.strength = th.bloom[0]; bloom.radius = th.bloom[1]; bloom.threshold = th.bloom[2];
   FU.uHeat.value = def.theme === 'dune' ? 0.0011 : 0;
@@ -1860,6 +1909,41 @@ function ambient(tex, additive, rate, fn) {
   let acc = 0;
   themeUpd.push((t, dt) => { acc += dt * rate; while (acc >= 1) { acc--; fn(amb, camera.position); } amb.update(dt); });
 }
+/* ---- Monaco streets, harbor and covered tunnel ---- */
+function decorMonaco() {
+  const concrete = toon('#d1c9ba'), red = toon('#e44b4d'), white = toon('#fff5df');
+  const nearest = (x, z) => { let d = Infinity; for (let i = 0; i <= track.N; i += 8) d = Math.min(d, Math.hypot(track.xs[i] - x, track.zs[i] - z)); return d; };
+  // Harbor sits inside the coastal half of the loop; keep the road clear.
+  const water = new THREE.Mesh(new THREE.CircleGeometry(1, 48), new THREE.MeshStandardMaterial({ color: '#218cb3', roughness: 0.25, metalness: 0.2 }));
+  water.rotation.x = -Math.PI / 2; water.position.set(-290, 0.02, 90); water.scale.set(120, 80, 1); world.add(water);
+  for (let i = 0; i < 7; i++) {
+    const yacht = new THREE.Group(); yacht.position.set(-365 + i * 23, 0.3, 75 + (i % 2) * 25); yacht.rotation.y = -0.25; world.add(yacht);
+    addBox(yacht, [17, 2.5, 6], [0, 1.3, 0], white); addBox(yacht, [9, 3, 4.5], [-1, 3.5, 0], white);
+    addBox(yacht, [7, 1.2, 4.7], [-1, 3.8, 0], toon('#537b96')); addBox(yacht, [6, 0.4, 4.8], [-1, 5.2, 0], white);
+  }
+  for (let i = 0; i < 65; i++) {
+    const f = tp(i / 65 * track.L, W + 28 + (i % 3) * 14), x = f.v.x, z = f.v.z;
+    if (nearest(x, z) < 23 || (Math.abs(x + 290) < 145 && Math.abs(z - 90) < 105)) continue;
+    const g = new THREE.Group(); g.position.set(x, track.groundH(x, z), z); g.rotation.y = -f.h; world.add(g);
+    const height = 14 + (i % 5) * 6, facade = toon(['#f0d8b4','#eab8a2','#f6e6cc','#d6dfdf'][i % 4]);
+    addBox(g, [18, height, 15], [0, height / 2, 0], facade); addBox(g, [20, 1.5, 17], [0, height, 0], toon('#c57963'));
+    for (let y = 5; y < height - 2; y += 5) for (let x2 = -6; x2 <= 6; x2 += 6) addBox(g, [2.5, 3, 0.15], [x2, y, 7.6], toon('#526c83'));
+  }
+  for (let i = 0; i < Math.floor(track.L / 8); i++) for (const lane of [-1.3, W + 1.3]) {
+    const f = tp(i * 8, lane), barrier = new THREE.Group(); barrier.position.copy(f.v); barrier.rotation.y = -f.h; world.add(barrier);
+    addBox(barrier, [7.7, 1.25, 0.8], [0, 0.65, 0], i % 2 ? white : red);
+  }
+  const [a, b] = track.tunnelRange || track.def.tunnel.map(u => u * track.L), roofs = [], walls = [], roofMat = toon('#b6ad9d', { transparent: true });
+  for (let s = a; s < b; s += 5) {
+    const f = tp(s + 2.5, W / 2), g = new THREE.Group(); g.position.copy(f.v); g.rotation.y = -f.h; world.add(g);
+    for (const z of [-W / 2 - 2, W / 2 + 2]) walls.push(addBox(g, [5.6, 9, 1.3], [0, 4.5, z], concrete));
+    roofs.push(addBox(g, [5.6, 1.1, W + 6], [0, 9.5, 0], roofMat));
+    addBox(g, [3, 0.12, 0.5], [0, 8.8, 0], glowMat('#fff1bf', 3));
+    if (Math.floor((s - a) / 5) % 5 === 0) { const light = new THREE.PointLight('#ffe5b2', 0.65, 25, 2); light.position.set(0, 7, 0); g.add(light); }
+  }
+  world.userData.tunnel = { a, b, roofs, walls, roofMat };
+}
+
 /* ---- decor for the real-course motifs ---- */
 function roundTrees(spots, greens, trunkCol = '#6b4a35') {
   const trunkG = new THREE.CylinderGeometry(0.35, 0.55, 3.4, 7); trunkG.translate(0, 1.7, 0);
@@ -2386,7 +2470,7 @@ function renderLobby() {
   const tcard = (t, i) => `<button class="tcard ${i === S.ti ? 'on' : ''}" data-i="${i}" style="--g:${t.grad}"><span class="tsw">${coursePreview(t)}${t.real ? '<i class="meiba">名コース</i>' : ''}</span><span class="tname">${t.name}</span><span class="tmeta"><b>${SURF[t.surf]}</b>${t.D}m・${t.time}</span></button>`;
   $('#tracks').innerHTML = '<span class="tgrp">ファンタジーコース</span>' + TRACKS.map((t, i) => t.real ? '' : tcard(t, i)).join('') + '<span class="tgrp">名コース　実在の競馬場モチーフ</span>' + TRACKS.map((t, i) => t.real ? tcard(t, i) : '').join('');
   $('#tdesc').textContent = TRACKS[S.ti].desc;
-  { const t = TRACKS[S.ti], el = $('#tmotif'); el.hidden = !t.real; if (t.real) el.innerHTML = `<b>モチーフ　${t.motif}</b>${t.motifNote}<small>${t.scale === 1 ? '距離は実寸です。' : 'コースは実寸の約1/2に縮めています。形・回り・坂の位置は再現し、坂の高さは見やすいように約2.5倍に誇張しています。'}</small>`; }
+  { const t = TRACKS[S.ti], el = $('#tmotif'); el.hidden = !t.motif; if (t.motif) el.innerHTML = `<b>モチーフ　${t.motif}</b>${t.motifNote}<small>${t.points ? '馬が走れる幅と曲がり具合に調整したモチーフコースです。' : t.scale === 1 ? '距離は実寸です。' : 'コースは実寸の約1/2に縮めています。形・回り・坂の位置は再現し、坂の高さは見やすいように約2.5倍に誇張しています。'}</small>`; }
   $('#poolNote').textContent = `全${ROSTER.length}頭からランダムに8頭`;
   { const b = $('#wxBox'), wc = { sunny: '#ffcf3f', cloudy: '#c9d2e0', drizzle: '#9cc3ff', rain: '#6fa8ff', flurry: '#e6f0ff', snow: '#ffffff' }[S.wx.w];
     const gc = ['rgba(70,240,198,.2)', 'rgba(255,207,63,.2)', 'rgba(255,150,70,.25)', 'rgba(255,80,110,.28)'][S.wx.g];
@@ -2402,7 +2486,7 @@ function renderSlip() {
   $('#blurb').textContent = h.blurb;
   const labs = [['spd', 'スピード'], ['sta', 'スタミナ'], ['acc', '加速'], ['pow', '根性'], ['agi', '器用さ']];
   $('#stats').innerHTML = labs.map(([k, l]) => `<span>${l}</span><i style="--w:${h.st[k] * 10}%"></i><em>${h.st[k]}</em>`).join('');
-  $('#aff').innerHTML = Object.keys(SURF).map(s => { const a = h.aff[s]; return `<span class="${s === t.surf ? (a > 0 ? 'hot' : a < 0 ? 'cold' : '') : ''}">${SURF[s]} ${AFFM[a]}${s === t.surf ? '（このコース）' : ''}</span>`; }).join('')
+  $('#aff').innerHTML = Object.keys(SURF).map(s => { const a = h.aff[s] || 0; return `<span class="${s === t.surf ? (a > 0 ? 'hot' : a < 0 ? 'cold' : '') : ''}">${SURF[s]} ${AFFM[a]}${s === t.surf ? '（このコース）' : ''}</span>`; }).join('')
     + (() => { const m = mudOf(h); return `<span class="${S.wx.g >= 1 ? (m > 0 ? 'hot' : m < 0 ? 'cold' : '') : ''}">道悪 ${AFFM[m]}${S.wx.g >= 1 ? `（今日は${GOING[S.wx.g]}）` : ''}</span>`; })();
   const sk = $('#skill'); sk.style.setProperty('--sc', h.skill.color); sk.innerHTML = `<b>スキル「${h.skill.name}」</b><p>${h.skill.desc}</p>`;
   $('#btype').innerHTML = `<button data-t="win" class="${S.betType === 'win' ? 'on' : ''}">単勝（1着）<small>${S.odds.win[i].toFixed(1)}倍</small></button><button data-t="place" class="${S.betType === 'place' ? 'on' : ''}">複勝（3着以内）<small>${S.odds.place[i].toFixed(1)}倍</small></button>`;
@@ -2477,7 +2561,7 @@ function catalogSelect(i) {
     <dl><dt>性格</dt><dd>${e(h.profile.personality)}</dd><dt>好きなもの</dt><dd>${e(h.profile.favorite)}</dd></dl>
     <h4>能力</h4><p class="catalogNote">ゲーム内の能力値（最大10）です。</p>
     ${labs.map(([k,l]) => `<div class="catalogStat"><span>${l}</span><meter min="0" max="10" value="${h.st[k]}" aria-label="${l}">${h.st[k]}</meter><b>${h.st[k]}</b></div>`).join('')}
-    <h4>適性</h4><p>${Object.keys(SURF).map(s => `${SURF[s]} ${AFFM[h.aff[s]]}`).join(' ／ ')}<br>道悪 ${AFFM[mudOf(h)]}</p>
+    <h4>適性</h4><p>${Object.keys(SURF).map(s => `${SURF[s]} ${AFFM[h.aff[s] || 0]}`).join(' ／ ')}<br>道悪 ${AFFM[mudOf(h)]}</p>
     <p class="catalogNote">✕ 苦手 ／ △ やや苦手 ／ − 標準 ／ ○ 得意 ／ ◎ とても得意</p>
     <h4>スキル「${e(h.skill.name)}」</h4><p>${e(h.skill.desc)}</p>
     ${h.motif ? `<h4>名馬モチーフ</h4><p>${e(h.motifNote)}</p>` : ''}`;
@@ -2784,6 +2868,15 @@ function updCamera(dt, rdt) {
   camera.position.copy(cam.pos);
   if (FX.shake > 0) { camera.position.x += rand(-1, 1) * FX.shake * 0.4; camera.position.y += rand(-1, 1) * FX.shake * 0.3; FX.shake = Math.max(0, FX.shake - rdt * 1.4); }
   camera.lookAt(cam.tgt);
+  const tunnel = world.userData.tunnel;
+  if (tunnel) {
+    const q = track.pos((tunnel.a + tunnel.b) / 2, W / 2);
+    const inside = camera.position.y < q.y + 8.5 && camera.position.y > q.y && (() => {
+      let d = Infinity; for (let s = tunnel.a; s <= tunnel.b; s += 4) { const p = track.pos(s, W / 2); d = Math.min(d, Math.hypot(camera.position.x - p.x, camera.position.z - p.z)); } return d < W / 2 + 1;
+    })();
+    tunnel.roofMat.opacity = inside ? 1 : 0.16; tunnel.roofMat.depthWrite = inside;
+    tunnel.walls.forEach(wall => { wall.visible = inside; });
+  }
   if (Math.abs(camera.fov - cam.fov) > 0.01) { camera.fov = cam.fov; camera.updateProjectionMatrix(); }
   sky.position.copy(camera.position);
   const sf = cam.tgt.clone(); sun.position.copy(sf).addScaledVector(sunDir, 160); sun.target.position.copy(sf);
@@ -2874,6 +2967,7 @@ function updRace(dt, rdt) {
 }
 // Original calls are selected by race facts; the two classic calls are credited in README.
 const CALLS = {
+  monaco: ['ここはモナコモンテカルロ、絶対に抜けない'],
   start: ['ゲートが開きました！各馬そろってスタート！', 'さあ発走！まずは先行争い、どの馬が行くか！', 'スタートしました！各馬、最初のポジションを取りに行きます！', 'あなたの、そして私の夢が走っています。さあ、スタート！'],
   hana: ['先手を取ったのは{L}！{B}が続きます。', '{L}がハナに立ちました。2番手は{B}！', '序盤の先頭は{L}。後続を引っ張ります！'],
   change: ['{L}が先頭に替わった！{B}は2番手！', 'ここで{L}が前に出る！先頭が入れ替わりました！', '{B}をかわして{L}、先頭です！', '先頭争いに動き！{L}が一歩リード！'],
@@ -2929,6 +3023,9 @@ const RC = {
       this.lastLead = lead.i; this.emit('change', data, remaining < 200); return;
     }
     if (race.t - this.lastT < 3) return;
+    if (tr.def.theme === 'monaco' && race.t >= 8 && !this.milestones.has('monaco')) {
+      this.milestones.add('monaco'); this.emit('monaco', data); return;
+    }
     for (const distance of [100, 200, 400]) {
       if (race.D > distance && remaining <= distance && !this.milestones.has(distance)) {
         [400, 200, 100].filter(n => n >= distance).forEach(n => this.milestones.add(n));
