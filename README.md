@@ -13,7 +13,7 @@
 
 ## 馬図鑑
 
-- ロビーの「📖 馬図鑑」から、出走していない馬も含め全32頭を閲覧できます。馬名検索と「すべて／名馬モチーフ／歴史／その他」の絞り込みに対応しています。
+- ロビーの「📖 馬図鑑」から、出走していない馬も含め全38頭を閲覧できます。馬名検索と「すべて／名馬モチーフ／歴史／その他」の絞り込みに対応しています。
 - 専用展示台でドラッグすると視点が回転し、ホイール（スマホはピンチ）でズームできます。「待機／走る」で動きを切り替え、「視点リセット」で全身が見える視点に戻せます。
 - 紹介文・種類・脚質・能力・適性・スキルと、性格・好きなものを掲載しています。能力はゲーム内の値、プロフィールは名馬モチーフを含めゲーム用の創作設定です。
 - 「ロビーへ戻る」または Escape で閉じます。図鑑を開く前の出走馬・コース・天候・オッズ・賭け設定・コインは保持されます。
@@ -48,6 +48,19 @@
 - 実況の多くはこのゲーム用のオリジナルです。短い名実況として、「あなたの、そして私の夢が走っています。」（1977年有馬記念）と「これが夢に見た栄光のゴールだ！」（1977年天皇賞・春）を収録しています。前者は発走時、後者は差をつけたゴール時の候補です。
 - 名実況の出典：[JRA創立70周年記念誌・著名人が語る思い出の馬](https://www.jra.go.jp/special/event70th/pdf/memorial_book.pdf)。原レースの再現や実際のアナウンサーの録音ではなく、ブラウザの音声で読み上げます。
 
+## 追加した日本の名馬モチーフ
+
+以下の6頭を追加しました。毛色・実績はJRAの資料を参考にし、馬名・外見のアレンジ・能力・スキル・プロフィールはゲーム用の創作です。
+
+| ゲーム内の馬名 | モチーフ | 毛色・実績の出典 |
+|---|---|---|
+| コウテイノシルシ | シンボリルドルフ | [JRA・3分でわかった気になる名馬](https://www.jra.go.jp/gallery/3minmeiba/horse22/) |
+| シャドウブレイカー | ナリタブライアン | [JRA・3分でわかった気になる名馬](https://www.jra.go.jp/gallery/3minmeiba/horse17/) |
+| アオバノヒットマン | ライスシャワー | [JRA・3分でわかった気になる名馬](https://www.jra.go.jp/gallery/3minmeiba/horse18/) |
+| サクラノロケット | サクラバクシンオー | [JRA・3分でわかった気になる名馬](https://www.jra.go.jp/gallery/3minmeiba/horse24/) |
+| シロガネノコウロ | クロフネ | [JRA・Memorial Hero チャンピオンズカップ](https://jra.jp/gallery/column/memorialhero/pdf/2024-20.pdf) |
+| キタノイクイリブリアム | イクイノックス | [JRA・毛色](https://www.jra.go.jp/gallery/column/memoires2022/pdf/2023-16.pdf)、[JRA・親仔年度代表馬の物語](https://www.jra.go.jp/special/jra70th/tsunagu/story/kitasan_equinox/) |
+
 ## 歴史モチーフの馬
 
 「歴史」タグの5頭を収録。馬名・外見・能力・スキル・プロフィールはゲーム用の創作です。紹介文では史料の記述と伝承を区別しています。
@@ -59,3 +72,20 @@
 | タイヨウノブケ | ブケパロス | [プルタルコス『アレクサンドロス伝』](https://sourcebooks.web.fordham.edu/ancient/plutarch-alexander1.asp)の調教の逸話 |
 | ギンノアンペルール | マレンゴ | [National Army Museum](https://www.nam.ac.uk/explore/horse-heroes)の解説。戦場の逸話には伝説が含まれる |
 | カブキノマツアラシ | 松風 | [米沢観光コンベンション協会の前田慶次逸話集](https://keijiyz.maeda-keiji.com/story.html)。逸話を確定した史実とせず伝承として扱う |
+
+## 実在競馬場モチーフのコース
+
+- 阪神桜花コース（芝・外回り1600m）、中京スパイラルカップ（芝2000m）、札幌洋芝ラウンド（芝2000m）を追加しました。ゲーム内のレース距離はそれぞれ800m・1000m・1000mです。
+- 東京・中山内回り・京都外回り・ロンシャンは、コース図を参考に直線の比率、左右で異なるカーブ、向こう正面の傾きを曲線で近似しています。新潟千直の直線とチャーチルダウンズの楕円はその特徴を維持しています。
+- 正確な測量図の再現ではなく、馬が走るコースの中心線をゲーム用に近似しています。周回コースはおおむね実寸の1/2。坂の場所・上り下りを反映し、高さは東京・ロンシャン3.5倍、中山・京都・阪神・中京4倍、札幌2.5倍に視覚的に誇張しています。札幌のほぼ平坦な特徴は残しています。
+- コース選択の図と3Dの走行路は同じ形状データを使います。追加コースは既存のコース番号を維持するため末尾に配置しています。
+- 参考資料：[東京](https://www.jra.go.jp/facilities/race/tokyo/course/)・[中山](https://www.jra.go.jp/facilities/race/nakayama/course/)・[京都](https://www.jra.go.jp/facilities/race/kyoto/course/)・[阪神](https://www.jra.go.jp/facilities/race/hanshin/course/)・[中京](https://www.jra.go.jp/facilities/race/chukyo/course/)・[札幌](https://www.jra.go.jp/facilities/race/sapporo/course/)（JRAの平面図・高低断面図・コースデータ）、[ロンシャン](https://www7.france-galop.com/hippo_premium/0001_ParisLongchamp.pdf)（France GalopのGrande Piste図）、[チャーチルダウンズ](https://www.churchilldowns.com/racing/)（公式の1マイルコース紹介）。
+
+## ドバイ・香港の追加コース
+
+- メイダン・ゴールデンダート：ドバイワールドカップのダート2000mをモチーフにした1000mの左回りナイター。
+- メイダン・エメラルドターフ：ドバイシーマクラシックの芝2410mをモチーフにした1205mの左回りナイター。
+- シャティン・香港カップ：香港カップの芝2000mをモチーフにした1000mの右回りコース。
+- メイダンは公式図の内側ダート・外側芝と直線の引き込み線を景観にも反映。走行路は平坦とし、三日月形の大型屋根、照明、ヤシ、創作したドバイ風の遠景を強調しています。引き込み線と非選択の周回路は景観用で、レースは選択した周回路を走ります。
+- シャティンは公式の楕円と直線430mを近似し、背後の山並みとスタンドを強調。いずれも測量図の完全再現ではなく、縮尺約1/2のゲーム用コースです。新コースは既存コース番号を維持して末尾に追加しています。
+- 参考資料：[Dubai Racing Club公式プログラム（2ページ目のコース図）](https://drcwebblob.blob.core.windows.net/drcwebmediacontent/2026/02/2026-02-28_SS_Emirates_Racecard_E_Interactive.pdf)、[メイダンのコース解説（HKJC）](https://racing.hkjc.com/racing/overseas/english/20230304/s2/8/track-analysis.aspx)、[メイダンの屋根・施設紹介（ERA）](https://emiratesracing.com/racecourses/meydan)、[シャティン公式コース図・直線データ（HKJC）](https://racing.hkjc.com/racing/english/racing-info/racing_course.asp)。

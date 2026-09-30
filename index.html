@@ -60,7 +60,7 @@ h2{font-family:var(--f-disp);font-weight:400;font-size:13px;letter-spacing:.14em
 .tcard .tsw .meiba{position:relative;top:6px;left:6px}
 .tcard .tname{font-family:var(--f-disp);font-size:13px;line-height:1.25;text-wrap:balance}
 .tcard .tmeta{font-size:11px;color:var(--dim);display:flex;gap:6px;align-items:center;font-variant-numeric:tabular-nums}
-.tcard .tmeta b{font-weight:900;color:var(--text);background:rgba(255,255,255,.12);border-radius:5px;padding:1px 6px}
+.tcard .tmeta b{flex-shrink:0;white-space:nowrap;font-weight:900;color:var(--text);background:rgba(255,255,255,.12);border-radius:5px;padding:1px 6px}
 .tcard.on{border-color:transparent;box-shadow:0 0 0 2px var(--gold),0 8px 24px rgba(255,207,63,.25);background:rgba(255,207,63,.08)}
 #wxBox{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;align-items:center;padding:10px 12px;border-radius:12px;background:rgba(255,255,255,.06);border:1px solid var(--line)}
 #wxBox .ic{grid-row:span 2;width:34px;height:34px;color:var(--wc,#ffcf3f)}
@@ -491,6 +491,9 @@ const WX_TABLE = {
   sakura: { sunny: 45, cloudy: 25, drizzle: 15, rain: 15 }, neon: { sunny: 35, cloudy: 30, drizzle: 15, rain: 20 },
   aurora: { sunny: 35, cloudy: 30, flurry: 20, snow: 15 }, dune: { sunny: 75, cloudy: 25 },
   tokyo: { sunny: 45, cloudy: 25, drizzle: 15, rain: 15 }, nakayama: { sunny: 45, cloudy: 30, flurry: 15, rain: 10 },
+  hanshin: { sunny: 45, cloudy: 25, drizzle: 15, rain: 15 }, chukyo: { sunny: 45, cloudy: 25, drizzle: 15, rain: 15 },
+  sapporo: { sunny: 55, cloudy: 30, drizzle: 10, rain: 5 },
+  meydan: { sunny: 85, cloudy: 13, drizzle: 2 }, shatin: { sunny: 45, cloudy: 30, drizzle: 15, rain: 10 },
   kyoto: { sunny: 50, cloudy: 25, drizzle: 15, rain: 10 }, niigata: { sunny: 50, cloudy: 20, drizzle: 10, rain: 20 },
   longchamp: { sunny: 30, cloudy: 35, drizzle: 20, rain: 15 }, churchill: { sunny: 50, cloudy: 25, drizzle: 10, rain: 15 },
 };
@@ -660,6 +663,43 @@ const ROSTER = [
     skill: { name: '傾奇の追い風', desc: '残り30%から7秒間、豪快に加速する。', color: '#e0bb66' },
     profile: { personality: '自由奔放な目立ちたがり。仲間思い。', favorite: '華やかな馬具と町のにぎわい' },
     blurb: '華やかな馬具をまとい、京の町でもひときわ目を引く傾奇者。前田慶次が愛馬を飾り立てて町を引き回したという伝承の風情を感じさせる。堂々たる体格は、このゲームならではの姿。' },
+  // ---- 日本の名馬モチーフ（プロフィールと能力はゲーム用の創作） ----
+  { name: 'コウテイノシルシ', type: '鹿毛・名馬モチーフ', kind: 'real', sk: 'rudolf', style: 'senko', body: '#704326', mane: '#20140c', muzzle: '#b58c6d', look: { size: 1.04, star: true, crown: true, barrel: 1.02, chest: 1.06, legColor: '#281d16' },
+    motif: true, motifNote: '1984年、無敗でクラシック三冠を手にした鹿毛の「皇帝」。堂々とした走りに、王者の風格が漂う。',
+    st: { spd: 8, sta: 8, acc: 7, pow: 7, agi: 7 }, aff: { turf: 2, dirt: 0, snow: 0, sand: 0 },
+    skill: { name: '皇帝の采配', desc: '残り25%から6秒間、落ち着いた走りで加速する。', color: '#e8c56a' },
+    profile: { personality: '堂々として面倒見がよい。勝負にも礼儀正しい。', favorite: '整った馬具と朝の見回り' },
+    blurb: '小さな王冠に大きな自信。慌てず騒がず、勝負どころで堂々と前へ進む。' },
+  { name: 'シャドウブレイカー', type: '黒鹿毛・名馬モチーフ', kind: 'real', sk: 'brian', style: 'sashi', body: '#30241e', mane: '#120e0c', muzzle: '#95745d', look: { size: 1.04, blaze: true, blazeWidth: 0.055, barrel: 1.04, chest: 1.1, legColor: '#171312' },
+    motif: true, motifNote: '1994年の三冠路線で、皐月賞は3馬身半、ダービーは5馬身、菊花賞は7馬身差。黒鹿毛の体に宿る、影をも裂くような豪脚。',
+    st: { spd: 8, sta: 7, acc: 6, pow: 9, agi: 5 }, aff: { turf: 2, dirt: 0, snow: 0, sand: 0 },
+    skill: { name: '影を裂く豪脚', desc: '残り30%で先頭にいなければ、5秒間、力強い末脚で加速する。', color: '#a99bdc' },
+    profile: { personality: '無口な集中派。走りで気持ちを伝える。', favorite: '静かな練習場と長い直線' },
+    blurb: '黒い影が直線で一気に伸びる。力強い胸と脚で、追いかける景色を切り開く。' },
+  { name: 'アオバノヒットマン', type: '黒鹿毛・名馬モチーフ', kind: 'real', sk: 'rice', style: 'sashi', body: '#382b25', mane: '#161210', muzzle: '#94715d', look: { size: 0.92, star: true, barrel: 0.9, chest: 0.94, legColor: '#1e1714' },
+    motif: true, motifNote: '菊花賞で無敗の三冠を、翌春の天皇賞で三連覇を阻んだ小さな黒鹿毛。淀の長丁場で光る、静かな追走と揺るがない底力。',
+    st: { spd: 7, sta: 9, acc: 6, pow: 7, agi: 7 }, aff: { turf: 2, dirt: -1, snow: 0, sand: 0 },
+    skill: { name: '静かな追撃', desc: '残り25%で先頭から10m未満の2〜4番手にいると、5秒間、狙いを定めて加速する。', color: '#79a9ec' },
+    profile: { personality: '控えめだけれど芯が強い。目標を最後まで見失わない。', favorite: '青いリボンと木陰の休憩' },
+    blurb: '小さな体に長く続く底力。静かに先頭を追いかけて、最後の勝負へ脚を残す。' },
+  { name: 'サクラノロケット', type: '鹿毛・名馬モチーフ', kind: 'real', sk: 'bakushin', style: 'nige', body: '#95522a', mane: '#30180c', muzzle: '#ce9c78', look: { size: 1.02, star: true, barrel: 1.02, chest: 1.08, legColor: '#2c1d15' },
+    motif: true, motifNote: 'スプリンターズSを連覇した鹿毛の快速馬。引退レースでは4馬身差と日本レコードを残し、1200mの舞台を駆け抜けた。',
+    st: { spd: 8, sta: 5, acc: 9, pow: 6, agi: 7 }, aff: { turf: 2, dirt: 0, snow: -1, sand: 0 },
+    skill: { name: '桜色の発射', desc: '走行距離3mを超えると、4秒間、ロケットのように加速する。', color: '#ff91b6' },
+    profile: { personality: '元気で一直線。かけっこなら真っ先に手を挙げる。', favorite: 'スタートの合図と桜並木' },
+    blurb: '短い勝負は大得意。発射の勢いは抜群だけれど、長旅では息の配分が大切。' },
+  { name: 'シロガネノコウロ', type: '芦毛・名馬モチーフ', kind: 'real', sk: 'kurofune', style: 'senko', body: '#d1d4d5', mane: '#edf0ef', muzzle: '#747c82', look: { size: 1.1, barrel: 1.08, chest: 1.12, legColor: '#929a9f' },
+    motif: true, motifNote: '2001年、芝から砂へ新しい航路を切り開いた芦毛。わずか二度のダート出走でジャパンカップダートを制し、鮮烈な航跡を残した。',
+    st: { spd: 8, sta: 7, acc: 7, pow: 8, agi: 5 }, aff: { turf: 1, dirt: 2, snow: 0, sand: 1 },
+    skill: { name: '白銀の航跡', desc: '残り40%から6秒間加速する。ダートではさらに力強く伸びる。', color: '#b6e2ec' },
+    profile: { personality: 'おおらかで頼もしい。新しい道にもためらわない。', favorite: '砂の感触と広々とした空' },
+    blurb: '白銀の大きな体が砂を蹴る。まっすぐ伸びる航跡のように、力強くゴールを目指す。' },
+  { name: 'キタノイクイリブリアム', type: '青鹿毛・名馬モチーフ', kind: 'real', sk: 'equinox', style: 'sashi', body: '#28282f', mane: '#111116', muzzle: '#7e7068', look: { size: 1.06, star: true, barrel: 0.98, chest: 1.04, legColor: '#19191f' },
+    motif: true, motifNote: '2022・2023年の年度代表馬に輝いた青鹿毛。昼と夜の長さがほぼ等しくなる時を思わせる名のように、速さと持続力が調和する。',
+    st: { spd: 8, sta: 8, acc: 7, pow: 6, agi: 7 }, aff: { turf: 2, dirt: -1, snow: 0, sand: 0 },
+    skill: { name: '調和のロングスパート', desc: '残り30%から7秒間、バランスのよい走りで長く加速する。', color: '#91cec6' },
+    profile: { personality: '穏やかでしなやか。周りをよく見て自分のリズムを守る。', favorite: '涼しい風と夕暮れの草原' },
+    blurb: '速さと落ち着きがぴたりと調和。芝の上を流れるように走り、長い末脚を届ける。' },
 ];
 const HORSE_PROFILES = [
   ['おっとり優雅。でも勝負どころでは負けず嫌い。', '桜の花びらと朝の散歩'],
@@ -715,21 +755,22 @@ const TRACKS = [
   { name: '夕陽デザート記念', theme: 'dune', surf: 'sand', D: 1300, S: 240, R: 70, time: '夕暮れ',
     desc: '灼熱の砂の長距離戦。スタミナが尽きた馬から脱落していくサバイバル。',
     grad: 'linear-gradient(135deg,#3b1d5e,#ff7a3a 55%,#ffd27a)' },
-  // ---- 実在の競馬場モチーフ（周回コースは実寸の約1/2、形・回り・坂の配置を再現） ----
+  // ---- 実在の競馬場モチーフ（公式平面図をもとに中心線を近似。距離約1/2、坂は視覚的に誇張） ----
+  // curve: absolute cubic Bézier controls/end in metres; z is mirrored for left-handed courses.
   { name: '府中ダービーコース', kick: 1.25, real: true, theme: 'tokyo', surf: 'turf', dir: 'left', D: 1200, time: '左回り', scale: 0.5, stand: 'big',
-    segs: [{ len: 600 }, { r: 155, ang: 180 }, { len: 600 }, { r: 155, ang: 180 }], finish: [0, 526],
+    segs: [{ len: 600 }, { curve: [[810, 0], [800, 300], [580, 300]] }, { curve: [[400, 300], [210, 300], [30, 300]] }, { curve: [[-170, 300], [-170, 0], [0, 0]] }], finish: [0, 525.9], elevEx: 3.5,
     elev: [[0, 0, 0], [0, 0.11, 0], [0, 0.377, 2.0], [0, 1, 2.0], [1, 0.5, 1.8], [1, 1, 1.5], [2, 0.4, 1.0], [2, 0.9, 2.5], [3, 0.3, 1.0], [3, 1, 0]],
     motif: '東京競馬場　芝2400m（日本ダービー）', motifNote: '左回りで、直線は525.9mと長い。直線の途中に高低差2mの坂。3コーナーの大ケヤキ、晴れた日にはスタンドから富士山。',
     desc: '長い直線で差し・追込が届く大きなコース。直線の坂を上ってからもうひと伸びできるかが勝負。',
     grad: 'linear-gradient(135deg,#2f7fe0,#bfe0ff 55%,#6fbf5c)' },
   { name: '中山グランプリコース', kick: 0.55, real: true, theme: 'nakayama', surf: 'turf', dir: 'right', D: 1250, time: '右回り', scale: 0.5,
-    segs: [{ len: 400 }, { r: 125, ang: 180 }, { len: 400 }, { r: 125, ang: 180 }], finish: [0, 310],
-    elev: [[0, 0, 0], [0, 0.325, 0.2], [0, 0.6, 2.4], [0, 0.775, 2.6], [0, 1, 3.4], [1, 0.5, 4.6], [1, 1, 5.3], [2, 0.5, 3.0], [2, 1, 1.6], [3, 0.5, 0.6]],
+    segs: [{ len: 410 }, { curve: [[610, 0], [630, 295], [440, 295]] }, { len: 460 }, { curve: [[-205, 295], [-215, 0], [0, 0]] }], finish: [0, 310], elevEx: 4,
+    elev: [[0, 0, 0], [0, 0.295, 0], [0, 0.585, 2.2], [0, 0.756, 2.4], [0, 1, 3.4], [1, 0.5, 4.6], [1, 1, 5.3], [2, 0.5, 3.0], [2, 1, 1.6], [3, 0.5, 0.6]],
     motif: '中山競馬場（内回り）　芝2500m（有馬記念）', motifNote: '右回りの小回り。直線310mはJRAの主要4場で最短。ゴール前に高低差2.2mの急坂があり、コース全体の高低差5.3mはJRA最大。',
     desc: 'カーブがきつく先行有利。最後の急坂で根性（パワー）が問われる、冬のグランプリ。',
     grad: 'linear-gradient(135deg,#4a78b8,#ffd9a8 55%,#9aa47a)' },
   { name: '淀の坂ステークス', kick: 1.0, real: true, theme: 'kyoto', surf: 'turf', dir: 'right', D: 1500, time: '右回り', scale: 0.5,
-    segs: [{ len: 480 }, { r: 150, ang: 180 }, { len: 480 }, { r: 150, ang: 180 }], finish: [0, 404],
+    segs: [{ len: 460 }, { curve: [[675, 0], [660, 340], [420, 320]] }, { curve: [[250, 306], [80, 257], [-80, 230]] }, { curve: [[-270, 198], [-210, 0], [0, 0]] }], finish: [0, 404], elevEx: 4,
     elev: [[0, 0, 0], [1, 0.5, 0], [2, 0.4, 0], [2, 1, 2.6], [3, 0.25, 4.3], [3, 0.6, 1.5], [3, 1, 0]],
     motif: '京都競馬場（外回り）　芝3000m（菊花賞）', motifNote: '右回り。3コーナーの「淀の坂」（高低差4.3m）を上って下り、平坦な直線404mへ。内馬場には白鳥の池。',
     desc: '長距離戦。坂の上りでスタミナを削られ、下りの勢いのまま直線へなだれ込む。',
@@ -740,7 +781,7 @@ const TRACKS = [
     desc: 'コーナーなしの1000m一直線。スタートダッシュと加速が命。馬たちは外ラチ沿いへ寄っていく。',
     grad: 'linear-gradient(90deg,#1d6fe0,#bfe4ff 50%,#58b848)' },
   { name: 'ロンシャン凱旋門', kick: 1.1, real: true, theme: 'longchamp', surf: 'turf', dir: 'right', D: 1200, time: '右回り', scale: 0.5,
-    segs: [{ len: 613 }, { r: 250, ang: 170 }, { len: 581 }, { r: 200, ang: 100 }, { len: 250 }, { r: 150, ang: 90 }], finish: [0, 533],
+    segs: [{ len: 613 }, { curve: [[800, 0], [775, 200], [570, 270]] }, { curve: [[270, 373], [-30, 476], [-200, 490]] }, { curve: [[-490, 514], [-550, 165], [-240, 65]] }, { curve: [[-160, 39], [-100, 22], [-45, 10]] }, { curve: [[-30, 7], [-20, 0], [0, 0]] }], finish: [0, 533], elevEx: 3.5,
     elev: [[0, 0, 0.4], [0, 0.87, 0], [0, 1, 0], [1, 0.5, 0.2], [1, 1, 0.5], [2, 0.15, 0.8], [2, 1, 9], [3, 0.4, 10], [3, 1, 8.5], [4, 1, 3.5], [5, 0.6, 1.0]],
     motif: 'パリロンシャン競馬場　芝2400m（凱旋門賞）', motifNote: '右回り。向正面で約10mを上り、丘を下った先に「フォルスストレート（偽りの直線）」、最後に533mの直線。コース脇に風車。',
     desc: '序盤の長い上り坂でスタミナを消耗。偽りの直線で仕掛けが早すぎると、本当の直線で脚が止まる。',
@@ -757,6 +798,39 @@ const TRACKS = [
     elev: [[0,0,0],[0,0.15,9],[0,0.33,13],[0,0.48,3],[0,0.55,0],[0,1,0]], elevEx: 1,
     desc: '街を駆け上がり、ヘアピンからトンネルへ！ 港のヨットを横目にシケインを抜ける、舗装路の特別レース。とうふデリバリーは舗装路が得意です。',
     grad: 'linear-gradient(135deg,#219ed0,#f9dfb4 55%,#ef7066)' },
+  { name: '阪神桜花コース', kick: 1.1, real: true, theme: 'hanshin', surf: 'turf', dir: 'right', D: 800, time: '右回り', scale: 0.5, elevEx: 4,
+    segs: [{ len: 520 }, { curve: [[695, 0], [665, 220], [510, 260]] }, { curve: [[350, 301], [190, 342], [30, 383]] }, { curve: [[-315, 471], [-325, 0], [0, 0]] }], finish: [0, 473.6],
+    elev: [[0, 0, 0.8], [0, 0.526, 0], [0, 0.757, 1.8], [0, 0.92, 1.8], [0, 1, 1.8], [1, 0.6, 2.4], [2, 1, 2.4], [3, 0.65, 2.4], [3, 1, 0.8]],
+    motif: '阪神競馬場（外回り）　芝1600m（桜花賞）', motifNote: '右回り。傾いた長い向こう正面と、外へ大きく張り出す3・4コーナー。直線473.6mの最後に急坂が待っています。',
+    desc: '大きな外回りを下り、桜色の直線で追い比べ。ゴール前の強調された坂をもうひと踏ん張り！',
+    grad: 'linear-gradient(135deg,#458bdf,#ffcee5 55%,#78ba72)' },
+  { name: '中京スパイラルカップ', kick: 0.95, real: true, theme: 'chukyo', surf: 'turf', dir: 'left', D: 1000, time: '左回り', scale: 0.5, elevEx: 4,
+    segs: [{ len: 460 }, { curve: [[635, 0], [650, 280], [470, 295]] }, { curve: [[300, 309], [140, 323], [-30, 337]] }, { curve: [[-310, 360], [-170, 0], [0, 0]] }], finish: [0, 412.5],
+    elev: [[0, 0, 0], [0, 0.04, 0], [0, 0.26, 2], [0, 1, 2.2], [1, 1, 3], [2, 0.45, 3.5], [2, 1, 2.8], [3, 0.5, 1.2], [3, 1, 0]],
+    motif: '中京競馬場　芝2000m', motifNote: '左回り。傾いた向こう正面から、曲がり具合が変わる3・4コーナーを下って直線へ。直線412.5mの入口側に急坂があります。',
+    desc: '下りの勢いでスパイラルカーブへ。直線に入ってすぐの強調された坂を越え、最後は長い追い比べ。',
+    grad: 'linear-gradient(135deg,#368cbe,#d6ecae 55%,#74a854)' },
+  { name: '札幌洋芝ラウンド', kick: 0.65, real: true, theme: 'sapporo', surf: 'turf', dir: 'right', D: 1000, time: '右回り', scale: 0.5, elevEx: 2.5,
+    segs: [{ len: 310 }, { curve: [[535, 0], [535, 325], [310, 325]] }, { len: 310 }, { curve: [[-225, 325], [-225, 0], [0, 0]] }], finish: [0, 266.1],
+    elev: [[0, 0, 0], [1, 0.5, 0.3], [2, 0.5, 0.7], [3, 0.5, 0.3], [3, 1, 0]],
+    motif: '札幌競馬場　芝2000m（札幌記念）', motifNote: '右回りの丸みのあるコース。短い直線266.1mと大きなカーブ、ほぼ平坦な洋芝が特徴です。',
+    desc: '北海道の緑に囲まれた丸いコース。短い直線に備え、大きなカーブで早めに仕掛けよう。',
+    grad: 'linear-gradient(135deg,#54a6dd,#d5f2d2 55%,#4c9b62)' },
+  { name: 'メイダン・ゴールデンダート', kick: 0.9, real: true, theme: 'meydan', surf: 'dirt', dir: 'left', D: 1000, time: '左回り・夜', night: true, scale: 0.5, stand: 'meydan',
+    segs: [{ len: 440 }, { r: 138, ang: 180 }, { len: 440 }, { r: 138, ang: 180 }], finish: [0, 400],
+    motif: 'メイダン競馬場　ダート2000m（ドバイワールドカップ）', motifNote: '左回りの内側ダートコース。直線は400m。外側には芝コースがあり、三日月形の屋根を持つ巨大スタンドが夜のレースを見守ります。',
+    desc: 'ドバイの照明に砂煙が輝くダート戦。平坦な楕円で先行力を生かし、金色の直線を駆け抜けよう。',
+    grad: 'linear-gradient(135deg,#101a45,#ba8550 55%,#f5cd7e)' },
+  { name: 'メイダン・エメラルドターフ', kick: 1.2, real: true, theme: 'meydan', surf: 'turf', dir: 'left', D: 1205, time: '左回り・夜', night: true, scale: 0.5, stand: 'meydan',
+    segs: [{ len: 650 }, { r: 175, ang: 180 }, { len: 650 }, { r: 175, ang: 180 }], finish: [0, 450],
+    motif: 'メイダン競馬場　芝2410m（ドバイシーマクラシック）', motifNote: '左回りで、ダートの外側にある大きな芝コース。直線450mと広いカーブが特徴。平坦な走行路と、芝の直線発走用の引き込み線をコース図から近似しています。',
+    desc: '砂漠の夜に浮かぶエメラルドの芝。大きなカーブから長い直線へ、世界の舞台で追い比べ！',
+    grad: 'linear-gradient(135deg,#101a45,#348d68 55%,#b9e7a2)' },
+  { name: 'シャティン・香港カップ', kick: 1.1, real: true, theme: 'shatin', surf: 'turf', dir: 'right', D: 1000, time: '右回り', scale: 0.5, stand: 'big',
+    segs: [{ len: 520 }, { r: 137, ang: 180 }, { len: 520 }, { r: 137, ang: 180 }], finish: [0, 430],
+    motif: 'シャティン競馬場（沙田）　芝2000m（香港カップ）', motifNote: '香港の右回り芝コース。長い向こう正面と直線430mを持つ楕円を近似し、背後の山並みと大きなスタンドを強調しています。',
+    desc: '緑の山並みに囲まれた香港の舞台。長い直線で差し馬が迫る、華やかな国際レース。',
+    grad: 'linear-gradient(135deg,#468fba,#92c49b 55%,#ead889)' },
 ];
 
 const THEMES = {
@@ -794,6 +868,14 @@ const THEMES = {
     fog: ['#f7955e', 220, 1150], hemi: ['#ffc9a0', '#c88a4c', 0.68], dir: ['#ffb070', 1.6], exposure: 0.92, bloom: [0.7, 0.55, 1.4], stars: 0,
     rail: '#fff0d8', railGlow: 0, ground: 'sand', dust: '#e6bb7c' },
 };
+
+THEMES.hanshin = { ...THEMES.tokyo, sky: ['#458bdf', '#ffe1ed', '#92c882'], mount: '#91a9be' };
+THEMES.chukyo = { ...THEMES.tokyo, sky: ['#368cbe', '#e6f2db', '#83b568'], mount: '#81977c' };
+THEMES.sapporo = { ...THEMES.niigata, sky: ['#54a6dd', '#daf1ed', '#70b87b'], mount: '#8ba5b5' };
+THEMES.meydan = { sky: ['#07122f', '#273760', '#79664e'], sun: [0.3, 0.35, -0.8], sunCol: '#dce9ff', sunSize: 600,
+  light: [0.4, 0.9, -0.4], fog: ['#283450', 500, 1800], hemi: ['#bfceee', '#99826b', 0.85], dir: ['#eef3ff', 1.45],
+  exposure: 1.0, bloom: [0.65, 0.5, 1.2], stars: 1, rail: '#f6ead4', railGlow: 0, ground: 'sand', dust: '#deb883' };
+THEMES.shatin = { ...THEMES.tokyo, sky: ['#468fba', '#d8e4d3', '#88b186'], fog: ['#c5d7c4', 400, 1600], mount: '#59856b' };
 
 /* Local progress: rewards are granted once, including after a loss. */
 const savedProgress = store.get('progress', {});
@@ -1001,7 +1083,7 @@ class Track {
   constructor(def) {
     this.def = def;
     const k = def.scale || 1;
-    const segs = def.segs ? def.segs.map(g => g.len != null ? { len: g.len * k } : { r: g.r * k, ang: g.ang })
+    const segs = def.segs ? def.segs.map(g => g.len != null ? { len: g.len * k } : g.curve ? { curve: g.curve.map(([px, pz]) => [px * k, pz * k]) } : { r: g.r * k, ang: g.ang })
       : [{ len: def.S }, { r: def.R + W / 2, ang: 180 }, { len: def.S }, { r: def.R + W / 2, ang: 180 }];
     this.closed = def.closed !== false;
     this.turn = def.dir === 'right' ? 1 : -1;          // sign of dh along the course
@@ -1011,6 +1093,18 @@ class Track {
     let x = 0, z = 0, h = 0, sAcc = 0;
     for (const g of segs) {
       segStart.push(sAcc);
+      if (g.curve) {
+        const curve = new THREE.CubicBezierCurve3(new V3(x, 0, z), ...g.curve.map(([px, pz]) => new V3(px, 0, pz * this.turn)));
+        const n = Math.max(1, Math.ceil(curve.getLength() / 0.25)), start = sAcc;
+        for (let i = 1; i <= n; i++) {
+          const q = curve.getPoint(i / n), tangent = curve.getTangent(i / n);
+          const heading = h + mod(Math.atan2(tangent.z, tangent.x) - h + Math.PI, Math.PI * 2) - Math.PI;
+          const ds = Math.hypot(q.x - x, q.z - z);
+          rx.push(q.x); rz.push(q.z); rh.push(heading); rk.push(Math.abs(heading - h) / Math.max(ds, 1e-6));
+          sAcc += ds; rs.push(sAcc); x = q.x; z = q.z; h = heading;
+        }
+        g.len2 = sAcc - start; continue;
+      }
       const len = g.len != null ? g.len : g.r * g.ang * Math.PI / 180;
       const n = Math.max(1, Math.ceil(len / 0.25)), ds = len / n, dh = g.len != null ? 0 : this.turn * ds / g.r;
       for (let i = 0; i < n; i++) { x += Math.cos(h + dh / 2) * ds; z += Math.sin(h + dh / 2) * ds; h += dh; sAcc += ds; rx.push(x); rz.push(z); rh.push(h); rk.push(g.len != null ? 0 : 1 / g.r); rs.push(sAcc); }
@@ -1089,6 +1183,7 @@ class Track {
     for (let i = 0; i <= N; i++) { const a = Math.max(0, i - 2), b = Math.min(N, i + 2); gs[i] = (ys[b] - ys[a]) / ((b - a) * ds); }
     Object.assign(this, { xs, zs, hs, ks, ys, gs });
     let minR = 1e9; for (const g of segs) if (g.r) minR = Math.min(minR, g.r - W / 2);
+    if (segs.some(g => g.curve)) for (const curvature of ks) if (curvature > 1e-4) minR = Math.min(minR, 1 / curvature - W / 2);
     this.R = minR < 1e8 ? minR : 150;                  // tightest inner-rail radius (infield depth)
     const fin = def.finish || [0, def.S - 25];
     this.finishS = segStart[fin[0]] + fin[1] * (def.segs ? k : 1);
@@ -1131,7 +1226,7 @@ function tp(sa, lane, y = 0) {
 const TOP = d => 21.2 + d.st.spd * 0.18;
 function makeRace(tr, conds, wx) {
   wx = wx || { w: 'sunny', g: 0 };
-  const R = { track: tr, wx, D: tr.def.D, t: 0, s0: tr.closed ? mod(tr.finishS - tr.def.D, tr.L) : tr.finishS - tr.def.D, runners: [], finished: 0, running: false, night: tr.def.theme === 'neon', acc: 0 };
+  const R = { track: tr, wx, D: tr.def.D, t: 0, s0: tr.closed ? mod(tr.finishS - tr.def.D, tr.L) : tr.finishS - tr.def.D, runners: [], finished: 0, running: false, night: !!tr.def.night || tr.def.theme === 'neon', acc: 0 };
   HORSES.forEach((d, i) => {
     const stMax = 60 + d.st.sta * 9;
     R.runners.push({ def: d, i, s: 0, v: 0, stMax, st: stMax, lane: 1 + i * 1.95, tLane: 1 + i * 1.95, cond: 1 + conds[i] * 0.015, luck: 1 + (Math.random() * 2 - 1) * 0.03,
@@ -1161,6 +1256,12 @@ function trySkill(r, R, p, dt, full) {
     case 'buce': if (p >= 0.6) fire(1.09, 5); break;
     case 'marengo': if (p >= 0.6) { r.st = Math.min(r.stMax, r.st + r.stMax * 0.2); fire(1.05, 6); } break;
     case 'matsukaze': if (p >= 0.7) fire(1.08, 7); break;
+    case 'rudolf': if (p >= 0.75) fire(1.07, 6); break;
+    case 'brian': if (p >= 0.7 && r.rank > 1) fire(1.1, 5); break;
+    case 'rice': if (p >= 0.75 && r.rank >= 2 && r.rank <= 4 && R.leadS - r.s < 10) fire(1.11, 5); break;
+    case 'bakushin': if (r.s > 3) fire(1.15, 4); break;
+    case 'kurofune': if (p >= 0.6) fire(R.track.def.surf === 'dirt' ? 1.1 : 1.06, 6); break;
+    case 'equinox': if (p >= 0.7) fire(1.08, 7); break;
     case 'deep': if (p >= 0.78 && r.rank > 1) fire(1.12, 4.5, { fly: true, lift: 0.7 }); break;
     case 'orfe': if (p >= 0.7) { if (Math.random() < 0.5) { fire(1.14, 5); note('覚醒した！金色の暴君が爆走！', true); } else { r.tLane = W - 0.9; r.dec = 1.8; fire(0.86, 1.8, { then: { mult: 1.14, t: 4.5, skill: true } }); note('外へ逸走！？…いや、猛然と追ってくる！', false); } } break;
     case 'oguri': if (p >= 0.8 && r.rank >= 2 && r.rank <= 4 && R.leadS - r.s < 10) fire(1.1, 5); break;
@@ -1804,11 +1905,11 @@ function buildWorld(ti) {
 
   // grandstand along the home straight
   {
-    const len = Math.min(track.S - 20, 250), sc0 = clamp(track.finishS - len * 0.35, track.homeS0 + len / 2 + 6, track.homeS1 - len / 2 - 6);
-    const x0 = -len / 2, z0 = W / 2 + 18;
+    const len = Math.min(track.S - 20, def.stand === 'meydan' ? 420 : 250), sc0 = clamp(track.finishS - len * 0.35, track.homeS0 + len / 2 + 6, track.homeS1 - len / 2 - 6);
+    const x0 = -len / 2, z0 = W / 2 + (def.stand === 'meydan' ? 42 : 18);
     let ymin = 1e9; for (let s2 = sc0 - len / 2; s2 <= sc0 + len / 2; s2 += 4) ymin = Math.min(ymin, track.pos(s2, W / 2).y);
     const sf = tp(sc0, W / 2); const stand = new THREE.Group(); stand.position.set(sf.v.x, ymin - 0.3, sf.v.z); stand.rotation.y = -sf.h; stand.scale.z = track.sgn; world.add(stand);
-    const tall = def.stand === 'big' ? 1.35 : 1;
+    const tall = def.stand === 'meydan' ? 1.65 : def.stand === 'big' ? 1.35 : 1;
     const tierA = toon(def.theme === 'neon' ? '#2c2448' : '#f2eef8'), tierB = toon(def.theme === 'neon' ? '#3a2f5c' : '#e3dcef');
     for (let k = 0; k < 8; k++) { const m = addBox(stand, [len, 0.9 * (k + 1) + 0.3, 2.2], [x0 + len / 2, 0.45 * (k + 1) + 0.15, z0 + k * 2.2 + 1.1], k % 2 ? tierA : tierB); m.receiveShadow = true; }
     if (tall > 1) { addBox(stand, [len * 0.8, 9, 16], [x0 + len / 2, 18, z0 + 16], tierA, null, 0.02); for (let j = 0; j < 12; j++) addBox(stand, [len * 0.8 / 12 - 1, 1.2, 0.2], [x0 + len * 0.1 + (j + 0.5) * len * 0.8 / 12, 18, z0 + 7.9], glowMat('#bfe3ff', 1.4)); }
@@ -1816,6 +1917,21 @@ function buildWorld(ti) {
     addBox(stand, [len + 2, 10, 1], [x0 + len / 2, 5, z0 + 18.2], tierA);
     const roof = addBox(stand, [len + 6, 0.8, 22], [x0 + len / 2, 13.2, z0 + 8.5], toon(def.theme === 'neon' ? '#1e1836' : '#ffffff'), [0.08, 0, 0], 0.02);
     roof.receiveShadow = true;
+    if (def.stand === 'meydan') {
+      // An upturned crescent canopy, enlarged for the toy skyline.
+      const pts = [], indices = [], steps = 24;
+      for (let i = 0; i <= steps; i++) {
+        const u = i / steps * 2 - 1, depth = 42 - 10 * u * u;
+        for (let j = 0; j <= 4; j++) {
+          const v = j / 4;
+          pts.push(u * (len / 2 + 12), 26 + 7 * u * u + 5 * v * v - 3 * v, z0 - 12 + v * depth);
+          if (i < steps && j < 4) { const k = i * 5 + j; indices.push(k, k + 5, k + 1, k + 1, k + 5, k + 6); }
+        }
+      }
+      const geo = new THREE.BufferGeometry(); geo.setAttribute('position', new THREE.Float32BufferAttribute(pts, 3)); geo.setIndex(indices); geo.computeVertexNormals();
+      const canopy = new THREE.Mesh(geo, toon('#b7d4df', { side: THREE.DoubleSide })); canopy.castShadow = true; stand.add(canopy);
+      for (let j = 0; j < 9; j++) addBox(stand, [len / 9 - 1.5, 0.45, 0.3], [x0 + (j + 0.5) * len / 9, 23, z0 + 7.7], glowMat('#f9d992', 3));
+    }
     const strip = addBox(stand, [len + 4, 0.25, 0.5], [x0 + len / 2, 12.3, z0 - 1.6], glowMat(def.theme === 'neon' ? '#ff4fd8' : '#fff4d6', 3));
     for (let x = 0; x <= len; x += len / 5) addBox(stand, [0.5, 13, 0.5], [x0 + x, 6.5, z0 - 1], toon('#d9d3e6'));
     const perRow = Math.floor(len / 0.95), n = perRow * 8;
@@ -1850,7 +1966,7 @@ function buildWorld(ti) {
   buildGate();
 
   // theme decor
-  ({ sakura: decorSakura, neon: decorNeon, aurora: decorAurora, dune: decorDune, tokyo: decorTokyo, nakayama: decorNakayama, kyoto: decorKyoto, niigata: decorNiigata, longchamp: decorLongchamp, churchill: decorChurchill, monaco: decorMonaco })[def.theme](th);
+  ({ sakura: decorSakura, neon: decorNeon, aurora: decorAurora, dune: decorDune, tokyo: decorTokyo, nakayama: decorNakayama, kyoto: decorKyoto, niigata: decorNiigata, longchamp: decorLongchamp, churchill: decorChurchill, hanshin: decorHanshin, chukyo: decorChukyo, sapporo: decorSapporo, meydan: decorMeydan, shatin: decorShatin, monaco: decorMonaco })[def.theme](th);
 
   FU.uExp.value = th.exposure; bloom.strength = th.bloom[0]; bloom.radius = th.bloom[1]; bloom.threshold = th.bloom[2];
   FU.uHeat.value = def.theme === 'dune' ? 0.0011 : 0;
@@ -1894,9 +2010,9 @@ function mountains(color, n, cap) {
   inst(g, toon(color, { fog: true }), list, false);
   if (cap) inst(g, toon('#ffffff'), caps, false);
 }
-function floodTowers(n) {
+function floodTowers(n, lane = W + 11) {
   for (let i = 0; i < n; i++) {
-    const s = (i + 0.5) / n * track.L, f = tp(s, W + 11);
+    const s = (i + 0.5) / n * track.L, f = tp(s, lane);
     const g = new THREE.Group(); g.position.copy(f.v); world.add(g);
     addBox(g, [0.8, 34, 0.8], [0, 17, 0], toon('#3b3552'));
     const head = new THREE.Group(); head.position.y = 34; g.add(head); head.lookAt(new V3(f.v.x - f.n.x * 50, 0, f.v.z - f.n.z * 50));
@@ -1979,6 +2095,73 @@ function decorTokyo(th) {
     const fuji = new THREE.Mesh(g, toon('#6f86b8', { fog: false })); fuji.position.set(f.x, -8, f.z); fuji.scale.set(430, 250, 430); world.add(fuji);
     const cap = new THREE.Mesh(g, toon('#ffffff', { fog: false })); cap.position.set(f.x, -8 + 250 * 0.62, f.z); cap.scale.set(430 * 0.38, 250 * 0.38, 430 * 0.38); world.add(cap); }
   mountains(th.mount, 10, false);
+}
+// Decorative lanes do not participate in race physics or replace the selected course.
+function decorCourseLane(tr, surf, from = 0, to = tr.L) {
+  const n = Math.ceil((to - from) / 3), pts = [], indices = [];
+  for (let i = 0; i <= n; i++) {
+    const s = lerp(from, to, i / n), a = tr.pos(s, 2), b = tr.pos(s, W - 2);
+    pts.push(a.x, 0.005, a.z, b.x, 0.005, b.z);
+    if (i < n) { const k = i * 2; indices.push(k, k + 1, k + 2, k + 1, k + 3, k + 2); }
+  }
+  const geo = new THREE.BufferGeometry(); geo.setAttribute('position', new THREE.Float32BufferAttribute(pts, 3)); geo.setIndex(indices); geo.computeVertexNormals();
+  const lane = new THREE.Mesh(geo, toon(surf === 'turf' ? '#438d57' : '#99734f', { side: THREE.DoubleSide })); lane.receiveShadow = true; world.add(lane);
+}
+function decorMeydan() {
+  const otherDef = TRACKS.find(t => t.theme === 'meydan' && t.surf !== track.def.surf);
+  const other = new Track(otherDef), turf = track.def.surf === 'turf' ? track : other;
+  decorCourseLane(other, otherDef.surf);
+  // Non-racing straight chutes, as shown in Dubai Racing Club's course diagram.
+  const chute = (s, length) => {
+    const q = turf.pos(s, W / 2), tr = new Track({ surf: 'turf', dir: 'left', closed: false, segs: [{ len: length }], finish: [0, length], D: length });
+    const start = tr.pos(tr.L, W / 2);
+    for (let i = 0; i <= tr.N; i++) {
+      const x = tr.xs[i] - start.x, z = tr.zs[i] - start.z;
+      tr.xs[i] = q.x + x * Math.cos(q.h) - z * Math.sin(q.h); tr.zs[i] = q.z + x * Math.sin(q.h) + z * Math.cos(q.h); tr.hs[i] = q.h;
+    }
+    decorCourseLane(tr, 'turf');
+  };
+  chute(0, 375); chute(turf.segStart[2], 160);
+  const trunks = [], leaves = [];
+  for (let i = 0; i < 26; i++) {
+    const q = turf.pos(turf.L * (i + 0.5) / 26, W + 65), h = rand(10, 16), p = new V3(q.x, 0, q.z);
+    trunks.push({ p, s: new V3(0.55, h, 0.55) });
+    for (let j = 0; j < 6; j++) { const a = j * Math.PI / 3; leaves.push({ p: new V3(p.x + Math.cos(a) * 2.5, h, p.z + Math.sin(a) * 2.5), s: new V3(4.5, 0.4, 0.9), r: [0, -a, 0.16] }); }
+  }
+  inst(new THREE.CylinderGeometry(1, 0.7, 1, 7).translate(0, 0.5, 0), toon('#9b7045'), trunks);
+  inst(SPH_LO, toon('#4d8d5c'), leaves);
+  floodTowers(12, W + 55);
+  // An illustrative Dubai skyline, beyond the oval and its straight chutes.
+  const city = new THREE.Group(), f = farPoint(1050, true); city.position.copy(f); world.add(city);
+  const wall = toon('#343f59'), glass = glowMat('#f3ce89', 1.8);
+  for (let i = 0; i < 20; i++) {
+    const x = (i - 9.5) * 32, h = 35 + (i % 5) * 13;
+    addBox(city, [22, h, 20], [x, h / 2, 0], wall);
+    for (let y = 8; y < h; y += 9) addBox(city, [17, 1.2, 20.2], [x, y, 0], glass);
+  }
+  for (let i = 0; i < 6; i++) addBox(city, [18 - i * 2.5, 28, 18 - i * 2.5], [30, 14 + i * 28, 30], wall);
+  part(city, CONE, glass, [30, 198, 30], [1.2, 60, 1.2], null, 0);
+}
+function decorShatin(th) {
+  roundTrees(treeSpots(115, 18), ['#3a8153', '#58a46c', '#79ba7c']);
+  mountains(th.mount, 20, false);
+  // A close ridge across the infield makes Sha Tin's mountain backdrop legible.
+  const ridge = [], f = farPoint(650, true);
+  for (let i = 0; i < 9; i++) ridge.push({ p: new V3(f.x + (i - 4) * 90, -5, f.z), s: new V3(110, 120 + (i % 3) * 45, 120), r: [0, i * 0.3, 0] });
+  inst(new THREE.ConeGeometry(1, 1, 8).translate(0, 0.5, 0), toon(th.mount), ridge, false);
+}
+function decorHanshin(th) {
+  roundTrees(treeSpots(100, 16), ['#f7b8d4', '#ffd5e7', '#ed99c1', '#70a851']);
+  mountains(th.mount, 12, false);
+  fallingLeaves(TEX_PETAL, ['#ffd5e7', '#f5add0'], 35);
+}
+function decorChukyo(th) {
+  roundTrees(treeSpots(105, 18), ['#4b913e', '#65a950', '#8abb61']);
+  mountains(th.mount, 14, false);
+}
+function decorSapporo(th) {
+  roundTrees(treeSpots(100, 16), ['#39794c', '#58a565', '#78bc7a']);
+  mountains(th.mount, 16, false);
 }
 function decorNakayama(th) {
   const cone = new THREE.ConeGeometry(1, 1, 8); cone.translate(0, 0.5, 0);
@@ -2167,7 +2350,7 @@ function wxPalette(w) {
 }
 function applyWeather() {
   if (!WR) return;
-  const th = WR.th, wx = S.wx, P = wxPalette(wx.w), night = track.def.theme === 'neon';
+  const th = WR.th, wx = S.wx, P = wxPalette(wx.w), night = !!track.def.night || track.def.theme === 'neon';
   const grey = C(wx.w === 'snow' || wx.w === 'flurry' ? '#cfd8e2' : night ? '#241c38' : '#8e98a6'), greyTop = C(night ? '#0b0816' : wx.w === 'snow' || wx.w === 'flurry' ? '#9aa6b6' : '#5a6474');
   const u = sky.material.uniforms;
   u.top.value.set(th.sky[0]).lerp(greyTop, P.grey); u.hor.value.set(th.sky[1]).lerp(grey, P.grey); u.bot.value.set(th.sky[2]).lerp(grey, P.grey * 0.7);
@@ -2468,9 +2651,17 @@ $('#lobbyToggle').onclick = () => {
 function renderLobby() {
   renderJourney();
   const tcard = (t, i) => `<button class="tcard ${i === S.ti ? 'on' : ''}" data-i="${i}" style="--g:${t.grad}"><span class="tsw">${coursePreview(t)}${t.real ? '<i class="meiba">名コース</i>' : ''}</span><span class="tname">${t.name}</span><span class="tmeta"><b>${SURF[t.surf]}</b>${t.D}m・${t.time}</span></button>`;
-  $('#tracks').innerHTML = '<span class="tgrp">ファンタジーコース</span>' + TRACKS.map((t, i) => t.real ? '' : tcard(t, i)).join('') + '<span class="tgrp">名コース　実在の競馬場モチーフ</span>' + TRACKS.map((t, i) => t.real ? tcard(t, i) : '').join('');
+  const domestic = ['sapporo', 'niigata', 'nakayama', 'tokyo', 'chukyo', 'kyoto', 'hanshin'];
+  const overseas = ['shatin', 'meydan', 'longchamp', 'churchill'];
+  const courses = TRACKS.map((t, i) => ({t, i}));
+  const groups = [
+    ['ファンタジーコース（距離順）', courses.filter(({t}) => !t.real).sort((a, b) => a.t.D - b.t.D)],
+    ['名コース　国内（地域順）', courses.filter(({t}) => t.real && domestic.includes(t.theme)).sort((a, b) => domestic.indexOf(a.t.theme) - domestic.indexOf(b.t.theme))],
+    ['名コース　海外', courses.filter(({t}) => t.real && !domestic.includes(t.theme)).sort((a, b) => (overseas.indexOf(a.t.theme) < 0 ? overseas.length : overseas.indexOf(a.t.theme)) - (overseas.indexOf(b.t.theme) < 0 ? overseas.length : overseas.indexOf(b.t.theme)) || a.t.name.localeCompare(b.t.name, 'ja'))]
+  ];
+  $('#tracks').innerHTML = groups.map(([label, items]) => `<span class="tgrp">${label}</span>` + items.map(({t, i}) => tcard(t, i)).join('')).join('');
   $('#tdesc').textContent = TRACKS[S.ti].desc;
-  { const t = TRACKS[S.ti], el = $('#tmotif'); el.hidden = !t.motif; if (t.motif) el.innerHTML = `<b>モチーフ　${t.motif}</b>${t.motifNote}<small>${t.points ? '馬が走れる幅と曲がり具合に調整したモチーフコースです。' : t.scale === 1 ? '距離は実寸です。' : 'コースは実寸の約1/2に縮めています。形・回り・坂の位置は再現し、坂の高さは見やすいように約2.5倍に誇張しています。'}</small>`; }
+  { const t = TRACKS[S.ti], el = $('#tmotif'); el.hidden = !t.motif; if (t.motif) el.innerHTML = `<b>モチーフ　${t.motif}</b>${t.motifNote}<small>${t.points ? '馬が走れる幅と曲がり具合に調整したモチーフコースです。' : t.scale === 1 ? '距離は実寸です。' : `公式コース図を参考に形状を近似し、距離は約1/2に縮めています。${t.elev?.length ? `坂の位置を反映し、高さは見やすいように約${t.elevEx || ELEV_EX}倍に誇張しています。` : '景観は特徴が伝わるように強調しています。'}`}</small>`; }
   $('#poolNote').textContent = `全${ROSTER.length}頭からランダムに8頭`;
   { const b = $('#wxBox'), wc = { sunny: '#ffcf3f', cloudy: '#c9d2e0', drizzle: '#9cc3ff', rain: '#6fa8ff', flurry: '#e6f0ff', snow: '#ffffff' }[S.wx.w];
     const gc = ['rgba(70,240,198,.2)', 'rgba(255,207,63,.2)', 'rgba(255,150,70,.25)', 'rgba(255,80,110,.28)'][S.wx.g];
@@ -2540,6 +2731,7 @@ function catalogList() {
   const filter = $('#catalogFilter').value;
   const matches = ROSTER.map((h, i) => ({h, i})).filter(({h}) =>
     h.name.normalize('NFKC').toLocaleLowerCase('ja').includes(q) && (filter === 'all' || (filter === 'motif' ? h.motif : filter === 'history' ? h.tags?.includes('歴史') : !h.motif && !h.tags?.includes('歴史'))));
+  matches.sort((a, b) => a.h.name.localeCompare(b.h.name, 'ja'));
   $('#catalogCount').textContent = `${matches.length} / ${ROSTER.length}頭`;
   $('#catalogList').innerHTML = matches.length ? matches.map(({h, i}) =>
     `<button data-index="${i}" aria-pressed="${i === catalog.index}">${h.tags?.includes('歴史') ? '<i class="meiba history">歴史</i>' : h.motif ? '<i class="meiba">名馬</i>' : ''}${catalogText(h.name)}<small>${catalogText(h.type)}</small></button>`).join('') : '<p>該当する馬がいません。</p>';
