@@ -307,6 +307,19 @@ h2{color:var(--gold);font-size:14px;letter-spacing:.06em}
 }
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
 
+/* Getting started, achievements and sharing */
+#journey{padding:12px;border:1px solid var(--line);border-radius:12px;background:#ffffff08}
+#journey p{font-size:12px;line-height:1.6;margin:6px 0}
+#journey button,.shareActions button{padding:11px 14px;background:#493062;border-radius:10px;min-height:44px}
+#journey summary{cursor:pointer;font-weight:900;padding:10px 0}
+#journey ul{padding-left:20px;font-size:12px;line-height:1.8}
+#guideNote{position:absolute;left:10px;right:10px;top:125px;margin:auto;max-width:420px;padding:10px 14px;background:#241338ed;border:1px solid var(--gold);border-radius:12px;font-size:13px;text-align:center;pointer-events:none}
+#shareCard{display:block;width:100%;max-width:420px;margin:auto;border-radius:14px}
+.shareActions{display:flex;gap:8px;flex-wrap:wrap}.shareActions button{flex:1}
+#shareStatus,#rewardNote{font-size:12px;line-height:1.5;color:var(--mint)}
+#quality{min-height:36px;background:#35204f;color:var(--text);border:1px solid var(--line);border-radius:8px;max-width:95px}
+@media(max-width:760px){#lobbyScroll{max-height:65dvh}#tracks button,#horses button,#chips button,#btype button,#cams button{min-height:44px}#result .panel{max-height:calc(100dvh - 78px)}#guideNote{top:130px}#topR{gap:4px}#brand{font-size:19px}#coins{font-size:16px}#quality{max-width:76px;font-size:11px}#mute{width:36px;height:36px}}
+@media(max-width:380px){#streak{display:none}.pill{padding:5px}#brand{font-size:16px}#stand{width:145px}#rinfo{min-width:0;max-width:calc(100% - 180px)}}
 </style>
 </head>
 <body>
@@ -321,6 +334,7 @@ h2{color:var(--gold);font-size:14px;letter-spacing:.06em}
   <div id="topR">
     <span id="streak" hidden></span>
     <div class="pill panel"><span class="coin"></span><span id="coins">0</span></div>
+    <select id="quality" aria-label="画質"><option value="auto">画質 自動</option><option value="low">画質 軽量</option><option value="high">画質 高画質</option></select>
     <button id="mute" class="panel" aria-label="サウンド切替"></button>
   </div>
 </header>
@@ -329,6 +343,7 @@ h2{color:var(--gold);font-size:14px;letter-spacing:.06em}
   <button id="lobbyToggle" aria-expanded="true" aria-controls="lobbyScroll">▼ 選択パネルをたたむ</button>
   <div id="lobbyScroll">
     <div id="rail" class="panel">
+      <div id="journey"></div>
       <h2>コース</h2>
       <div id="tracks"></div>
       <details class="flavor"><summary>コースについて</summary><p id="tdesc"></p><p id="tmotif" class="motifbox" hidden></p></details>
@@ -352,6 +367,7 @@ h2{color:var(--gold);font-size:14px;letter-spacing:.06em}
 </section>
 
 <section id="hud" hidden>
+  <div id="guideNote" hidden></div>
   <div id="rinfo" class="panel">
     <div class="rn" id="rname"></div>
     <div class="rm"><span class="lbl">残り</span><span id="remain">0</span><small>m</small></div>
@@ -642,6 +658,43 @@ const THEMES = {
     rail: '#fff0d8', railGlow: 0, ground: 'sand', dust: '#e6bb7c' },
 };
 
+/* Local progress: rewards are granted once, including after a loss. */
+const savedProgress = store.get('progress', {});
+const progress = {
+  races: Math.max(0, Number(savedProgress?.races) || 0),
+  horses: Array.isArray(savedProgress?.horses) ? savedProgress.horses.filter(n => typeof n === 'string') : [],
+  tracks: Array.isArray(savedProgress?.tracks) ? savedProgress.tracks.filter(n => typeof n === 'string') : [],
+  cheers: Math.max(0, Number(savedProgress?.cheers) || 0),
+  claimed: Array.isArray(savedProgress?.claimed) ? savedProgress.claimed.filter(n => typeof n === 'string') : []
+};
+const goals = [
+  {id:'first', title:'はじめの一歩', desc:'1レース完走', value:() => progress.races, target:1, reward:100},
+  {id:'horses', title:'みんなの応援団', desc:'異なる3頭で完走', value:() => progress.horses.length, target:3, reward:200},
+  {id:'tracks', title:'コース探検家', desc:'異なる3コースで完走', value:() => progress.tracks.length, target:3, reward:200},
+  {id:'cheer', title:'声援の達人', desc:'応援ブーストを3回使う', value:() => progress.cheers, target:3, reward:150},
+  {id:'ten', title:'常連サポーター', desc:'10レース完走', value:() => progress.races, target:10, reward:300}
+];
+let guiding = !store.get('guideDone', false), raceCheers = 0;
+function renderJourney() {
+  $('#journey').innerHTML = `${guiding ? '<b>はじめてのトイ競馬</b><p>①好きな馬を選ぶ → ②出走！ → ③応援ボタンで後押し。コインはゲーム内専用です。</p><button id="easyStart">おまかせで初レース</button><button id="skipGuide">ガイドを終了</button>' : '<button id="showGuide">遊び方を見る</button>'}
+    <details><summary>実績・称号 ${progress.claimed.length}/${goals.length}</summary><p>勝っても負けても、完走で記録が増えます。</p><ul>${goals.map(g => `<li>${progress.claimed.includes(g.id) ? '🏅' : '○'} ${g.title}：${g.desc} (${Math.min(g.value(),g.target)}/${g.target})・${g.reward}コイン</li>`).join('')}</ul></details>`;
+  if (guiding) {
+    $('#easyStart').onclick = () => { S.betType = 'place'; S.bet = 100; if (S.ti !== 0) { S.ti = 0; store.set('track',0); enterLobby(true); } renderSlip(); startRace(); };
+    $('#skipGuide').onclick = () => { guiding = false; store.set('guideDone',true); renderJourney(); };
+  } else $('#showGuide').onclick = () => { guiding = true; renderJourney(); };
+}
+function completeProgress(me) {
+  progress.races++;
+  if (!progress.horses.includes(me.def.name)) progress.horses.push(me.def.name);
+  if (!progress.tracks.includes(track.def.name)) progress.tracks.push(track.def.name);
+  progress.cheers += raceCheers;
+  const unlocked = goals.filter(g => !progress.claimed.includes(g.id) && g.value() >= g.target);
+  unlocked.forEach(g => progress.claimed.push(g.id));
+  store.set('progress',progress);
+  guiding = false; store.set('guideDone',true);
+  return unlocked;
+}
+
 /* ============ STATE ============ */
 const S = {
   mode: 'loading', ti: clamp(store.get('track', 0) | 0, 0, TRACKS.length - 1), sel: clamp(store.get('sel', 0) | 0, 0, 7),
@@ -664,7 +717,7 @@ try {
 
 const stage = $('#stage');
 const renderer = new THREE.WebGLRenderer({ antialias: false, powerPreference: 'high-performance' });
-const PR = Math.min(window.devicePixelRatio || 1, 1.75);
+let PR = Math.min(window.devicePixelRatio || 1, 1.75);
 renderer.setPixelRatio(PR);
 renderer.setSize(innerWidth, innerHeight);
 renderer.shadowMap.enabled = true;
@@ -2084,6 +2137,7 @@ $('#lobbyToggle').onclick = () => {
   $('#lobbyScroll').scrollTop = 0;
 };
 function renderLobby() {
+  renderJourney();
   const tcard = (t, i) => `<button class="tcard ${i === S.ti ? 'on' : ''}" data-i="${i}" style="--g:${t.grad}"><span class="tsw">${coursePreview(t)}${t.real ? '<i class="meiba">名コース</i>' : ''}</span><span class="tname">${t.name}</span><span class="tmeta"><b>${SURF[t.surf]}</b>${t.D}m・${t.time}</span></button>`;
   $('#tracks').innerHTML = '<span class="tgrp">ファンタジーコース</span>' + TRACKS.map((t, i) => t.real ? '' : tcard(t, i)).join('') + '<span class="tgrp">名コース　実在の競馬場モチーフ</span>' + TRACKS.map((t, i) => t.real ? tcard(t, i) : '').join('');
   $('#tdesc').textContent = TRACKS[S.ti].desc;
@@ -2179,6 +2233,10 @@ function enterLobby(rebuild) {
   AU.crowdLvl(0.12);
 }
 function startRace() {
+  if (S.mode !== 'lobby') return;
+  raceCheers = 0;
+  $('#guideNote').hidden = !guiding;
+  $('#guideNote').textContent = '応援が100%になったら、右下の応援ボタンを押そう！';
   const amt = betAmt(); if (amt <= 0) return;
   AU.init();
   S.coins -= amt; setCoins();
@@ -2222,13 +2280,18 @@ function onFinish(r) {
   if (r.i === S.myBet.h) toast(`<b>${r.def.name}</b> ${r.place}着でゴール！`, '#ffcf3f');
 }
 function showResult() {
+  if (S.mode === 'result') return;
+  $('#guideNote').hidden = true;
   setMode('result');
   const b = S.myBet, me = R.runners[b.h];
   const hit = b.type === 'win' ? me.place === 1 : me.place <= 3;
   const bonus = 1 + 0.1 * b.streak;
   const pay = hit ? Math.floor(b.amt * b.odds * bonus) : 0;
   if (hit) S.streak++; else S.streak = 0;
-  S.coins += pay; setCoins(); S.coins -= pay; // count up visually below
+  const unlocked = completeProgress(me);
+  const reward = unlocked.reduce((n,g) => n + g.reward, 0);
+  S.coins += pay + reward; setCoins();
+  const settledCoins = S.coins;
   const ord = R.runners.slice().sort((a, c) => a.place - c.place);
   const rows = ord.map((r, k) => {
     const m = k === 0 ? '' : marginTxt((r.finT - ord[k - 1].finT) * Math.max(8, ord[k - 1].v) / 2.4);
@@ -2242,8 +2305,11 @@ function showResult() {
     <div id="resSub">${track.def.name}（${WX[S.wx.w]}・${SURF[track.def.surf]}${GOING[S.wx.g]}）　勝ちタイム ${fmtTime(ord[0].finT)}</div>
     <div style="overflow-x:auto"><table><thead><tr><th>着</th><th>馬番</th><th>馬名</th><th>タイム</th><th>着差</th></tr></thead><tbody>${rows}</tbody></table></div>
     <div id="payout" class="${hit ? '' : 'miss'}"><div class="l"><b>${b.h + 1}番 ${HORSES[b.h].name}</b><br>${b.type === 'win' ? '単勝' : '複勝'} ${b.odds.toFixed(1)}倍 × ${fmt(b.amt)}コイン${hit && b.streak ? `<br>連勝ボーナス ×${bonus.toFixed(1)}` : ''}${!hit ? `<br>結果は${me.place}着でした` : ''}</div><div class="r" id="payNum">${hit ? '+0' : '0'}</div></div>
+    <p id="rewardNote">${unlocked.length ? unlocked.map(g => `🏅 ${g.title} +${g.reward}コイン`).join(' ／ ') : `完走記録：${progress.races}レース。実績の進み具合はロビーで確認できます。`}</p>
+    <details><summary>結果カードを保存・共有</summary><canvas id="shareCard" width="840" height="560" aria-label="レース結果カード"></canvas><div class="shareActions"><button id="saveCard">画像を保存</button><button id="shareResult">結果を共有</button></div><p id="shareStatus" role="status"></p></details>
     <div class="rbtns"><button id="again" class="pri">次のレースへ</button><button id="other">次のコースへ</button></div>
   </div>`;
+  setupShare(me, pay, reward);
   $('#again').onclick = () => { AU.pop(); enterLobby(false); };
   $('#other').onclick = () => { AU.pop(); S.ti = (S.ti + 1) % TRACKS.length; store.set('track', S.ti); enterLobby(true); };
   if (hit) {
@@ -2254,13 +2320,13 @@ function showResult() {
     const t0 = performance.now(), dur = 1600 + Math.min(1600, pay / 20);
     const tick = () => {
       const k = Math.min(1, (performance.now() - t0) / dur), e = 1 - Math.pow(1 - k, 3), v = Math.floor(pay * e);
-      const el = $('#payNum'); if (!el) return; el.textContent = '+' + fmt(v); $('#coins').textContent = fmt(S.coins + v);
+      const el = $('#payNum'); if (!el || S.mode !== 'result' || S.myBet !== b) return; el.textContent = '+' + fmt(v); $('#coins').textContent = fmt(settledCoins - pay + v);
       if (Math.random() < 0.5) AU.coin();
-      if (k < 1) requestAnimationFrame(tick); else { S.coins += pay; setCoins(); }
+      if (k < 1) requestAnimationFrame(tick); else { setCoins(); }
     };
     requestAnimationFrame(tick);
   } else {
-    S.coins += pay; setCoins();
+    setCoins();
     big('ざんねん…', 'sad', 1300); AU.sad();
   }
 }
@@ -2278,6 +2344,8 @@ $('#cheer').addEventListener('click', useCheer);
 function useCheer() {
   if (S.mode !== 'race' || S.cheer < 100) return;
   const r = R.runners[S.myBet.h]; if (r.fin) return;
+  raceCheers++;
+  if (guiding) $('#guideNote').textContent = '応援成功！ゴールまで見届けよう。';
   S.cheer = 0; r.fx.push({ mult: 1.06, t: 3, cheer: true });
   AU.pop(); AU.whoosh(); FX.lines = 1; FX.ab = 0.6; horses[r.i].glow = 1; crowd.userData.exc = 1;
   const q = track.pos(R.s0 + r.s, r.lane); ringBurst(new V3(q.x, q.y + 1, q.z), '#ffcf3f');
@@ -2298,6 +2366,7 @@ cv.addEventListener('pointerup', endPtr); cv.addEventListener('pointercancel', e
 cv.addEventListener('wheel', e => { e.preventDefault(); if ((S.mode === 'race' || S.mode === 'finish') && S.cam !== 'free') setCam('free'); cam.dist = clamp(cam.dist * (1 + e.deltaY * 0.0012), 4, 140); cam.drag = realClock; }, { passive: false });
 addEventListener('resize', () => {
   camera.aspect = innerWidth / innerHeight; camera.updateProjectionMatrix();
+  applyQuality();
   renderer.setSize(innerWidth, innerHeight); composer.setSize(innerWidth, innerHeight); fxResize();
   [dustP, sparkP, fireP, amb].forEach(p => { if (p) p.mat.uniforms.scale.value = innerHeight * PR * 0.5; });
 });
@@ -2503,6 +2572,52 @@ function frame(now) {
   fxDraw(rdt);
   composer.render();
 }
+
+function applyQuality() {
+  const q = $('#quality').value;
+  const light = q === 'low' || (q === 'auto' && matchMedia('(max-width:760px)').matches);
+  PR = Math.min(window.devicePixelRatio || 1, light ? 1 : 1.75);
+  renderer.setPixelRatio(PR); composer.setPixelRatio(PR);
+  renderer.setSize(innerWidth, innerHeight); composer.setSize(innerWidth, innerHeight);
+  renderer.shadowMap.enabled = !light; bloom.enabled = !light;
+  [dustP, sparkP, fireP, amb].forEach(p => { if (p) p.mat.uniforms.scale.value = innerHeight * PR * 0.5; });
+}
+function setupShare(me, pay, reward) {
+  const canvas = $('#shareCard'), c = canvas.getContext('2d');
+  const gradient = c.createLinearGradient(0,0,840,560); gradient.addColorStop(0,'#35204f'); gradient.addColorStop(1,'#951f63');
+  c.fillStyle = gradient; c.fillRect(0,0,840,560);
+  c.fillStyle = '#ffcf3f'; c.font = 'bold 42px sans-serif'; c.fillText('トイ競馬',48,70);
+  c.fillStyle = '#fff5fb'; c.font = 'bold 82px sans-serif'; c.fillText(`${me.place}着！`,48,175);
+  c.font = 'bold 36px sans-serif'; c.fillText(me.def.name,48,240,744);
+  c.font = '26px sans-serif'; c.fillText(track.def.name,48,300,744);
+  c.fillText(`${WX[S.wx.w]}・${GOING[S.wx.g]} ／ タイム ${fmtTime(me.finT)}`,48,350,744);
+  c.fillStyle = '#46f0c6'; c.fillText(`払戻 ${fmt(pay)} ／ 実績報酬 ${fmt(reward)} コイン`,48,410,744);
+  const url = /^https?:$/.test(location.protocol) ? location.href.split('#')[0].split('?')[0] : '';
+  c.fillStyle = '#fff5fb'; c.font = '20px sans-serif'; c.fillText(url || 'かわいい馬を選んで、応援しよう！',48,510,744);
+  const text = `トイ競馬で${me.def.name}を応援して${me.place}着！ ${track.def.name}`;
+  const blobPromise = new Promise(resolve => canvas.toBlob(resolve,'image/png'));
+  $('#saveCard').onclick = async () => {
+    const blob = await blobPromise; if (!blob) { $('#shareStatus').textContent = '画像を作成できませんでした。'; return; }
+    const src = URL.createObjectURL(blob), a = document.createElement('a'); a.href = src; a.download = 'toy-keiba-result.png'; a.click(); setTimeout(() => URL.revokeObjectURL(src),60000);
+    $('#shareStatus').textContent = '結果カードを保存しました。';
+  };
+  $('#shareResult').onclick = async () => {
+    try {
+      const blob = await blobPromise, file = blob && typeof File !== 'undefined' ? new File([blob],'toy-keiba-result.png',{type:'image/png'}) : null;
+      if (navigator.share) {
+        const data = {title:'トイ競馬',text,...(url ? {url} : {})};
+        if (file && navigator.canShare?.({files:[file]})) data.files = [file];
+        await navigator.share(data); $('#shareStatus').textContent = '共有しました。';
+      } else if (navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(text + (url ? '\n' + url : ''));
+        $('#shareStatus').textContent = '共有文をコピーしました。画像も保存できます。';
+      } else $('#shareStatus').textContent = text + (url ? ' ' + url : '') + '（画像を保存して共有できます）';
+    } catch (e) { $('#shareStatus').textContent = e.name === 'AbortError' ? '共有をキャンセルしました。' : '共有できませんでした。画像を保存して共有できます。'; }
+  };
+}
+$('#quality').value = ['auto','low','high'].includes(store.get('quality','auto')) ? store.get('quality','auto') : 'auto';
+$('#quality').onchange = () => { store.set('quality',$('#quality').value); applyQuality(); };
+applyQuality();
 
 /* ============ BOOT ============ */
 setMuteIcon(); setCoins();
