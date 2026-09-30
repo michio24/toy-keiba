@@ -87,6 +87,7 @@ h2{font-family:var(--f-disp);font-weight:400;font-size:13px;letter-spacing:.14em
 #slipHead .tp{font-size:12px;color:var(--dim);margin-top:4px}
 #poolNote{font-family:var(--f-body);font-size:11px;letter-spacing:.02em;color:var(--dim);font-weight:700;margin-left:6px}
 .meiba{font-style:normal;font-size:10px;font-weight:900;color:#241000;background:linear-gradient(90deg,var(--gold),#ffe9a8);border-radius:5px;padding:1px 5px;margin-right:6px;vertical-align:2px}
+.meiba.history{color:#fff8ee;background:linear-gradient(90deg,#8c3038,#ad4650)}
 #motif,.motifbox{margin:0;padding:9px 12px;border-radius:12px;background:rgba(255,207,63,.1);border:1px solid rgba(255,207,63,.35);font-size:12px;line-height:1.55;color:var(--text)}
 .motifbox small{display:block;margin-top:4px;font-size:10.5px;color:var(--dim)}
 #motif b,.motifbox b{display:block;font-size:11px;color:var(--gold);letter-spacing:.06em;margin-bottom:2px}
@@ -413,7 +414,7 @@ h2{color:var(--gold);font-size:14px;letter-spacing:.06em}
         <label for="catalogSearch">馬名で検索</label>
         <input id="catalogSearch" type="search" placeholder="馬の名前" autocomplete="off">
         <label for="catalogFilter">種類で絞り込み</label>
-        <select id="catalogFilter"><option value="all">すべて</option><option value="motif">名馬モチーフ</option><option value="other">その他</option></select>
+        <select id="catalogFilter"><option value="all">すべて</option><option value="motif">名馬モチーフ</option><option value="history">歴史</option><option value="other">その他</option></select>
         <p id="catalogCount" role="status"></p><div id="catalogList"></div>
       </div>
       <article id="catalogDetails" aria-label="選択した馬の情報"></article>
@@ -633,6 +634,32 @@ const ROSTER = [
     mud: -1, st: { spd: 8, sta: 7, acc: 9, pow: 6, agi: 10 }, aff: { turf: 1, dirt: 0, snow: -1, sand: -1 },
     skill: { name: '慣性ドリフト', desc: 'レース中盤以降のコーナーで、車体を横に向けて一気に加速。4秒間の鋭い立ち上がりで馬群を抜ける。', color: '#a9e8ff' },
     blurb: '白黒のパンダカラーが目印のハッチバック。リトラクタブルライトを開き、豆腐を崩さない絶妙な走りでコーナーを攻める。' },
+  // ---- 歴史モチーフ（史料の記述・伝承に基づく。能力と外見は創作） ----
+  { name: 'セキエンセンリ', type: '栗毛・歴史名馬', kind: 'real', sk: 'redhare', style: 'nige', body: '#d93628', mane: '#8f1918', muzzle: '#bc5544', look: { size: 1.08, barrel: 1.02, chest: 1.06 },
+    tags: ['歴史'], st: { spd: 8, sta: 7, acc: 8, pow: 8, agi: 5 }, aff: { turf: 1, dirt: 1, snow: 0, sand: 1 },
+    skill: { name: '千里の先駆け', desc: 'スタート直後から7秒間、勢いよく加速する。', color: '#b64825' },
+    profile: { personality: '誇り高い先駆者。走り出すと迷わない。', favorite: '夕焼けの草原' },
+    blurb: '猛将・呂布を乗せて駆けたと『三国志』に記される名馬の気風を宿す。関羽とともに走る姿も物語で親しまれるが、その縁は『三国志演義』で描かれたもの。' },
+  { name: 'ハオウノクロカゼ', type: '黒毛・歴史名馬', kind: 'real', sk: 'wuzhui', style: 'senko', body: '#24232b', mane: '#121118', muzzle: '#a38c78', look: { size: 1.1, barrel: 1.02, chest: 1.06 },
+    tags: ['歴史'], st: { spd: 8, sta: 8, acc: 6, pow: 9, agi: 5 }, aff: { turf: 1, dirt: 1, snow: 0, sand: 1 },
+    skill: { name: '垓下の底力', desc: '残り25%で先頭にいなければ、5秒間加速する。', color: '#e0bb66' },
+    profile: { personality: '逆境でもひるまない、静かな相棒。', favorite: '風の吹く川辺' },
+    blurb: '覇王・項羽と五年をともにした愛馬の面影を持つ。『史記』には垓下で歌に詠まれ、烏江で主から亭長へ託された別れの場面が残る。' },
+  { name: 'タイヨウノブケ', type: '黒毛・歴史名馬', kind: 'real', sk: 'buce', style: 'sashi', body: '#34302c', mane: '#181512', muzzle: '#a38c78', look: { size: 1.06, barrel: 1.02, chest: 1.06 },
+    tags: ['歴史'], st: { spd: 8, sta: 8, acc: 7, pow: 7, agi: 6 }, aff: { turf: 1, dirt: 1, snow: 0, sand: 1 },
+    skill: { name: '太陽へ向かって', desc: 'レース後半の入口で5秒間、集中して加速する。', color: '#e0bb66' },
+    profile: { personality: '慎重だけれど、信頼した相手には大胆。', favorite: '陽の当たる一本道' },
+    blurb: '太陽へ顔を向ければ、怖い影は背中の後ろへ。プルタルコスが伝える、少年アレクサンドロスが愛馬の恐れを見抜いて乗りこなした逸話を思わせる一頭。' },
+  { name: 'ギンノアンペルール', type: '芦毛・歴史名馬', kind: 'real', sk: 'marengo', style: 'senko', body: '#d9d9d2', mane: '#ecece5', muzzle: '#a38c78', look: { size: 0.88, barrel: 1.02, chest: 1.06 },
+    tags: ['歴史'], st: { spd: 7, sta: 9, acc: 7, pow: 7, agi: 7 }, aff: { turf: 1, dirt: 1, snow: 0, sand: 1 },
+    skill: { name: '皇帝の行軍', desc: '残り40%でスタミナを20%回復し、6秒間加速する。', color: '#e0bb66' },
+    profile: { personality: '落ち着きがあり、長旅にもこつこつ付き合う。', favorite: '朝の散歩と休憩時間' },
+    blurb: '小柄な芦毛に、皇帝ナポレオンの愛馬の面影を宿す。その愛馬は1800年の戦勝にちなんで名付けられ、骨格は英国の国立陸軍博物館に保存されている。数々の武勇譚には伝説も交じる。' },
+  { name: 'カブキノマツアラシ', type: '鹿毛・歴史名馬', kind: 'real', sk: 'matsukaze', style: 'oikomi', body: '#775034', mane: '#292015', muzzle: '#a38c78', look: { size: 1.15, barrel: 1.02, chest: 1.06 },
+    tags: ['歴史'], st: { spd: 7, sta: 8, acc: 6, pow: 9, agi: 6 }, aff: { turf: 1, dirt: 1, snow: 0, sand: 1 },
+    skill: { name: '傾奇の追い風', desc: '残り30%から7秒間、豪快に加速する。', color: '#e0bb66' },
+    profile: { personality: '自由奔放な目立ちたがり。仲間思い。', favorite: '華やかな馬具と町のにぎわい' },
+    blurb: '華やかな馬具をまとい、京の町でもひときわ目を引く傾奇者。前田慶次が愛馬を飾り立てて町を引き回したという伝承の風情を感じさせる。堂々たる体格は、このゲームならではの姿。' },
 ];
 const HORSE_PROFILES = [
   ['おっとり優雅。でも勝負どころでは負けず嫌い。', '桜の花びらと朝の散歩'],
@@ -665,7 +692,7 @@ const HORSE_PROFILES = [
 ];
 ROSTER.forEach((h, i) => {
   h.sk = h.sk || h.kind; h.look = h.look || {};
-  h.profile = { personality: HORSE_PROFILES[i][0], favorite: HORSE_PROFILES[i][1] };
+  h.profile = h.profile || { personality: HORSE_PROFILES[i][0], favorite: HORSE_PROFILES[i][1] };
 });
 let HORSES = [];
 function pickField() {
@@ -1081,6 +1108,11 @@ function trySkill(r, R, p, dt, full) {
     case 'zebra': if (p > 0.35 && p < 0.85 && Math.random() < 0.28 * dt) { r.warp = 1; r.s += 6; fire(1.04, 3); } break;
     case 'pegasus': { const oc = R.track.onCurve(R.s0 + r.s); if (r.pc && !oc && p > 0.45 && p < 0.92) fire(1.09, 4.2, { fly: true }); r.pc = oc; break; }
     case 'mech': if (p >= 0.5) fire(R.night ? 1.13 : 1.10, 4, { then: { mult: 0.97, t: 3 } }); break;
+    case 'redhare': if (r.s > 3) fire(1.1, 7); break;
+    case 'wuzhui': if (p >= 0.75 && r.rank > 1) fire(1.1, 5); break;
+    case 'buce': if (p >= 0.6) fire(1.09, 5); break;
+    case 'marengo': if (p >= 0.6) { r.st = Math.min(r.stMax, r.st + r.stMax * 0.2); fire(1.05, 6); } break;
+    case 'matsukaze': if (p >= 0.7) fire(1.08, 7); break;
     case 'deep': if (p >= 0.78 && r.rank > 1) fire(1.12, 4.5, { fly: true, lift: 0.7 }); break;
     case 'orfe': if (p >= 0.7) { if (Math.random() < 0.5) { fire(1.14, 5); note('覚醒した！金色の暴君が爆走！', true); } else { r.tLane = W - 0.9; r.dec = 1.8; fire(0.86, 1.8, { then: { mult: 1.14, t: 4.5, skill: true } }); note('外へ逸走！？…いや、猛然と追ってくる！', false); } } break;
     case 'oguri': if (p >= 0.8 && r.rank >= 2 && r.rank <= 4 && R.leadS - r.s < 10) fire(1.1, 5); break;
@@ -2360,7 +2392,7 @@ function renderLobby() {
     const gc = ['rgba(70,240,198,.2)', 'rgba(255,207,63,.2)', 'rgba(255,150,70,.25)', 'rgba(255,80,110,.28)'][S.wx.g];
     b.style.setProperty('--wc', wc); b.style.setProperty('--gc', gc);
     b.innerHTML = `<span class="ic">${WX_ICON[S.wx.w]}</span><div class="wl"><span><small>天候</small>${WX[S.wx.w]}</span><span><small>馬場</small><span class="gd">${SURF[track.def.surf]}・${GOING[S.wx.g]}</span></span></div><p>${goingNote()}</p>`; }
-  $('#horses').innerHTML = HORSES.map((h, i) => `<button class="hrow ${i === S.sel ? 'on' : ''}" data-i="${i}"><span class="num" style="background:${WAKU[i][0]};color:${WAKU[i][1]}">${i + 1}</span><span class="hn"><b>${h.motif ? '<i class="meiba">名馬</i>' : ''}${h.name}</b><small>${h.type}・${STYLE[h.style]}・調子${COND[S.conds[i] + 1]}</small></span><span class="od">${S.odds.win[i].toFixed(1)}<small>単勝・${S.odds.pop[i]}番人気</small></span></button>`).join('');
+  $('#horses').innerHTML = HORSES.map((h, i) => `<button class="hrow ${i === S.sel ? 'on' : ''}" data-i="${i}"><span class="num" style="background:${WAKU[i][0]};color:${WAKU[i][1]}">${i + 1}</span><span class="hn"><b>${h.tags?.includes('歴史') ? '<i class="meiba history">歴史</i>' : h.motif ? '<i class="meiba">名馬</i>' : ''}${h.name}</b><small>${h.type}・${STYLE[h.style]}・調子${COND[S.conds[i] + 1]}</small></span><span class="od">${S.odds.win[i].toFixed(1)}<small>単勝・${S.odds.pop[i]}番人気</small></span></button>`).join('');
   renderSlip();
 }
 function renderSlip() {
@@ -2423,10 +2455,10 @@ function catalogList() {
   const q = $('#catalogSearch').value.trim().normalize('NFKC').toLocaleLowerCase('ja');
   const filter = $('#catalogFilter').value;
   const matches = ROSTER.map((h, i) => ({h, i})).filter(({h}) =>
-    h.name.normalize('NFKC').toLocaleLowerCase('ja').includes(q) && (filter === 'all' || (filter === 'motif' ? h.motif : !h.motif)));
+    h.name.normalize('NFKC').toLocaleLowerCase('ja').includes(q) && (filter === 'all' || (filter === 'motif' ? h.motif : filter === 'history' ? h.tags?.includes('歴史') : !h.motif && !h.tags?.includes('歴史'))));
   $('#catalogCount').textContent = `${matches.length} / ${ROSTER.length}頭`;
   $('#catalogList').innerHTML = matches.length ? matches.map(({h, i}) =>
-    `<button data-index="${i}" aria-pressed="${i === catalog.index}">${catalogText(h.name)}<small>${catalogText(h.type)}</small></button>`).join('') : '<p>該当する馬がいません。</p>';
+    `<button data-index="${i}" aria-pressed="${i === catalog.index}">${h.tags?.includes('歴史') ? '<i class="meiba history">歴史</i>' : h.motif ? '<i class="meiba">名馬</i>' : ''}${catalogText(h.name)}<small>${catalogText(h.type)}</small></button>`).join('') : '<p>該当する馬がいません。</p>';
 }
 function catalogReset() { catalog.yaw = 0.8; catalog.pitch = 0.3; catalog.zoom = 1; }
 function catalogSelect(i) {
@@ -2440,7 +2472,7 @@ function catalogSelect(i) {
   catalog.radius = box.getSize(new V3()).length() * 0.65 + 0.5;
   catalogReset();
   const e = catalogText, labs = [['spd','スピード'],['sta','スタミナ'],['acc','加速'],['pow','根性'],['agi','器用さ']];
-  $('#catalogDetails').innerHTML = `<h3>${e(h.name)}</h3><p>${e(h.type)}・${STYLE[h.style]}</p><p>${e(h.blurb)}</p>
+  $('#catalogDetails').innerHTML = `<h3>${h.tags?.includes('歴史') ? '<i class="meiba history">歴史</i>' : h.motif ? '<i class="meiba">名馬</i>' : ''}${e(h.name)}</h3><p>${e(h.type)}・${STYLE[h.style]}</p><p>${e(h.blurb)}</p>
     <h4>プロフィール</h4><p class="catalogNote">このゲームのキャラクターとしての創作設定です。</p>
     <dl><dt>性格</dt><dd>${e(h.profile.personality)}</dd><dt>好きなもの</dt><dd>${e(h.profile.favorite)}</dd></dl>
     <h4>能力</h4><p class="catalogNote">ゲーム内の能力値（最大10）です。</p>
