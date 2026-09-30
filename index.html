@@ -699,11 +699,13 @@ const ROSTER = [
     blurb: 'ふだんは平凡、当たれば伝説。夢を買うならこの馬。' },
   // ---- 名馬モチーフ ----
   { name: 'ソラトブインパクト', type: '鹿毛・名馬モチーフ', kind: 'real', sk: 'deep', style: 'sashi', body: '#6b3a1f', mane: '#24120a', muzzle: '#b98a6a', look: { size: 0.92, star: true, barrel: 0.9, chest: 0.9, legColor: '#241a15' },
+    gait: { cadence: 0.78, reach: 1.38, pairPhase: 0.3, bounce: 0.3, pitch: 0.4, head: 0.45, note: '脚を前後に大きく開き、ゆったりした回転で滑らかに進むストライド型。違いが見えるよう誇張した表現です。' },
     motif: true, motifNote: '2005年に無敗でクラシック三冠。「飛ぶ」と評された末脚',
     st: { spd: 8, sta: 7, acc: 8, pow: 6, agi: 6 }, aff: { turf: 2, dirt: -1, snow: 0, sand: 0 },
     skill: { name: '空飛ぶ末脚', desc: '残り22%で先頭にいなければ、ふわりと浮き上がるような末脚で一気に伸びる。', color: '#9fd8ff' },
     blurb: '小柄な体からは想像できない加速。最後の直線で本当に飛ぶ。' },
   { name: 'コンジキボウクン', type: '栗毛・名馬モチーフ', kind: 'real', sk: 'orfe', style: 'sashi', body: '#c8642a', mane: '#f0a65a', muzzle: '#f2c49a', look: { size: 1.0, barrel: 0.96, chest: 1.06, forelock: 1.15 },
+    gait: { cadence: 1.3, reach: 0.88, pairPhase: 0.85, bounce: 0.7, pitch: 0.95, head: 1.1, note: '脚を素早く回し、左右の脚がずれて動く力強い走り。ディープ型との違いが見えるよう誇張した表現です。' },
     motif: true, motifNote: '2011年の三冠馬。「金色の暴君」と呼ばれた気性の激しさ',
     st: { spd: 8, sta: 7, acc: 6, pow: 8, agi: 4 }, aff: { turf: 2, dirt: 0, snow: 0, sand: 0 },
     skill: { name: '暴君の気まぐれ', desc: '残り30%で半々の賭け。覚醒して爆走するか、外へ逸走してから猛然と追い込むか。', color: '#ffae3d' },
@@ -749,6 +751,7 @@ const ROSTER = [
     skill: { name: '無敗の威圧感', desc: '残り35%で、近くを走る馬を威圧して脚を鈍らせる。', color: '#b48cff' },
     blurb: '隣にいるだけでライバルが縮こまる。負けた姿を誰も知らない。' },
   { name: 'テイオーステップ', type: '鹿毛・名馬モチーフ', kind: 'real', sk: 'teio', style: 'senko', body: '#6e3a1c', mane: '#1e0f07', muzzle: '#b58a6c', look: { size: 0.96, blaze: true, blazeWidth: 0.075, socks: [0], barrel: 0.92, chest: 0.94, legColor: '#261b16', frontLift: 1.2 },
+    gait: { cadence: 0.95, reach: 1.05, frontReach: 1.35, pairPhase: 0.65, bounce: 1.4, pitch: 0.65, head: 0.7, note: '前脚を高くダイナミックに上げ、軽やかに弾むテイオーステップ。雄大なフットワークが見えるよう誇張した表現です。' },
     motif: true, motifNote: '軽やかな「テイオーステップ」。1993年有馬記念、1年ぶりの復帰戦で奇跡の勝利',
     st: { spd: 7, sta: 7, acc: 8, pow: 7, agi: 8 }, aff: { turf: 2, dirt: 0, snow: 0, sand: 0 },
     skill: { name: '奇跡の復活', desc: '残り22%で4番手以下にいると、弾むようなステップで息を吹き返す。', color: '#5ad1ff' },
@@ -852,6 +855,41 @@ const ROSTER = [
     skill: { name: '調和のロングスパート', desc: '残り30%から7秒間、バランスのよい走りで長く加速する。', color: '#91cec6' },
     profile: { personality: '穏やかでしなやか。周りをよく見て自分のリズムを守る。', favorite: '涼しい風と夕暮れの草原' },
     blurb: '速さと落ち着きがぴたりと調和。芝の上を流れるように走り、長い末脚を届ける。' },
+  { name: 'スイスイバランス', type: 'セグウェイに乗る小馬', kind: 'segway', sk: 'segway', style: 'senko', body: '#fffaf2', mane: '#a3e8d1', muzzle: '#ffc5d4', look: { size: 0.72 },
+    mud: -1, st: { spd: 7, sta: 8, acc: 9, pow: 4, agi: 9 }, aff: { turf: 0, dirt: -1, snow: -2, sand: -2, asphalt: 2 },
+    skill: { name: 'ジャイロ・ダッシュ', desc: 'レース進行50%以上の直線で一度だけ発動。5秒間、バランスを保ってすいすい加速する。', color: '#72e6be' },
+    profile: { personality: '落ち着いたバランス上手。新しい乗り物が大好き。', favorite: 'なめらかな道と満タンのバッテリー' },
+    blurb: 'ミント色のセグウェイに乗った白い小馬。後ろ脚で台に立ち、前脚でハンドルを握って、軽やかに馬群をすり抜ける。' },
+  { name: 'ホッピングポニー', type: 'ホッピングに乗る小馬', kind: 'hopping', sk: 'hopping', style: 'sashi', body: '#fff0da', mane: '#ff9a69', muzzle: '#ffd0b8', look: { size: 0.75 },
+    mud: 0, st: { spd: 7, sta: 7, acc: 8, pow: 6, agi: 8 }, aff: { turf: 0, dirt: 0, snow: 0, sand: 0, asphalt: 0 },
+    skill: { name: '大ジャンプ', desc: '進行55%以上で一度だけ大ジャンプ。4秒間、速度1.10倍で馬群を飛び越える。', color: '#ffad72' },
+    profile: { personality: '弾む気持ちの挑戦者。転んでももう一回。', favorite: 'ばねの音と高いジャンプ' },
+    blurb: '小さな後ろ脚をホッピングに乗せ、前脚でハンドルをぎゅっ。ばねを縮めて、ぴょんぴょんゴールを目指す。' },
+  { name: 'ローラーダッシュ', type: 'ローラースケート馬', kind: 'roller', sk: 'roller', style: 'nige', body: '#e8f1ff', mane: '#936fff', muzzle: '#ffcee5',
+    mud: -1, st: { spd: 8, sta: 6, acc: 9, pow: 4, agi: 9 }, aff: { turf: 0, dirt: -1, snow: -2, sand: -2, asphalt: 2 },
+    skill: { name: 'すべりっぱなし加速', desc: '進行60%以上の直線で一度だけ発動。5秒間、速度1.12倍で滑り続ける。', color: '#aa91ff' },
+    profile: { personality: '軽快でおしゃれ。勢いがつくと止まらない。', favorite: 'なめらかな舗装と新品のスケート' },
+    blurb: '4本の脚に履いたスケートを交互に蹴って、すいっと滑る。直線が来たら、誰よりも長く風に乗る。' },
+  { name: 'オフロノオウマ', type: 'アヒル浮き輪の馬', kind: 'bath', sk: 'bath', style: 'senko', body: '#bcecff', mane: '#7dcbe8', muzzle: '#ffe4ed',
+    mud: 2, st: { spd: 6, sta: 9, acc: 6, pow: 7, agi: 6 }, aff: { turf: 0, dirt: 0, snow: 0, sand: 0, asphalt: 0 },
+    skill: { name: 'ごきげんバスタイム', desc: '進行50%以上で一度だけスタミナを20%回復。5秒間、雨・小雨なら速度1.12倍、それ以外は1.05倍。', color: '#8ce5ff' },
+    profile: { personality: 'のんびり清潔好き。雨の日もごきげん。', favorite: '泡のお風呂と黄色いアヒル' },
+    blurb: '黄色いアヒル浮き輪と泡をまとった水色の馬。濡れたコースも、お風呂気分で楽しんでしまう。' },
+  { name: 'フワフワバルーン', type: '風船で浮かぶ馬', kind: 'balloon', sk: 'balloon', style: 'sashi', body: '#fff1fa', mane: '#c8b4ef', muzzle: '#ffd6e8', look: { size: 0.85 },
+    mud: 0, st: { spd: 7, sta: 8, acc: 6, pow: 4, agi: 8 }, aff: { turf: 0, dirt: 0, snow: 0, sand: 0, asphalt: 0 },
+    skill: { name: 'ふわり上昇', desc: '進行40%以上の上り坂で一度だけ発動。6秒間、速度1.08倍で浮上する。坂のないコースでは進行75%以上で発動。', color: '#d7b5ff' },
+    profile: { personality: '夢見がちでおおらか。少しだけ空にあこがれる。', favorite: 'パステル色の風船とやさしい風' },
+    blurb: '背中につないだ風船に引かれて、脚が地面に届いたり離れたり。上り坂では空からの応援が背中を押す。' },
+  { name: 'オスシノシッソウ', type: 'サーモン寿司馬', kind: 'sushi', sk: 'sushi', style: 'oikomi', body: '#fffdf0', mane: '#243b2c', muzzle: '#ffd6bd',
+    mud: 0, st: { spd: 8, sta: 6, acc: 8, pow: 6, agi: 6 }, aff: { turf: 0, dirt: 0, snow: 0, sand: 0, asphalt: 0 },
+    skill: { name: 'わさびスパート', desc: '進行75%以上で一度だけ発動。涙目になりながら、4秒間、速度1.13倍で加速する。', color: '#9cda75' },
+    profile: { personality: '見た目はおっとり、刺激には敏感。', favorite: '新鮮なサーモンと控えめなわさび' },
+    blurb: 'シャリの体にサーモンの背中、海苔のたてがみ。わさびがつんと来たら、涙を光らせて猛烈に走る。' },
+  { name: 'ダンボールダービー', type: '段ボール工作馬', kind: 'cardboard', sk: 'cardboard', style: 'sashi', body: '#c99b65', mane: '#926538', muzzle: '#ddba85',
+    mud: 0, st: { spd: 7, sta: 7, acc: 7, pow: 6, agi: 7 }, aff: { turf: 0, dirt: 0, snow: 0, sand: 0, asphalt: 0 },
+    skill: { name: '中身は本気', desc: '進行60%以上で一度だけ発動。6秒間、滑らかな脚さばきで速度1.10倍に加速する。', color: '#ffd38c' },
+    profile: { personality: '手作りの温かさと、ひそかな負けず嫌い。', favorite: '工作の時間とぴったり貼れたガムテープ' },
+    blurb: '箱とガムテープで生まれた工作馬。いつもはかくかく、勝負どころでは驚くほど滑らか。中身のやる気は本物だ。' },
 ];
 const HORSE_PROFILES = [
   ['おっとり優雅。でも勝負どころでは負けず嫌い。', '桜の花びらと朝の散歩'],
@@ -1435,6 +1473,13 @@ function trySkill(r, R, p, dt, full) {
     case 'bullet': if (p >= 0.7 && !R.track.onCurve(R.s0 + r.s)) fire(1.16, 3); break;
     case 'rock': if (p >= 0.55) fire(1.09, 5); break;
     case 'drift': if (p >= 0.35 && R.track.onCurve(R.s0 + r.s)) fire(1.14, 4, { drift: true }); break;
+    case 'segway': if (p >= 0.5 && !R.track.onCurve(R.s0 + r.s)) fire(1.1, 5); break;
+    case 'hopping': if (p >= 0.55) fire(1.1, 4, { fly: true }); break;
+    case 'roller': if (p >= 0.6 && !R.track.onCurve(R.s0 + r.s)) fire(1.12, 5); break;
+    case 'bath': if (p >= 0.5) { r.st = Math.min(r.stMax, r.st + r.stMax * 0.2); fire(R.wx.w === 'rain' || R.wx.w === 'drizzle' ? 1.12 : 1.05, 5); } break;
+    case 'balloon': if ((p >= 0.4 && R.track.grade(R.s0 + r.s) > 0) || (!R.track.hasElev && p >= 0.75)) fire(1.08, 6, { fly: true }); break;
+    case 'sushi': if (p >= 0.75) fire(1.13, 4); break;
+    case 'cardboard': if (p >= 0.6) fire(1.1, 6); break;
     case 'waltz': if (p >= 0.45 && R.track.onCurve(R.s0 + r.s)) fire(1.1, 4); break;
     case 'windup': if (p >= 0.6) { r.fx = r.fx.filter(e => !e.wind); fire(1.12, 5); } break;
     case 'gold': if (p >= 0.8) { if (Math.random() < 0.35) fire(1.26, 6, { jackpot: true }); else { r.used = true; if (full && R.onFail) R.onFail(r); } } break;
@@ -1659,12 +1704,14 @@ function buildHorse(d, i) {
   H.baseEm = body.emissive ? body.emissive.clone() : C('#000');
   H.baseEmI = body.emissiveIntensity || 1;
 
-  part(bob, SPH, body, [0, 1.08, 0], [0.95, 0.46, 0.44 * (L.barrel || 1)]);
-  part(bob, SPH, body, [0.42, 1.14, 0], [0.46, 0.46 * (L.chest || 1), 0.42 * (L.chest || 1)]);
-  part(bob, SPH, body, [0.64, 1.52, 0], [0.24, 0.44, 0.24], [0, 0, -0.55]);
+  const shape = k === 'cardboard' ? BOX : SPH;
+  const shapeScale = k === 'cardboard' ? 1.65 : 1;
+  part(bob, shape, body, [0, 1.08, 0], [0.95 * shapeScale, 0.46 * shapeScale, 0.44 * (L.barrel || 1) * shapeScale]);
+  part(bob, shape, body, [0.42, 1.14, 0], [0.46 * shapeScale, 0.46 * (L.chest || 1) * shapeScale, 0.42 * (L.chest || 1) * shapeScale]);
+  part(bob, shape, body, [0.64, 1.52, 0], [0.24 * shapeScale, 0.44 * shapeScale, 0.24 * shapeScale], [0, 0, -0.55]);
   const head = new THREE.Group(); head.position.set(0.95, 1.9, 0); bob.add(head); H.head = head;
-  part(head, SPH, body, [0, 0, 0], [0.44, 0.4, 0.38]);
-  part(head, SPH, muzzle, [0.33, -0.13, 0], [0.3, 0.24, 0.27]);
+  part(head, shape, body, [0, 0, 0], [0.44 * shapeScale, 0.4 * shapeScale, 0.38 * shapeScale]);
+  part(head, shape, muzzle, [0.33, -0.13, 0], [0.3 * shapeScale, 0.24 * shapeScale, 0.27 * shapeScale]);
   const dark = new THREE.MeshBasicMaterial({ color: C('#2a1428') });
   const nostrilSize = L.nostrilSize || 1;
   for (const s of [1, -1]) part(head, SPH_LO, dark, [0.6, -0.1, 0.1 * s], [0.03 * nostrilSize, 0.045 * nostrilSize, 0.035 * nostrilSize], null, 0);
@@ -1739,7 +1786,7 @@ function buildHorse(d, i) {
   const legPos = [[0.5, 0.22], [0.5, -0.22], [-0.52, 0.22], [-0.52, -0.22]];
   legPos.forEach((lp, li) => {
     const pv = new THREE.Group(); pv.position.set(lp[0], 0.9, lp[1]); bob.add(pv);
-    part(pv, LEG, body, [0, -0.36, 0]);
+    part(pv, k === 'cardboard' ? BOX : LEG, body, [0, -0.36, 0], k === 'cardboard' ? [0.22, 0.72, 0.22] : null);
     if (k !== 'rocking') part(pv, HOOF, hoof, [0, -0.8, 0]);
     if (lowerLeg) part(pv, LEG, lowerLeg, [0, -0.55, 0], [1.015, 0.47, 1.015], null, 0);
     if (L.socks && L.socks.includes(li)) {
@@ -1756,7 +1803,7 @@ function buildHorse(d, i) {
   part(bob, BOX, cloth, [-0.05, 1.54, 0], [0.64, 0.06, 0.52], null, 0.04);
   const numMat = toon('#ffffff', { map: numberTex(i) });
   // Clear both the barrel and shoulder, including their 7% outline shells.
-  const numberOffset = Math.max(0.44 * (L.barrel || 1), 0.42 * (L.chest || 1)) * 1.07 + 0.015;
+  const numberOffset = k === 'bath' ? 0.91 : Math.max(0.44 * (L.barrel || 1), 0.42 * (L.chest || 1)) * 1.07 + 0.015;
   for (const s of [1, -1]) {
     const pl = new THREE.Mesh(NUMPL, numMat); pl.position.set(-0.05, 1.22, numberOffset * s); pl.rotation.y = s > 0 ? 0 : Math.PI; bob.add(pl);
   }
@@ -1826,6 +1873,42 @@ function buildHorse(d, i) {
     H.legs.forEach(leg => { leg.scale.y = length; });
     bob.children.forEach(child => { child.position.y -= 0.88 * (1 - length); });
   }
+  if (k === 'segway' || k === 'hopping') {
+    // Rear hooves rest on the deck; the raised front hooves meet the handlebar.
+    const rider = new THREE.Group();
+    [...bob.children].forEach(child => rider.add(child));
+    rider.position.set(0.2, 0.96, 0); rider.rotation.z = 0.65; bob.add(rider); H.rider = rider;
+    const mint = toon('#72e6be'), rubber = toon('#252b32');
+    const metal = new THREE.MeshStandardMaterial({ color: C('#dce7e4'), metalness: 0.7, roughness: 0.3 });
+    H.glowMats.push(mint); H.wheels = [];
+    part(bob, BOX, mint, [-0.27, 0.68, 0], [0.9, 0.16, 0.85]);
+    part(bob, BOX, rubber, [-0.27, 0.77, 0], [0.75, 0.025, 0.72], null, 0);
+    part(bob, BOX, metal, [0.54, 1.035, 0], [0.065, 0.62, 0.065]);
+    part(bob, BOX, rubber, [0.54, 1.34, 0], [0.11, 0.1, 0.7]);
+    part(bob, BOX, mint, [0.54, 1.2, 0], [0.12, 0.16, 0.18]);
+    if (k === 'hopping') {
+      const hopper = new THREE.Group(); [...bob.children].forEach(child => hopper.add(child)); bob.add(hopper); H.hopper = hopper;
+      const spring = new THREE.Group(); spring.position.set(-0.27, 0.08, 0); bob.add(spring); H.spring = spring;
+      const points = [];
+      for (let j = 0; j <= 96; j++) { const a = j / 96 * Math.PI * 12; points.push(new V3(Math.cos(a) * 0.14, j / 96 * 0.48, Math.sin(a) * 0.14)); }
+      part(spring, new THREE.TubeGeometry(new THREE.CatmullRomCurve3(points), 96, 0.028, 6, false), metal, [0, 0, 0], null, null, 0);
+      part(bob, BOX, rubber, [-0.27, 0.06, 0], [0.42, 0.12, 0.42]);
+      part(hopper, BOX, mint, [-0.27, 0.58, 0], [0.12, 0.2, 0.12]);
+    } else {
+    const tireGeo = new THREE.CylinderGeometry(0.4, 0.4, 0.22, 20);
+    const rimGeo = new THREE.CylinderGeometry(0.24, 0.24, 0.235, 12);
+    for (const s of [1, -1]) {
+      const wheel = new THREE.Group(); wheel.position.set(-0.27, 0.4, 0.56 * s); bob.add(wheel);
+      part(wheel, tireGeo, rubber, [0, 0, 0], null, [Math.PI / 2, 0, 0], 0);
+      part(wheel, rimGeo, metal, [0, 0, 0], null, [Math.PI / 2, 0, 0], 0);
+      // Visible spokes make wheel rotation readable from either side.
+      part(wheel, BOX, mint, [0, 0, 0.125 * s], [0.42, 0.055, 0.025], null, 0);
+      part(wheel, BOX, mint, [0, 0, 0.125 * s], [0.055, 0.42, 0.025], null, 0);
+      H.wheels.push(wheel);
+    }
+    }
+  }
+  addNoveltyParts(H);
   const sc = L.size || (k === 'pony' ? 0.82 : k === 'banei' ? 1.2 : k === 'tin' ? 0.9 : 1);
   bob.scale.set(sc, sc, k === 'banei' ? sc * 1.08 : sc);
   H.scale = sc;
@@ -1833,13 +1916,93 @@ function buildHorse(d, i) {
   root.traverse(o => { if (o.isMesh && o.material !== OUT) o.castShadow = true; });
   return H;
 }
-function animHorse(H, v, dt, t) {
+function addNoveltyParts(H) {
+  const { bob, head, kind: k } = H;
+  if (k === 'roller') {
+    H.wheels = [];
+    const boot = toon('#936fff'), tire = toon('#263348'), rim = toon('#ffbbd8'); H.glowMats.push(boot);
+    const geo = new THREE.CylinderGeometry(0.1, 0.1, 0.065, 12);
+    for (const leg of H.legs) {
+      part(leg, BOX, boot, [0.02, -0.78, 0], [0.38, 0.18, 0.26]);
+      for (const x of [-0.1, 0.14]) for (const s of [-1, 1]) {
+        const wheel = new THREE.Group(); wheel.position.set(x, -0.91, 0.15 * s); leg.add(wheel);
+        part(wheel, geo, tire, [0, 0, 0], null, [Math.PI / 2, 0, 0], 0);
+        part(wheel, BOX, rim, [0, 0, 0.04 * s], [0.15, 0.03, 0.015], null, 0); H.wheels.push(wheel);
+      }
+    }
+    bob.children.forEach(child => { child.position.y += 0.12; });
+  }
+  if (k === 'bath') {
+    const duck = new THREE.Group(); duck.position.set(0, 1.0, 0); bob.add(duck); H.floatRing = duck;
+    const yellow = toon('#ffdb49'); H.glowMats.push(yellow);
+    part(duck, new THREE.TorusGeometry(0.67, 0.19, 10, 32), yellow, [0, 0, 0], [1.65, 1, 1], [Math.PI / 2, 0, 0]);
+    part(duck, SPH, yellow, [1.08, 0.28, 0], [0.22, 0.27, 0.24]);
+    part(duck, BOX, toon('#ff973e'), [1.3, 0.22, 0], [0.28, 0.09, 0.24]);
+    for (const s of [-1, 1]) part(duck, SPH_LO, toon('#253041'), [1.18, 0.36, 0.2 * s], [0.035, 0.04, 0.025], null, 0);
+    H.bubbles = [];
+    const foam = new THREE.MeshStandardMaterial({ color: C('#e6faff'), transparent: true, opacity: 0.55, roughness: 0.2, depthWrite: false });
+    for (let j = 0; j < 8; j++) { const a = j / 8 * Math.PI * 2; H.bubbles.push(part(bob, SPH_LO, foam, [Math.cos(a) * 0.9, 1.4 + j % 3 * 0.15, Math.sin(a) * 0.55], [0.09, 0.09, 0.09], null, 0)); }
+  }
+  if (k === 'balloon') {
+    H.balloons = [];
+    for (let j = 0; j < 3; j++) {
+      const balloon = new THREE.Group(); balloon.position.set(-0.25 + j * 0.25, 1.5, (j - 1) * 0.24); bob.add(balloon);
+      const col = toon(['#ffafcf', '#a9e6ff', '#ffe8a0'][j]); H.glowMats.push(col);
+      const stringLength = 1.3 + j % 2 * 0.15;
+      part(balloon, new THREE.CylinderGeometry(0.012, 0.012, stringLength, 6), toon('#efe6d8'), [0, stringLength / 2, 0], null, null, 0);
+      part(balloon, SPH, col, [0, 1.7 + j % 2 * 0.15, 0], [0.3, 0.4, 0.3]);
+      part(balloon, CONE, col, [0, 1.3 + j % 2 * 0.15, 0], [0.055, 0.08, 0.055]); H.balloons.push(balloon);
+    }
+  }
+  if (k === 'sushi') {
+    const salmon = toon('#ff947b'), fat = toon('#ffe0c3'), rice = toon('#ffffff'); H.glowMats.push(salmon);
+    part(bob, BOX, salmon, [-0.12, 1.66, 0], [1.65, 0.18, 0.86]);
+    for (let j = 0; j < 7; j++) part(bob, BOX, fat, [-0.8 + j * 0.22, 1.757, 0], [0.035, 0.012, 0.85], [0, -0.25, 0], 0);
+    for (const s of [-1, 1]) for (let j = 0; j < 12; j++) part(bob, SPH_LO, rice, [-0.7 + j % 6 * 0.24, 0.99 + Math.floor(j / 6) * 0.19, 0.43 * s], [0.1, 0.055, 0.035], [0, 0, (j % 3 - 1) * 0.3], 0);
+    H.tears = new THREE.Group(); head.add(H.tears); H.tears.visible = false;
+    for (const s of [-1, 1]) part(H.tears, SPH_LO, toon('#80d9ff'), [0.17, -0.12, 0.36 * s], [0.045, 0.1, 0.025], null, 0);
+  }
+  if (k === 'cardboard') {
+    const tape = toon('#e7c997'), fold = toon('#8a633e');
+    part(bob, BOX, tape, [-0.18, 1.47, 0], [0.18, 0.025, 0.75], null, 0);
+    for (const s of [-1, 1]) {
+      part(bob, BOX, tape, [-0.6, 1.15, 0.378 * s], [0.18, 0.58, 0.02], null, 0);
+      part(bob, BOX, fold, [0, 0.73, 0.378 * s], [1.4, 0.02, 0.02], null, 0);
+      part(head, BOX, tape, [-0.25, 0, 0.327 * s], [0.12, 0.62, 0.025], null, 0);
+    }
+    // Box faces are flatter than the usual head; keep eyes and cheeks outside them.
+    for (const child of head.children) if (Math.abs(child.position.z) >= 0.3) child.position.z = Math.sign(child.position.z) * Math.max(Math.abs(child.position.z), 0.35);
+  }
+}
+function animHorse(H, v, dt, t, skillActive = false) {
   const k = Math.min(v / 22, 1.2);
   const toy = H.kind === 'rocking' || H.kind === 'carousel';
   if (H.kind === 'car') {
     for (const wheel of H.wheels) wheel.rotation.z -= dt * v / 0.3;
     H.bob.position.y = v > 0.4 ? Math.sin(t * 18) * 0.012 : 0;
     H.bob.rotation.z = 0;
+  } else if (H.kind === 'hopping') {
+    H.phase += dt * (v > 0.4 ? 3 + v * 0.25 : 1.5);
+    const bounce = Math.max(0, Math.sin(H.phase)), compression = v > 0.4 ? Math.max(0, -Math.sin(H.phase)) * 0.35 : 0.04 + Math.sin(H.phase) * 0.02;
+    H.spring.scale.y = 1 - compression; H.hopper.position.y = -0.48 * compression;
+    H.bob.position.y = v > 0.4 ? bounce * 0.65 : 0;
+    H.bob.rotation.z = Math.sin(H.phase) * 0.025;
+    H.head.rotation.z = Math.sin(H.phase) * 0.025; H.head.rotation.y = 0;
+    H.tail.rotation.y = Math.sin(H.phase) * 0.2;
+  } else if (H.kind === 'roller') {
+    H.phase += dt * (v > 0.4 ? 2 + v * 0.15 : 1);
+    for (const wheel of H.wheels) wheel.rotation.z -= dt * v / (0.1 * H.scale);
+    H.legs.forEach((leg, j) => { leg.rotation.z = v > 0.4 ? Math.sin(H.phase + j % 2 * Math.PI) * 0.18 : 0; });
+    H.bob.position.y = 0; H.bob.rotation.z = v > 0.4 ? -0.04 : 0;
+    H.head.rotation.z = Math.sin(t * 1.5) * 0.025; H.head.rotation.y = 0;
+    H.tail.rotation.y = Math.sin(H.phase) * 0.2;
+  } else if (H.kind === 'segway') {
+    for (const wheel of H.wheels) wheel.rotation.z -= dt * v / (0.4 * H.scale);
+    H.bob.position.y = 0;
+    H.bob.rotation.z = damp(H.bob.rotation.z, v > 0.4 ? -0.035 * Math.min(k, 1) : Math.sin(t * 1.3 + H.phase) * 0.012, 6, dt);
+    H.head.rotation.z = Math.sin(t * 1.6 + H.phase) * 0.025;
+    H.head.rotation.y = v > 0.4 ? damp(H.head.rotation.y, 0, 5, dt) : Math.sin(t * 0.7 + H.phase) * 0.12;
+    H.tail.rotation.z = 0.15; H.tail.rotation.y = Math.sin(t * 2 + H.phase) * 0.2;
   } else if (toy) {
     H.phase += dt * (v > 0.4 ? 2.2 + v * 0.3 : 1.2);
     const ph = H.phase, kk = Math.min(k, 1);
@@ -1848,16 +2011,20 @@ function animHorse(H, v, dt, t) {
     H.head.rotation.z = Math.sin(ph + 1.6) * 0.06; H.head.rotation.y = v > 0.4 ? damp(H.head.rotation.y, 0, 5, dt) : Math.sin(t * 0.7 + H.phase) * 0.15;
     H.tail.rotation.z = 0.25 + 0.4 * kk; H.tail.rotation.y = Math.sin(ph * 1.3) * 0.35;
   } else if (v > 0.4) {
-    H.phase += dt * (3.2 + v * 0.36);
-    const ph = H.phase, amp = v < 4 ? 0.35 : 0.3 + 0.55 * Math.min(k, 1);
-    const frontAmp = amp * (H.def.look?.frontLift || 1);
-    const walk = v < 4, stiff = H.kind === 'tin';
+    // Deliberately exaggerated motif gaits, not measured joint angles.
+    // Apply individual gaits only at a run; walking and race physics stay shared.
+    const gait = v >= 4 ? H.def.gait : null;
+    H.phase += dt * (3.2 + v * 0.36) * (gait?.cadence ?? 1);
+    const ph = H.phase, amp = (v < 4 ? 0.35 : 0.3 + 0.55 * Math.min(k, 1)) * (gait?.reach ?? 1);
+    const frontAmp = amp * (H.def.look?.frontLift || 1) * (gait?.frontReach ?? 1);
+    const pairPhase = gait?.pairPhase ?? 0.5;
+    const walk = v < 4, stiff = H.kind === 'tin' || (H.kind === 'cardboard' && !skillActive);
     if (stiff) { const a2 = 0.25 + 0.3 * Math.min(k, 1), ph2 = ph * 1.4; H.legs[0].rotation.z = H.legs[3].rotation.z = Math.sin(ph2) * a2; H.legs[1].rotation.z = H.legs[2].rotation.z = -Math.sin(ph2) * a2; H.bob.position.y = Math.abs(Math.sin(ph2)) * 0.08; H.bob.rotation.z = Math.sin(ph2 * 2) * 0.03; } else {
-    H.legs[0].rotation.z = Math.sin(ph) * frontAmp; H.legs[1].rotation.z = Math.sin(ph + (walk ? Math.PI : 0.5)) * frontAmp;
-    H.legs[2].rotation.z = Math.sin(ph + (walk ? Math.PI * 0.5 : Math.PI)) * amp; H.legs[3].rotation.z = Math.sin(ph + (walk ? Math.PI * 1.5 : Math.PI + 0.5)) * amp;
-    H.bob.position.y = Math.abs(Math.sin(ph)) * (walk ? 0.04 : 0.24 * Math.min(k, 1));
-    H.bob.rotation.z = Math.sin(ph + 0.8) * 0.07 * k; }
-    H.head.rotation.z = Math.sin(ph + 1.6) * (0.06 + 0.1 * k);
+    H.legs[0].rotation.z = Math.sin(ph) * frontAmp; H.legs[1].rotation.z = Math.sin(ph + (walk ? Math.PI : pairPhase)) * frontAmp;
+    H.legs[2].rotation.z = Math.sin(ph + (walk ? Math.PI * 0.5 : Math.PI)) * amp; H.legs[3].rotation.z = Math.sin(ph + (walk ? Math.PI * 1.5 : Math.PI + pairPhase)) * amp;
+    H.bob.position.y = Math.abs(Math.sin(ph)) * (walk ? 0.04 : 0.24 * Math.min(k, 1)) * (gait?.bounce ?? 1);
+    H.bob.rotation.z = Math.sin(ph + 0.8) * 0.07 * k * (gait?.pitch ?? 1); }
+    H.head.rotation.z = Math.sin(ph + 1.6) * (0.06 + 0.1 * k) * (gait?.head ?? 1);
     H.tail.rotation.z = 0.35 + 0.5 * Math.min(k, 1) + Math.sin(ph * 0.5) * 0.12; H.tail.rotation.y = Math.sin(ph) * 0.3;
   } else {
     for (const l of H.legs) l.rotation.z = damp(l.rotation.z, 0, 8, dt);
@@ -1868,6 +2035,16 @@ function animHorse(H, v, dt, t) {
     H.tail.rotation.z = 0.15; H.tail.rotation.y = Math.sin(t * 2.2 + H.phase) * 0.45;
   }
   if (v > 0.4 && !toy && H.kind !== 'car') H.head.rotation.y = damp(H.head.rotation.y, 0, 5, dt);
+  if (H.kind === 'balloon') {
+    H.bob.position.y = Math.max(0, Math.sin(t * 2 + H.phase)) * 0.45;
+    H.balloons.forEach((b, j) => { b.rotation.z = Math.sin(t * 1.4 + j) * 0.06; });
+  }
+  if (H.floatRing) {
+    H.floatRing.rotation.x = Math.sin(t * 2.2 + H.phase) * 0.07;
+    H.floatRing.rotation.z = Math.sin(t * 1.7 + H.phase) * 0.04;
+    H.bubbles.forEach((b, j) => { b.position.y = 1.3 + ((t * 0.3 + j / 8) % 1) * 0.7; });
+  }
+  if (H.tears) H.tears.visible = skillActive;
   if (H.key) H.key.rotation.z -= dt * (1.5 + v * 0.5);
   if (H.hop > 0) { H.hop = Math.max(0, H.hop - dt); H.hopY = Math.abs(Math.sin((1 - H.hop) * Math.PI * 3)) * 0.7 * H.hop; } else H.hopY = 0;
   for (const w of H.wings) w.g.rotation.x = -w.s * (0.35 + Math.sin(t * (v > 1 ? 18 : 4) + H.phase) * (v > 1 ? 0.6 : 0.2));
@@ -2952,6 +3129,7 @@ function catalogSelect(i) {
   catalogReset();
   const e = catalogText, labs = [['spd','スピード'],['sta','スタミナ'],['acc','加速'],['pow','根性'],['agi','器用さ']];
   $('#catalogDetails').innerHTML = `<h3>${h.tags?.includes('歴史') ? '<i class="meiba history">歴史</i>' : h.motif ? '<i class="meiba">名馬</i>' : ''}${e(h.name)}</h3><p>${e(h.type)}・${STYLE[h.style]}</p><p>${e(h.blurb)}</p>
+    ${h.gait ? `<h4>走り方</h4><p>${e(h.gait.note)}</p><p class="catalogNote">研究資料を参考にしたゲーム用の表現です。実馬の動きの厳密な再現ではありません。「走る」で確認できます。</p>` : ''}
     <h4>プロフィール</h4><p class="catalogNote">このゲームのキャラクターとしての創作設定です。</p>
     <dl><dt>性格</dt><dd>${e(h.profile.personality)}</dd><dt>好きなもの</dt><dd>${e(h.profile.favorite)}</dd></dl>
     <h4>能力</h4><p class="catalogNote">ゲーム内の能力値（最大10）です。</p>
@@ -3295,7 +3473,12 @@ function updHorses(dt, rdt) {
     let face = -q.h + H.yaw + (H.drift || 0);
     if (S.mode === 'lobby' && r.i === S.sel) face += Math.sin(clock * 0.8) * 0.15;
     H.root.rotation.order = 'YZX'; H.root.rotation.y = face;
-    animHorse(H, r.v, dt, clock);
+    animHorse(H, r.v, dt, clock, r.fx.some(e => e.skill));
+    if (H.kind === 'bath' && r.v > 0.4 && dt > 0) {
+      r.ba = (r.ba || 0) + dt * 8;
+      tmpC.set('#c9f4ff');
+      while (r.ba >= 1) { r.ba--; dustP.emit(q.x + rand(-0.6, 0.6), gy + H.scale * 1.4, q.z + rand(-0.5, 0.5), -Math.cos(q.h) * 0.6, 0.8, -Math.sin(q.h) * 0.6, 1.2, 0.13, tmpC, 0, 0); }
+    }
     if (r.v > 4 && r.fly < 0.5 && dt > 0) {
       r.da = (r.da || 0) + dt * r.v * 0.9;
       const dx = Math.cos(q.h), dz = Math.sin(q.h);
