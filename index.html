@@ -629,6 +629,10 @@ const ROSTER = [
     mud: 1, st: { spd: 7, sta: 8, acc: 8, pow: 7, agi: 8 }, aff: { turf: 2, dirt: 1, snow: 0, sand: -1 },
     skill: { name: 'ちびっこのど根性', desc: '残り25%で先頭にいなければ、短い脚をめいっぱい伸ばして加速。大きな相手にも最後まで食らいつく。', color: '#fff0b3' },
     blurb: '北の小さな牧場からやってきた、まんまるな白い挑戦者。桃色の鼻先を笑われても、黒い好敵手の背中を追い続ける。小さな師匠に教わったのは、ゴールまであきらめないこと。' },
+  { name: 'とうふデリバリー', type: 'AE86・ハッチバック', kind: 'car', sk: 'drift', style: 'sashi', body: '#f7f7f2', mane: '#202127', muzzle: '#f7f7f2',
+    mud: -1, st: { spd: 8, sta: 7, acc: 9, pow: 6, agi: 10 }, aff: { turf: 1, dirt: 0, snow: -1, sand: -1 },
+    skill: { name: '慣性ドリフト', desc: 'レース中盤以降のコーナーで、車体を横に向けて一気に加速。4秒間の鋭い立ち上がりで馬群を抜ける。', color: '#a9e8ff' },
+    blurb: '白黒のパンダカラーが目印のハッチバック。リトラクタブルライトを開き、豆腐を崩さない絶妙な走りでコーナーを攻める。' },
 ];
 const HORSE_PROFILES = [
   ['おっとり優雅。でも勝負どころでは負けず嫌い。', '桜の花びらと朝の散歩'],
@@ -657,6 +661,7 @@ const HORSE_PROFILES = [
   ['華やかで踊り好き。みんなを笑顔にしたい。', '遊園地の音楽と色とりどりの灯り'],
   ['働き者で少し照れ屋。ねじを巻くと張り切る。', '背中の鍵を巻いてもらう時間'],
   ['泣き虫だけど負けず嫌い。仲間の声で何度でも立ち上がる。', '小さな師匠との特訓と、母のいる牧場'],
+  ['普段はぼんやり。でもコーナーでは天才肌。', '早朝の豆腐配達と峠道'],
 ];
 ROSTER.forEach((h, i) => {
   h.sk = h.sk || h.kind; h.look = h.look || {};
@@ -1091,6 +1096,7 @@ function trySkill(r, R, p, dt, full) {
     case 'choco': if (p >= 0.7) fire(1.08 + (R.track.def.surf === 'snow' ? 0.03 : 0) - (R.track.def.surf === 'sand' ? 0.04 : 0), 5); break;
     case 'bullet': if (p >= 0.7 && !R.track.onCurve(R.s0 + r.s)) fire(1.16, 3); break;
     case 'rock': if (p >= 0.55) fire(1.09, 5); break;
+    case 'drift': if (p >= 0.35 && R.track.onCurve(R.s0 + r.s)) fire(1.14, 4, { drift: true }); break;
     case 'waltz': if (p >= 0.45 && R.track.onCurve(R.s0 + r.s)) fire(1.1, 4); break;
     case 'windup': if (p >= 0.6) { r.fx = r.fx.filter(e => !e.wind); fire(1.12, 5); } break;
     case 'gold': if (p >= 0.8) { if (Math.random() < 0.35) fire(1.26, 6, { jackpot: true }); else { r.used = true; if (full && R.onFail) R.onFail(r); } } break;
@@ -1260,7 +1266,43 @@ function hoodTex(col, check) {
   });
 }
 const RAINBOW = ['#ff6b9d', '#ffb86b', '#ffe66b', '#7dffa8', '#6bc8ff', '#b58cff'];
+function buildCar(d, i) {
+  const root = new THREE.Group(), bob = new THREE.Group(); root.add(bob);
+  const body = new THREE.MeshStandardMaterial({ color: C(d.body), roughness: 0.3, metalness: 0.25 });
+  const black = toon('#202127'), glass = new THREE.MeshStandardMaterial({ color: C('#294459'), roughness: 0.18, metalness: 0.5 });
+  const H = { root, bob, wheels: [], legs: [], wings: [], glowMats: [body], hopY: 0, hop: 0, phase: 0, yaw: 0, drift: 0, glow: 0, glowCol: C(d.skill.color), def: d, kind: d.kind, scale: 1 };
+  // Front is +X, matching the horses. A sloping rear window forms the hatch.
+  part(bob, BOX, black, [0, 0.5, 0], [2.8, 0.38, 1.25]);
+  part(bob, BOX, body, [0, 0.78, 0], [2.8, 0.3, 1.25]);
+  part(bob, BOX, glass, [-0.2, 1.09, 0], [1.3, 0.4, 1.12]);
+  part(bob, BOX, body, [-0.25, 1.32, 0], [1.05, 0.1, 1.18]);
+  part(bob, BOX, glass, [0.53, 1.07, 0], [0.06, 0.55, 1.1], [0, 0, 0.5]);
+  part(bob, BOX, glass, [-0.99, 1.06, 0], [0.06, 0.65, 1.1], [0, 0, -0.7]);
+  const rim = new THREE.MeshStandardMaterial({ color: C('#d8dce1'), metalness: 0.8, roughness: 0.25 });
+  const tireGeo = new THREE.CylinderGeometry(0.3, 0.3, 0.2, 20);
+  const rimGeo = new THREE.CylinderGeometry(0.18, 0.18, 0.21, 12);
+  const numMat = toon('#ffffff', { map: numberTex(i) });
+  for (const side of [-1, 1]) {
+    for (const x of [-0.88, 0.88]) {
+      const wheel = new THREE.Group(); wheel.position.set(x, 0.31, 0.61 * side); bob.add(wheel);
+      part(wheel, tireGeo, black, [0, 0, 0], null, [Math.PI / 2, 0, 0], 0);
+      part(wheel, rimGeo, rim, [0, 0, 0.015 * side], null, [Math.PI / 2, 0, 0], 0);
+      H.wheels.push(wheel);
+    }
+    part(bob, BOX, body, [-0.2, 1.09, 0.57 * side], [0.055, 0.42, 0.045], null, 0);
+    part(bob, BOX, black, [0.55, 1, 0.7 * side], [0.17, 0.1, 0.16]);
+    const plate = new THREE.Mesh(NUMPL, numMat); plate.position.set(0, 0.78, 0.638 * side); plate.scale.setScalar(0.65); plate.rotation.y = side > 0 ? 0 : Math.PI; bob.add(plate);
+    part(bob, BOX, black, [1.08, 1, 0.4 * side], [0.3, 0.22, 0.3]);
+    part(bob, BOX, glowMat('#fff4cc', 1.5), [1.24, 1, 0.4 * side], [0.025, 0.14, 0.22], null, 0);
+    part(bob, BOX, toon('#e54638'), [-1.415, 0.78, 0.4 * side], [0.025, 0.12, 0.32], null, 0);
+  }
+  part(bob, BOX, black, [1.42, 0.64, 0], [0.08, 0.16, 1.2]);
+  part(bob, BOX, black, [-1.42, 0.64, 0], [0.08, 0.16, 1.2]);
+  H.eye = new THREE.Object3D(); H.eye.position.set(0.1, 1.22, 0); bob.add(H.eye);
+  return H;
+}
 function buildHorse(d, i) {
+  if (d.kind === 'car') return buildCar(d, i);
   const root = new THREE.Group(), bob = new THREE.Group(); root.add(bob);
   const k = d.kind, L = d.look || {}; const H = { root, bob, legs: [], wings: [], glowMats: [], hopY: 0, hop: 0, phase: Math.random() * 6, yaw: 0, glow: 0, glowCol: C(d.skill.color), def: d, kind: k };
   let body;
@@ -1456,7 +1498,11 @@ function buildHorse(d, i) {
 function animHorse(H, v, dt, t) {
   const k = Math.min(v / 22, 1.2);
   const toy = H.kind === 'rocking' || H.kind === 'carousel';
-  if (toy) {
+  if (H.kind === 'car') {
+    for (const wheel of H.wheels) wheel.rotation.z -= dt * v / 0.3;
+    H.bob.position.y = v > 0.4 ? Math.sin(t * 18) * 0.012 : 0;
+    H.bob.rotation.z = 0;
+  } else if (toy) {
     H.phase += dt * (v > 0.4 ? 2.2 + v * 0.3 : 1.2);
     const ph = H.phase, kk = Math.min(k, 1);
     if (H.kind === 'rocking') { H.bob.rotation.z = Math.sin(ph) * (0.05 + 0.2 * kk); H.bob.position.y = 0; }
@@ -1483,7 +1529,7 @@ function animHorse(H, v, dt, t) {
     H.head.rotation.y = Math.sin(t * 0.7 + H.phase * 2) * 0.18;
     H.tail.rotation.z = 0.15; H.tail.rotation.y = Math.sin(t * 2.2 + H.phase) * 0.45;
   }
-  if (v > 0.4 && !toy) H.head.rotation.y = damp(H.head.rotation.y, 0, 5, dt);
+  if (v > 0.4 && !toy && H.kind !== 'car') H.head.rotation.y = damp(H.head.rotation.y, 0, 5, dt);
   if (H.key) H.key.rotation.z -= dt * (1.5 + v * 0.5);
   if (H.hop > 0) { H.hop = Math.max(0, H.hop - dt); H.hopY = Math.abs(Math.sin((1 - H.hop) * Math.PI * 3)) * 0.7 * H.hop; } else H.hopY = 0;
   for (const w of H.wings) w.g.rotation.x = -w.s * (0.35 + Math.sin(t * (v > 1 ? 18 : 4) + H.phase) * (v > 1 ? 0.6 : 0.2));
@@ -2721,7 +2767,9 @@ function updHorses(dt, rdt) {
     H.root.rotation.z = damp(H.root.rotation.z, Math.atan(track.visGrade(R.s0 + r.s)) * 0.8, 6, rdt);
     const lv = r.pl === undefined ? 0 : (r.lane - r.pl) / Math.max(dt, 1e-4); r.pl = r.lane;
     H.yaw = damp(H.yaw, clamp(-lv * 0.07, -0.35, 0.35), 6, rdt);
-    let face = -q.h + H.yaw;
+    const drifting = r.fx.some(e => e.drift) && track.onCurve(R.s0 + r.s);
+    if (H.kind === 'car') H.drift = damp(H.drift, drifting ? -track.sgn * 0.5 : 0, 7, rdt);
+    let face = -q.h + H.yaw + (H.drift || 0);
     if (S.mode === 'lobby' && r.i === S.sel) face += Math.sin(clock * 0.8) * 0.15;
     H.root.rotation.order = 'YZX'; H.root.rotation.y = face;
     animHorse(H, r.v, dt, clock);
