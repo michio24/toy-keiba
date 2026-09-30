@@ -359,6 +359,138 @@ h2{color:var(--gold);font-size:14px;letter-spacing:.06em}
  #catalog h2{font-size:15px}
 }
 @media(min-width:761px){#catalogBrowse{display:contents}#catalogListPane{grid-column:1;grid-row:1}#catalogView{grid-column:2;grid-row:1}#catalogDetails{grid-column:3;grid-row:1}}
+/* ロビー再構成：メニュー行＋今日のレース＋タブ（出走馬／コース）、出走ボタンは独立したバー */
+:root{--slipW:clamp(280px,28vw,360px)}
+@media(max-width:1100px) and (min-width:761px){:root{--slipW:290px}#raceTrack{grid-template-columns:64px minmax(0,1fr)}#raceTrack .tsw{height:40px}#raceTrack .chg{display:none}#raceTrack .rtx>b{font-size:13px}}
+#journey .jbtns button{font-size:13px}
+#rail{scroll-padding-top:64px}
+#menuRow{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+#menuRow button,#catalogOpen{width:auto;margin:0;padding:8px 4px;min-height:40px;border-radius:10px;background:#43285f;border:1px solid var(--line);font-size:12px;font-weight:900;color:var(--text);white-space:nowrap}
+#menuRow button:hover{background:#583378}
+#achBtn[aria-expanded=true]{background:#583378;border-color:var(--gold)}
+#achCount{font-family:var(--f-num);color:var(--gold)}
+#achList{padding:10px 12px;border:1px solid var(--line);border-radius:12px;background:#ffffff08;font-size:12px}
+#achList p{margin:0 0 6px;color:var(--dim)}
+#achList ul{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+#achList li{display:grid;grid-template-columns:22px 1fr;column-gap:4px;line-height:1.4}
+#achList li span{grid-row:span 2}#achList li small{color:var(--dim)}#achList li.done b{color:var(--gold)}
+#journey{border-color:var(--gold)}
+#journey .jbtns{display:flex;gap:6px;flex-wrap:wrap}#journey .jbtns button{flex:1}
+#journey #easyStart{background:linear-gradient(100deg,#ff3d8b,#ff7a3d);font-weight:900}
+#raceCard{display:flex;flex-direction:column;gap:8px}
+#raceTrack{display:grid;grid-template-columns:92px minmax(0,1fr) auto;gap:10px;align-items:center;text-align:left;padding:8px;border-radius:14px;border:2px solid var(--line);background:#251640;box-shadow:0 3px 0 #130b25;transition:border-color .15s}
+#raceTrack:hover{border-color:var(--gold)}
+#raceTrack .tsw{height:48px;border-radius:9px;background:var(--g);display:grid;place-items:center;box-shadow:inset 0 -10px 20px rgba(0,0,0,.2)}
+#raceTrack .rtx{display:flex;flex-direction:column;gap:3px;min-width:0}
+#raceTrack .rtx small{font-size:10px;font-weight:900;color:var(--gold);letter-spacing:.06em}
+#raceTrack .rtx small .meiba{margin-left:6px;font-size:8px}
+#raceTrack .rtx>b{font-family:var(--f-disp);font-weight:400;font-size:15px;line-height:1.2;overflow-wrap:anywhere}
+#raceTrack .tmeta{font-size:11px;color:var(--dim);display:flex;gap:6px;align-items:center}
+#raceTrack .tmeta b{font-weight:900;color:var(--text);background:rgba(255,255,255,.12);border-radius:5px;padding:1px 6px}
+#raceTrack .chg{font-size:11px;font-weight:900;color:var(--gold);padding:5px 9px;border-radius:999px;border:1px solid #ffcf3f66;background:#ffcf3f14;white-space:nowrap}
+#lobbyTabs{position:sticky;top:-16px;z-index:3;display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:4px;padding:4px;border-radius:12px;background:#150c30;box-shadow:0 4px 12px #110a2966}
+#lobbyTabs button{padding:8px 4px;border-radius:9px;font-weight:900;font-size:13px;color:var(--dim);min-height:40px;white-space:nowrap}
+#lobbyTabs button small{margin-left:5px;font-size:11px;opacity:.85}
+#lobbyTabs button[aria-selected=true]{background:linear-gradient(100deg,#ff3d8b,#ff7a3d);color:#fff;box-shadow:0 3px 0 #7c1742}
+#tabSlip{display:none}
+#paneHorses,#paneTracks{display:flex;flex-direction:column;gap:8px}
+#poolNote{margin:0 2px;font-size:11px}
+.filters{display:grid;grid-template-columns:auto auto auto auto;gap:5px}
+.filters button{padding:6px 4px;border-radius:999px;border:1px solid var(--line);background:#ffffff0d;font-size:11.5px;font-weight:900;min-height:34px;white-space:nowrap}
+.filters button small{margin-left:3px;font-family:var(--f-num);opacity:.75}
+.filters button[aria-pressed=true]{background:var(--gold);border-color:var(--gold);color:#241000}
+#slip,#goBar{width:var(--slipW)}
+#slip{bottom:calc(env(safe-area-inset-bottom,0px) + 26px + var(--goH,160px));max-height:calc(100% - 120px - var(--goH,160px))}
+#goBar{position:absolute;right:16px;bottom:calc(env(safe-area-inset-bottom,0px) + 16px);padding:12px;display:flex;flex-direction:column;gap:9px;border-color:#ff95c5;pointer-events:auto}
+#preview{display:flex;flex-direction:column;gap:3px;text-align:left}
+#preview .pv1{display:flex;align-items:center;gap:8px;min-width:0}
+#preview .pv1 .num{min-width:24px;height:24px;font-size:13px}
+#preview .pvn{flex:1;min-width:0;font-family:var(--f-body);font-weight:900;font-size:14px;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#preview .pvt{font-weight:900;color:var(--text);white-space:nowrap}
+#preview .pv2{font-size:12px;line-height:1.5}
+#preview .pv2 b{font-size:16px}
+#preview .pv2 small{font-size:10.5px;margin-left:2px}
+@media(max-width:760px){
+ #lobby{gap:0}
+ #lobbyScroll{max-height:calc(100dvh - 250px)}
+ #slip{order:0}
+ #slip,#goBar{width:auto;max-height:none;bottom:auto}
+ #tabSlip{display:block}
+ #lobbyTabs{top:-12px}
+ #lobby[data-tab=slip] #rail>:not(#lobbyTabs){display:none}
+ #lobby:not([data-tab=slip]) #slip{display:none}
+ #goBar{position:static;margin-top:8px;display:grid;grid-template-columns:minmax(0,1fr) 136px;align-items:center;gap:6px 10px;padding:10px}
+ #goBar #go{position:relative;bottom:auto;font-size:22px;min-height:54px;padding:8px}
+ #goBar #hint{grid-column:1/-1}#goBar #hint:not(.bail){display:none}
+ #preview .pv2 small{display:none}
+ #lobby.collapsed #lobbyScroll{display:none}
+ /* 縦持ちスマホ：出走馬リストまでの縦幅を詰める */
+ #lobbyToggle{padding:6px 14px;font-size:13px}
+ #lobbyScroll{max-height:calc(100dvh - 230px)}
+ #rail{gap:8px}
+ #menuRow button{font-size:11.5px;min-height:36px;padding:6px 2px}
+ #raceTrack{grid-template-columns:72px minmax(0,1fr) auto;padding:6px 8px;gap:8px}
+ #raceTrack .tsw{height:40px}#raceTrack .rtx{gap:1px}#raceTrack .rtx>b{font-size:14px}
+ #wxBox{padding:6px 10px;gap:2px 10px}#wxBox .ic{width:26px;height:26px}#wxBox .wl{font-size:13px}#wxBox p{font-size:11px;line-height:1.4}
+ /* レース中：カメラは1行の横スクロール、実況はその上に置く */
+ #cams{flex-wrap:nowrap;max-width:calc(100% - 118px);padding:4px;gap:2px}
+ #cams button{min-height:40px;padding:4px 7px;justify-content:center}
+}
+/* 結果画面：「次のレースへ」を常に押せるよう下端に固定 */
+#result .rbtns{position:sticky;bottom:-14px;z-index:2;margin:0 -14px -14px;padding:10px 14px 14px;background:linear-gradient(transparent,#1f1443 30%)}
+@media(min-width:761px){#result .rbtns{bottom:-22px;margin:0 -22px -22px;padding:12px 22px 22px}}
+/* タッチ端末ではキーボード操作の案内を出さない */
+@media(hover:none) and (pointer:coarse){
+ #cams button kbd{display:none}
+ #hint:not(.bail){display:none}
+ .tcard:hover{transform:none}
+}
+/* 横持ちスマホ（背が低い画面）：左に出走馬・コース、右に馬券と出走バー */
+@media(min-width:761px) and (max-height:520px){
+ :root{--slipW:clamp(270px,36vw,330px)}
+ #rail{left:calc(env(safe-area-inset-left,0px) + 8px);top:calc(env(safe-area-inset-top,0px) + 50px);bottom:calc(env(safe-area-inset-bottom,0px) + 8px);width:clamp(270px,38vw,340px);padding:10px;gap:8px}
+ #lobbyTabs{top:-10px}
+ #menuRow button{min-height:34px;padding:5px 2px;font-size:11px}
+ #raceTrack{grid-template-columns:minmax(0,1fr) auto;padding:6px 10px}#raceTrack .tsw{display:none}#raceTrack .rtx>b{font-size:13px}
+ #wxBox{padding:4px 10px}#wxBox .ic{grid-row:auto;width:22px;height:22px}#wxBox p,#poolNote{display:none}
+ .hrow{padding:5px 8px}
+ #slip,#goBar{right:calc(env(safe-area-inset-right,0px) + 8px)}
+ #slip{padding:10px;gap:7px;bottom:calc(env(safe-area-inset-bottom,0px) + 14px + var(--goH,80px));max-height:calc(100% - 64px - var(--goH,80px))}
+ #slipHead .num{min-width:34px;height:34px;font-size:18px}#slipHead .tp{font-size:11px;margin-top:2px}
+ #goBar{bottom:calc(env(safe-area-inset-bottom,0px) + 8px);padding:8px;display:grid;grid-template-columns:minmax(0,1fr) 128px;align-items:center;gap:4px 8px}
+ #goBar #go{font-size:20px;min-height:48px;padding:6px}
+ #preview .pv2{font-size:11px}#preview .pv2 b{font-size:14px}#preview .pv2 small{display:none}
+ #goBar #hint{grid-column:1/-1}#goBar #hint:not(.bail){display:none}
+}
+/* 小さい横持ちスマホ（幅760px以下）：ロビーは上部バーと出走バーの間をすべてパネルに使う */
+@media(max-width:760px) and (max-height:520px) and (orientation:landscape){
+ #lobby{padding:calc(env(safe-area-inset-top,0px) + 50px) calc(env(safe-area-inset-right,0px) + 8px) calc(env(safe-area-inset-bottom,0px) + 6px) calc(env(safe-area-inset-left,0px) + 8px)}
+ #lobbyToggle{display:none}
+ #lobbyScroll{flex:1;min-height:0;max-height:none;border-radius:14px}
+ #rail,#slip{padding:8px}
+ #lobbyTabs{top:-8px}
+ #menuRow button{min-height:32px;padding:4px 2px}
+ #raceCard{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:6px}
+ #raceTrack{grid-template-columns:minmax(0,1fr) auto;padding:5px 10px}#raceTrack .tsw{display:none}
+ #wxBox{padding:4px 10px}#wxBox .ic{grid-row:auto;width:22px;height:22px}#wxBox p,#poolNote{display:none}
+ #goBar{margin-top:6px;padding:6px 8px}#goBar #go{min-height:44px;font-size:19px}
+}
+/* 横持ちスマホ全般：上部バーとレース中の表示を低い画面に合わせて詰める */
+@media(max-height:520px) and (orientation:landscape){
+ :root{--rh:26px}
+ #top{top:calc(env(safe-area-inset-top,0px) + 6px);left:calc(env(safe-area-inset-left,0px) + 10px);right:calc(env(safe-area-inset-right,0px) + 10px)}
+ #brand{font-size:20px}#brand small{display:none}
+ #quality{min-height:32px}#mute{width:34px;height:34px}.pill{padding:4px 10px 4px 4px}
+ #rinfo{top:calc(env(safe-area-inset-top,0px) + 50px);padding:6px 12px 8px;min-width:200px;max-width:240px}#rinfo .rm{font-size:28px}
+ #stand{top:calc(env(safe-area-inset-top,0px) + 50px);width:210px;padding:6px}
+ #stand .srow{left:6px;right:6px;top:6px;font-size:11px}
+ #ticker{top:calc(env(safe-area-inset-top,0px) + 50px);bottom:auto;left:258px;right:236px;transform:none;max-width:none;min-width:0;font-size:12px;padding:6px 10px}
+ #myRunner{bottom:calc(env(safe-area-inset-bottom,0px) + 70px);padding:6px 12px}#myRunner strong{font-size:26px}
+ #feed{bottom:calc(env(safe-area-inset-bottom,0px) + 150px);width:min(260px,34vw)}
+ #cams{bottom:calc(env(safe-area-inset-bottom,0px) + 8px);max-width:calc(100% - 200px)}#cams button{padding:4px 9px}
+ #cheer{right:calc(env(safe-area-inset-right,0px) + 8px);bottom:calc(env(safe-area-inset-bottom,0px) + 8px);width:80px;height:80px}#cheer span{width:66px;height:66px;font-size:13px}
+ #result .panel{max-height:calc(100dvh - 60px);margin-top:44px;padding:14px;gap:10px}
+}
 </style>
 </head>
 <body>
@@ -379,19 +511,36 @@ h2{color:var(--gold);font-size:14px;letter-spacing:.06em}
 </header>
 
 <section id="lobby" hidden>
-  <button id="lobbyToggle" aria-expanded="true" aria-controls="lobbyScroll">▼ 選択パネルをたたむ</button>
+  <button id="lobbyToggle" aria-expanded="true" aria-controls="lobbyScroll">▼ パネルをたたんでコースを見る</button>
   <div id="lobbyScroll">
     <div id="rail" class="panel">
-      <button id="catalogOpen" aria-controls="catalog">📖 馬図鑑</button>
-      <div id="journey"></div>
-      <h2>コース</h2>
-      <div id="tracks"></div>
-      <details class="flavor"><summary>コースについて</summary><p id="tdesc"></p><p id="tmotif" class="motifbox" hidden></p></details>
-      <div id="wxBox"></div>
-      <h2>出走馬 <span id="poolNote"></span></h2>
-      <div id="horses"></div>
+      <nav id="menuRow" aria-label="メニュー">
+        <button id="catalogOpen" aria-controls="catalog">📖 馬図鑑</button>
+        <button id="showGuide">❔ 遊び方</button>
+        <button id="achBtn" aria-expanded="false" aria-controls="achList">🏅 実績 <span id="achCount"></span></button>
+      </nav>
+      <div id="achList" hidden></div>
+      <div id="journey" hidden></div>
+      <div id="raceCard">
+        <button id="raceTrack" aria-label="コースを変更"></button>
+        <div id="wxBox"></div>
+      </div>
+      <div id="lobbyTabs" role="tablist" aria-label="選択">
+        <button role="tab" id="tabHorses" data-tab="horses" aria-controls="paneHorses">出走馬<small>8頭</small></button>
+        <button role="tab" id="tabTracks" data-tab="tracks" aria-controls="paneTracks">コース<small id="trackCount"></small></button>
+        <button role="tab" id="tabSlip" data-tab="slip" aria-controls="slip">馬券<small id="slipTabNote"></small></button>
+      </div>
+      <div id="paneHorses" role="tabpanel" aria-labelledby="tabHorses">
+        <p id="poolNote"></p>
+        <div id="horses"></div>
+      </div>
+      <div id="paneTracks" role="tabpanel" aria-labelledby="tabTracks" hidden>
+        <details class="flavor"><summary>選択中のコースについて</summary><p id="tdesc"></p><p id="tmotif" class="motifbox" hidden></p></details>
+        <div id="tgroups" class="filters" role="group" aria-label="コースの絞り込み"></div>
+        <div id="tracks"></div>
+      </div>
     </div>
-    <div id="slip" class="panel">
+    <div id="slip" class="panel" role="tabpanel" aria-labelledby="tabSlip">
       <div id="slipHead"></div>
       <details class="flavor"><summary>この馬について</summary><p id="motif" hidden></p><p id="blurb"></p></details>
       <div id="stats"></div>
@@ -399,10 +548,12 @@ h2{color:var(--gold);font-size:14px;letter-spacing:.06em}
       <div id="skill"></div>
       <div class="seg" id="btype"></div>
       <div class="chips" id="chips"></div>
-      <div id="preview"></div>
-      <button id="go">出走！</button>
-      <p id="hint">レース中：1〜6でカメラ切替／Spaceで応援ブースト</p>
     </div>
+  </div>
+  <div id="goBar" class="panel">
+    <div id="preview"></div>
+    <button id="go">出走！</button>
+    <p id="hint">レース中：1〜6でカメラ切替／Spaceで応援ブースト</p>
   </div>
 </section>
 
@@ -895,13 +1046,18 @@ const goals = [
 ];
 let guiding = !store.get('guideDone', false), raceCheers = 0;
 function renderJourney() {
-  $('#journey').innerHTML = `${guiding ? '<b>はじめてのトイ競馬</b><p>①好きな馬を選ぶ → ②出走！ → ③応援ボタンで後押し。コインはゲーム内専用です。</p><button id="easyStart">おまかせで初レース</button><button id="skipGuide">ガイドを終了</button>' : '<button id="showGuide">遊び方を見る</button>'}
-    <details><summary>実績・称号 ${progress.claimed.length}/${goals.length}</summary><p>勝っても負けても、完走で記録が増えます。</p><ul>${goals.map(g => `<li>${progress.claimed.includes(g.id) ? '🏅' : '○'} ${g.title}：${g.desc} (${Math.min(g.value(),g.target)}/${g.target})・${g.reward}コイン</li>`).join('')}</ul></details>`;
+  // ガイドは初回（または「遊び方」押下時）だけ表示し、実績はメニュー行のボタンから開閉する
+  const j = $('#journey'); j.hidden = !guiding; $('#showGuide').hidden = guiding;
+  j.innerHTML = guiding ? '<b>はじめてのトイ競馬</b><p>①「出走馬」から好きな馬を選ぶ → ②「出走！」 → ③応援ボタンで後押し。コースは「コース」タブで変更できます。コインはゲーム内専用です。</p><div class="jbtns"><button id="easyStart">おまかせで初レース</button><button id="skipGuide">ガイドを終了</button></div>' : '';
+  $('#achCount').textContent = `${progress.claimed.length}/${goals.length}`;
+  $('#achList').innerHTML = `<p>勝っても負けても、完走で記録が増えます。</p><ul>${goals.map(g => `<li class="${progress.claimed.includes(g.id) ? 'done' : ''}"><span>${progress.claimed.includes(g.id) ? '🏅' : '○'}</span><b>${g.title}</b><small>${g.desc}（${Math.min(g.value(),g.target)}/${g.target}）・${g.reward}コイン</small></li>`).join('')}</ul>`;
   if (guiding) {
     $('#easyStart').onclick = () => { S.betType = 'place'; S.bet = 100; if (S.ti !== 0) { S.ti = 0; store.set('track',0); enterLobby(true); } renderSlip(); startRace(); };
     $('#skipGuide').onclick = () => { guiding = false; store.set('guideDone',true); renderJourney(); };
-  } else $('#showGuide').onclick = () => { guiding = true; renderJourney(); };
+  }
 }
+$('#showGuide').onclick = () => { guiding = true; renderJourney(); $('#rail').scrollTop = 0; };
+$('#achBtn').onclick = () => { const l = $('#achList'); l.hidden = !l.hidden; $('#achBtn').setAttribute('aria-expanded', String(!l.hidden)); };
 function completeProgress(me) {
   progress.races++;
   if (!progress.horses.includes(me.def.name)) progress.horses.push(me.def.name);
@@ -2645,21 +2801,64 @@ function coursePreview(t) {
 $('#lobbyToggle').onclick = () => {
   const collapsed = $('#lobby').classList.toggle('collapsed');
   $('#lobbyToggle').setAttribute('aria-expanded', String(!collapsed));
-  $('#lobbyToggle').textContent = collapsed ? '▲ コース・馬を選ぶ' : '▼ 選択パネルをたたむ';
+  $('#lobbyToggle').textContent = collapsed ? '▲ 馬・コース・馬券を選ぶ' : '▼ パネルをたたんでコースを見る';
   $('#lobbyScroll').scrollTop = 0;
 };
+/* ロビーのタブ（PCは出走馬／コース、スマホは馬券も含む3タブ）とコースの絞り込み */
+const LOBBY_TABS = ['horses', 'tracks', 'slip'];
+const TRACK_DOMESTIC = ['sapporo', 'niigata', 'nakayama', 'tokyo', 'chukyo', 'kyoto', 'hanshin'];
+const TRACK_OVERSEAS = ['shatin', 'meydan', 'longchamp', 'churchill'];
+const trackGroupOf = t => !t.real ? 'fantasy' : TRACK_DOMESTIC.includes(t.theme) ? 'domestic' : 'overseas';
+const TRACK_GROUPS = [
+  ['fantasy', 'ファンタジー', 'ファンタジーコース（距離順）', (a, b) => a.t.D - b.t.D],
+  ['domestic', '国内', '名コース　国内（北から順）', (a, b) => TRACK_DOMESTIC.indexOf(a.t.theme) - TRACK_DOMESTIC.indexOf(b.t.theme)],
+  ['overseas', '海外', '名コース　海外', (a, b) => { const o = t => TRACK_OVERSEAS.includes(t.theme) ? TRACK_OVERSEAS.indexOf(t.theme) : TRACK_OVERSEAS.length; return o(a.t) - o(b.t) || a.t.name.localeCompare(b.t.name, 'ja'); }]
+];
+const isNarrow = matchMedia('(max-width:760px)');
+let lobbyTab = LOBBY_TABS.includes(store.get('lobbyTab')) ? store.get('lobbyTab') : 'horses';
+let trackGroup = store.get('trackGroup', null);
+function setLobbyTab(tab, focus) {
+  // PC幅では馬券パネルが常に見えているので「馬券」タブは出走馬タブとして扱う
+  if (tab === 'slip' && !isNarrow.matches) tab = 'horses';
+  const changed = $('#lobby').dataset.tab !== tab;
+  lobbyTab = tab; store.set('lobbyTab', tab);
+  $('#lobby').dataset.tab = tab;
+  $('#lobbyTabs').querySelectorAll('[role=tab]').forEach(b => { const on = b.dataset.tab === tab; b.setAttribute('aria-selected', String(on)); b.tabIndex = on ? 0 : -1; if (on && focus) b.focus(); });
+  $('#paneHorses').hidden = tab !== 'horses';
+  $('#paneTracks').hidden = tab !== 'tracks';
+  if (!changed) return;
+  $('#lobbyScroll').scrollTop = 0; $('#rail').scrollTop = 0;
+  // コースタブを開いたら選択中のコースが見える位置まで送る
+  if (tab === 'tracks') $('#tracks .tcard.on')?.scrollIntoView({ block: 'nearest' });
+}
+isNarrow.addEventListener?.('change', () => setLobbyTab(lobbyTab));
+// PCでは馬券パネルを出走バーのすぐ上に積むため、出走バーの高さをCSS変数に渡す
+new ResizeObserver(() => $('#lobby').style.setProperty('--goH', $('#goBar').offsetHeight + 'px')).observe($('#goBar'));
+$('#lobbyTabs').addEventListener('click', e => { const b = e.target.closest('[role=tab]'); if (!b) return; AU.init(); AU.pop(); setLobbyTab(b.dataset.tab); });
+$('#lobbyTabs').addEventListener('keydown', e => {
+  // 左右キーでタブ移動（表示中のタブだけを対象にする）
+  if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
+  const tabs = [...$('#lobbyTabs').querySelectorAll('[role=tab]')].filter(b => b.offsetParent);
+  const k = tabs.findIndex(b => b.dataset.tab === lobbyTab);
+  e.preventDefault(); setLobbyTab(tabs[(k + (e.key === 'ArrowRight' ? 1 : tabs.length - 1)) % tabs.length].dataset.tab, true);
+});
+$('#raceTrack').addEventListener('click', () => { AU.init(); AU.pop(); setLobbyTab('tracks'); });
+$('#tgroups').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; trackGroup = b.dataset.g; store.set('trackGroup', trackGroup); AU.init(); AU.pop(); renderTracks(); $('#rail').scrollTop = 0; });
+function renderTracks() {
+  const courses = TRACKS.map((t, i) => ({t, i}));
+  if (trackGroup !== 'all' && !TRACK_GROUPS.some(([g]) => g === trackGroup)) trackGroup = trackGroupOf(TRACKS[S.ti]);
+  $('#tgroups').innerHTML = [['all', 'すべて'], ...TRACK_GROUPS].map(([g, label]) => `<button data-g="${g}" aria-pressed="${g === trackGroup}">${label}<small>${g === 'all' ? TRACKS.length : courses.filter(({t}) => trackGroupOf(t) === g).length}</small></button>`).join('');
+  const tcard = (t, i) => `<button class="tcard ${i === S.ti ? 'on' : ''}" data-i="${i}" aria-pressed="${i === S.ti}" style="--g:${t.grad}"><span class="tsw">${coursePreview(t)}${t.real ? '<i class="meiba">名コース</i>' : ''}</span><span class="tname">${t.name}</span><span class="tmeta"><b>${SURF[t.surf]}</b>${t.D}m・${t.time}</span></button>`;
+  $('#tracks').innerHTML = TRACK_GROUPS.filter(([g]) => trackGroup === 'all' || trackGroup === g).map(([g, , label, sort]) =>
+    `<span class="tgrp">${label}</span>` + courses.filter(({t}) => trackGroupOf(t) === g).sort(sort).map(({t, i}) => tcard(t, i)).join('')).join('');
+}
 function renderLobby() {
   renderJourney();
-  const tcard = (t, i) => `<button class="tcard ${i === S.ti ? 'on' : ''}" data-i="${i}" style="--g:${t.grad}"><span class="tsw">${coursePreview(t)}${t.real ? '<i class="meiba">名コース</i>' : ''}</span><span class="tname">${t.name}</span><span class="tmeta"><b>${SURF[t.surf]}</b>${t.D}m・${t.time}</span></button>`;
-  const domestic = ['sapporo', 'niigata', 'nakayama', 'tokyo', 'chukyo', 'kyoto', 'hanshin'];
-  const overseas = ['shatin', 'meydan', 'longchamp', 'churchill'];
-  const courses = TRACKS.map((t, i) => ({t, i}));
-  const groups = [
-    ['ファンタジーコース（距離順）', courses.filter(({t}) => !t.real).sort((a, b) => a.t.D - b.t.D)],
-    ['名コース　国内（地域順）', courses.filter(({t}) => t.real && domestic.includes(t.theme)).sort((a, b) => domestic.indexOf(a.t.theme) - domestic.indexOf(b.t.theme))],
-    ['名コース　海外', courses.filter(({t}) => t.real && !domestic.includes(t.theme)).sort((a, b) => (overseas.indexOf(a.t.theme) < 0 ? overseas.length : overseas.indexOf(a.t.theme)) - (overseas.indexOf(b.t.theme) < 0 ? overseas.length : overseas.indexOf(b.t.theme)) || a.t.name.localeCompare(b.t.name, 'ja'))]
-  ];
-  $('#tracks').innerHTML = groups.map(([label, items]) => `<span class="tgrp">${label}</span>` + items.map(({t, i}) => tcard(t, i)).join('')).join('');
+  renderTracks();
+  $('#trackCount').textContent = `${TRACKS.length}`;
+  { const t = TRACKS[S.ti];
+    $('#raceTrack').style.setProperty('--g', t.grad);
+    $('#raceTrack').innerHTML = `<span class="tsw">${coursePreview(t)}</span><span class="rtx"><small>今日のレース${t.real ? '<i class="meiba">名コース</i>' : ''}</small><b>${t.name}</b><span class="tmeta"><b>${SURF[t.surf]}</b>${t.D}m・${t.time}</span></span><span class="chg">変更</span>`; }
   $('#tdesc').textContent = TRACKS[S.ti].desc;
   { const t = TRACKS[S.ti], el = $('#tmotif'); el.hidden = !t.motif; if (t.motif) el.innerHTML = `<b>モチーフ　${t.motif}</b>${t.motifNote}<small>${t.points ? '馬が走れる幅と曲がり具合に調整したモチーフコースです。' : t.scale === 1 ? '距離は実寸です。' : `公式コース図を参考に形状を近似し、距離は約1/2に縮めています。${t.elev?.length ? `坂の位置を反映し、高さは見やすいように約${t.elevEx || ELEV_EX}倍に誇張しています。` : '景観は特徴が伝わるように強調しています。'}`}</small>`; }
   $('#poolNote').textContent = `全${ROSTER.length}頭からランダムに8頭`;
@@ -2686,7 +2885,10 @@ function renderSlip() {
   $('#chips').innerHTML = amounts.map(a => `<button data-a="${a}" class="${S.bet === a ? 'on' : ''}" ${a !== 'ALL' && a > S.coins ? 'disabled' : ''}>${a === 'ALL' ? 'ALL IN' : fmt(a)}</button>`).join('');
   const amt = betAmt(), odds = S.betType === 'win' ? S.odds.win[i] : S.odds.place[i];
   const bonus = 1 + 0.1 * S.streak;
-  $('#preview').innerHTML = `${fmt(amt)}コインを賭けて、的中なら <b>${fmt(Math.floor(amt * odds * bonus))}</b> コイン${S.streak ? `（連勝ボーナス×${bonus.toFixed(1)}込み）` : ''}`;
+  // 出走バーには「どの馬に・何を・いくら」賭けたかを常に表示する（スマホで別タブにいても確認できるように）
+  const bt = S.betType === 'win' ? '単勝' : '複勝';
+  $('#preview').innerHTML = `<span class="pv1"><span class="num" style="background:${WAKU[i][0]};color:${WAKU[i][1]}">${i + 1}</span><b class="pvn">${h.name}</b></span><span class="pv2"><span class="pvt">${bt} ${odds.toFixed(1)}倍 × ${fmt(amt)}</span> → 的中で <b>${fmt(Math.floor(amt * odds * bonus))}</b>${S.streak ? `<small>（連勝×${bonus.toFixed(1)}込み）</small>` : ''}</span>`;
+  $('#slipTabNote').textContent = `${i + 1}番・${bt}`;
   $('#go').disabled = amt <= 0;
 }
 const betAmt = () => S.bet === 'ALL' ? S.coins : Math.min(S.bet, S.coins);
@@ -2845,8 +3047,10 @@ function enterLobby(rebuild) {
   setCoins();
   setMode('lobby');
   renderLobby();
+  setLobbyTab(lobbyTab);
   selectHorse(S.sel, true);
   $('#hint').textContent = bail ? '救済ボーナス！コインが足りなかったので 500 コインを追加しました。' : 'レース中：1〜6でカメラ切替／Spaceで応援ブースト';
+  $('#hint').classList.toggle('bail', bail);
   AU.crowdLvl(0.12);
 }
 function startRace() {
@@ -2929,8 +3133,9 @@ function showResult() {
     <div class="rbtns"><button id="again" class="pri">次のレースへ</button><button id="other">次のコースへ</button></div>
   </div>`;
   setupShare(me, pay, reward);
-  $('#again').onclick = () => { AU.pop(); enterLobby(false); };
-  $('#other').onclick = () => { AU.pop(); S.ti = (S.ti + 1) % TRACKS.length; store.set('track', S.ti); enterLobby(true); };
+  // レース後は出走馬・オッズが入れ替わるので、出走馬タブから再開する
+  $('#again').onclick = () => { AU.pop(); setLobbyTab('horses'); enterLobby(false); };
+  $('#other').onclick = () => { AU.pop(); S.ti = (S.ti + 1) % TRACKS.length; store.set('track', S.ti); setLobbyTab('horses'); enterLobby(true); };
   if (hit) {
     big(big10 ? '大穴的中!!' : '的中!!', big10 ? 'rainbow' : '', big10 ? 1900 : 1300);
     AU.jackpot(); FX.flash = 0.8; confetti(big10 ? 320 : 180); coinShower(big10 ? 150 : 90);
