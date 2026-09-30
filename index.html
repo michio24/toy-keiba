@@ -1900,7 +1900,7 @@ function applyWeather() {
   wxState.rainN = P.rain; wxState.snowRate = P.snow; wxState.thunderT = rand(6, 14);
   rain.L.visible = P.rain > 0; rain.L.geometry.setDrawRange(0, P.rain * 2);
   snowP.clear();
-  AU.rainLvl(P.rain ? (P.rain > 1000 ? 0.28 : 0.14) : 0);
+  AU.rainLvl(P.rain ? (P.rain > 1000 ? 0.09 : 0.045) : 0);
 }
 function updWeather(rdt) {
   if (!WR) return;
@@ -2007,16 +2007,16 @@ const AU = {
       const len = x.sampleRate * 2, b = x.createBuffer(1, len, x.sampleRate), d = b.getChannelData(0);
       for (let i = 0; i < len; i++) d[i] = Math.random() * 2 - 1; this.nb = b;
       const src = x.createBufferSource(); src.buffer = b; src.loop = true;
-      const bp = x.createBiquadFilter(); bp.type = 'bandpass'; bp.frequency.value = 900; bp.Q.value = 0.45;
-      this.crowd = x.createGain(); this.crowd.gain.value = 0; src.connect(bp); bp.connect(this.crowd); this.crowd.connect(this.master); src.start();
-      const rs = x.createBufferSource(); rs.buffer = b; rs.loop = true; const hp = x.createBiquadFilter(); hp.type = 'highpass'; hp.frequency.value = 1800; this.rainG = x.createGain(); this.rainG.gain.value = this.rainV || 0; rs.connect(hp); hp.connect(this.rainG); this.rainG.connect(this.master); rs.start(0, 0.7);
+      const bp = x.createBiquadFilter(); bp.type = 'bandpass'; bp.frequency.value = 550; bp.Q.value = 0.7;
+      this.crowd = x.createGain(); this.crowd.gain.value = 0; const lp = x.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 1200; src.connect(bp); bp.connect(lp); lp.connect(this.crowd); this.crowd.connect(this.master); src.start();
+      const rs = x.createBufferSource(); rs.buffer = b; rs.loop = true; const hp = x.createBiquadFilter(); hp.type = 'lowpass'; hp.frequency.value = 950; this.rainG = x.createGain(); this.rainG.gain.value = this.rainV || 0; rs.connect(hp); hp.connect(this.rainG); this.rainG.connect(this.master); rs.start(0, 0.7);
     } catch (e) { this.ctx = null; }
   },
   now() { return this.ctx ? this.ctx.currentTime : 0; },
   setMute(m) { if (this.master) this.master.gain.setTargetAtTime(m ? 0 : 0.55, this.now(), 0.05); },
-  crowdLvl(v) { if (this.crowd) this.crowd.gain.setTargetAtTime(v * 0.32, this.now(), 0.35); },
+  crowdLvl(v) { if (this.crowd) this.crowd.gain.setTargetAtTime(v * 0.12, this.now(), 0.35); },
   rainLvl(v) { this.rainV = v; if (this.rainG) this.rainG.gain.setTargetAtTime(v, this.now(), 0.6); },
-  thunder() { if (!this.ctx) return; const t = this.now(); this.noise(t, 2.6, 180, 0.9, 'lowpass', 40); this.noise(t + 0.05, 0.5, 900, 0.3, 'lowpass', 120); },
+  thunder() { if (!this.ctx) return; const t = this.now(); this.noise(t, 2.6, 180, 0.45, 'lowpass', 40); this.noise(t + 0.05, 0.5, 600, 0.12, 'lowpass', 120); },
   tone(f, t, dur, type = 'triangle', vol = 0.15, f2) {
     const x = this.ctx; if (!x) return;
     const o = x.createOscillator(), g = x.createGain(); o.type = type; o.frequency.setValueAtTime(f, t); if (f2) o.frequency.exponentialRampToValueAtTime(f2, t + dur);
@@ -2026,23 +2026,62 @@ const AU = {
   noise(t, dur, freq, vol, type = 'lowpass', f2) {
     const x = this.ctx; if (!x) return;
     const s = x.createBufferSource(); s.buffer = this.nb; const f = x.createBiquadFilter(); f.type = type; f.frequency.setValueAtTime(freq, t); if (f2) f.frequency.exponentialRampToValueAtTime(f2, t + dur);
-    const g = x.createGain(); g.gain.setValueAtTime(vol, t); g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+    const g = x.createGain(); g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(vol, t + Math.min(0.015, dur * 0.2)); g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
     s.connect(f); f.connect(g); g.connect(this.master); s.start(t, Math.random()); s.stop(t + dur + 0.05);
   },
   fanfare() {
     if (!this.ctx) return; const t = this.now() + 0.05;
-    [[392, 0, 0.16], [523, 0.18, 0.16], [659, 0.36, 0.16], [784, 0.54, 0.46], [659, 1.08, 0.14], [784, 1.26, 0.14], [1047, 1.44, 0.9]].forEach(([f, d, l]) => { this.tone(f, t + d, l + 0.12, 'square', 0.06); this.tone(f * 1.5, t + d, l + 0.12, 'triangle', 0.035); this.tone(f / 2, t + d, l + 0.12, 'triangle', 0.09); });
+    [[392, 0, 0.16], [523, 0.18, 0.16], [659, 0.36, 0.16], [784, 0.54, 0.46], [659, 1.08, 0.14], [784, 1.26, 0.14], [1047, 1.44, 0.9]].forEach(([f, d, l]) => { this.tone(f, t + d, l + 0.12, 'triangle', 0.06); this.tone(f * 1.5, t + d, l + 0.12, 'triangle', 0.035); this.tone(f / 2, t + d, l + 0.12, 'triangle', 0.09); });
   },
-  beep(hi) { this.tone(hi ? 1320 : 880, this.now(), hi ? 0.55 : 0.18, 'square', 0.07); },
-  thump(v) { const t = this.now(); this.tone(rand(80, 105), t, 0.09, 'sine', v, 45); this.noise(t, 0.05, 600, v * 0.45); },
-  whoosh() { const t = this.now(); this.noise(t, 0.6, 300, 0.35, 'bandpass', 4000); },
+  beep(hi) { this.tone(hi ? 1320 : 880, this.now(), hi ? 0.55 : 0.18, 'triangle', 0.07); },
+  thump(v) { const t = this.now(); this.tone(rand(80, 105), t, 0.09, 'sine', v, 45); this.noise(t, 0.05, 450, v * 0.2); },
+  whoosh() { const t = this.now(); this.noise(t, 0.6, 300, 0.16, 'bandpass', 1800); },
   chime() { const t = this.now(); [1047, 1319, 1568, 2093].forEach((f, i) => this.tone(f, t + i * 0.06, 0.4, 'sine', 0.09)); },
   pop() { const t = this.now(); this.tone(500, t, 0.15, 'triangle', 0.14, 1400); this.tone(1800, t + 0.05, 0.2, 'sine', 0.05); },
-  coin() { const t = this.now(); this.tone(1976, t, 0.07, 'square', 0.035); this.tone(2637, t + 0.05, 0.2, 'square', 0.035); },
-  jackpot() { const t = this.now(); [523, 659, 784, 1047, 1319, 1568, 2093].forEach((f, i) => { this.tone(f, t + i * 0.07, 0.35, 'square', 0.05); this.tone(f / 2, t + i * 0.07, 0.35, 'triangle', 0.07); }); this.tone(2093, t + 0.55, 1.2, 'triangle', 0.08); },
+  coin() { const t = this.now(); this.tone(1976, t, 0.07, 'triangle', 0.035); this.tone(2637, t + 0.05, 0.2, 'triangle', 0.035); },
+  jackpot() { const t = this.now(); [523, 659, 784, 1047, 1319, 1568, 2093].forEach((f, i) => { this.tone(f, t + i * 0.07, 0.35, 'triangle', 0.05); this.tone(f / 2, t + i * 0.07, 0.35, 'triangle', 0.07); }); this.tone(2093, t + 0.55, 1.2, 'triangle', 0.08); },
   sad() { const t = this.now(); [523, 494, 466, 440].forEach((f, i) => this.tone(f, t + i * 0.22, 0.3, 'triangle', 0.08)); },
   heart() { const t = this.now(); this.tone(60, t, 0.12, 'sine', 0.3, 40); this.tone(60, t + 0.18, 0.12, 'sine', 0.22, 40); }
 };
+
+/* ============ SPOKEN COMMENTARY ============ */
+const VO = {
+  active: null, pending: null, voice: null,
+  init() {
+    if (!('speechSynthesis' in window) || !('SpeechSynthesisUtterance' in window)) return;
+    const refresh = () => {
+      try { this.voice = window.speechSynthesis.getVoices().find(v => /^ja(?:-|$)/i.test(v.lang)) || null; } catch (e) { this.voice = null; }
+    };
+    refresh();
+    window.speechSynthesis.addEventListener('voiceschanged', refresh);
+  },
+  stop() {
+    this.active = null; this.pending = null;
+    try { if ('speechSynthesis' in window) window.speechSynthesis.cancel(); } catch (e) { /* Text commentary remains available. */ }
+  },
+  say(text, priority = false) {
+    if (S.muted || document.hidden || !('speechSynthesis' in window) || !('SpeechSynthesisUtterance' in window)) return;
+    if (priority) this.stop();
+    if (this.active) { this.pending = text; return; }
+    try {
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = 'ja-JP'; utterance.rate = 1.1; utterance.volume = 0.85;
+      if (this.voice) utterance.voice = this.voice;
+      this.active = utterance;
+      utterance.onend = () => {
+        if (this.active !== utterance) return;
+        this.active = null;
+        const next = this.pending; this.pending = null;
+        if (next) this.say(next);
+      };
+      utterance.onerror = () => { if (this.active === utterance) { this.active = null; this.pending = null; } };
+      window.speechSynthesis.speak(utterance);
+    } catch (e) { this.active = null; this.pending = null; }
+  }
+};
+VO.init();
+document.addEventListener('visibilitychange', () => { if (document.hidden) VO.stop(); });
+window.addEventListener('pagehide', () => VO.stop());
 
 /* ============ FX (2D overlay + 3D bursts) ============ */
 const fxc = $('#fx'), fxg = fxc.getContext('2d');
@@ -2114,7 +2153,7 @@ function setCoins() { $('#coins').textContent = fmt(S.coins); store.set('coins',
 const ICON_ON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M19 5a10 10 0 0 1 0 14"/></svg>';
 const ICON_OFF = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="m23 9-6 6M17 9l6 6"/></svg>';
 function setMuteIcon() { $('#mute').innerHTML = S.muted ? ICON_OFF : ICON_ON; }
-$('#mute').onclick = () => { S.muted = !S.muted; store.set('muted', S.muted); setMuteIcon(); AU.init(); AU.setMute(S.muted); };
+$('#mute').onclick = () => { S.muted = !S.muted; store.set('muted', S.muted); setMuteIcon(); AU.init(); AU.setMute(S.muted); if (S.muted) VO.stop(); };
 
 const coursePreviews = new Map();
 function coursePreview(t) {
@@ -2193,7 +2232,7 @@ function setCam(k) {
 }
 function toast(html, color) { const el = document.createElement('div'); el.style.setProperty('--c', color); el.innerHTML = html; const f = $('#feed'); f.prepend(el); while (f.children.length > 4) f.lastChild.remove(); setTimeout(() => el.remove(), 4200); }
 let tickT = 0;
-function say(txt) { const el = $('#tickTxt'); el.textContent = txt; el.classList.remove('in'); void el.offsetWidth; el.classList.add('in'); tickT = R ? R.t : 0; }
+function say(txt, priority = false) { const el = $('#tickTxt'); el.textContent = txt; el.classList.remove('in'); void el.offsetWidth; el.classList.add('in'); tickT = R ? R.t : 0; VO.say(txt, priority); }
 function big(text, cls = '', dur = 1200) { const el = $('#big'); el.className = ''; void el.offsetWidth; el.textContent = text; el.className = 'show ' + cls; clearTimeout(big.t); big.t = setTimeout(() => { el.className = ''; }, dur); }
 function cutin(r) {
   const el = $('#cutin'); el.style.setProperty('--c', r.def.skill.color);
@@ -2204,7 +2243,7 @@ function cutin(r) {
 /* ============ FLOW ============ */
 const cam = { tgt: new V3(), pos: new V3(0, 60, 180), fov: 50, base: 0, yaw: 0.8, pitch: 0.25, dist: 7.5, drag: -10 };
 let timeScale = 1, timeTarget = 1, slowUntil = 0, clock = 0, realClock = 0;
-let hud = { t: 0 }, lastLead = -1, flags = {};
+let hud = { t: 0 }, flags = {};
 
 function setMode(m) {
   S.mode = m;
@@ -2214,6 +2253,7 @@ function setMode(m) {
   drawBoard();
 }
 function enterLobby(rebuild) {
+  VO.stop();
   if (rebuild || !world) buildWorld(S.ti);
   setField();
   S.conds = HORSES.map(() => [-1, 0, 0, 1, 1, 2][(Math.random() * 6) | 0]);
@@ -2238,10 +2278,12 @@ function startRace() {
   $('#guideNote').hidden = !guiding;
   $('#guideNote').textContent = '応援が100%になったら、右下の応援ボタンを押そう！';
   const amt = betAmt(); if (amt <= 0) return;
+  VO.stop();
+  RC.reset(R);
   AU.init();
   S.coins -= amt; setCoins();
   S.myBet = { h: S.sel, type: S.betType, amt, odds: S.betType === 'win' ? S.odds.win[S.sel] : S.odds.place[S.sel], streak: S.streak };
-  setMode('intro'); S.introT = 0; cam.spr = null; cam.bf = null; flags = {}; S.photoDone = false; S.photoEnd = false; lastLead = -1; S.cheer = 30; S.photo = false;
+  setMode('intro'); S.introT = 0; cam.spr = null; cam.bf = null; flags = {}; S.photoDone = false; S.photoEnd = false; S.cheer = 30; S.photo = false;
   buildHud();
   setCam('broadcast');
   say(`${track.def.name}、天候${WX[S.wx.w]}、馬場は${GOING[S.wx.g]}。本命は${HORSES[S.odds.pop.indexOf(1)].name}！`);
@@ -2268,11 +2310,11 @@ function onSkill(r) {
   else { toast(`<b>${r.def.name}</b>「${r.def.skill.name}」発動！`, r.def.skill.color); AU.chime(); }
   if (r.def.kind === 'banei') FX.shake = Math.max(FX.shake, 0.6);
   if (r.def.kind === 'gold' || r.def.sk === 'urara') { cutin(r); FX.flash = 0.7; AU.jackpot(); if (!mine) { timeTarget = 0.4; slowUntil = realClock + 0.8; } }
-  say(`${r.def.name}の「${r.def.skill.name}」が炸裂！`);
+  if (r.i === S.myBet.h || R.t - tickT >= 3) RC.emit('skill', {M: r.def.name, SK: r.def.skill.name});
 }
 function onFinish(r) {
   if (r.place === 1) {
-    say(`${r.def.name}、1着でゴールイン！！`);
+    say(RC.finish(R, r), true);
     big('GOAL!!', '', 1300); FX.flash = 0.6; AU.jackpot(); crowd.userData.exc = 1.4;
     for (let i = 0; i < 4; i++) setTimeout(() => firework(new V3(boardPos.x + rand(-60, 60), rand(40, 70), boardPos.z - rand(20, 70))), i * 350);
     R.firstFinT = realClock;
@@ -2487,7 +2529,7 @@ function updRace(dt, rdt) {
     if (n !== S.cdN && n > 0) { S.cdN = n; big(String(n), '', 900); AU.beep(false); }
     if (S.cdT >= 3) {
       setMode('race'); R.running = true; big('GO!!', '', 1000); AU.beep(true); FX.flash = 0.45; FX.shake = 0.5; crowd.userData.exc = 1;
-      say('ゲートが開いた！各馬いっせいにスタート！');
+      RC.emit('start', {}, true);
     }
   }
   if (R.running) {
@@ -2516,14 +2558,103 @@ function updRace(dt, rdt) {
   }
   if (slowUntil && realClock > slowUntil && !S.photo) { timeTarget = 1; slowUntil = 0; }
 }
-function commentary() {
-  const lead = R.order[0], ld = R.D - lead.s, second = R.order[1];
-  if (R.t > 3 && !flags.hana) { flags.hana = true; say(`ハナを奪ったのは${lead.def.name}！`); lastLead = lead.i; }
-  if (flags.hana && lead.i !== lastLead && R.t - tickT > 3.5 && !lead.fin) { lastLead = lead.i; say(`${lead.def.name}が先頭に立った！`); }
-  if (!flags.half && lead.s / R.D > 0.5) { flags.half = true; say(`レースは折り返し。先頭は${lead.def.name}、2番手に${second.def.name}`); }
-  if (!flags.str && ld < track.finishS - track.homeS0 && ld > 60) { flags.str = true; say(`最後の直線！${lead.def.name}と${second.def.name}の叩き合い！`); crowd.userData.exc = 1.3; }
-  if (!flags.f200 && ld < 200) { flags.f200 = true; say('残り200！ゴールはもう目の前！'); AU.crowdLvl(0.9); }
-}
+// Original calls are selected by race facts; the two classic calls are credited in README.
+const CALLS = {
+  start: ['ゲートが開きました！各馬そろってスタート！', 'さあ発走！まずは先行争い、どの馬が行くか！', 'スタートしました！各馬、最初のポジションを取りに行きます！', 'あなたの、そして私の夢が走っています。さあ、スタート！'],
+  hana: ['先手を取ったのは{L}！{B}が続きます。', '{L}がハナに立ちました。2番手は{B}！', '序盤の先頭は{L}。後続を引っ張ります！'],
+  change: ['{L}が先頭に替わった！{B}は2番手！', 'ここで{L}が前に出る！先頭が入れ替わりました！', '{B}をかわして{L}、先頭です！', '先頭争いに動き！{L}が一歩リード！'],
+  half: ['距離の半分を通過。{L}、{B}の順です。', 'レースは後半へ。先頭{L}、2番手{B}！', 'ここまで先頭は{L}。後半の攻防に入ります！'],
+  straightSolo: ['最後の直線！{L}が{G}馬身ほどリード！', '直線に入りました！{L}、後続を離して先頭！', '最後の直線、{L}を追って{B}！差はおよそ{G}馬身！'],
+  straightDuel: ['最後の直線！{L}と{B}、ほとんど差がない！', '直線勝負！{L}、{B}、並びかける2頭！', '最後の直線に入りました！先頭争いは接戦です！'],
+  straight: ['最後の直線！先頭{L}、{B}が追います！', '直線に向きました！{L}を後続が追いかける！', 'さあ直線の攻防！前は{L}、続いて{B}！'],
+  distanceSolo: ['残り{N}メートル！{L}、まだ{G}馬身ほどのリード！', 'あと{N}メートル！{L}が先頭、{B}は届くか！', '残り{N}！{L}、後続を離したまま！'],
+  distanceDuel: ['残り{N}！{L}か、{B}か！', 'あと{N}メートル！先頭2頭、差がありません！', '残り{N}！{L}と{B}、譲らない！'],
+  distance: ['残り{N}！先頭は{L}、追う{B}！', 'あと{N}メートル！{L}、リードを守れるか！', '残り{N}！ここから最後の勝負です！'],
+  three: ['{L}、{B}、{C}！3頭が横一線に近い！', '先頭3頭、差がありません！どの馬が抜けるか！', '{C}も加わった！前は3頭の激しい争い！'],
+  duel: ['{B}が迫る！{L}、並ばせるか！', '{L}と{B}！先頭争いはわずかな差！', '前の2頭、接戦です！{L}がわずかに先頭！', '{B}も譲らない！{L}との競り合い！'],
+  closing: ['{B}が差を詰めてきた！{L}を追う！', '{B}の脚色がいい！先頭との差を縮めます！', '前を行く{L}に、{B}が接近！', '{B}が迫ってきます！先頭争いに持ち込めるか！'],
+  rally: ['{SIDE}から{M}が上がってきた！現在{K}番手！', '{M}が順位を上げています！{SIDE}を通って進出！', '{M}、ここ数秒で{UP}頭をかわした！', '{SIDE}から追い上げる{M}！前を目指します！'],
+  solo: ['{L}が後続を離しています！差はおよそ{G}馬身！', '{L}、単独先頭！{B}との差を保っています。', '先頭{L}、{G}馬身ほどのリードがあります！', '前を行く{L}。後続は追いつけるか！'],
+  pack: ['馬群はひとかたまり。先頭は{L}！', '各馬が接近しています！前は{L}、続く{B}！', 'まだ馬群は凝縮。ここからどう動くか！'],
+  order: ['先頭{L}、2番手{B}、3番手{C}の順です。', '{L}が引っ張る展開。{B}、{C}が続きます。', '前から{L}、{B}、{C}。各馬、次の動きをうかがいます。'],
+  skill: ['{M}が「{SK}」を発動！ここで動きます！', '{M}の「{SK}」！展開を変えられるか！', 'ここで{M}、「{SK}」を繰り出した！'],
+  finishClose: ['{M}が1着でゴール！最後まで僅差の勝負でした！', '接戦を制したのは{M}！1着でゴールイン！', '{M}が先にゴール！後続もすぐそこでした！'],
+  finishSolo: ['{M}、後続を離して1着でゴール！', '{M}が堂々と1着！見事にリードを守りました！', 'これが夢に見た栄光のゴールだ！{M}、1着！'],
+  finish: ['{M}が1着でゴールイン！', '勝ったのは{M}！先頭でゴールを駆け抜けました！', '{M}、先頭でゴール！1着です！']
+};
+const RC = {
+  previous: {}, history: null, sampleT: 0, lastT: -10, lastLead: -1,
+  milestones: new Set(),
+  reset(race) {
+    this.previous = {}; this.history = null; this.sampleT = race.t; this.lastT = -10;
+    this.lastLead = -1; this.milestones = new Set();
+  },
+  line(key, data = {}) {
+    const choices = CALLS[key];
+    const available = choices.map((_, i) => i).filter(i => i !== this.previous[key]);
+    const i = available[Math.floor(Math.random() * available.length)];
+    this.previous[key] = i;
+    return choices[i].replace(/\{(\w+)\}/g, (_, k) => data[k]);
+  },
+  emit(key, data, priority = false) { this.lastT = R.t; say(this.line(key, data), priority); },
+  update(race, tr) {
+    // Re-sort live positions: simulation callbacks can finish a horse before R.order refreshes.
+    const order = race.runners.slice().sort((a, b) => b.s - a.s);
+    const [lead, second, third] = order;
+    if (!third || race.finished || lead.fin) return;
+    const remaining = Math.max(0, race.D - lead.s), progress = lead.s / race.D;
+    const gap = Math.max(0, lead.s - second.s);
+    const data = { L: lead.def.name, B: second.def.name, C: third.def.name, G: Math.max(1, Math.round(gap / 2.4)) };
+    const spread = lead.s - order[order.length - 1].s;
+    const snap = Object.fromEntries(order.map((r, i) => [r.i, {rank: i + 1, s: r.s}]));
+    const history = this.history;
+    if (!history || race.t - this.sampleT >= 3) { this.history = snap; this.sampleT = race.t; }
+    const band = gap < 1.2 ? 'Duel' : gap >= 7.2 ? 'Solo' : '';
+    // Only one call per update. Nearby milestones are consumed together to avoid stale distances.
+    if (this.milestones.has('hana') && this.lastLead !== lead.i && race.t - this.lastT >= 3) {
+      this.lastLead = lead.i; this.emit('change', data, remaining < 200); return;
+    }
+    if (race.t - this.lastT < 3) return;
+    for (const distance of [100, 200, 400]) {
+      if (race.D > distance && remaining <= distance && !this.milestones.has(distance)) {
+        [400, 200, 100].filter(n => n >= distance).forEach(n => this.milestones.add(n));
+        if (remaining < distance - 70) continue;
+        this.emit('distance' + band, {...data, N: distance}, distance <= 200);
+        if (distance <= 200) AU.crowdLvl(0.9);
+        return;
+      }
+    }
+    const straightLength = tr.finishS - tr.homeS0;
+    if (!this.milestones.has('straight') && remaining < straightLength && progress > 0.5) {
+      this.milestones.add('straight');
+      if (remaining > 100) { this.emit('straight' + band, data, true); crowd.userData.exc = 1.3; return; }
+    }
+    if (!this.milestones.has('hana') && race.t > 3) {
+      this.milestones.add('hana'); this.lastLead = lead.i; this.emit('hana', data); return;
+    }
+    if (!this.milestones.has('half') && progress >= 0.5) {
+      this.milestones.add('half');
+      if (progress < 0.65 && remaining > 200) { this.emit('half', data); return; }
+    }
+    if (race.t - Math.max(this.lastT, tickT) < 5) return;
+    const mover = history && order.find((r, i) => history[r.i] && history[r.i].rank - (i + 1) >= 2 && i > 0);
+    if (remaining < 300 && lead.s - third.s < 1.8) this.emit('three', data);
+    else if (remaining < 400 && gap < 1.2) this.emit('duel', data);
+    else if (gap > 1.2 && gap < 12 && second.v - lead.v > 0.7) this.emit('closing', data);
+    else if (mover) {
+      const rank = order.indexOf(mover) + 1;
+      this.emit('rally', {...data, M: mover.def.name, K: rank, UP: history[mover.i].rank - rank, SIDE: mover.lane < lead.lane - 1 ? '内' : mover.lane > lead.lane + 1 ? '外' : '馬群の中'});
+    } else if (gap >= 7.2) this.emit('solo', data);
+    else if (spread < 10) this.emit('pack', data);
+    else this.emit('order', data);
+  },
+  finish(race, winner) {
+    const next = race.runners.filter(r => r !== winner).sort((a, b) => b.s - a.s)[0];
+    const gap = next ? Math.max(0, winner.s - next.s) : 0;
+    return this.line(gap < 1.2 ? 'finishClose' : gap >= 7.2 ? 'finishSolo' : 'finish', {M: winner.def.name});
+  }
+};
+function commentary() { RC.update(R, track); }
 function updHud(rdt) {
   hud.t -= rdt; if (hud.t > 0) return; hud.t = 0.1;
   const ord = R.order, lead = ord[0];
