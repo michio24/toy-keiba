@@ -869,18 +869,23 @@ const ROSTER = [
     mud: -1, st: { spd: 8, sta: 7, acc: 9, pow: 6, agi: 10 }, aff: { turf: 1, dirt: 0, snow: -1, sand: -1, asphalt: 2 },
     skill: { name: '慣性ドリフト', desc: 'レース中盤以降のコーナーで、車体を横に向けて一気に加速。4秒間の鋭い立ち上がりで馬群を抜ける。', color: '#a9e8ff' },
     blurb: '白黒のパンダカラーが目印のハッチバック。リトラクタブルライトを開き、豆腐を崩さない絶妙な走りでコーナーを攻める。' },
+  { name: 'マルーンライナー', type: '1両編成の通勤電車', kind: 'train', sk: 'maroon', style: 'senko', body: '#4a0e19', mane: '#e3d2ac', muzzle: '#c9ccd0',
+    mud: 1, st: { spd: 8, sta: 8, acc: 6, pow: 8, agi: 5 }, aff: { turf: 0, dirt: 0, snow: -1, sand: -1, asphalt: 1 },
+    skill: { name: '複線ドリフト', desc: '進行50%以上のコーナーで一度だけ発動。車体を横に向けて内側の線路へ乗り移り、5秒間、速度1.13倍で駆け抜ける。', color: '#f0c27a' },
+    profile: { personality: '礼儀正しく時間に正確。でもカーブでは血が騒ぐ。', favorite: '磨きたての車体と木目の内装' },
+    blurb: 'つやつやのマルーンにアイボリーの屋根。1両だけでやってきた通勤電車が、カーブでは線路をまたいで横っ飛び。' },
   // ---- 歴史モチーフ（史料の記述・伝承に基づく。能力と外見は創作） ----
   { name: 'セキエンセンリ', type: '栗毛・歴史名馬', kind: 'real', sk: 'redhare', style: 'nige', body: '#d93628', mane: '#8f1918', muzzle: '#bc5544', look: { size: 1.08, barrel: 1.02, chest: 1.06 },
     tags: ['歴史'], st: { spd: 8, sta: 7, acc: 8, pow: 8, agi: 5 }, aff: { turf: 1, dirt: 1, snow: 0, sand: 1 },
     skill: { name: '千里の先駆け', desc: 'スタート直後から7秒間、勢いよく加速する。', color: '#b64825' },
     profile: { personality: '誇り高い先駆者。走り出すと迷わない。', favorite: '夕焼けの草原' },
     blurb: '猛将・呂布を乗せて駆けたと『三国志』に記される名馬の気風を宿す。関羽とともに走る姿も物語で親しまれるが、その縁は『三国志演義』で描かれたもの。' },
-  { name: 'ハオウノクロカゼ', type: '黒毛・歴史名馬', kind: 'real', sk: 'wuzhui', style: 'senko', body: '#24232b', mane: '#121118', muzzle: '#a38c78', look: { size: 1.1, barrel: 1.02, chest: 1.06 },
+  { name: 'ハオウノクロカゼ', type: '黒毛・歴史名馬', kind: 'real', sk: 'wuzhui', style: 'senko', body: '#24232b', mane: '#121118', muzzle: '#a38c78', look: { size: 1.1, dapple: '#6d6b78', barrel: 1.02, chest: 1.06 },
     tags: ['歴史'], st: { spd: 8, sta: 8, acc: 6, pow: 9, agi: 5 }, aff: { turf: 1, dirt: 1, snow: 0, sand: 1 },
     skill: { name: '垓下の底力', desc: '残り25%で先頭にいなければ、5秒間加速する。', color: '#e0bb66' },
     profile: { personality: '逆境でもひるまない、静かな相棒。', favorite: '風の吹く川辺' },
     blurb: '覇王・項羽と五年をともにした愛馬の面影を持つ。『史記』には垓下で歌に詠まれ、烏江で主から亭長へ託された別れの場面が残る。' },
-  { name: 'タイヨウノブケ', type: '黒毛・歴史名馬', kind: 'real', sk: 'buce', style: 'sashi', body: '#34302c', mane: '#181512', muzzle: '#a38c78', look: { size: 1.06, barrel: 1.02, chest: 1.06 },
+  { name: 'タイヨウノブケ', type: '黒毛・歴史名馬', kind: 'real', sk: 'buce', style: 'sashi', body: '#34302c', mane: '#181512', muzzle: '#a38c78', look: { size: 1.06, star: true, barrel: 1.02, chest: 1.06 },
     tags: ['歴史'], st: { spd: 8, sta: 8, acc: 7, pow: 7, agi: 6 }, aff: { turf: 1, dirt: 1, snow: 0, sand: 1 },
     skill: { name: '太陽へ向かって', desc: 'レース後半の入口で5秒間、集中して加速する。', color: '#e0bb66' },
     profile: { personality: '慎重だけれど、信頼した相手には大胆。', favorite: '陽の当たる一本道' },
@@ -890,7 +895,7 @@ const ROSTER = [
     skill: { name: '皇帝の行軍', desc: '残り40%でスタミナを20%回復し、6秒間加速する。', color: '#e0bb66' },
     profile: { personality: '落ち着きがあり、長旅にもこつこつ付き合う。', favorite: '朝の散歩と休憩時間' },
     blurb: '小柄な芦毛に、皇帝ナポレオンの愛馬の面影を宿す。その愛馬は1800年の戦勝にちなんで名付けられ、骨格は英国の国立陸軍博物館に保存されている。数々の武勇譚には伝説も交じる。' },
-  { name: 'カブキノマツアラシ', type: '鹿毛・歴史名馬', kind: 'real', sk: 'matsukaze', style: 'oikomi', body: '#775034', mane: '#292015', muzzle: '#a38c78', look: { size: 1.15, barrel: 1.02, chest: 1.06 },
+  { name: 'カブキノマツアラシ', type: '鹿毛・歴史名馬', kind: 'real', sk: 'matsukaze', style: 'oikomi', body: '#775034', mane: '#292015', muzzle: '#a38c78', look: { size: 1.15, tassels: { cord: '#e8b33c', colors: ['#d8283a', '#7b3fa0'] }, barrel: 1.02, chest: 1.06 },
     tags: ['歴史'], st: { spd: 7, sta: 8, acc: 6, pow: 9, agi: 6 }, aff: { turf: 1, dirt: 1, snow: 0, sand: 1 },
     skill: { name: '傾奇の追い風', desc: '残り30%から7秒間、豪快に加速する。', color: '#e0bb66' },
     profile: { personality: '自由奔放な目立ちたがり。仲間思い。', favorite: '華やかな馬具と町のにぎわい' },
@@ -902,7 +907,7 @@ const ROSTER = [
     skill: { name: '皇帝の采配', desc: '残り25%から6秒間、落ち着いた走りで加速する。', color: '#e8c56a' },
     profile: { personality: '堂々として面倒見がよい。勝負にも礼儀正しい。', favorite: '整った馬具と朝の見回り' },
     blurb: '小さな王冠に大きな自信。慌てず騒がず、勝負どころで堂々と前へ進む。' },
-  { name: 'シャドウブレイカー', type: '黒鹿毛・名馬モチーフ', kind: 'real', sk: 'brian', style: 'sashi', body: '#30241e', mane: '#120e0c', muzzle: '#95745d', look: { size: 1.04, blaze: true, blazeWidth: 0.055, barrel: 1.04, chest: 1.1, legColor: '#171312' },
+  { name: 'シャドウブレイカー', type: '黒鹿毛・名馬モチーフ', kind: 'real', sk: 'brian', style: 'sashi', body: '#30241e', mane: '#120e0c', muzzle: '#95745d', look: { size: 1.04, shadowRoll: true, blaze: true, blazeWidth: 0.055, barrel: 1.04, chest: 1.1, legColor: '#171312' },
     motif: true, motifNote: '1994年の三冠路線で、皐月賞は3馬身半、ダービーは5馬身、菊花賞は7馬身差。黒鹿毛の体に宿る、影をも裂くような豪脚。',
     st: { spd: 8, sta: 7, acc: 6, pow: 9, agi: 5 }, aff: { turf: 2, dirt: 0, snow: 0, sand: 0 },
     skill: { name: '影を裂く豪脚', desc: '残り30%で先頭にいなければ、5秒間、力強い末脚で加速する。', color: '#a99bdc' },
@@ -926,7 +931,7 @@ const ROSTER = [
     skill: { name: '白銀の航跡', desc: '残り40%から6秒間加速する。ダートではさらに力強く伸びる。', color: '#b6e2ec' },
     profile: { personality: 'おおらかで頼もしい。新しい道にもためらわない。', favorite: '砂の感触と広々とした空' },
     blurb: '白銀の大きな体が砂を蹴る。まっすぐ伸びる航跡のように、力強くゴールを目指す。' },
-  { name: 'キタノイクイリブリアム', type: '青鹿毛・名馬モチーフ', kind: 'real', sk: 'equinox', style: 'sashi', body: '#28282f', mane: '#111116', muzzle: '#7e7068', look: { size: 1.06, star: true, barrel: 0.98, chest: 1.04, legColor: '#19191f' },
+  { name: 'キタノイクイリブリアム', type: '青鹿毛・名馬モチーフ', kind: 'real', sk: 'equinox', style: 'sashi', body: '#222128', mane: '#0f0f13', muzzle: '#5c4b4b', look: { size: 1.06, gloss: true, blaze: true, blazeWidth: 0.075, blazeTaper: -0.04, blazeLength: 15, snip: true, socks: [2], sockHeights: [0, 0, 0.3, 0], barrel: 1.0, chest: 1.1, legColor: '#18171c' },
     motif: true, motifNote: '2022・2023年の年度代表馬に輝いた青鹿毛。昼と夜の長さがほぼ等しくなる時を思わせる名のように、速さと持続力が調和する。',
     st: { spd: 8, sta: 8, acc: 7, pow: 6, agi: 7 }, aff: { turf: 2, dirt: -1, snow: 0, sand: 0 },
     skill: { name: '調和のロングスパート', desc: '残り30%から7秒間、バランスのよい走りで長く加速する。', color: '#91cec6' },
@@ -1243,7 +1248,7 @@ THEMES.pearlOcean = { ...THEMES.tokyo, sky: ['#07385d', '#459ba9', '#91c6bc'], g
 THEMES.clockwork = { ...THEMES.tokyo, sky: ['#568bab', '#f4e2ba', '#b7a785'], ground: 'winter', rail: '#d8ad64', dust: '#c6a782', fog: ['#ddccb0', 320, 1300] };
 THEMES.hakone = { ...THEMES.tokyo, sky: ['#4c8db4', '#d8e8dc', '#8fa677'], ground: 'grass', mount: '#607e70', rail: '#e4e8e1', dust: '#a1aaa0', fog: ['#c6d7cb', 550, 1800] };
 THEMES.boxHill = { ...THEMES.tokyo, sky: ['#69a9d2', '#e5efd8', '#9fc17b'], rail: '#c8b58a', mount: '#829d73', fog: ['#dbe9c8', 420, 1600], dust: '#c6d69b' };
-THEMES.yamanote = { ...THEMES.tokyo, sky: ['#62a8db', '#e2eef2', '#b4c8b5'], ground: 'winter', rail: '#82be46', dust: '#a3a7a4', fog: ['#dce6e3', 900, 2400] };
+THEMES.yamanote = { ...THEMES.tokyo, sky: ['#62a8db', '#e2eef2', '#b4c8b5'], ground: 'city', rail: '#82be46', dust: '#a3a7a4', fog: ['#dce6e3', 900, 2400] };
 
 /* Local progress: rewards are granted once, including after a loss. */
 const savedProgress = store.get('progress', {});
@@ -1776,7 +1781,7 @@ function recoverAtStations(r, R, previousS, full) {
     const last = Math.floor((end - station.distance) / length);
     for (let lap = first; lap <= last; lap++) {
       r.st = Math.min(r.stMax, r.st + r.stMax * R.track.def.stationRecovery);
-      if (full && R.onNote && r.i === S.myBet?.h) R.onNote(r, `${station.name}駅：スタミナ30％回復！`, true);
+      if (full && R.onStation) R.onStation(r, station);
     }
   }
 }
@@ -1823,6 +1828,12 @@ function trySkill(r, R, p, dt, full) {
     case 'bullet': if (p >= 0.7 && !R.track.onCurve(R.s0 + r.s)) fire(1.16, 3); break;
     case 'rock': if (p >= 0.55) fire(1.09, 5); break;
     case 'drift': if (p >= 0.35 && R.track.onCurve(R.s0 + r.s)) fire(1.14, 4, { drift: true }); break;
+    case 'maroon': if (p >= 0.5 && R.track.onCurve(R.s0 + r.s)) {
+      // 内側の線路へ乗り移る。実際の横移動はレーンAIのsafePathで衝突を確かめながら進む
+      r.tLane = 0.9; r.dec = 5;
+      fire(1.13, 5, { drift: true });
+      note(R.runners.some(o => o.def.sk === 'drift') ? 'ハチロクに負けじと複線ドリフト！' : '電車がドリフト！？隣の線路へ乗り移った！', true);
+    } break;
     case 'segway': if (p >= 0.5 && !R.track.onCurve(R.s0 + r.s)) fire(1.1, 5); break;
     case 'hopping': if (p >= 0.55) fire(1.1, 4, { fly: true }); break;
     case 'roller': if (p >= 0.6 && !R.track.onCurve(R.s0 + r.s)) fire(1.12, 5); break;
@@ -1921,7 +1932,7 @@ function stepRace(R, dt, full) {
       };
       r.dec -= dt;
       const approaching = !ghost && traffic.some(o => o.i !== r.i && !o.fin && o.fly < 0.3 && o.s > start.s && o.s - start.s < 12 && Math.abs(o.lane - start.lane) < 1.4 && start.v - o.v > 0.5);
-      const excursion = r.def.sk === 'orfe' && r.fx.some(e => e.skill && e.then);
+      const excursion = (r.def.sk === 'orfe' && r.fx.some(e => e.skill && e.then)) || (r.def.sk === 'maroon' && r.fx.some(e => e.drift));
       if (!excursion && r.dec <= 0.6 && (approaching || !safePath(r.tLane))) r.dec = 0;
       if (r.dec <= 0) {
         r.dec = 0.35 + R.random() * 0.25;
@@ -2008,6 +2019,18 @@ function part(parent, geo, mat, pos, scl, rot, ol = 0.07) {
   if (ol) { const o = new THREE.Mesh(geo, OUT); o.scale.setScalar(1 + ol); m.add(o); }
   return m;
 }
+// 角を丸めた箱：分割した箱の頂点を、内側の箱から半径rの位置へ寄せる
+function roundedBox(w, h, d, r) {
+  const geo = new THREE.BoxGeometry(w, h, d, 6, 6, 6), pos = geo.attributes.position, nrm = geo.attributes.normal, v = new V3(), inner = new V3();
+  for (let j = 0; j < pos.count; j++) {
+    v.fromBufferAttribute(pos, j);
+    inner.set(clamp(v.x, -w / 2 + r, w / 2 - r), clamp(v.y, -h / 2 + r, h / 2 - r), clamp(v.z, -d / 2 + r, d / 2 - r));
+    // 法線も内側の箱からの向きで決め、面の継ぎ目に陰影の段差を出さない
+    v.sub(inner).normalize(); nrm.setXYZ(j, v.x, v.y, v.z);
+    v.multiplyScalar(r).add(inner); pos.setXYZ(j, v.x, v.y, v.z);
+  }
+  return geo;
+}
 function numberTex(i) {
   return ctex(128, 96, (g) => {
     g.fillStyle = WAKU[i][0]; g.fillRect(0, 0, 128, 96);
@@ -2031,43 +2054,148 @@ function hoodTex(col, check) {
   });
 }
 const RAINBOW = ['#ff6b9d', '#ffb86b', '#ffe66b', '#7dffa8', '#6bc8ff', '#b58cff'];
+// 側面の輪郭を押し出し、中心を原点に寄せる（輪郭線のシェルが部品の中心から広がるように）
+function carSlab(parent, points, width, mat, ol = 0.025) {
+  const shape = new THREE.Shape(points.map(p => new THREE.Vector2(p[0], p[1])));
+  const bevel = 0.03, geo = new THREE.ExtrudeGeometry(shape, { depth: width - bevel * 2, bevelEnabled: true, bevelThickness: bevel, bevelSize: bevel, bevelSegments: 2, curveSegments: 4 });
+  geo.computeBoundingBox(); const c = geo.boundingBox.getCenter(new V3()); geo.translate(-c.x, -c.y, -c.z);
+  return part(parent, geo, mat, [c.x, c.y, 0], null, null, ol);
+}
+// フォント読み込み後に描けるよう、初めて車を作るときに用意して使い回す
+let TOFU = null;
+const tofuTex = () => TOFU || (TOFU = keep(ctex(128, 48, (g) => {
+  g.fillStyle = '#ffffff'; g.fillRect(0, 0, 128, 48);
+  g.font = '34px "Dela Gothic One", sans-serif'; g.textAlign = 'center'; g.textBaseline = 'middle';
+  g.fillStyle = '#202127'; g.fillText('とうふ', 64, 26);
+})));
 function buildCar(d, i) {
   const root = new THREE.Group(), bob = new THREE.Group(); root.add(bob);
   const body = new THREE.MeshStandardMaterial({ color: C(d.body), roughness: 0.3, metalness: 0.25 });
   const black = toon('#202127'), glass = new THREE.MeshStandardMaterial({ color: C('#294459'), roughness: 0.18, metalness: 0.5 });
   const H = { root, bob, wheels: [], legs: [], wings: [], glowMats: [body], hopY: 0, hop: 0, phase: 0, yaw: 0, drift: 0, glow: 0, glowCol: C(d.skill.color), def: d, kind: d.kind, scale: 1 };
-  // Front is +X, matching the horses. A sloping rear window forms the hatch.
-  part(bob, BOX, black, [0, 0.5, 0], [2.8, 0.38, 1.25]);
-  part(bob, BOX, body, [0, 0.78, 0], [2.8, 0.3, 1.25]);
-  part(bob, BOX, glass, [-0.2, 1.09, 0], [1.3, 0.4, 1.12]);
-  part(bob, BOX, body, [-0.25, 1.32, 0], [1.05, 0.1, 1.18]);
-  part(bob, BOX, glass, [0.53, 1.07, 0], [0.06, 0.55, 1.1], [0, 0, 0.5]);
-  part(bob, BOX, glass, [-0.99, 1.06, 0], [0.06, 0.65, 1.1], [0, 0, -0.7]);
+  // Front is +X, matching the horses.
+  // 低く長いノーズから傾斜したハッチへ続く、くさび形のハッチバック。下半分を黒で包んでパンダカラーにする
+  carSlab(bob, [[-1.4, 0.3], [1.36, 0.3], [1.44, 0.48], [1.42, 0.66], [0.62, 0.86], [-1.3, 0.9], [-1.42, 0.8], [-1.44, 0.48]], 1.24, body);
+  carSlab(bob, [[-1.42, 0.27], [1.38, 0.27], [1.47, 0.48], [1.46, 0.6], [-1.47, 0.6], [-1.47, 0.48]], 1.27, black, 0);
+  // 窓まわりの温室部分：フロントガラスとハッチのガラスを一体の傾斜で作り、白い屋根を載せる
+  carSlab(bob, [[0.64, 0.84], [-0.02, 1.28], [-0.76, 1.28], [-1.32, 0.88]], 1.08, glass, 0);
+  part(bob, roundedBox(0.82, 0.07, 1.12, 0.03), body, [-0.39, 1.3, 0], null, null, 0.03);
+  for (const side of [-1, 1]) {
+    part(bob, BOX, black, [-0.2, 1.06, 0.545 * side], [0.07, 0.44, 0.02], null, 0);
+    part(bob, roundedBox(0.1, 0.07, 0.1, 0.02), black, [0.55, 0.95, 0.66 * side], null, null, 0);
+  }
+  // 小ぶりなリトラクタブルライト：車体色のふたを起こし、前面のレンズだけを光らせる
+  for (const side of [-1, 1]) {
+    part(bob, roundedBox(0.18, 0.13, 0.34, 0.03), body, [1.17, 0.79, 0.38 * side], null, [0, 0, 0.12], 0.04);
+    part(bob, BOX, glowMat('#fff4cc', 1.5), [1.26, 0.8, 0.38 * side], [0.015, 0.08, 0.26], [0, 0, 0.12], 0);
+    part(bob, BOX, toon('#ffa726'), [1.48, 0.47, 0.47 * side], [0.02, 0.06, 0.16], null, 0);
+  }
+  part(bob, BOX, black, [1.455, 0.58, 0], [0.02, 0.035, 0.62], null, 0);
+  // 横一文字の黒いテールパネルと赤いランプ
+  part(bob, BOX, black, [-1.455, 0.71, 0], [0.025, 0.15, 1.14], null, 0);
+  for (const side of [-1, 1]) part(bob, BOX, toon('#e54638'), [-1.47, 0.71, 0.33 * side], [0.02, 0.1, 0.4], null, 0);
+  part(bob, BOX, toon('#f2f2ea'), [-1.49, 0.44, 0], [0.015, 0.1, 0.28], null, 0);
   const rim = new THREE.MeshStandardMaterial({ color: C('#d8dce1'), metalness: 0.8, roughness: 0.25 });
   const tireGeo = new THREE.CylinderGeometry(0.3, 0.3, 0.2, 20);
   const rimGeo = new THREE.CylinderGeometry(0.18, 0.18, 0.21, 12);
-  const numMat = toon('#ffffff', { map: numberTex(i) });
+  const archGeo = new THREE.TorusGeometry(0.34, 0.035, 6, 16, Math.PI);
+  const numMat = toon('#ffffff', { map: numberTex(i) }), tofuMat = toon('#ffffff', { map: tofuTex() });
   for (const side of [-1, 1]) {
     for (const x of [-0.88, 0.88]) {
       const wheel = new THREE.Group(); wheel.position.set(x, 0.31, 0.61 * side); bob.add(wheel);
       part(wheel, tireGeo, black, [0, 0, 0], null, [Math.PI / 2, 0, 0], 0);
       part(wheel, rimGeo, rim, [0, 0, 0.015 * side], null, [Math.PI / 2, 0, 0], 0);
+      // 回転が見えるよう、ホイールに切り欠きを付ける
+      part(wheel, BOX, toon('#8b9097'), [0, 0, 0.12 * side], [0.24, 0.035, 0.01], null, 0);
+      H.wheels.push(wheel);
+      part(bob, archGeo, black, [x, 0.31, 0.635 * side], null, null, 0);
+    }
+    const plate = new THREE.Mesh(NUMPL, numMat); plate.position.set(0, 0.75, 0.652 * side); plate.scale.setScalar(0.65); plate.rotation.y = side > 0 ? 0 : Math.PI; bob.add(plate);
+    const tofu = new THREE.Mesh(NUMPL, tofuMat); tofu.position.set(-0.86, 0.76, 0.652 * side); tofu.scale.set(0.6, 0.32, 1); tofu.rotation.y = side > 0 ? 0 : Math.PI; bob.add(tofu);
+  }
+  H.eye = new THREE.Object3D(); H.eye.position.set(0.1, 1.22, 0); bob.add(H.eye);
+  return H;
+}
+// 行先表示の「特急」は共通なので、フォント読み込み後に初めて電車を作るときに用意して使い回す
+let EXPRESS = null;
+const expressTex = () => EXPRESS || (EXPRESS = keep(ctex(128, 40, (g) => {
+  g.fillStyle = '#121316'; g.fillRect(0, 0, 128, 40);
+  g.font = '28px "Dela Gothic One", sans-serif'; g.textAlign = 'center'; g.textBaseline = 'middle';
+  g.fillStyle = '#ff9a2e'; g.fillText('特急', 64, 22);
+})));
+function buildTrain(d, i) {
+  const root = new THREE.Group(), bob = new THREE.Group(); root.add(bob);
+  const body = new THREE.MeshStandardMaterial({ color: C(d.body), roughness: 0.22, metalness: 0.2, envMapIntensity: 1.2 });
+  const ivory = toon(d.mane), silver = new THREE.MeshStandardMaterial({ color: C(d.muzzle), metalness: 0.75, roughness: 0.3 });
+  const black = toon('#1b1c20'), gray = toon('#3a3d42'), glass = new THREE.MeshStandardMaterial({ color: C('#1d2a35'), roughness: 0.12, metalness: 0.55 });
+  const H = { root, bob, wheels: [], legs: [], wings: [], glowMats: [body], hopY: 0, hop: 0, phase: Math.random() * 6, yaw: 0, drift: 0, glow: 0, glowCol: C(d.skill.color), def: d, kind: d.kind, scale: 1 };
+  // Front is +X, matching the horses.
+  // マルーンの車体にアイボリーの屋根を重ねる。1両編成なので両端に同じ運転台を付ける
+  part(bob, roundedBox(3.2, 1.22, 1.2, 0.08), body, [0, 1.03, 0], null, null, 0.02);
+  part(bob, roundedBox(3.18, 0.26, 1.18, 0.12), ivory, [0, 1.7, 0], null, null, 0.02);
+  // 屋根上のクーラーとシングルアームのパンタグラフ
+  for (const x of [-0.25, 0.75]) part(bob, roundedBox(0.55, 0.12, 0.62, 0.04), toon('#d8d4c8'), [x, 1.86, 0], null, null, 0.04);
+  const panto = new THREE.Group(); panto.position.set(-1.0, 1.84, 0); panto.scale.set(1, 0.7, 1); bob.add(panto);
+  part(panto, BOX, gray, [0, 0.03, 0], [0.34, 0.05, 0.42], null, 0);
+  for (const s of [-1, 1]) part(panto, CONE, toon('#e8e8e8'), [0, 0.03, 0.22 * s], [0.035, 0.08, 0.035], [Math.PI, 0, 0], 0);
+  part(panto, BOX, gray, [0.1, 0.18, 0], [0.03, 0.34, 0.03], [0, 0, -0.6], 0);
+  part(panto, BOX, gray, [0.06, 0.38, 0], [0.03, 0.34, 0.03], [0, 0, 0.75], 0);
+  part(panto, BOX, gray, [-0.06, 0.5, 0], [0.06, 0.03, 0.62], null, 0);
+  // 側面：銀枠の窓と、窓付きの両開き扉が3か所
+  const pane = (x, y, w, h, side) => {
+    part(bob, BOX, silver, [x, y, 0.603 * side], [w + 0.04, h + 0.04, 0.01], null, 0);
+    part(bob, BOX, glass, [x, y, 0.609 * side], [w, h, 0.01], null, 0);
+  };
+  const numMat = toon('#ffffff', { map: numberTex(i) });
+  for (const side of [-1, 1]) {
+    for (const x of [-0.95, 0, 0.95]) {
+      for (const s of [-1, 1]) part(bob, BOX, black, [x + 0.17 * s, 0.98, 0.604 * side], [0.012, 1.0, 0.01], null, 0);
+      part(bob, BOX, black, [x, 0.98, 0.604 * side], [0.008, 1.0, 0.01], null, 0);
+      for (const s of [-1, 1]) pane(x + 0.085 * s, 1.27, 0.1, 0.36, side);
+    }
+    for (const x of [-0.475, 0.475]) pane(x, 1.29, 0.52, 0.4, side);
+    for (const x of [-1.36, 1.36]) pane(x, 1.29, 0.2, 0.4, side);
+    const plate = new THREE.Mesh(NUMPL, numMat); plate.position.set(-0.475, 0.78, 0.612 * side); plate.scale.setScalar(0.65); plate.rotation.y = side > 0 ? 0 : Math.PI; bob.add(plate);
+  }
+  // 前面：窓3枚と行先表示、窓下に車番と前照灯（後ろ側は尾灯）、銀色のスカート
+  const carNo = toon('#ffffff', { map: ctex(128, 40, (g) => {
+    g.fillStyle = d.body; g.fillRect(0, 0, 128, 40);
+    g.font = '26px "Dela Gothic One", sans-serif'; g.textAlign = 'center'; g.textBaseline = 'middle';
+    g.fillStyle = '#e9e2cf'; g.fillText('1' + String(i + 1).padStart(3, '0'), 64, 22);
+  }) });
+  const express = toon('#ffffff', { map: expressTex() });
+  for (const end of [1, -1]) {
+    const x = 1.6 * end, out = (dx) => x + dx * end, turn = [0, end > 0 ? Math.PI / 2 : -Math.PI / 2, 0];
+    part(bob, BOX, black, [out(0.003), 1.33, 0], [0.01, 0.5, 1.06], null, 0);
+    for (const [z, w, h] of [[0.33, 0.34, 0.42], [0, 0.24, 0.46], [-0.33, 0.34, 0.42]]) part(bob, BOX, glass, [out(0.01), 1.33, z], [0.01, h, w], null, 0);
+    for (const z of [-0.165, 0.165]) part(bob, BOX, body, [out(0.012), 1.33, z], [0.012, 0.5, 0.06], null, 0);
+    for (const z of [0.33, -0.33]) { const sign = new THREE.Mesh(NUMPL, express); sign.position.set(out(0.018), 1.49, z); sign.rotation.set(...turn); sign.scale.set(0.5, 0.22, 1); bob.add(sign); }
+    const no = new THREE.Mesh(NUMPL, carNo); no.position.set(out(0.012), 0.98, 0.3 * end); no.rotation.set(...turn); no.scale.set(0.4, 0.2, 1); bob.add(no);
+    for (const z of [-0.4, 0.4]) {
+      part(bob, BOX, black, [out(0.006), 0.84, z], [0.01, 0.1, 0.26], null, 0);
+      part(bob, BOX, end > 0 ? glowMat('#fff6dc', 1.6) : glowMat('#ff3b30', 1.3), [out(0.012), 0.84, z], [0.01, 0.06, 0.22], null, 0);
+    }
+    part(bob, roundedBox(0.16, 0.3, 1.12, 0.04), silver, [out(-0.05), 0.42, 0], null, null, 0.03);
+    part(bob, BOX, black, [out(0.06), 0.42, 0], [0.12, 0.08, 0.12], null, 0);
+  }
+  // 床下の機器箱と台車。片側から見える車輪を回して走りを見せる
+  part(bob, BOX, black, [0, 0.34, 0], [2.1, 0.16, 0.96], null, 0);
+  const wheelGeo = new THREE.CylinderGeometry(0.19, 0.19, 0.08, 18);
+  for (const bx of [-1.05, 1.05]) {
+    part(bob, BOX, gray, [bx, 0.26, 0], [0.82, 0.12, 1.0], null, 0.03);
+    for (const side of [-1, 1]) for (const wx of [-0.27, 0.27]) {
+      const wheel = new THREE.Group(); wheel.position.set(bx + wx, 0.19, 0.5 * side); bob.add(wheel);
+      part(wheel, wheelGeo, black, [0, 0, 0], null, [Math.PI / 2, 0, 0], 0);
+      part(wheel, BOX, silver, [0, 0, 0.045 * side], [0.24, 0.04, 0.01], null, 0);
       H.wheels.push(wheel);
     }
-    part(bob, BOX, body, [-0.2, 1.09, 0.57 * side], [0.055, 0.42, 0.045], null, 0);
-    part(bob, BOX, black, [0.55, 1, 0.7 * side], [0.17, 0.1, 0.16]);
-    const plate = new THREE.Mesh(NUMPL, numMat); plate.position.set(0, 0.78, 0.638 * side); plate.scale.setScalar(0.65); plate.rotation.y = side > 0 ? 0 : Math.PI; bob.add(plate);
-    part(bob, BOX, black, [1.08, 1, 0.4 * side], [0.3, 0.22, 0.3]);
-    part(bob, BOX, glowMat('#fff4cc', 1.5), [1.24, 1, 0.4 * side], [0.025, 0.14, 0.22], null, 0);
-    part(bob, BOX, toon('#e54638'), [-1.415, 0.78, 0.4 * side], [0.025, 0.12, 0.32], null, 0);
   }
-  part(bob, BOX, black, [1.42, 0.64, 0], [0.08, 0.16, 1.2]);
-  part(bob, BOX, black, [-1.42, 0.64, 0], [0.08, 0.16, 1.2]);
-  H.eye = new THREE.Object3D(); H.eye.position.set(0.1, 1.22, 0); bob.add(H.eye);
+  H.eye = new THREE.Object3D(); H.eye.position.set(1.3, 1.35, 0); bob.add(H.eye);
   return H;
 }
 function buildHorse(d, i) {
   if (d.kind === 'car') return buildCar(d, i);
+  if (d.kind === 'train') return buildTrain(d, i);
   const root = new THREE.Group(), bob = new THREE.Group(); root.add(bob);
   const k = d.kind, L = d.look || {}; const H = { root, bob, legs: [], wings: [], glowMats: [], hopY: 0, hop: 0, phase: Math.random() * 6, yaw: 0, glow: 0, glowCol: C(d.skill.color), def: d, kind: k };
   let body;
@@ -2078,7 +2206,21 @@ function buildHorse(d, i) {
   else if (k === 'rocking') body = toon(d.body, { map: WOOD });
   else if (k === 'choco') body = new THREE.MeshStandardMaterial({ color: C(d.body), metalness: 0.05, roughness: 0.28, envMapIntensity: 1.1 });
   else if (k === 'bullet') body = new THREE.MeshStandardMaterial({ color: C(d.body), metalness: 1, roughness: 0.12, envMapIntensity: 1.8 });
-  else body = new THREE.MeshStandardMaterial({ color: C(d.body), roughness: 0.48, metalness: 0.03, envMapIntensity: 0.65 });
+  else if (L.dapple) {
+    // 地色に白っぽい差し毛の斑を散らし、黒毛の中でも「騅」らしい毛色にする
+    const coat = ctex(128, 128, (g) => {
+      g.fillStyle = d.body; g.fillRect(0, 0, 128, 128);
+      for (let j = 0; j < 60; j++) {
+        const x = rand(0, 128), y = rand(14, 114), r = rand(2.5, 5.5);
+        const grad = g.createRadialGradient(x, y, 0, x, y, r);
+        grad.addColorStop(0, L.dapple); grad.addColorStop(1, d.body);
+        g.fillStyle = grad; g.beginPath(); g.arc(x, y, r, 0, Math.PI * 2); g.fill();
+      }
+    });
+    body = new THREE.MeshStandardMaterial({ color: C('#ffffff'), map: coat, roughness: 0.48, metalness: 0.03, envMapIntensity: 0.65 });
+  }
+  // glossは手入れの行き届いた毛艶：映り込みを強めて黒い馬体の立体感を出す
+  else body = new THREE.MeshStandardMaterial({ color: C(d.body), roughness: L.gloss ? 0.36 : 0.48, metalness: 0.03, envMapIntensity: L.gloss ? 0.9 : 0.65 });
   const mane = k === 'mech' ? glowMat('#39f3ff', 2.6) : k === 'choco' ? new THREE.MeshStandardMaterial({ color: C(d.mane), roughness: 0.3, metalness: 0.05 }) : k === 'bullet' ? new THREE.MeshStandardMaterial({ color: C(d.mane), metalness: 0.6, roughness: 0.2, emissive: C('#9fc4ff'), emissiveIntensity: 0.25 }) : toon(d.mane);
   const muzzle = (k === 'mech' || k === 'gold' || k === 'bullet') ? body : k === 'choco' ? new THREE.MeshStandardMaterial({ color: C(d.muzzle), roughness: 0.3 }) : toon(d.muzzle);
   const hoof = toon(k === 'gold' || k === 'carousel' ? '#ffd76b' : k === 'tin' ? '#2b2d3a' : '#3b2a33');
@@ -2134,7 +2276,7 @@ function buildHorse(d, i) {
     }
   }
   const white = toon('#ffffff');
-  if (L.noseband) {
+  if (L.noseband || L.shadowRoll) {
     // A soft continuous band follows the muzzle, without detailed straps or hardware.
     const points = [];
     for (let j = 0; j <= 16; j++) {
@@ -2143,7 +2285,10 @@ function buildHorse(d, i) {
       const muzzleX = 0.33 + 0.3 * Math.sqrt(Math.max(0, 1 - (0.15 / 0.24) ** 2 - (z / 0.27) ** 2));
       points.push(new V3(Math.max(headX, muzzleX) + 0.025, 0.02, z));
     }
-    part(head, new THREE.TubeGeometry(new THREE.CatmullRomCurve3(points), 24, 0.055, 8, false), white, null, null, null, 0);
+    if (L.shadowRoll) {
+      // シャドーロール：ボアの鼻革を小さな毛玉の連なりで表し、遠目にも白くふくらんで見せる
+      points.forEach((p, j) => part(head, SPH_LO, white, [p.x + 0.03, p.y + (j % 2) * 0.02, p.z * 1.12], [0.075, 0.085, 0.075], null, j % 4 ? 0 : 0.06));
+    } else part(head, new THREE.TubeGeometry(new THREE.CatmullRomCurve3(points), 24, 0.055, 8, false), white, null, null, null, 0);
   }
   // Follow the exposed head/muzzle surface so facial markings do not sink into the mesh.
   const faceMark = (y, width, height) => {
@@ -2154,7 +2299,8 @@ function buildHorse(d, i) {
   };
   if (L.blaze || L.stripe) {
     const width = L.blazeWidth || (L.stripe ? 0.03 : 0.065);
-    for (let j = 0; j < 13; j++) faceMark(0.29 - j * 0.035, width * (1 - j * 0.025), 0.03);
+    // blazeTaperが負なら鼻先へ向かって太くなり、blazeLengthで鼻先まで伸ばせる
+    for (let j = 0, n = L.blazeLength || 13; j < n; j++) faceMark(0.29 - j * 0.035, width * (1 - j * (L.blazeTaper ?? 0.025)), 0.042);
   }
   if (L.star) faceMark(0.24, 0.065, 0.075);
   if (L.snip) faceMark(-0.1, 0.065, 0.045);
@@ -2177,14 +2323,19 @@ function buildHorse(d, i) {
     part(head, CONE, L.hoodTrim ? hoodMat : pinkIn, [-0.03, 0.36, 0.175 * s], [0.055, 0.18, 0.05], [0.25 * s, 0, 0.15], 0);
   }
   const fore = L.forelock || (k === 'pony' ? 1.5 : 1);
-  if (k !== 'sushi') {
+  // 段ボール馬は、たてがみと尻尾もギザギザに切った板で作る
+  const cutout = k === 'cardboard';
+  if (cutout) {
+    for (const [x, y, s] of [[0.12, 0.38, 0.16], [-0.05, 0.4, 0.14]]) part(head, BOX, mane, [x, y, 0], [s, s, 0.05], [0, 0, Math.PI / 4]);
+  } else if (k !== 'sushi') {
   part(head, SPH, mane, [0.1, 0.36, 0], [0.14 * fore, 0.11 * fore, 0.15 * fore]);
   part(head, SPH, mane, [0.02, 0.4, 0.08], [0.1 * fore, 0.09 * fore, 0.1 * fore]);
   part(head, SPH, mane, [0.02, 0.4, -0.08], [0.1 * fore, 0.09 * fore, 0.1 * fore]);
   }
   for (let j = 0; j < 6; j++) {
     const t = j / 5; const m = k === 'unicorn' ? toon(RAINBOW[j]) : mane; const r = 0.15 - t * 0.04;
-    part(bob, SPH, m, [0.8 - t * 0.5, 2.12 - t * 0.66, 0], [r, r * 1.1, r * 0.85]);
+    if (cutout) part(bob, BOX, m, [0.71 - t * 0.5, 2.17 - t * 0.66, 0], [r * 1.5, r * 1.5, 0.06], [0, 0, Math.PI / 4]);
+    else part(bob, SPH, m, [0.8 - t * 0.5, 2.12 - t * 0.66, 0], [r, r * 1.1, r * 0.85]);
   }
   if (k === 'unicorn') {
     const horn = new THREE.MeshStandardMaterial({ color: C('#ffe27a'), metalness: 0.6, roughness: 0.25, emissive: C('#ffcf3f'), emissiveIntensity: 0.8 });
@@ -2192,7 +2343,10 @@ function buildHorse(d, i) {
   }
   const tail = new THREE.Group(); tail.position.set(-0.9, 1.28, 0); bob.add(tail); H.tail = tail;
   const tf = k === 'pony' ? 1.25 : 1;
-  [[-0.08, 0.02, 0.15], [-0.22, -0.1, 0.14], [-0.33, -0.28, 0.13], [-0.38, -0.48, 0.11]].forEach((q, j) => part(tail, SPH, k === 'unicorn' ? toon(RAINBOW[j + 1]) : mane, [q[0], q[1], 0], [q[2] * tf, q[2] * tf, q[2] * tf]));
+  [[-0.08, 0.02, 0.15], [-0.22, -0.1, 0.14], [-0.33, -0.28, 0.13], [-0.38, -0.48, 0.11]].forEach((q, j) => {
+    if (cutout) part(tail, BOX, mane, [q[0], q[1], 0], [q[2] * 1.5, q[2] * 1.5, 0.06], [0, 0, Math.PI / 4]);
+    else part(tail, SPH, k === 'unicorn' ? toon(RAINBOW[j + 1]) : mane, [q[0], q[1], 0], [q[2] * tf, q[2] * tf, q[2] * tf]);
+  });
   const lowerLeg = L.legColor ? toon(L.legColor) : null;
   const sockMat = L.sockColor ? toon(L.sockColor) : white;
   // Leg indices: front left, front right, hind left, hind right (+Z is the horse's left).
@@ -2224,34 +2378,61 @@ function buildHorse(d, i) {
   for (const s of [1, -1]) {
     const pl = new THREE.Mesh(NUMPL, numMat); pl.position.set(-0.05, 1.22, numberOffset * s); pl.rotation.y = s > 0 ? 0 : Math.PI; bob.add(pl);
   }
-  part(bob, SPH, toon('#502645'), [0.03, 1.58, 0], [0.3, 0.07, 0.25]);
-  if (L.backpack) {
-    const pack = new THREE.Group(); pack.position.set(0.03, 1.81, 0); pack.rotation.z = -Math.PI / 2; bob.add(pack);
-    const fabric = toon(L.backpack.body), accent = toon(L.backpack.accent), zipper = toon('#f5e5b7');
-    // Lay the bag along the back with its outer pocket facing upward, above the saddle.
-    part(pack, SPH, fabric, [0, 0, 0], [0.27, 0.36, 0.34], null, 0.04);
-    // One continuous, flat stripe wraps around the rounded bag above its pockets.
-    const stripeVertices = [], stripeIndices = [];
-    for (let edge = 0; edge < 2; edge++) {
-      const y = 0.15 + (edge - 0.5) * 0.12, radius = Math.sqrt(1 - (y / 0.36) ** 2);
-      for (let j = 0; j <= 40; j++) {
-        const angle = j / 40 * Math.PI * 2;
-        stripeVertices.push((0.27 * radius + 0.006) * Math.cos(angle), y, (0.34 * radius + 0.006) * Math.sin(angle));
-        if (edge === 0 && j < 40) stripeIndices.push(j, j + 41, j + 1, j + 1, j + 41, j + 42);
+  // 鞍：平たい楕円だけだと上から穴に見えるため、前橋と後橋で座面のくぼみを縁取る
+  const leather = toon('#5b3326'), leatherRim = toon('#8c5636');
+  part(bob, SPH, leather, [0.03, 1.585, 0], [0.3, 0.07, 0.25]);
+  part(bob, SPH, leatherRim, [-0.21, 1.63, 0], [0.075, 0.075, 0.22], [0, 0, 0.35], 0.05);
+  part(bob, SPH, leatherRim, [0.26, 1.63, 0], [0.06, 0.065, 0.14], null, 0.05);
+  if (L.tassels) {
+    // 厚総：胸がいと尻がいに大きな房を連ね、傾奇者らしい華やかな馬具にする
+    const cord = toon(L.tassels.cord), fringe = L.tassels.colors.map(c => toon(c));
+    const strap = (cx, rx, rz, from, to, y, n) => {
+      const points = [];
+      for (let j = 0; j <= 16; j++) { const a = from + (to - from) * j / 16; points.push(new V3(cx + Math.cos(a) * rx, y, Math.sin(a) * rz)); }
+      part(bob, new THREE.TubeGeometry(new THREE.CatmullRomCurve3(points), 32, 0.035, 6, false), cord, null, null, null, 0.06);
+      for (let j = 0; j < n; j++) {
+        const a = from + (to - from) * (j + 0.5) / n, x = cx + Math.cos(a) * rx * 1.03, z = Math.sin(a) * rz * 1.03;
+        part(bob, SPH_LO, cord, [x, y - 0.03, z], [0.04, 0.04, 0.04], null, 0);
+        part(bob, CONE, fringe[j % fringe.length], [x, y - 0.13, z], [0.075, 0.2, 0.075], null, 0.06);
       }
-    }
-    const stripe = new THREE.BufferGeometry();
-    stripe.setAttribute('position', new THREE.Float32BufferAttribute(stripeVertices, 3)); stripe.setIndex(stripeIndices); stripe.computeVertexNormals();
-    const stripeMat = new THREE.MeshBasicMaterial({ color: C(L.backpack.stripe), toneMapped: false });
-    part(pack, stripe, stripeMat, null, null, null, 0);
-    part(pack, SPH, accent, [-0.22, -0.09, 0], [0.11, 0.19, 0.27], null, 0.03);
-    part(pack, BOX, fabric, [-0.315, -0.04, 0], [0.025, 0.06, 0.43], null, 0);
-    part(pack, BOX, zipper, [-0.335, -0.04, 0.15], [0.012, 0.075, 0.023], null, 0);
-    part(pack, new THREE.TorusGeometry(0.075, 0.018, 6, 18, Math.PI), accent, [0, 0.35, 0], null, [0, Math.PI / 2, 0], 0);
+    };
+    strap(0.42, 0.49, 0.45 * (L.chest || 1), -1.25, 1.25, 1.2, 5);
+    strap(0, 0.99, 0.47 * (L.barrel || 1), Math.PI - 1.05, Math.PI + 1.05, 1.22, 5);
+  }
+  if (L.backpack) {
+    // 背中に立てた角丸の箱型リュック。後方カメラから見えるよう、ポケットは後ろ向きにする
+    const pack = new THREE.Group(); pack.position.set(-0.12, 1.86, 0); pack.rotation.z = 0.1; pack.scale.setScalar(1.18); bob.add(pack);
+    // 本体と雨ぶたは地色、ポケットは差し色、ベルト類は濃い色のテープでまとめる
+    const fabric = toon(L.backpack.body), accent = toon(L.backpack.accent), webbing = toon(L.backpack.stripe), zipper = toon('#f5e5b7');
+    const bag = roundedBox(0.36, 0.46, 0.46, 0.1);
+    part(pack, bag, fabric, [0, 0, 0], null, null, 0.04);
+    // 本体を薄く広げた帯で、角丸の側面にぴったり沿うラインを入れる
+    part(pack, bag, webbing, [0, 0.03, 0], [1.03, 0.13, 1.03], null, 0);
+    // 雨ぶたと、後ろへ垂らしたベルト・バックル
+    part(pack, roundedBox(0.39, 0.12, 0.49, 0.05), fabric, [0, 0.2, 0], null, null, 0.04);
+    part(pack, roundedBox(0.05, 0.2, 0.09, 0.02), webbing, [-0.19, 0.1, 0], null, null, 0.04);
+    part(pack, BOX, zipper, [-0.218, 0.02, 0], [0.015, 0.045, 0.11], null, 0);
+    part(pack, new THREE.TorusGeometry(0.07, 0.02, 6, 18, Math.PI), webbing, [0.04, 0.26, 0], null, [0, Math.PI / 2, 0], 0.08);
+    // 後ろ向きのフロントポケットとファスナー
+    part(pack, roundedBox(0.12, 0.2, 0.34, 0.05), accent, [-0.2, -0.1, 0], null, null, 0.04);
+    part(pack, BOX, zipper, [-0.262, -0.03, 0], [0.012, 0.016, 0.28], null, 0);
+    part(pack, BOX, zipper, [-0.266, -0.065, 0.11], [0.012, 0.06, 0.03], null, 0);
     for (const s of [-1, 1]) {
-      part(pack, SPH, accent, [-0.01, -0.12, 0.31 * s], [0.13, 0.17, 0.07], null, 0.03);
-      const points = [[0.11, 0.23, 0.21 * s], [0.24, 0.04, 0.29 * s], [0.26, -0.2, 0.35 * s], [0.05, -0.35, 0.29 * s]].map(p => new V3(...p));
-      part(pack, new THREE.TubeGeometry(new THREE.CatmullRomCurve3(points), 12, 0.026, 6, false), accent, null, null, null, 0);
+      part(pack, roundedBox(0.2, 0.2, 0.08, 0.035), fabric, [0, -0.08, 0.24 * s], null, null, 0.04);
+      // 前面の肩ベルト
+      part(pack, roundedBox(0.035, 0.38, 0.07, 0.015), webbing, [0.188, -0.01, 0.13 * s], null, null, 0);
+    }
+    // 胴に回したベルトは、ゼッケンの下へ潜り込ませて固定しているように見せる
+    const barrel = [0, 1.08, 0, 0.95, 0.46, 0.44 * (L.barrel || 1)], chest = [0.42, 1.14, 0, 0.46, 0.46 * (L.chest || 1), 0.42 * (L.chest || 1)];
+    const inside = (x, y, z) => [barrel, chest].some(e => ((x - e[0]) / e[3]) ** 2 + ((y - e[1]) / e[4]) ** 2 + ((z - e[2]) / e[5]) ** 2 < 1);
+    for (const x of [0.02, -0.26]) {
+      const points = [];
+      for (let j = 0; j <= 18; j++) {
+        const a = (j / 18 * 2 - 1) * 1.45; let t = 0;
+        while (t < 1 && inside(x, 1.1 + Math.cos(a) * t, Math.sin(a) * t)) t += 0.005;
+        points.push(new V3(x, 1.1 + Math.cos(a) * (t + 0.02), Math.sin(a) * (t + 0.02)));
+      }
+      part(bob, new THREE.TubeGeometry(new THREE.CatmullRomCurve3(points), 36, 0.03, 6, false), webbing, null, null, null, 0);
     }
   }
   if (k === 'pegasus') {
@@ -2306,7 +2487,7 @@ function buildHorse(d, i) {
   }
   if (k === 'tin') {
     const km = new THREE.MeshStandardMaterial({ color: C('#e9c46a'), metalness: 1, roughness: 0.25, envMapIntensity: 1.5 });
-    const key = new THREE.Group(); key.position.set(-0.25, 1.28, 0.46); bob.add(key); H.key = key;
+    const key = new THREE.Group(); key.position.set(-0.66, 1.2, 0.3); bob.add(key); H.key = key;
     part(key, new THREE.CylinderGeometry(0.035, 0.035, 0.34, 8), km, [0, 0, 0.14], null, [Math.PI / 2, 0, 0], 0);
     for (const s of [1, -1]) part(key, new THREE.TorusGeometry(0.12, 0.035, 8, 20), km, [0.14 * s, 0, 0.31], null, null, 0.06);
     const st = toon('#f7f1e3');
@@ -2446,10 +2627,16 @@ function addNoveltyParts(H) {
 function animHorse(H, v, dt, t, skillActive = false) {
   const k = Math.min(v / 22, 1.2);
   const toy = H.kind === 'rocking' || H.kind === 'carousel';
+  const vehicle = H.kind === 'car' || H.kind === 'train';
   if (H.kind === 'car') {
     for (const wheel of H.wheels) wheel.rotation.z -= dt * v / 0.3;
     H.bob.position.y = v > 0.4 ? Math.sin(t * 18) * 0.012 : 0;
     H.bob.rotation.z = 0;
+  } else if (H.kind === 'train') {
+    // 車輪の回転に加え、走行中はレールの継ぎ目のような細かい振動と小さな横揺れを入れる
+    for (const wheel of H.wheels) wheel.rotation.z -= dt * v / 0.2;
+    H.bob.position.y = v > 0.4 ? Math.abs(Math.sin(t * 9)) * 0.012 : 0;
+    H.bob.rotation.x = v > 0.4 ? Math.sin(t * 1.7 + H.phase) * 0.012 : 0;
   } else if (H.kind === 'hopping') {
     H.phase += dt * (v > 0.4 ? 3 + v * 0.25 : 1.5);
     const bounce = Math.max(0, Math.sin(H.phase)), compression = v > 0.4 ? Math.max(0, -Math.sin(H.phase)) * 0.35 : 0.04 + Math.sin(H.phase) * 0.02;
@@ -2503,7 +2690,7 @@ function animHorse(H, v, dt, t, skillActive = false) {
     H.head.rotation.y = Math.sin(t * 0.7 + H.phase * 2) * 0.18;
     H.tail.rotation.z = 0.15; H.tail.rotation.y = Math.sin(t * 2.2 + H.phase) * 0.45;
   }
-  if (v > 0.4 && !toy && H.kind !== 'car') H.head.rotation.y = damp(H.head.rotation.y, 0, 5, dt);
+  if (v > 0.4 && !toy && !vehicle) H.head.rotation.y = damp(H.head.rotation.y, 0, 5, dt);
   if (H.kind === 'balloon') {
     H.bob.position.y = Math.max(0, Math.sin(t * 2 + H.phase)) * 0.45;
     H.balloons.forEach((b, j) => { b.rotation.z = Math.sin(t * 1.4 + j) * 0.06; });
@@ -2634,6 +2821,8 @@ function buildWorld(ti) {
     biscuit: drawBiscuit, basalt: drawBasalt,
     grass: g => { g.fillStyle = '#6cbf5c'; g.fillRect(0, 0, 256, 256); speck(g, 256, 256, 2600, ['#5aa84c', '#7fd06b', '#8fdc78', '#4f9a44'], 1, 3, 0.8); },
     grid: g => { g.fillStyle = '#140d26'; g.fillRect(0, 0, 256, 256); speck(g, 256, 256, 600, ['#1f1638', '#0c0818'], 1, 3, 0.8); },
+    // 市街地：アスファルトと舗装の灰色
+    city: g => { g.fillStyle = '#a3a69f'; g.fillRect(0, 0, 256, 256); speck(g, 256, 256, 2600, ['#979a93', '#b1b3ac', '#8d918b', '#aaa79c'], 1, 3, 0.8); },
     winter: g => { g.fillStyle = '#9fa36a'; g.fillRect(0, 0, 256, 256); speck(g, 256, 256, 2600, ['#8e935a', '#b7b77c', '#7f8a52', '#a8a070'], 1, 3, 0.8); },
     snow: g => { g.fillStyle = '#dfe9f6'; g.fillRect(0, 0, 256, 256); speck(g, 256, 256, 1600, ['#dce9fa', '#ffffff', '#cfe0f5'], 1, 4, 0.8); },
     sand: g => { g.fillStyle = '#e4b271'; g.fillRect(0, 0, 256, 256); for (let y = 0; y < 256; y += 9) { g.strokeStyle = 'rgba(160,100,40,.18)'; g.beginPath(); for (let x = 0; x <= 256; x += 8) g.lineTo(x, y + Math.sin(x * 0.05 + y) * 3); g.stroke(); } speck(g, 256, 256, 900, ['#f0c488', '#d29c5a'], 1, 2, 0.7); }
@@ -3257,8 +3446,10 @@ function fallingLeaves(tex, cols, rate) {
 function decorYamanote() {
   const wood = toon('#665c4d'), steel = toon('#c5ced0', { side: THREE.DoubleSide }), green = toon('#78b844');
   const cream = toon('#e8e5dc'), glass = toon('#7eb2c8'), dark = toon('#586875');
+  // ホームの外側に、飾りの電車が走る2線（外回り・内回り）を走路とは別に敷く
+  const TRAIN_LANES = [W + 13, W + 17];
   const sleepers = [];
-  for (const lane of [2, 6, 10, 14]) {
+  for (const lane of [2, 6, 10, 14, ...TRAIN_LANES]) {
     for (const side of [-0.65, 0.65]) courseRibbon(0, track.L, lane + side - 0.09, lane + side + 0.09, 0.15, steel);
     for (let s = 0; s < track.L; s += 2.5) {
       const p = track.pos(s, lane);
@@ -3267,11 +3458,50 @@ function decorYamanote() {
   }
   // Rail appearance stays present at both quality levels and has no collision shape.
   inst(BOX, wood, sleepers, false).name = '山手線・枕木';
-  const atStation = (station, name, lane) => {
-    const p = tp(station.s, lane), g = new THREE.Group();
+  const atStation = (station, name, lane, shift = 0) => {
+    const p = tp(mod(station.s + shift, track.L), lane), g = new THREE.Group();
     g.position.set(p.v.x, track.groundH(p.v.x, p.v.z), p.v.z);
     g.rotation.y = -p.h; g.scale.z = track.sgn;
+    // 線路から離れる向き（外側の展示は外向き、内側の展示は内向き）
+    g.userData.away = p.n.clone().multiplyScalar(lane < 0 ? -1 : 1);
     g.userData.station = station.name; world.add(g); return registerLandmark(g, name);
+  };
+  // 直線の建物（駅舎・展示）は曲げず、カーブで線路側へはみ出さないよう、
+  // 土台の縁が線路中心からminDist以上離れるまで線路から離れる向きへ押し出す
+  const TRAIN_CLEAR = W / 2 + 21, INFIELD_CLEAR = 50;
+  const keepClear = (g, s, width, depth, minDist) => {
+    const pts = [];
+    for (let d = -300; d <= 300; d += 2) { const q = track.pos(mod(s + d, track.L), W / 2); pts.push(q.x, q.z); }
+    const edge = [];
+    for (let x = -width / 2; x <= width / 2 + 0.01; x += width / Math.ceil(width / 3)) edge.push([x, -depth / 2], [x, depth / 2]);
+    for (let z = -depth / 2; z <= depth / 2 + 0.01; z += depth / Math.ceil(depth / 3)) edge.push([-width / 2, z], [width / 2, z]);
+    for (let k = 0; k < 10; k++) {
+      g.updateMatrixWorld(true);
+      let worst = Infinity;
+      for (const [x, z] of edge) {
+        const p = g.localToWorld(new V3(x, 0, z));
+        for (let i = 0; i < pts.length; i += 2) worst = Math.min(worst, Math.hypot(pts[i] - p.x, pts[i + 1] - p.z));
+      }
+      if (worst >= minDist) return;
+      g.position.addScaledVector(g.userData.away, minDist - worst + 0.5);
+    }
+  };
+  // 走路に沿って曲がる箱：s方向にs0〜s1、レーン方向にa〜b、高さy0〜y1。材質ごとに1つのメッシュへまとめる
+  const slabs = new Map(), posts = [];
+  const curved = Object.fromEntries([['cream', '#e8e5dc'], ['yellow', '#f2c230'], ['green', '#78b844'], ['roof', '#9aa3a6']].map(([k, c]) => [k, toon(c, { side: THREE.DoubleSide })]));
+  const curvedSlab = (s0, s1, a, b, y0, y1, mat) => {
+    if (!slabs.has(mat)) slabs.set(mat, []);
+    const out = slabs.get(mat), P = (s, lane, y) => { const q = track.pos(mod(s, track.L), lane); return [q.x, q.y + y, q.z]; };
+    const quad = (p0, p1, p2, p3) => out.push(...p0, ...p1, ...p2, ...p0, ...p2, ...p3);
+    const n = Math.max(1, Math.ceil((s1 - s0) / 2));
+    for (let i = 0; i < n; i++) {
+      const sa = lerp(s0, s1, i / n), sb = lerp(s0, s1, (i + 1) / n);
+      quad(P(sa, a, y1), P(sb, a, y1), P(sb, b, y1), P(sa, b, y1));
+      quad(P(sa, a, y0), P(sb, a, y0), P(sb, a, y1), P(sa, a, y1));
+      quad(P(sa, b, y0), P(sb, b, y0), P(sb, b, y1), P(sa, b, y1));
+      if (y0 > 0.01) quad(P(sa, a, y0), P(sb, a, y0), P(sb, b, y0), P(sa, b, y0));
+    }
+    for (const s of [s0, s1]) quad(P(s, a, y0), P(s, b, y0), P(s, b, y1), P(s, a, y1));
   };
   const block = (g, width, height, depth, x = 0, z = 0, color = cream) => {
     addBox(g, [width, height, depth], [x, height / 2, z], color, null, 0);
@@ -3284,45 +3514,78 @@ function decorYamanote() {
       mesh.userData.fullCount = windows.length; themeDetails.push(mesh);
     }
   };
-  for (const station of track.stations) {
-    const g = atStation(station, `${station.name}駅`, W + (station.major ? 50 : 26));
-    landmarkFoundation(g, station.major ? 68 : 36, station.major ? 62 : 12, '#bbbdb3');
-    // Keep the platform below camera height; the station building sits behind it.
-    addBox(g, [34, 0.7, 7], [0, 0.35, station.major ? -25 : 0], cream, null, 0);
-    const z = station.major ? -25 : 0;
-    addBox(g, [35, 0.4, 8], [0, 4.5, z], green, null, 0);
-    for (const x of [-13, 13]) addBox(g, [0.4, 4.5, 0.4], [x, 2.25, z + 2.8], dark, null, 0);
-    const label = ctex(512, 128, ctx => {
-      ctx.fillStyle = '#f8faf3'; ctx.fillRect(0, 0, 512, 128);
-      ctx.fillStyle = '#78b844'; ctx.fillRect(0, 92, 512, 36);
-      ctx.fillStyle = '#25342a'; ctx.font = 'bold 52px sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-      ctx.fillText(station.name, 256, 49, 490);
+  const people = [];
+  const stations = track.stations;
+  for (const station of stations) {
+    // 東京駅はゴール板・写真判定カメラ・発走前カメラ（ゲート後方の外側）と、70m手前の神田駅に重ならないよう、
+    // ホームと駅舎をゴールの先（164m先の有楽町との間）へずらす。神田は70m手前の秋葉原の長いホームと重ならないよう少し東京寄りへ
+    const shift = { 東京: 60, 神田: 10 }[station.name] || 0, len = station.major ? 90 : 60;
+    // ホームは外側の柵のすぐ外（走路と電車線の間）に置き、中継カメラから馬越しに見せる
+    const g = atStation(station, `${station.name}駅`, W + 6.5, shift), c = station.s + shift;
+    g.position.y = 0.25;
+    // ホーム・点字ブロック・屋根は、カーブでも電車線へはみ出さないよう走路に沿って曲げる
+    curvedSlab(c - len / 2, c + len / 2, W + 3, W + 10, 0, 1.05, curved.cream);
+    for (const a of [W + 3.4, W + 9.2]) curvedSlab(c - len / 2, c + len / 2, a, a + 0.4, 1.05, 1.08, curved.yellow);
+    curvedSlab(c - len * 0.375, c + len * 0.375, W + 3.45, W + 9.55, 4.4, 4.9, curved.green);
+    curvedSlab(c - len * 0.375, c + len * 0.375, W + 3.5, W + 9.5, 4.9, 5.2, curved.roof);
+    for (let i = 0; i <= 6; i++) {
+      const q = tp(mod(c - len * 0.35 + i * len * 0.7 / 6, track.L), W + 6.5);
+      posts.push({ p: new V3(q.v.x, 2.85, q.v.z), s: new V3(0.35, 3.6, 0.35), r: [0, -q.h, 0] });
+    }
+    // 駅名標：中継カメラ（内側）から見て右が進行方向なので、次の駅を右、前の駅を左に書く
+    const prev = stations[(station.index + stations.length - 1) % stations.length].name, next = stations[(station.index + 1) % stations.length].name;
+    const label = ctex(512, 160, ctx => {
+      ctx.fillStyle = '#f8faf3'; ctx.fillRect(0, 0, 512, 160);
+      ctx.fillStyle = '#78b844'; ctx.fillRect(0, 104, 512, 56);
+      ctx.fillStyle = '#25342a'; ctx.font = 'bold 60px sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      ctx.fillText(station.name, 256, 54, 490);
+      ctx.fillStyle = '#ffffff'; ctx.font = 'bold 26px sans-serif';
+      ctx.textAlign = 'left'; ctx.fillText('◀ ' + prev, 12, 133, 230);
+      ctx.textAlign = 'right'; ctx.fillText(next + ' ▶', 500, 133, 230);
     });
-    const sign = new THREE.Mesh(new THREE.PlaneGeometry(18, 4.5), new THREE.MeshBasicMaterial({ map: label, side: THREE.DoubleSide }));
-    sign.position.set(0, 7.4, z); g.add(sign); sign.name = '駅名標';
-    if (!station.major) continue;
-    const bz = 14;
+    const sign = new THREE.Mesh(new THREE.PlaneGeometry(18, 5.6), new THREE.MeshBasicMaterial({ map: label, side: THREE.DoubleSide }));
+    sign.position.set(0, 7.9, 0); g.add(sign); sign.name = '駅名標';
+    for (const x of [-7, 7]) addBox(g, [0.3, 1.4, 0.3], [x, 5.3, 0], dark, null, 0);
+    // ホームで待つ乗客（観客の代わりに、レースが盛り上がると跳ねる）
+    for (let i = 0; i < (station.major ? 18 : 9); i++) {
+      people.push(tp(mod(c + rand(-len * 0.42, len * 0.42), track.L), W + 6.5 + rand(-2.2, 2.2), 1.47).v);
+    }
+    if (!station.major) {
+      // 小さな駅は、電車線の外側に小ぶりな駅舎を置く
+      const small = atStation(station, `${station.name}駅舎`, W + 26, shift);
+      keepClear(small, c, 16.6, 9.6, TRAIN_CLEAR);
+      addBox(small, [16, 6, 9], [0, 3, 0], cream, null, 0);
+      addBox(small, [16.6, 0.8, 9.6], [0, 5.65, 0], green, null, 0);
+      continue;
+    }
+    // 大きな駅舎は電車線の外側に、独立した土台ごと置く
+    const house = atStation(station, `${station.name}駅舎`, W + 40, shift * 0.75);
+    keepClear(house, station.s + shift * 0.75, 72, 30, TRAIN_CLEAR);
+    landmarkFoundation(house, 72, 30, '#bbbdb3');
+    const bz = 0;
     if (station.name === '東京') {
       const brick = toon('#ad5948'), roof = toon('#485f66');
-      block(g, 62, 13, 15, 0, bz, brick);
+      block(house, 62, 13, 15, 0, bz, brick);
       for (const x of [-23, 0, 23]) {
-        block(g, 13, 18, 17, x, bz, brick);
-        part(g, SPH_LO, roof, [x, 19, bz], [7, 5, 9], null, 0);
+        block(house, 13, 18, 17, x, bz, brick);
+        part(house, SPH_LO, roof, [x, 19, bz], [7, 5, 9], null, 0);
       }
-      addBox(g, [63, 0.6, 15.5], [0, 13.3, bz], cream, null, 0);
+      addBox(house, [63, 0.6, 15.5], [0, 13.3, bz], cream, null, 0);
     } else if (station.name === '高輪ゲートウェイ') {
-      block(g, 58, 9, 22, 0, bz);
+      block(house, 58, 9, 22, 0, bz);
       for (let i = 0; i < 5; i++) for (const side of [-1, 1]) {
-        addBox(g, [6.8, 0.7, 27], [(i - 2) * 12 + side * 3, 13.8, bz], cream, [0, 0, side * 0.4], 0);
+        addBox(house, [6.8, 0.7, 27], [(i - 2) * 12 + side * 3, 13.8, bz], cream, [0, 0, side * 0.4], 0);
       }
     } else {
       const col = station.name === '秋葉原' ? toon('#e0a444') : cream;
-      block(g, station.name === '新宿' || station.name === '品川' ? 62 : 50, 14, 20, 0, bz, col);
-      addBox(g, [54, 1.5, 23], [0, 14, bz], green, null, 0);
+      block(house, station.name === '新宿' || station.name === '品川' ? 62 : 50, 14, 20, 0, bz, col);
+      addBox(house, [54, 1.5, 23], [0, 14, bz], green, null, 0);
     }
     let exhibit;
     const landmark = (name, lane, width, depth) => {
-      exhibit = atStation(station, name, lane); landmarkFoundation(exhibit, width, depth); return exhibit;
+      exhibit = atStation(station, name, lane);
+      keepClear(exhibit, station.s, width, depth, lane < 0 ? INFIELD_CLEAR : TRAIN_CLEAR);
+      landmarkFoundation(exhibit, width, depth); return exhibit;
     };
     switch (station.name) {
       case '浜松町': {
@@ -3403,6 +3666,182 @@ function decorYamanote() {
         break;
       }
     }
+  }
+  for (const [mat, list] of slabs) {
+    const geo = new THREE.BufferGeometry(); geo.setAttribute('position', new THREE.Float32BufferAttribute(list, 3)); geo.computeVertexNormals();
+    const mesh = new THREE.Mesh(geo, mat); mesh.castShadow = mesh.receiveShadow = true; mesh.name = '山手線・ホーム'; world.add(mesh);
+  }
+  inst(BOX, dark, posts, false).name = '山手線・ホームの柱';
+  // 電車線の道床
+  courseRibbon(0, track.L, W + 11, W + 19, 0.03, toon('#8f948b', { side: THREE.DoubleSide }));
+  // ホームの乗客をまとめて1つのインスタンスにし、共通の観客アニメーション（updCrowd）で跳ねさせる
+  crowd.dispose(); world.remove(crowd);
+  crowd = new THREE.InstancedMesh(new THREE.CapsuleGeometry(0.24, 0.34, 3, 8), toon('#ffffff'), people.length);
+  const coats = ['#2f3542', '#57606f', '#e9ecef', '#c8d6e5', '#3d5a80', '#7a6c5d', '#ff7eb6', '#ffd166'].map(C), m4 = new THREE.Matrix4();
+  crowd.userData.base = people.map((p, i) => {
+    m4.makeTranslation(p.x, p.y, p.z); crowd.setMatrixAt(i, m4); crowd.setColorAt(i, coats[(Math.random() * coats.length) | 0]);
+    return [p.x, p.y, p.z, Math.random() * 6, rand(4, 9)];
+  });
+  crowd.userData.exc = 0.2; world.add(crowd);
+
+  // 山手線の電車（外回り・内回り）。走路とは別の線を一定速度で回り続ける飾りで、レースには関わらない
+  const body = toon('#d9dee1'), band = toon('#5fb636'), win = toon('#2f3d47'), roofM = toon('#a9b0b4'), under = toon('#40464c'), face = toon('#1d2226');
+  const lamp = glowMat('#fff3cf', 2.5), tailLamp = glowMat('#ff4a3a', 2), CAR = 14, GAP = 0.8, CARS = 6;
+  const trains = TRAIN_LANES.map((lane, k) => {
+    const cars = [];
+    for (let i = 0; i < CARS; i++) {
+      const car = new THREE.Group(); car.name = '山手線・電車'; world.add(car); cars.push(car);
+      addBox(car, [CAR, 2.6, 3], [0, 2.1, 0], body, null, 0.02);
+      addBox(car, [CAR + 0.04, 0.95, 3.04], [0, 2.85, 0], win, null, 0);
+      addBox(car, [CAR + 0.06, 0.3, 3.06], [0, 2.15, 0], band, null, 0);
+      // E235系らしい、緑のドアを片側4か所
+      for (const x of [-4.8, -1.6, 1.6, 4.8]) addBox(car, [1.4, 2.2, 3.08], [x, 2.0, 0], band, null, 0);
+      addBox(car, [CAR - 0.2, 0.35, 2.7], [0, 3.55, 0], roofM, null, 0);
+      addBox(car, [CAR - 3, 0.7, 2.5], [0, 0.6, 0], under, null, 0);
+      // 先頭車と最後尾車だけ、黒い前面と前照灯・尾灯を付ける（車両の+Xが進行方向）
+      for (const end of [1, -1]) {
+        if (!(end > 0 ? i === 0 : i === CARS - 1)) continue;
+        addBox(car, [0.15, 2.3, 2.8], [end * (CAR / 2 + 0.05), 2.35, 0], face, null, 0);
+        addBox(car, [0.17, 0.25, 2.9], [end * (CAR / 2 + 0.06), 1.45, 0], band, null, 0);
+        for (const z of [-0.95, 0.95]) addBox(car, [0.2, 0.25, 0.45], [end * (CAR / 2 + 0.08), 1.75, z], end > 0 ? lamp : tailLamp, null, 0);
+      }
+    }
+    // 外回りは馬と同じ向き、内回りは逆向き
+    return { lane, dir: k ? -1 : 1, cars, s: rand(0, track.L), v: 23 };
+  });
+  const moveTrains = dt => {
+    for (const tr of trains) {
+      tr.s = mod(tr.s + tr.v * tr.dir * Math.min(dt, 0.1), track.L);
+      tr.cars.forEach((car, i) => {
+        const q = track.pos(mod(tr.s - i * (CAR + GAP) * tr.dir, track.L), tr.lane);
+        car.position.set(q.x, q.y + 0.25, q.z); car.rotation.y = -q.h + (tr.dir < 0 ? Math.PI : 0);
+      });
+    }
+  };
+  moveTrains(0); themeUpd.push((t, dt) => moveTrains(dt));
+
+  const named = Object.fromEntries(stations.map(s => [s.name, s]));
+  const forest = (g, n, rx, rz, avoid = () => false) => {
+    const blobs = [], cols = ['#3f7d42', '#4e9450', '#5aa55a', '#386f3a'].map(C);
+    for (let i = 0; i < n * 4 && blobs.length < n; i++) {
+      const x = rand(-rx, rx), z = rand(-rz, rz), s = rand(3.5, 6.5);
+      if (!avoid(x, z)) blobs.push({ p: new V3(x, s * 0.9, z), s: new V3(s, s * 0.9, s), c: cols[(Math.random() * cols.length) | 0] });
+    }
+    const mesh = inst(SPH_LO, toon('#ffffff'), blobs, false); g.add(mesh);
+    mesh.userData.fullCount = blobs.length; themeDetails.push(mesh);
+  };
+  // 皇居：東京駅の内側に、お濠と石垣に囲まれた緑の島と櫓を置く（内側の展示は+Zが線路側）
+  {
+    const palace = atStation(named['東京'], '皇居', -230, -40);
+    keepClear(palace, named['東京'].s - 40, 230, 170, INFIELD_CLEAR);
+    landmarkFoundation(palace, 230, 170, '#9fb3b8');
+    addBox(palace, [226, 0.2, 166], [0, 0.1, 0], toon('#4b8fb0'), null, 0);
+    addBox(palace, [190, 2.4, 130], [0, 1.2, 0], toon('#a49f92'), null, 0);
+    addBox(palace, [186, 0.3, 126], [0, 2.5, 0], toon('#69a35c'), null, 0);
+    const white = toon('#f3f0e6'), tile = toon('#55616a');
+    addBox(palace, [16, 7, 10], [45, 6.1, 45], white, null, 0);
+    addBox(palace, [19, 1.2, 13], [45, 10.2, 45], tile, null, 0);
+    addBox(palace, [11, 4.5, 7], [45, 13, 45], white, null, 0);
+    addBox(palace, [14, 1, 9.5], [45, 15.6, 45], tile, null, 0);
+    // 二重橋
+    addBox(palace, [9, 1.4, 20], [-20, 2.2, 74], toon('#c9c3b3'), null, 0);
+    forest(palace, 70, 88, 58, (x, z) => Math.abs(x - 45) < 14 && Math.abs(z - 45) < 11);
+  }
+  // 明治神宮：原宿駅の外側に、杜と木の大鳥居（外側の展示は-Zが線路側）
+  {
+    const shrine = atStation(named['原宿'], '明治神宮', W + 125);
+    keepClear(shrine, named['原宿'].s, 150, 110, TRAIN_CLEAR);
+    landmarkFoundation(shrine, 150, 110, '#7f9a6d');
+    const cedar = toon('#8b6b4a');
+    addBox(shrine, [8, 0.1, 70], [0, 0.06, -20], toon('#ddd6c3'), null, 0);
+    for (const x of [-7, 7]) part(shrine, new THREE.CylinderGeometry(0.85, 0.95, 12, 12), cedar, [x, 6, -45], null, null, 0);
+    addBox(shrine, [21, 1.3, 1.8], [0, 12.6, -45], cedar, null, 0);
+    addBox(shrine, [17, 0.8, 1.1], [0, 10.2, -45], cedar, null, 0);
+    addBox(shrine, [30, 6, 16], [0, 3, 30], toon('#7a5a3a'), null, 0);
+    addBox(shrine, [36, 2, 22], [0, 7, 30], toon('#4f6f5f'), null, 0);
+    forest(shrine, 80, 70, 50, (x, z) => Math.abs(x) < 9 && z < 10 || Math.abs(x) < 22 && Math.abs(z - 30) < 15);
+  }
+  // 遠景：上野の外側に東京スカイツリー、西南西に富士山（コース図鑑の全景の範囲には含めない）
+  {
+    const q = tp(named['上野'].s, W + 520), tree = new THREE.Group();
+    tree.position.set(q.v.x, 0, q.v.z); tree.name = '東京スカイツリー'; world.add(tree);
+    const steelWhite = toon('#dfe8ef'), deck = toon('#7f98a8');
+    part(tree, new THREE.CylinderGeometry(5, 15, 140, 8), steelWhite, [0, 70, 0], null, null, 0);
+    part(tree, new THREE.CylinderGeometry(10, 9, 7, 16), deck, [0, 140, 0], null, null, 0);
+    part(tree, new THREE.CylinderGeometry(3, 5, 50, 8), steelWhite, [0, 168, 0], null, null, 0);
+    part(tree, new THREE.CylinderGeometry(6, 6, 4, 16), deck, [0, 180, 0], null, null, 0);
+    part(tree, new THREE.CylinderGeometry(0.8, 1.6, 40, 6), steelWhite, [0, 213, 0], null, null, 0);
+    const west = tp(named['新宿'].s, 0).v.sub(tp(named['東京'].s, 0).v).setY(0).normalize();
+    const south = tp(named['品川'].s, 0).v.sub(tp(named['池袋'].s, 0).v).setY(0).normalize();
+    const f = west.multiplyScalar(0.9).add(south.multiplyScalar(0.45)).normalize().multiplyScalar(1750);
+    const g = new THREE.ConeGeometry(1, 1, 48); g.translate(0, 0.5, 0);
+    const fuji = new THREE.Mesh(g, toon('#7088b5', { fog: false })); fuji.position.set(f.x, -10, f.z); fuji.scale.set(560, 300, 560); world.add(fuji);
+    const cap = new THREE.Mesh(g, toon('#ffffff', { fog: false })); cap.position.set(f.x, -10 + 300 * 0.62, f.z); cap.scale.set(560 * 0.38, 300 * 0.38, 560 * 0.38); world.add(cap);
+    fuji.userData.backdrop = cap.userData.backdrop = true;
+  }
+  yamanoteCity();
+}
+// 線路・駅・名所を避けて、格子状にビルと小さな公園を敷き詰める。主要駅の近くほど高層にする
+function yamanoteCity() {
+  const samples = [];
+  for (let s = 0; s < track.L; s += 8) samples.push(tp(s, W / 2));
+  world.updateMatrixWorld(true);
+  const keepOut = (world.userData.landmarks || []).map(g => new THREE.Box3().setFromObject(g).expandByScalar(6));
+  const HUB = { 新宿: 1, 東京: 0.9, 渋谷: 0.8, 池袋: 0.8, 品川: 0.75, 浜松町: 0.5 };
+  const hubs = track.stations.filter(s => s.major).map(st => ({ v: tp(st.s, W + 40).v, k: HUB[st.name] || 0.35 }));
+  // 高さの段ごとにUVの繰り返し数を変え、窓の大きさがどの高さでもそろうようにする
+  const HEIGHTS = [8, 14, 22, 34, 50, 75, 105], lists = HEIGHTS.map(() => []), parks = [], trees = [];
+  const tones = ['#e7e3da', '#d5d8d6', '#c9ced3', '#e2d6c4', '#bfc9cf', '#d9cdbd', '#aeb8bf', '#f0ede6'].map(C);
+  const glassy = ['#9fb6c6', '#b8c7d1', '#8fa3b3', '#c3ccd3'].map(C);
+  const STEP = 30, R0 = track.extent + 260;
+  for (let x = -R0; x <= R0; x += STEP) for (let z = -R0; z <= R0; z += STEP) {
+    const px = x + rand(-4, 4), pz = z + rand(-4, 4);
+    let best = Infinity, near = null;
+    for (const q of samples) { const d = (q.v.x - px) ** 2 + (q.v.z - pz) ** 2; if (d < best) { best = d; near = q; } }
+    const d = Math.sqrt(best), outside = (px - near.v.x) * near.n.x + (pz - near.v.z) * near.n.z > 0;
+    // 内側は中継カメラ（線路から36m）より奥だけに建て、外側は電車線の先から260mまで
+    if (d < (outside ? 34 : 62) || (outside && d > 260)) continue;
+    const w = rand(13, 22), dp = rand(13, 22);
+    if (keepOut.some(b => px + w / 2 > b.min.x && px - w / 2 < b.max.x && pz + dp / 2 > b.min.z && pz - dp / 2 < b.max.z)) continue;
+    if (Math.random() < 0.05) {
+      parks.push({ p: new V3(px, 0.05, pz), s: new V3(STEP - 6, 0.1, STEP - 6) });
+      for (let i = 0; i < 4; i++) { const s = rand(2.5, 4); trees.push({ p: new V3(px + rand(-9, 9), s, pz + rand(-9, 9)), s: new V3(s, s, s) }); }
+      continue;
+    }
+    let h = rand(6, 16);
+    for (const hub of hubs) {
+      const dd = Math.hypot(hub.v.x - px, hub.v.z - pz);
+      if (dd < 320) h += hub.k * 85 * (1 - dd / 320) ** 2 * rand(0.5, 1.2);
+    }
+    if (d < 62) h = Math.min(h, 12);
+    let k = 0; for (let i = 1; i < HEIGHTS.length; i++) if (Math.abs(Math.log(HEIGHTS[i] / h)) < Math.abs(Math.log(HEIGHTS[k] / h))) k = i;
+    const hh = HEIGHTS[k] * rand(0.92, 1.08), palette = k >= 4 ? glassy : tones;
+    lists[k].push({ p: new V3(px, 0, pz), s: new V3(w, hh, dp), c: palette[(Math.random() * palette.length) | 0] });
+  }
+  const winTex = ctex(64, 64, g => {
+    g.fillStyle = '#ffffff'; g.fillRect(0, 0, 64, 64);
+    g.fillStyle = '#7d8f9c'; g.fillRect(9, 16, 46, 32);
+    g.fillStyle = '#d4d6d4'; g.fillRect(0, 58, 64, 6);
+  }, true);
+  const side = toon('#ffffff', { map: winTex }), roof = toon('#c9c9c4');
+  // 低画質では先頭の半分だけ描くので、並びを混ぜて間引いても街全体に散らばるようにする
+  const shuffle = a => { for (let i = a.length - 1; i > 0; i--) { const j = (Math.random() * (i + 1)) | 0; [a[i], a[j]] = [a[j], a[i]]; } return a; };
+  HEIGHTS.forEach((height, k) => {
+    if (!lists[k].length) return;
+    const geo = new THREE.BoxGeometry(1, 1, 1); geo.translate(0, 0.5, 0);
+    const uv = geo.attributes.uv, floors = Math.max(2, Math.round(height / 3.6));
+    for (let i = 0; i < uv.count; i++) {
+      const face = Math.floor(i / 4);
+      if (face !== 2 && face !== 3) uv.setXY(i, uv.getX(i) * 5, uv.getY(i) * floors);
+    }
+    const mesh = new THREE.InstancedMesh(geo, [side, side, roof, roof, side, side], lists[k].length), m = new THREE.Matrix4(), q = new THREE.Quaternion();
+    shuffle(lists[k]).forEach((b, i) => { m.compose(b.p, q, b.s); mesh.setMatrixAt(i, m); mesh.setColorAt(i, b.c); });
+    mesh.name = '山手線・街並み'; mesh.userData.fullCount = lists[k].length; themeDetails.push(mesh); world.add(mesh);
+  });
+  if (parks.length) {
+    inst(BOX, toon('#78a865'), parks, false).name = '山手線・公園';
+    const leaves = inst(SPH_LO, toon('#4f9450'), shuffle(trees), false);
+    leaves.userData.fullCount = trees.length; themeDetails.push(leaves);
   }
 }
 function registerLandmark(g, name) {
@@ -4048,6 +4487,10 @@ const AU = {
   beep(hi) { this.tone(hi ? 1320 : 880, this.now(), hi ? 0.55 : 0.18, 'triangle', 0.07); },
   thump(v) { const t = this.now(); this.tone(rand(80, 105), t, 0.09, 'sine', v, 45); this.noise(t, 0.05, 450, v * 0.2); },
   whoosh() { const t = this.now(); this.noise(t, 0.6, 300, 0.16, 'bandpass', 1800); },
+  // 電車の警笛：少しずれた2音を重ねて「ファーン」と伸ばす
+  horn() { const t = this.now(); [[311, 0.1], [370, 0.08]].forEach(([f, vol]) => { this.tone(f, t, 0.9, 'sawtooth', vol * 0.5); this.tone(f * 1.003, t + 0.02, 0.85, 'square', vol * 0.25); }); },
+  // 主要駅の回復：発車メロディ風の短いフレーズ
+  station() { const t = this.now(); [784, 988, 1175, 988, 1568].forEach((f, i) => this.tone(f, t + i * 0.11, i === 4 ? 0.45 : 0.16, 'triangle', 0.06)); },
   chime() { const t = this.now(); [1047, 1319, 1568, 2093].forEach((f, i) => this.tone(f, t + i * 0.06, 0.4, 'sine', 0.09)); },
   pop() { const t = this.now(); this.tone(500, t, 0.15, 'triangle', 0.14, 1400); this.tone(1800, t + 0.05, 0.2, 'sine', 0.05); },
   coin() { const t = this.now(); this.tone(1976, t, 0.07, 'triangle', 0.035); this.tone(2637, t + 0.05, 0.2, 'triangle', 0.035); },
@@ -4434,7 +4877,7 @@ function drawCatalog(rdt) {
   animHorse(H, catalog.motion === 'idle' ? 0 : active ? 22 : 14, rdt, catalog.time, active);
   const lift = active && ['pegasus', 'deep', 'hopping', 'balloon'].includes(H.def.sk) ? (H.def.sk === 'deep' ? 0.7 : 1.8) : 0;
   H.root.position.y = damp(H.root.position.y, 0.2 + lift + H.hopY, 6, rdt);
-  H.root.rotation.y = damp(H.root.rotation.y, active && H.def.sk === 'drift' ? -0.5 : 0, 7, rdt);
+  H.root.rotation.y = damp(H.root.rotation.y, active && ['drift', 'maroon'].includes(H.def.sk) ? -0.5 : 0, 7, rdt);
   if (active) {
     const col = C(H.def.skill.color).multiplyScalar(3);
     catalog.sparkAcc += rdt * 50;
@@ -4492,6 +4935,8 @@ function courseCatalogSelect(i) {
     buildWorld(i); gate.g.visible = false; drawBoard();
     // Exhibit cameras sit beyond race fog distances; keep the whole course clear.
     scene.fog = null;
+    // 霧のない俯瞰では遠景の山が巨大な円盤に見えるため、図鑑では隠す
+    world.traverse(o => { if (o.userData.backdrop) o.visible = false; });
     courseCatalog.width = 0; courseCatalog.height = 0;
     courseCatalogReset();
   }
@@ -4704,6 +5149,7 @@ function startRace() {
   R.onSkill = onSkill; R.onFail = r => { if (r.i === S.myBet.h) toast(`<b>${r.def.name}</b> ジャックポットはハズレ…まだ終わってない！`, '#8a8aa8'); else toast(`<b>${r.def.name}</b> の抽選はハズレ`, '#8a8aa8'); };
   R.onFinish = S.playType === 'crash' ? null : onFinish;
   R.onNote = (r, txt, good) => { toast(`<b>${r.def.name}</b> ${txt}`, good ? r.def.skill.color : '#8a8aa8'); say(`${r.def.name}、${txt}`); if (r.i === S.myBet.h && !good) AU.sad(); };
+  R.onStation = (r, station) => { if (r.i === S.myBet.h) { R.onNote(r, `${station.name}駅：スタミナ30％回復！`, true); AU.station(); } };
   R.onZone = (r, zone) => { if (r.i === S.myBet.h) { toast(`<b>${zone.name}</b>に突入！`, zone.color); say(`${r.def.name}、${zone.name}の区間へ！`); } };
 }
 function buildHud() {
@@ -4727,6 +5173,7 @@ function onSkill(r) {
   if (mine) { cutin(r); AU.whoosh(); AU.chime(); timeTarget = 0.3; slowUntil = realClock + 1.1; FX.flash = 0.5; FX.lines = 1.4; FX.ab = 1; }
   else { toast(`<b>${r.def.name}</b>「${r.def.skill.name}」発動！`, r.def.skill.color); AU.chime(); }
   if (r.def.kind === 'banei') FX.shake = Math.max(FX.shake, 0.6);
+  if (r.def.sk === 'maroon') AU.horn();
   if (r.def.kind === 'gold' || r.def.sk === 'urara') { cutin(r); FX.flash = 0.7; AU.jackpot(); if (!mine) { timeTarget = 0.4; slowUntil = realClock + 0.8; } }
   if (r.i === S.myBet.h || R.t - tickT >= 3) RC.emit('skill', {M: r.def.name, SK: r.def.skill.name}, false, {horse: r.def});
 }
@@ -5028,7 +5475,7 @@ function updHorses(dt, rdt) {
     const lv = r.pl === undefined ? 0 : (r.lane - r.pl) / Math.max(dt, 1e-4); r.pl = r.lane;
     H.yaw = damp(H.yaw, clamp(-lv * 0.07, -0.35, 0.35), 6, rdt);
     const drifting = r.fx.some(e => e.drift) && track.onCurve(R.s0 + r.s);
-    if (H.kind === 'car') H.drift = damp(H.drift, drifting ? -track.sgn * 0.5 : 0, 7, rdt);
+    if (H.kind === 'car' || H.kind === 'train') H.drift = damp(H.drift, drifting ? -track.sgn * 0.5 : 0, 7, rdt);
     let face = -q.h + H.yaw + (H.drift || 0);
     if (S.mode === 'lobby' && r.i === S.sel) face += Math.sin(clock * 0.8) * 0.15;
     H.root.rotation.order = 'YZX'; H.root.rotation.y = face;
@@ -5365,7 +5812,11 @@ const HORSE_CALLS = {
   matsukaze: {
     skill: ['{M}、「{SK}」！傾奇者の気風、華やかな勝負を見せるか！', '{M}が「{SK}」！自由な風を背に、豪快な一歩で前を目指せ！'],
     rally: ['{M}が{UP}頭をかわして{K}番手！傾奇の風が前へ吹く！'],
-    finish: ['{RESULT}{M}、1着！傾奇者の気風が勝利の舞台を飾った！'] }
+    finish: ['{RESULT}{M}、1着！傾奇者の気風が勝利の舞台を飾った！'] },
+  maroon: {
+    skill: ['{M}、「{SK}」！電車がドリフトしているー！隣の線路へ乗り移った！', '{M}が「{SK}」！マルーンの車体が横を向いた、カーブを線路ごと攻める！'],
+    rally: ['{M}が{UP}頭をかわして{K}番手！マルーンの車体が次の駅へ…いや、前へ！'],
+    finish: ['{RESULT}{M}、1着！終点ゴール、定刻どおりの到着です！'] }
 };
 // Combination calls describe a win here, never a recreated historical achievement.
 const COMBO_CALLS = {
@@ -5378,7 +5829,9 @@ const COMBO_CALLS = {
   'kyoto:turf:rice': {finish: ['{RESULT}{M}、1着！淀の長丁場、小さな挑戦者の大きな答えです！']},
   'kyoto:turf:goldship': {finish: ['{RESULT}{M}、1着！淀の長丁場に響く歓声、気まぐれな芦毛が夢を届けた！']},
   'meydan:turf:equinox': {finish: ['{RESULT}{M}、1着！ドバイの緑の舞台に、速さと調和の夢が輝いた！']},
-  'longchamp:turf:orfe': {finish: ['{RESULT}{M}、1着！ロンシャンの夢舞台で金色の輝き、勝利のゴールです！']}
+  'longchamp:turf:orfe': {finish: ['{RESULT}{M}、1着！ロンシャンの夢舞台で金色の輝き、勝利のゴールです！']},
+  'hanshin:turf:maroon': {finish: ['{RESULT}{M}、1着！仁川の駅からひと駆け、地元の電車が勝利をつかんだ！']},
+  'yamanote:turf:maroon': {rally: ['{M}が{UP}頭をかわして{K}番手！他社線から乗り入れたマルーンの電車が快走！'], finish: ['{RESULT}{M}、1着！山手線に乗り入れたマルーンの電車、終点東京に到着！']}
 };
 // Short historical excerpts, with original broadcast context and source attribution.
 // These join the existing pool; they do not replace every original homage.
