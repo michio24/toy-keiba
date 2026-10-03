@@ -589,7 +589,7 @@ body[data-play=crash] #guideNote{top:430px}
     </div>
     <div id="catalogView">
       <p id="catalogViewHint">ドラッグで回転・ホイール／ピンチでズーム</p>
-      <div id="catalogControls"><button id="catalogIdle" aria-pressed="true">待機</button><button id="catalogRun" aria-pressed="false">走る</button><button id="catalogReset">視点リセット</button></div>
+      <div id="catalogControls"><button id="catalogIdle" aria-pressed="true">待機</button><button id="catalogRun" aria-pressed="false">走る</button><button id="catalogSkill" aria-pressed="false">スキル</button><button id="catalogReset">視点リセット</button></div>
     </div>
   </div>
 </section>
@@ -3226,7 +3226,7 @@ function cutin(r) {
 
 /* ============ FLOW ============ */
 /* Catalog owns only its preview; the race and its camera remain untouched. */
-const catalog = { index: null, horse: null, scene: null, camera: null, running: false,
+const catalog = { index: null, horse: null, scene: null, camera: null, motion: 'idle', sparks: null, sparkAcc: 0,
   yaw: 0.8, pitch: 0.3, zoom: 1, radius: 3, target: new V3(), time: 0, width: 0, height: 0 };
 const catalogText = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 function catalogList() {
@@ -3262,6 +3262,7 @@ function catalogSelect(i) {
     <h4>スキル「${e(h.skill.name)}」</h4><p>${e(h.skill.desc)}</p>
     ${h.motif ? `<h4>名馬モチーフ</h4><p>${e(h.motifNote)}</p>` : ''}`;
   $('#catalogDetails').scrollTop = 0;
+  catalogMotion(catalog.motion);
   catalogList();
 }
 function openCatalog() {
@@ -3274,6 +3275,7 @@ function openCatalog() {
     const fill = new THREE.DirectionalLight('#cbdfff', 1); fill.position.set(-4, 3, -4); catalog.scene.add(fill);
     const pedestal = new THREE.Mesh(new THREE.CylinderGeometry(3.5, 3.7, 0.2, 64), new THREE.MeshStandardMaterial({color:'#cdb4e5',roughness:0.6}));
     pedestal.position.y = 0.1; catalog.scene.add(pedestal);
+    catalog.sparks = new Particles(200, TEX_STAR, true); catalog.scene.add(catalog.sparks.points);
   }
   VO.stop(); AU.crowdLvl(0);
   ptrs.clear(); pinch0 = 0;
@@ -3299,7 +3301,23 @@ function drawCatalog(rdt) {
     renderer.setSize(w, h); catalog.camera.aspect = w / h; catalog.camera.updateProjectionMatrix();
     catalog.width = w; catalog.height = h;
   }
-  catalog.time += rdt; animHorse(catalog.horse, catalog.running ? 14 : 0, rdt, catalog.time);
+  const H = catalog.horse, active = catalog.motion === 'skill';
+  catalog.time += rdt;
+  if (active) H.glow = 1.2;
+  animHorse(H, catalog.motion === 'idle' ? 0 : active ? 22 : 14, rdt, catalog.time, active);
+  const lift = active && ['pegasus', 'deep', 'hopping', 'balloon'].includes(H.def.sk) ? (H.def.sk === 'deep' ? 0.7 : 1.8) : 0;
+  H.root.position.y = damp(H.root.position.y, 0.2 + lift + H.hopY, 6, rdt);
+  H.root.rotation.y = damp(H.root.rotation.y, active && H.def.sk === 'drift' ? -0.5 : 0, 7, rdt);
+  if (active) {
+    const col = C(H.def.skill.color).multiplyScalar(3);
+    catalog.sparkAcc += rdt * 50;
+    while (catalog.sparkAcc >= 1) {
+      catalog.sparkAcc--;
+      catalog.sparks.emit(rand(-0.6, 0.6), H.root.position.y + rand(0.5, 2), rand(-0.6, 0.6), -4 + rand(-1, 1), rand(0, 2), rand(-1, 1), rand(0.4, 0.8), rand(0.5, 1.1), col, -1, 1);
+    }
+  }
+  catalog.sparks.mat.uniforms.scale.value = h * renderer.getPixelRatio() * 0.5;
+  catalog.sparks.update(rdt);
   const half = Math.atan(Math.tan(THREE.MathUtils.degToRad(20)) * Math.min(1, w / h));
   const dist = catalog.radius / Math.sin(half) * catalog.zoom;
   catalog.camera.position.copy(catalog.target).add(new V3(Math.sin(catalog.yaw) * Math.cos(catalog.pitch), Math.sin(catalog.pitch), Math.cos(catalog.yaw) * Math.cos(catalog.pitch)).multiplyScalar(dist));
@@ -3312,11 +3330,19 @@ $('#catalogList').onclick = e => {
   catalogSelect(+b.dataset.index);
   $('#catalogList').querySelector(`button[data-index="${catalog.index}"]`)?.focus();
 };
-function catalogMotion(running) {
-  catalog.running = running;
-  $('#catalogIdle').setAttribute('aria-pressed', String(!running)); $('#catalogRun').setAttribute('aria-pressed', String(running));
+function catalogMotion(motion) {
+  catalog.motion = motion; catalog.sparkAcc = 0;
+  if (catalog.sparks) { catalog.sparks.clear(); catalog.sparks.update(0); }
+  if (catalog.horse) catalog.horse.glow = 0;
+  for (const [id, value] of [['catalogIdle', 'idle'], ['catalogRun', 'run'], ['catalogSkill', 'skill']]) {
+    $('#' + id).setAttribute('aria-pressed', String(motion === value));
+  }
+  $('#catalogViewHint').textContent = motion === 'skill' && catalog.horse
+    ? `スキル「${catalog.horse.def.skill.name}」発動中（演出プレビュー）`
+    : 'ドラッグで回転・ホイール／ピンチでズーム';
 }
-$('#catalogIdle').onclick = () => catalogMotion(false); $('#catalogRun').onclick = () => catalogMotion(true);
+$('#catalogIdle').onclick = () => catalogMotion('idle'); $('#catalogRun').onclick = () => catalogMotion('run');
+$('#catalogSkill').onclick = () => catalogMotion('skill');
 $('#catalogReset').onclick = catalogReset;
 $('#catalog').addEventListener('keydown', e => {
   if (e.key === 'Escape') { e.preventDefault(); closeCatalog(); }
