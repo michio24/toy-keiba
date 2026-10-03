@@ -64,6 +64,27 @@
 
 コースには、ファンタジーの舞台と国内外の実在競馬場をモチーフにした舞台があります。芝・ダート、直線やカーブ、坂などの特徴をゲーム向けに表現しています。
 
+国内8・海外4競馬場には、それぞれを象徴する建物やオブジェを配置しています。実物の特徴とおおまかな配置を参考に、全景でも見分けられる大きさにデフォルメしたトイモデルです。レース能力や当たり判定には影響しません。代表物は低画質でも表示し、花壇や噴水の細部を省略します。
+
+| 競馬場 | 代表物 |
+|---|---|
+| 札幌 | もいわテラス・セイテンスタンド |
+| 新潟 | アイビス・NiLS21の2棟を表すスタンド |
+| 中山 | ハイセイコー像・グランプリガーデン |
+| 東京 | フジビュースタンド・ウオッカ像（大ケヤキ・富士山も表示） |
+| 笠松 | オグリキャップ像（内馬場パドック・鉄塔も表示） |
+| 中京 | 展示パノラマカー・ツインハットの屋根 |
+| 京都 | コントレイル像・三冠馬メモリアルロード（池・白鳥も表示） |
+| 阪神 | セントウル像・噴水・花壇 |
+| ロンシャン | 金褐色の段状スタンド（風車も表示） |
+| チャーチルダウンズ | バルバロ像・双塔 |
+| メイダン | 隣接ホテル棟（三日月屋根も表示、芝・ダート共通） |
+| シャティン | 屋根付きパドック・内馬場のペンフォールド公園 |
+
+左上のメニューにある「コース図鑑」では、全26コースを閲覧できます。コース名検索と「すべて／ファンタジー／国内／海外」の絞り込みに対応し、ゴール位置付きのコース概形・距離・路面・高低差・対応モード・特徴・モチーフ・専用区間の効果を確認できます。クラッシュモードでも競馬専用コースを閲覧できます。「ロビーへ戻る」または `Escape` で閉じます。
+
+コース図鑑では、背景や装飾も含めた3Dモデルを自由に眺められます。ドラッグで回転、ホイール／ピンチでズーム、「移動」モードのドラッグで平行移動できます。PCでは `Shift`＋ドラッグまたは右ドラッグ、スマートフォンでは2本指のドラッグでも移動できます。「全景へ戻る」で視点をリセットします。閲覧中はレースを進行せず、閉じると元のロビーのコース・出走馬・馬券設定に戻ります。
+
 ファンタジーコースには、次の7つの舞台も登場します。すべて競馬・クラッシュの両モードで選択できます。
 
 | コース | 特徴 |
@@ -92,7 +113,7 @@
 
 ## 実況・実績・結果カード
 
-- **実況**：先頭交代、接戦、残り距離、ゴールの着差などに合わせてテキストを表示し、ブラウザの読み上げ機能で再生します。全25コース、名馬モチーフ18頭、歴史名馬5頭と、コース・馬の10組の組み合わせに、有名実況を連想させるオリジナルの専用実況202文を追加しています。導入・直線・スキル・追い上げ・勝利の場面で、条件に合う組み合わせ、馬、コースの順に専用実況を選び、それ以外は汎用実況を使います。残り距離や着差は実際の展開に合わせ、クラッシュでは最終直線や勝利の実況を出しません。音の設定は効果音と共通です。声や日本語音声の利用可否はブラウザ・OSによって異なります。
+- **実況**：先頭交代、接戦、残り距離、ゴールの着差などに合わせてテキストを表示し、ブラウザの読み上げ機能で再生します。全26コース、名馬モチーフ18頭、歴史名馬5頭と、コース・馬の10組の組み合わせに、有名実況を連想させるオリジナルの専用実況206文を追加しています。導入・直線・スキル・追い上げ・勝利の場面で、条件に合う組み合わせ、馬、コースの順に専用実況を選び、それ以外は汎用実況を使います。残り距離や着差は実際の展開に合わせ、クラッシュでは最終直線や勝利の実況を出しません。音の設定は効果音と共通です。声や日本語音声の利用可否はブラウザ・OSによって異なります。
 - **実績**：完走、異なる馬やコースでの完走、応援ブーストで実績と称号を獲得できます。勝敗に関係なく進捗を保存し、コイン報酬は実績ごとに一度だけ受け取れます。
 - **結果カード**：応援した馬がゴールした瞬間の写真と、着順・馬名・コース・タイム・払戻をまとめたカードです。結果画面の「結果カードを保存・共有」からPNGを保存できます。写真はレース中に一度だけ撮影し、次のレースには持ち越しません。撮影できない場合は文字のみのカードになります。共有に対応したブラウザでは共有メニューを開き、それ以外では共有文のコピーまたは表示に切り替わります。
 
@@ -117,6 +138,7 @@ python -m http.server 8000
 | ファイル | 内容 |
 |---|---|
 | `index.html` | ゲーム本体。HTML・CSS・JavaScriptを収録 |
+| `tests/landmarks.test.cjs` | 実在13コースの代表物・メッシュ・走路との分離・画質切替・全景範囲・描画資源解放の検証（`node --test tests/landmarks.test.cjs`）。DOM・WebGLを使わないため、見た目は実ブラウザで別途確認します |
 | `lib/three/` | 3D描画ライブラリ three.js r147 と関連スクリプト |
 | `lib/three/LICENSE` | three.js の MIT License |
 | `tests/commentary.test.cjs` | 専用実況の網羅性・選択順・着差・発話間隔・競馬／クラッシュ・読み上げ連携の検証（`node --test tests/commentary.test.cjs`） |
@@ -131,10 +153,16 @@ python -m http.server 8000
 
 モチーフや表現の参考資料です。各馬・コースの説明はゲーム内でも確認できます。
 
+建物・オブジェの参考資料：
+
+- 国内：[札幌](https://umajo.jra.jp/facilities/sapporo.html)・[新潟](https://jra.jp/facilities/race/niigata/seat/)・[中山](https://www.jra.go.jp/facilities/race/nakayama/rcmap/index.html)・[東京場内図](https://www.jra.go.jp/facilities/race/tokyo/restaurant/pdf/20241028-tenpo.pdf)・[中京](https://www.jra.go.jp/facilities/race/chukyo/rcmap/index.html)・[京都](https://www.jra.go.jp/facilities/race/kyoto/rcmap/index.html)・[京都場内図](https://www.jra.go.jp/facilities/race/kyoto/rcmap/stand/pdf/stand.pdf)・[阪神](https://www.jra.go.jp/facilities/race/hanshin/rcmap/index.html)のJRA資料、[笠松の地方競馬公式ガイド](https://www.keiba.go.jp/guide/10/index.html)
+- 海外：[ロンシャンの設計者資料](https://perraultarchitecture.com/en/projects/parislongchamp-hippodrome/)・[バルバロ像の公式発表](https://www.churchilldowns.com/horses/news/barbaro-memorial-unveiling-scheduled-for-sunday-april-26/)・[メイダン公式案内](https://dubairacingclub.com/plan-your-day/)・[HKJCシャティン場内図](https://member.hkjc.com/-/media/Sites/JCEW/member/common/MFD/2025_MFD_Racecourses-EN.pdf)・[ペンフォールド公園の公式紹介](https://corporate.hkjc.com/en-US/news-and-publications/corporate-news/2026-06/news_2026060501550)
+
 - 馬の走り方：[競走馬総合研究所「三冠馬の走り方について」](https://www.b-t-c.or.jp/img/pdf/btcn/btcn93/btcn093-05.pdf)
 - 名馬モチーフ：[JRA「3分でわかった気になる名馬」](https://www.jra.go.jp/gallery/3minmeiba/horse22/)、[JRA「親仔年度代表馬の物語」](https://www.jra.go.jp/special/jra70th/tsunagu/story/kitasan_equinox/)
 - 歴史モチーフ：[『三国志』の赤兎馬に関する記述](https://ctext.org/dictionary.pl?char=%E8%B5%A4%E5%85%94&if=en)、[プルタルコス『アレクサンドロス伝』](https://sourcebooks.web.fordham.edu/ancient/plutarch-alexander1.asp)、[National Army Museum](https://www.nam.ac.uk/explore/horse-heroes)、[前田慶次逸話集](https://keijiyz.maeda-keiji.com/story.html)
 - 国内コース：[東京](https://www.jra.go.jp/facilities/race/tokyo/course/)・[中山](https://www.jra.go.jp/facilities/race/nakayama/course/)・[京都](https://www.jra.go.jp/facilities/race/kyoto/course/)・[阪神](https://www.jra.go.jp/facilities/race/hanshin/course/)・[中京](https://www.jra.go.jp/facilities/race/chukyo/course/)・[札幌](https://www.jra.go.jp/facilities/race/sapporo/course/)のJRA公式資料
+- 笠松コース：[笠松けいば公式コース情報](https://www.kasamatsu-keiba.com/courseinfo)・[場内施設](https://www.kasamatsu-keiba.com/facilities)・[地方競馬公式のコース紹介](https://www.keiba.go.jp/raceseries/race/future2025/1023/)。右回り・1周1100m・直線201m・高低差1.92mを参考にした近似コースです。
 - 海外コース：[ロンシャン（France Galop）](https://www7.france-galop.com/hippo_premium/0001_ParisLongchamp.pdf)、[チャーチルダウンズ](https://www.churchilldowns.com/racing/)、[メイダン（ERA）](https://emiratesracing.com/racecourses/meydan)、[シャティン（HKJC）](https://racing.hkjc.com/racing/english/racing-info/racing_course.asp)
 - 名実況：[JRA創立70周年記念誌](https://www.jra.go.jp/special/event70th/pdf/memorial_book.pdf)。実際のアナウンサーの録音は使用せず、ブラウザの音声で読み上げます。
 

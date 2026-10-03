@@ -363,12 +363,40 @@ h2{color:var(--gold);font-size:14px;letter-spacing:.06em}
  #catalog h2{font-size:15px}
 }
 @media(min-width:761px){#catalogBrowse{display:contents}#catalogListPane{grid-column:1;grid-row:1}#catalogView{grid-column:2;grid-row:1}#catalogDetails{grid-column:3;grid-row:1}}
+/* Course catalog shares the horse catalog's colors and controls. */
+#courseCatalog{position:fixed;inset:0;z-index:22;display:grid;grid-template-rows:auto minmax(0,1fr);background:#ece4fa;color:#302044;padding:14px;gap:12px;box-sizing:border-box}
+#courseCatalog[hidden]{display:none}
+#courseCatalog header{display:flex;align-items:center;justify-content:space-between;gap:12px}
+#courseCatalog h2{color:#604578;font-size:17px}
+#courseCatalog button,#courseCatalog input,#courseCatalog select{font:inherit;color:#302044;border:1px solid #bfa5d2;border-radius:10px;background:#fff8ff;padding:10px;min-height:44px;box-sizing:border-box}
+#courseCatalog button:focus-visible,#courseCatalog input:focus-visible,#courseCatalog select:focus-visible{outline:3px solid #8651ad;outline-offset:2px}
+#courseCatalogLayout{display:grid;grid-template-columns:230px minmax(0,1fr) 300px;gap:12px;min-height:0}
+#courseCatalogView{position:relative;min-width:0;min-height:0;border-radius:16px;overflow:hidden;background:#302044}
+#courseCatalogView canvas{display:block;touch-action:none;width:100%;height:100%}
+#courseCatalogViewHint{position:absolute;top:10px;left:10px;right:10px;margin:0;padding:8px;border-radius:10px;background:#fff8ffdd;font-size:12px;text-align:center;pointer-events:none}
+#courseCatalogControls{position:absolute;bottom:10px;left:10px;right:10px;display:flex;justify-content:center;flex-wrap:wrap;gap:6px}
+#courseCatalogControls button[aria-pressed=true]{background:#ead7fb;border-color:#8651ad}
+#courseCatalogBrowse,#courseCatalogDetails{overflow:auto;background:#ffffffd9;border-radius:16px;padding:14px;overscroll-behavior:contain}
+#courseCatalogSearch,#courseCatalogFilter{width:100%;margin:6px 0 10px}
+#courseCatalogList{display:grid;gap:6px}
+#courseCatalogList button{text-align:left;overflow-wrap:anywhere}
+#courseCatalogList button[aria-pressed=true]{background:#ead7fb;border-color:#8651ad;box-shadow:inset 3px 0 #8651ad}
+#courseCatalogList small{display:block;font-size:11px;color:#705c80}
+#courseCatalogDetails h3{font-family:var(--f-disp);font-size:22px;margin:0 0 8px;overflow-wrap:anywhere}
+#courseCatalogDetails h4{margin:18px 0 6px;color:#70518d}
+#courseCatalogDetails p,#courseCatalogDetails li{font-size:14px;line-height:1.7}
+#courseCatalogDetails dl{display:grid;grid-template-columns:auto 1fr;gap:8px 14px;font-size:14px}
+#courseCatalogDetails dd{margin:0}
+.courseCatalogMap{border-radius:14px;padding:16px;background:var(--g)}
+.courseCatalogMap svg{display:block;width:100%;max-height:300px}
+@media(max-width:1100px) and (min-width:761px){#courseCatalogLayout{grid-template-columns:190px minmax(0,1fr) 240px}}
+@media(max-width:760px){#courseCatalog{padding:10px 10px calc(env(safe-area-inset-bottom,0px) + 10px)}#courseCatalog h2{font-size:15px}#courseCatalogLayout{grid-template-columns:1fr;grid-template-rows:minmax(280px,45dvh) auto auto;overflow:auto}#courseCatalogView{grid-row:1}#courseCatalogBrowse,#courseCatalogDetails{overflow:visible;padding:12px}#courseCatalogList{grid-template-columns:repeat(2,minmax(0,1fr))}}
 /* ロビー再構成：メニュー行＋今日のレース＋タブ（出走馬／コース）、出走ボタンは独立したバー */
 :root{--slipW:clamp(280px,28vw,360px)}
 @media(max-width:1100px) and (min-width:761px){:root{--slipW:290px}#raceTrack{grid-template-columns:64px minmax(0,1fr)}#raceTrack .tsw{height:40px}#raceTrack .chg{display:none}#raceTrack .rtx>b{font-size:13px}}
 #journey .jbtns button{font-size:13px}
 #rail{scroll-padding-top:64px}
-#menuRow{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+#menuRow{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
 #menuRow button,#catalogOpen{width:auto;margin:0;padding:8px 4px;min-height:40px;border-radius:10px;background:#43285f;border:1px solid var(--line);font-size:12px;font-weight:900;color:var(--text);white-space:nowrap}
 #menuRow button:hover{background:#583378}
 #achBtn[aria-expanded=true]{background:#583378;border-color:var(--gold)}
@@ -533,6 +561,7 @@ body[data-play=crash] #guideNote{top:430px}
       <p id="recoveryNote" role="status" hidden></p>
       <nav id="menuRow" aria-label="メニュー">
         <button id="catalogOpen" aria-controls="catalog">📖 馬図鑑</button>
+        <button id="courseCatalogOpen" aria-controls="courseCatalog">🗺️ コース図鑑</button>
         <button id="showGuide">❔ 遊び方</button>
         <button id="achBtn" aria-expanded="false" aria-controls="achList">🏅 実績 <span id="achCount"></span></button>
       </nav>
@@ -595,6 +624,24 @@ body[data-play=crash] #guideNote{top:430px}
       <p id="catalogViewHint">ドラッグで回転・ホイール／ピンチでズーム</p>
       <div id="catalogControls"><button id="catalogIdle" aria-pressed="true">待機</button><button id="catalogRun" aria-pressed="false">走る</button><button id="catalogSkill" aria-pressed="false">スキル</button><button id="catalogReset">視点リセット</button></div>
     </div>
+  </div>
+</section>
+
+<section id="courseCatalog" hidden aria-label="コース図鑑">
+  <header><h2>🗺️ コース図鑑</h2><button id="courseCatalogClose">ロビーへ戻る</button></header>
+  <div id="courseCatalogLayout">
+    <div id="courseCatalogBrowse">
+      <label for="courseCatalogSearch">コース名で検索</label>
+      <input id="courseCatalogSearch" type="search" placeholder="コースの名前" autocomplete="off">
+      <label for="courseCatalogFilter">種類で絞り込み</label>
+      <select id="courseCatalogFilter"><option value="all">すべて</option><option value="fantasy">ファンタジー</option><option value="domestic">国内</option><option value="overseas">海外</option></select>
+      <p id="courseCatalogCount" role="status"></p><div id="courseCatalogList"></div>
+    </div>
+    <div id="courseCatalogView">
+      <p id="courseCatalogViewHint">ドラッグで回転・ホイール／ピンチでズーム。移動モードで平行移動</p>
+      <div id="courseCatalogControls"><button id="courseCatalogRotate" aria-pressed="true">回転</button><button id="courseCatalogPan" aria-pressed="false">移動</button><button id="courseCatalogReset">全景へ戻る</button></div>
+    </div>
+    <article id="courseCatalogDetails" aria-label="選択したコースの情報"></article>
   </div>
 </section>
 
@@ -672,6 +719,7 @@ const WX_TABLE = {
   tokyo: { sunny: 45, cloudy: 25, drizzle: 15, rain: 15 }, nakayama: { sunny: 45, cloudy: 30, flurry: 15, rain: 10 },
   hanshin: { sunny: 45, cloudy: 25, drizzle: 15, rain: 15 }, chukyo: { sunny: 45, cloudy: 25, drizzle: 15, rain: 15 },
   sapporo: { sunny: 55, cloudy: 30, drizzle: 10, rain: 5 },
+  kasamatsu: { sunny: 50, cloudy: 25, drizzle: 15, rain: 10 },
   meydan: { sunny: 85, cloudy: 13, drizzle: 2 }, shatin: { sunny: 45, cloudy: 30, drizzle: 15, rain: 10 },
   kyoto: { sunny: 50, cloudy: 25, drizzle: 15, rain: 10 }, niigata: { sunny: 50, cloudy: 20, drizzle: 10, rain: 20 },
   longchamp: { sunny: 30, cloudy: 35, drizzle: 20, rain: 15 }, churchill: { sunny: 50, cloudy: 25, drizzle: 10, rain: 15 },
@@ -1113,6 +1161,13 @@ const TRACKS = [
     motif: '英国サリー州のボックス・ヒルとモール川の飛び石', motifNote: '森の急坂、丘上の眺望、川の飛び石をヒントにした妖精の丘。高低差32mの2つの上り下りを巡る芝の周回コースです。距離・地形はゲーム用のアレンジです。',
     desc: '草原から丘へ上り、谷へ下ってもう一度森の丘を越える芝1800m。高低差32mのクロスカントリー戦。上りのパワー、下りの勢い、森での器用さとスタミナ配分が鍵。',
     grad: 'linear-gradient(135deg,#79b9db,#d6eab0 45%,#477e59)' },
+  // Append new courses to preserve saved course indices.
+  { name: '笠松競馬場コース', kick: 0.9, real: true, theme: 'kasamatsu', surf: 'dirt', surfaceLook: 'whiteDirt', dir: 'right', D: 700, time: '右回り・昼', scale: 0.5, elevEx: 2.5,
+    segs: [{ len: 238 }, { r: 624 / (2 * Math.PI), ang: 180 }, { len: 238 }, { r: 624 / (2 * Math.PI), ang: 180 }], finish: [0, 201],
+    elev: [[0,0,0],[0,1,0.5],[1,1,1.92],[2,1,1.3],[3,1,0]],
+    motif: '笠松競馬場　ダート1400m', motifNote: '右回りで1周1100m、ゴールまでの直線201m、高低差1.92m。内馬場のパドックと鉄塔が特徴。形状・坂の位置はゲーム向けの近似で、1400m戦の発走ポケットは再現していません。',
+    desc: '白砂の小回りダート。短い直線へ向け、コーナーでの器用さと先行力が勝負を決める。内馬場のパドックと鉄塔を眺めながら、笠松のゴールを目指そう！',
+    grad: 'linear-gradient(135deg,#66b6df,#efe3c5 55%,#7d9d62)' },
 ];
 
 const THEMES = {
@@ -1153,6 +1208,7 @@ const THEMES = {
 
 THEMES.hanshin = { ...THEMES.tokyo, sky: ['#458bdf', '#ffe1ed', '#92c882'], mount: '#91a9be' };
 THEMES.chukyo = { ...THEMES.tokyo, sky: ['#368cbe', '#e6f2db', '#83b568'], mount: '#81977c' };
+THEMES.kasamatsu = { ...THEMES.tokyo, sky: ['#66b6df', '#edf1dd', '#a3b781'], rail: '#f4f2dc', dust: '#e4d6b9', mount: '#91a08a' };
 THEMES.sapporo = { ...THEMES.niigata, sky: ['#54a6dd', '#daf1ed', '#70b87b'], mount: '#8ba5b5' };
 THEMES.meydan = { sky: ['#07122f', '#273760', '#79664e'], sun: [0.3, 0.35, -0.8], sunCol: '#dce9ff', sunSize: 600,
   light: [0.4, 0.9, -0.4], fog: ['#283450', 500, 1800], hemi: ['#bfceee', '#99826b', 0.85], dir: ['#eef3ff', 1.45],
@@ -2530,6 +2586,9 @@ function buildWorld(ti) {
     em.repeat.set(260, 260);
     gMat = toon('#ffffff', { map: gTex, emissive: C('#ffffff'), emissiveMap: em, emissiveIntensity: 1.3 });
   } else gMat = toon('#ffffff', { map: gTex });
+  // Keep near-coplanar harbor water and asphalt clear of terrain at long distances.
+  const groundDepthOffset = def.theme === 'monaco' ? { polygonOffset: true, polygonOffsetFactor: 1, polygonOffsetUnits: 2 } : {};
+  Object.assign(gMat, groundDepthOffset);
   if (def.theme === 'skyGarden') {
     // A finite floating island; no infinite ground plane beneath the clouds.
     const stone = toon('#a8a6bc'), top = new THREE.Mesh(new THREE.CircleGeometry(1, 64), gMat);
@@ -2545,7 +2604,7 @@ function buildWorld(ti) {
     for (let i = 0; i < p.count; i++) p.setY(i, track.groundH(p.getX(i), p.getZ(i)));
     g.computeVertexNormals();
     const tex2 = gTex.clone(); tex2.needsUpdate = true; tex2.repeat.set(sz / 10, sz / 10);
-    const hill = new THREE.Mesh(g, toon('#ffffff', { map: tex2 })); hill.receiveShadow = true; world.add(hill);
+    const hill = new THREE.Mesh(g, toon('#ffffff', { map: tex2, ...groundDepthOffset })); hill.receiveShadow = true; world.add(hill);
     const ground = new THREE.Mesh(new THREE.PlaneGeometry(2600, 2600), gMat); ground.rotation.x = -Math.PI / 2; ground.position.y = Math.min(-0.2, ...track.ys) - (def.zones ? 1 : 0); ground.receiveShadow = true; world.add(ground);
   } else if (def.theme !== 'dune') {
     const ground = new THREE.Mesh(new THREE.PlaneGeometry(2600, 2600), gMat); ground.rotation.x = -Math.PI / 2; ground.position.y = -0.03; ground.receiveShadow = true; world.add(ground);
@@ -2564,6 +2623,7 @@ function buildWorld(ti) {
   // track surface
   const surfDraw = {
     biscuit: drawBiscuit, basalt: drawBasalt,
+    whiteDirt: g => { g.fillStyle = '#d9cdb4'; g.fillRect(0, 0, 256, 256); speck(g, 256, 256, 2200, ['#f0e6d0', '#c6b99c', '#e5d8bd'], 1, 3, 0.55); },
     asphalt: g => { g.fillStyle = '#555e68'; g.fillRect(0, 0, 256, 256); speck(g, 256, 256, 2400, ['#68717b', '#454d57', '#7c858c'], 1, 2, 0.6); },
     turf: g => { for (let x = 0; x < 256; x += 64) { g.fillStyle = (x / 64) % 2 ? '#55b556' : '#63c761'; g.fillRect(x, 0, 64, 256); } speck(g, 256, 256, 2200, ['#4aa04a', '#79d672', '#8ee383'], 1, 3, 0.55); },
     dirt: g => { g.fillStyle = '#9b6a45'; g.fillRect(0, 0, 256, 256); for (let y = 0; y < 256; y += 6) { g.fillStyle = `rgba(${Math.random() < 0.5 ? '60,35,20' : '190,140,100'},${rand(0.05, 0.14)})`; g.fillRect(0, y, 256, rand(1, 3)); } speck(g, 256, 256, 1600, ['#7a4e30', '#b98559', '#5e3a22'], 1, 3, 0.7); },
@@ -2642,7 +2702,6 @@ function buildWorld(ti) {
     const tierA = toon(def.theme === 'candy' ? '#ffb9d4' : def.theme === 'neon' ? '#2c2448' : '#f2eef8'), tierB = toon(def.theme === 'candy' ? '#e8c38e' : def.theme === 'neon' ? '#3a2f5c' : '#e3dcef');
     for (let k = 0; k < 8; k++) { const m = addBox(stand, [len, 0.9 * (k + 1) + 0.3, 2.2], [x0 + len / 2, 0.45 * (k + 1) + 0.15, z0 + k * 2.2 + 1.1], k % 2 ? tierA : tierB); m.receiveShadow = true; }
     if (tall > 1) { addBox(stand, [len * 0.8, 9, 16], [x0 + len / 2, 18, z0 + 16], tierA, null, 0.02); for (let j = 0; j < 12; j++) addBox(stand, [len * 0.8 / 12 - 1, 1.2, 0.2], [x0 + len * 0.1 + (j + 0.5) * len * 0.8 / 12, 18, z0 + 7.9], glowMat('#bfe3ff', 1.4)); }
-    if (def.stand === 'spires') for (const dx of [-7, 7]) { const sp = new THREE.Group(); sp.position.set(x0 + len * 0.55 + dx, 13.6, z0 + 10); stand.add(sp); addBox(sp, [3.2, 7, 3.2], [0, 3.5, 0], toon('#ffffff'), null, 0.03); part(sp, CONE, toon('#f4f1ea'), [0, 10.5, 0], [2.4, 7.5, 2.4], [0, Math.PI / 4, 0], 0.03); part(sp, SPH_LO, toon('#e9c46a'), [0, 14.4, 0], [0.35, 0.35, 0.35], null, 0); }
     addBox(stand, [len + 2, 10, 1], [x0 + len / 2, 5, z0 + 18.2], tierA);
     const roof = addBox(stand, [len + 6, 0.8, 22], [x0 + len / 2, 13.2, z0 + 8.5], toon(def.theme === 'neon' ? '#1e1836' : '#ffffff'), [0.08, 0, 0], 0.02);
     roof.receiveShadow = true;
@@ -2684,6 +2743,7 @@ function buildWorld(ti) {
       for (let i = 0; i < n; i++) crowd.setColorAt(i, C(i % 3 ? '#b9cbd1' : '#d6af68'));
       crowd.instanceColor.needsUpdate = true;
     }
+    decorLandmarkStand(stand, len, z0, roof);
   }
 
   // jumbotron in the infield facing the stands
@@ -2705,7 +2765,8 @@ function buildWorld(ti) {
   buildGate();
 
   // theme decor
-  ({ boxHill: decorBoxHill, hakone: decorHakone, skyGarden: decorSkyGarden, candy: decorCandy, moonForest: decorMoonForest, dragonCrater: decorDragonCrater, pearlOcean: decorPearlOcean, clockwork: decorClockwork, sakura: decorSakura, neon: decorNeon, aurora: decorAurora, dune: decorDune, tokyo: decorTokyo, nakayama: decorNakayama, kyoto: decorKyoto, niigata: decorNiigata, longchamp: decorLongchamp, churchill: decorChurchill, hanshin: decorHanshin, chukyo: decorChukyo, sapporo: decorSapporo, meydan: decorMeydan, shatin: decorShatin, monaco: decorMonaco })[def.theme](th);
+  ({ boxHill: decorBoxHill, hakone: decorHakone, skyGarden: decorSkyGarden, candy: decorCandy, moonForest: decorMoonForest, dragonCrater: decorDragonCrater, pearlOcean: decorPearlOcean, clockwork: decorClockwork, sakura: decorSakura, neon: decorNeon, aurora: decorAurora, dune: decorDune, tokyo: decorTokyo, nakayama: decorNakayama, kyoto: decorKyoto, niigata: decorNiigata, longchamp: decorLongchamp, churchill: decorChurchill, hanshin: decorHanshin, chukyo: decorChukyo, kasamatsu: decorKasamatsu, sapporo: decorSapporo, meydan: decorMeydan, shatin: decorShatin, monaco: decorMonaco })[def.theme](th);
+  if (def.real) decorRacecourseLandmarks();
   if (track.zones.length) decorCourseZones();
   applyThemeQuality();
 
@@ -3128,6 +3189,189 @@ function fallingLeaves(tex, cols, rate) {
   const cs = cols.map(c => C(c));
   ambient(tex, false, rate, (a, c) => a.emit(c.x + rand(-60, 60), c.y + rand(6, 28), c.z + rand(-60, 60), rand(-1.5, 2), rand(-1.5, -0.7), rand(-1, 1), 9, rand(0.35, 0.6), cs[(Math.random() * cs.length) | 0], 0, 0));
 }
+/* ---- Real racecourse landmarks: static toy models, separate from race physics ---- */
+function registerLandmark(g, name) {
+  g.name = name;
+  (world.userData.landmarks || (world.userData.landmarks = [])).push(g);
+  return g;
+}
+function landmarkGroup(name, fraction = 0.5, lane = W + 88) {
+  const f = tp(lerp(track.homeS0, track.homeS1, fraction), lane), g = new THREE.Group();
+  g.position.set(f.v.x, track.groundH(f.v.x, f.v.z), f.v.z); g.rotation.y = -f.h; g.scale.z = track.sgn;
+  world.add(g); return registerLandmark(g, name);
+}
+function landmarkFoundation(g, width, depth, color = '#cec6b6') {
+  // Level the exhibit on a solid plinth, rather than letting a hillside cut through it.
+  g.updateWorldMatrix(true, false);
+  let low = Infinity, high = -Infinity;
+  for (let x = -width / 2; x <= width / 2 + 0.01; x += width / Math.ceil(width / 3)) {
+    for (let z = -depth / 2; z <= depth / 2 + 0.01; z += depth / Math.ceil(depth / 3)) {
+      const p = g.localToWorld(new V3(x, 0, z)), y = track.groundH(p.x, p.z);
+      low = Math.min(low, y); high = Math.max(high, y);
+    }
+  }
+  g.position.y = high + 0.25;
+  const height = high - low + 0.5;
+  const base = addBox(g, [width, height, depth], [0, -height / 2, 0], toon(color), null, 0);
+  base.name = 'landmark-foundation';
+}
+function landmarkFlowers(g, rx, rz, color = '#df7d9c') {
+  const flowers = [];
+  for (let i = 0; i < 32; i++) {
+    const a = i / 32 * Math.PI * 2;
+    flowers.push({ p: new V3(Math.cos(a) * rx, 0.6, Math.sin(a) * rz), s: new V3(0.8, 0.5, 0.8) });
+  }
+  const mesh = inst(SPH_LO, toon(color), flowers, false); g.add(mesh);
+  mesh.userData.fullCount = flowers.length; themeDetails.push(mesh);
+}
+function landmarkHorse(parent, position, pose = 'walk', color = '#57776b', scale = 2.5, centaur = false) {
+  const g = new THREE.Group(); g.position.set(...position); g.scale.setScalar(scale); parent.add(g);
+  const bronze = toon(color), stone = toon('#d8d0bc');
+  addBox(g, [5.6, 0.7, 3], [0, 0.35, 0], stone, null, 0);
+  const body = new THREE.Group(); body.position.y = 0.7; g.add(body);
+  if (pose === 'rear') { body.position.y += 0.6; body.rotation.z = 0.5; }
+  if (pose === 'gallop') addBox(g, [0.3, 2.4, 0.3], [0, 1.9, 0], bronze, null, 0);
+  part(body, SPH_LO, bronze, [0, 2.3, 0], [2.1, 0.85, 0.75], null, 0);
+  for (const x of [-1.25, 1.25]) for (const z of [-0.48, 0.48]) {
+    const angle = pose === 'gallop' ? (x > 0 ? -0.8 : 0.8) : (z > 0 ? 0.2 : -0.2);
+    part(body, BOX, bronze, [x, 1.1, z], [0.32, 2.2, 0.32], [0, 0, angle], 0);
+  }
+  part(body, CONE, bronze, [-2, 1.9, 0], [0.3, 1.8, 0.3], [0, 0, -0.45], 0);
+  if (centaur) {
+    part(body, SPH_LO, bronze, [1.25, 3.5, 0], [0.6, 1.2, 0.55], null, 0);
+    part(body, SPH_LO, bronze, [1.35, 5, 0], [0.43, 0.5, 0.43], null, 0);
+    for (const z of [-0.65, 0.65]) part(body, BOX, bronze, [1.8, 3.9, z], [1.5, 0.3, 0.3], [0, 0, 0.45], 0);
+  } else {
+    part(body, SPH_LO, bronze, [1.65, 3.15, 0], [0.65, 1.2, 0.6], [0, 0, 0.35], 0);
+    part(body, SPH_LO, bronze, [2.15, 4, 0], [0.9, 0.42, 0.45], [0, 0, -0.15], 0);
+    for (const z of [-0.25, 0.25]) part(body, CONE, bronze, [1.8, 4.6, z], [0.16, 0.5, 0.16], null, 0);
+  }
+  return g;
+}
+function landmarkStatue(name, fraction, pose, color) {
+  const g = landmarkGroup(name, fraction);
+  landmarkHorse(g, [0, 0, 0], pose, color); landmarkFoundation(g, 18, 12);
+  return g;
+}
+function decorLandmarkStand(stand, len, z0, roof) {
+  const theme = track.def.theme;
+  if (!['sapporo', 'niigata', 'tokyo', 'chukyo', 'longchamp', 'churchill'].includes(theme)) return;
+  const g = new THREE.Group(); stand.add(g); registerLandmark(g, theme + '-stand');
+  const cream = theme === 'longchamp' ? null : toon('#eee8d8'), glass = theme === 'churchill' ? null : toon('#7ca6b9');
+  const gold = theme === 'longchamp' || theme === 'churchill' ? toon('#ad8a51') : null;
+  const box = (size, p, mat = cream, rot) => addBox(g, size, p, mat, rot, 0);
+  if (theme === 'tokyo') {
+    roof.visible = false;
+    for (let i = 0; i < 4; i++) {
+      box([len + 8, 0.8, 24], [0, 12 + i * 4, z0 + 9 + i * 1.5]);
+      box([len - 4, 2.9, 0.35], [0, 14 + i * 4, z0 + 19 + i * 1.5], glass);
+    }
+    box([len + 14, 1.3, 34], [0, 28, z0 + 9]);
+  } else if (theme === 'longchamp') {
+    roof.visible = false;
+    for (let i = 0; i < 4; i++) {
+      box([len + 18 - i * 10, 1.2, 26], [-i * 5, 12 + i * 4.5, z0 + 8 + i * 2], gold);
+      box([len - i * 10, 2.6, 0.25], [-i * 5, 14 + i * 4.5, z0 + 19 + i * 2], glass);
+    }
+  } else if (theme === 'chukyo') {
+    roof.visible = false;
+    for (const x of [-len * 0.25, len * 0.25]) box([len * 0.53, 1.2, 25], [x, 17, z0 + 9], cream, [0, 0, x < 0 ? 0.1 : -0.1]);
+    box([len - 4, 5, 0.4], [0, 12, z0 + 18], glass);
+  } else if (theme === 'niigata') {
+    roof.visible = false;
+    for (const [x, y, mat] of [[-len * 0.26, 17, toon('#d7b0a2')], [len * 0.26, 22, glass]]) {
+      box([len * 0.47, y - 9, 9], [x, (y + 9) / 2, z0 + 18], mat);
+      box([len * 0.49, 1, 25], [x, y + 0.5, z0 + 10]);
+    }
+  } else if (theme === 'sapporo') {
+    box([len * 0.7, 0.6, 13], [0, 14.1, z0 - 4]);
+    box([len * 0.7, 1.1, 0.2], [0, 15, z0 - 10.4], glass);
+    for (let x = -len * 0.3; x <= len * 0.3; x += 18) box([0.3, 3.5, 0.3], [x, 15.8, z0 - 4]);
+    box([len * 0.72, 0.5, 12], [0, 17.8, z0 - 4]);
+    // An open stepped seating terrace beside the main stand.
+    for (let i = 0; i < 4; i++) box([len * 0.25, 1 + i, 3], [len * 0.68, (1 + i) / 2, z0 + i * 3], toon('#9dba9a'));
+  } else {
+    for (const x of [-len * 0.18, len * 0.18]) {
+      box([6.5, 9, 6.5], [x, 17.7, z0 + 10]);
+      part(g, new THREE.CylinderGeometry(2.2, 3.3, 3, 8), cream, [x, 23.5, z0 + 10], null, null, 0);
+      part(g, new THREE.ConeGeometry(3.6, 9, 8), cream, [x, 29.5, z0 + 10], null, null, 0);
+      part(g, SPH_LO, gold, [x, 34.2, z0 + 10], [0.45, 0.45, 0.45], null, 0);
+    }
+  }
+}
+function decorRacecourseLandmarks() {
+  const theme = track.def.theme;
+  if (theme === 'tokyo') landmarkStatue('ウオッカ像', 0.85, 'rear', '#536a60');
+  if (theme === 'nakayama') {
+    landmarkStatue('ハイセイコー像', 0.82, 'walk', '#665648');
+    const g = landmarkGroup('グランプリガーデン', 0.2); landmarkFoundation(g, 32, 20, '#95aa75');
+    for (let i = 0; i < 7; i++) addBox(g, [2, 2.8, 0.5], [-12 + i * 4, 1.4, 6], toon('#a48b5f'), null, 0);
+    landmarkFlowers(g, 13, 8);
+  }
+  if (theme === 'kasamatsu') landmarkStatue('オグリキャップ像', 0.8, 'walk', '#b6bcb4');
+  if (theme === 'churchill') landmarkStatue('バルバロ像', 0.8, 'gallop', '#746052');
+  if (theme === 'kyoto') {
+    landmarkStatue('コントレイル像', 0.82, 'walk', '#526358');
+    const g = landmarkGroup('三冠馬メモリアルロード', 0.22); landmarkFoundation(g, 58, 16);
+    for (let i = 0; i < 8; i++) landmarkHorse(g, [-24.5 + i * 7, 0, 0], 'walk', '#71664f', 1.1);
+  }
+  if (theme === 'chukyo') {
+    const g = landmarkGroup('パノラマステーション', 0.45); landmarkFoundation(g, 54, 15);
+    const red = toon('#bb3932'), glass = toon('#4b6b7d'), steel = toon('#777d83');
+    for (const x of [-13, 13]) {
+      addBox(g, [25, 6, 7], [x, 5, 0], red, null, 0);
+      addBox(g, [25, 0.7, 7.5], [x, 8.3, 0], toon('#d6cec4'), null, 0);
+      for (let j = 0; j < 6; j++) for (const z of [-3.55, 3.55]) addBox(g, [2.8, 2.1, 0.15], [x - 9 + j * 3.6, 6, z], glass, null, 0);
+      for (const dx of [-7, 7]) for (const z of [-2.5, 2.5]) part(g, new THREE.CylinderGeometry(1.2, 1.2, 0.5, 10), steel, [x + dx, 1.2, z], null, [Math.PI / 2, 0, 0], 0);
+    }
+    for (const x of [-24.8, 24.8]) {
+      addBox(g, [3, 3, 6.2], [x, 8.4, 0], red, null, 0);
+      addBox(g, [0.18, 2.1, 5.5], [x + Math.sign(x) * 1.55, 8.5, 0], glass, null, 0);
+    }
+  }
+  if (theme === 'hanshin') {
+    const g = landmarkGroup('セントウルガーデン', 0.5); landmarkFoundation(g, 42, 30, '#93aa79');
+    landmarkHorse(g, [-9, 0, 0], 'walk', '#718978', 2.2, true);
+    const basin = part(g, new THREE.CylinderGeometry(6.5, 7, 1, 32), toon('#ddd3bf'), [10, 0.5, 0], null, null, 0);
+    basin.receiveShadow = true;
+    part(g, new THREE.CircleGeometry(6, 32), toon('#6bbdcf', { polygonOffset: true, polygonOffsetFactor: -1, polygonOffsetUnits: -1 }), [10, 1.05, 0], null, [-Math.PI / 2, 0, 0], 0);
+    const jets = new THREE.Group(); g.add(jets); themeDetails.push(jets);
+    for (let i = 0; i < 6; i++) {
+      const a = i / 6 * Math.PI * 2, dir = new V3(Math.cos(a), 0, Math.sin(a));
+      const curve = new THREE.QuadraticBezierCurve3(new V3(10, 1.2, 0), new V3(10 + dir.x * 2, 9, dir.z * 2), new V3(10 + dir.x * 4, 1.2, dir.z * 4));
+      jets.add(new THREE.Mesh(new THREE.TubeGeometry(curve, 12, 0.12, 4), toon('#a7e5ed')));
+    }
+    landmarkFlowers(g, 19, 13, '#df92ae');
+  }
+  if (theme === 'meydan') {
+    const g = landmarkGroup('メイダンホテル', 1.18, W + 106); landmarkFoundation(g, 110, 32);
+    const wall = toon('#abc5ce'), glass = toon('#536c8b');
+    for (let i = 0; i < 6; i++) {
+      const x = -45 + i * 18, h = 28 + (2.5 - Math.abs(i - 2.5)) * 3;
+      addBox(g, [18, h, 28], [x, h / 2, 0], wall, null, 0);
+      for (let y = 5; y < h; y += 5) addBox(g, [17.5, 2.5, 0.3], [x, y, -14.2], glass, null, 0);
+      addBox(g, [19, 1.2, 30], [x, h, 0], toon('#d4e1e5'), null, 0);
+    }
+  }
+  if (theme === 'shatin') {
+    const g = landmarkGroup('屋根付きパドック', 0.5, W + 100); landmarkFoundation(g, 68, 42);
+    const roof = toon('#cadbd5'), ground = toon('#b4b091');
+    part(g, new THREE.RingGeometry(0.68, 1, 48), ground, [0, 0.3, 0], [31, 18, 1], [-Math.PI / 2, 0, 0], 0);
+    for (let i = 0; i < 12; i++) {
+      const a = i / 12 * Math.PI * 2;
+      addBox(g, [0.6, 12, 0.6], [Math.cos(a) * 31, 6, Math.sin(a) * 18], roof, null, 0);
+    }
+    part(g, new THREE.RingGeometry(0.55, 1, 48), roof, [0, 12, 0], [33, 20, 1], [-Math.PI / 2, 0, 0], 0);
+    const park = landmarkGroup('ペンフォールド公園', 0.65, -Math.max(35, track.R * 0.75));
+    landmarkFoundation(park, 44, 28, '#7ca76b');
+    for (const x of [-13, 13]) {
+      part(park, new THREE.CylinderGeometry(0.4, 0.6, 6, 6), toon('#8a7155'), [x, 3, 0], null, null, 0);
+      part(park, SPH_LO, toon('#5d9564'), [x, 8, 0], [5, 4, 5], null, 0);
+    }
+    const pond = part(park, new THREE.CircleGeometry(1, 32), toon('#78bdca'), [0, 0.3, 0], [9, 6, 1], [-Math.PI / 2, 0, 0], 0);
+    pond.receiveShadow = true; landmarkFlowers(park, 19, 11, '#f0c67f');
+  }
+}
 function decorTokyo(th) {
   roundTrees(treeSpots(110, 18), ['#3f8f3a', '#4fa546', '#5fb853', '#377d34']);
   // 大ケヤキ: a lone giant zelkova inside the 3rd corner
@@ -3200,6 +3444,38 @@ function decorHanshin(th) {
 function decorChukyo(th) {
   roundTrees(treeSpots(105, 18), ['#4b913e', '#65a950', '#8abb61']);
   mountains(th.mount, 14, false);
+}
+function decorKasamatsu(th) {
+  roundTrees(treeSpots(60, 0, 18, 70), ['#608952', '#7ba066', '#94b978']);
+  mountains(th.mount, 8, false);
+  // An infield paddock and lattice towers are simplified landmarks, clear of the running lanes.
+  const paddock = new THREE.Group(); paddock.position.set(-25, track.groundH(-25, -8), -8); world.add(paddock);
+  const ring = new THREE.Mesh(new THREE.RingGeometry(0.7, 1, 48), toon('#d7c6a6', { side: THREE.DoubleSide }));
+  ring.rotation.x = -Math.PI / 2; ring.scale.set(29, 17, 1); ring.position.y = 0.18; paddock.add(ring);
+  const fenceMat = toon('#f5f0df'), fence = [];
+  for (let i = 0; i < 48; i++) {
+    const a = i / 48 * Math.PI * 2, x = Math.cos(a) * 29, z = Math.sin(a) * 17;
+    fence.push(new V3(x, 1.2, z)); addBox(paddock, [0.16, 1.2, 0.16], [x, 0.6, z], fenceMat, null, 0);
+  }
+  paddock.add(new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(fence, true), 96, 0.1, 4, true), fenceMat));
+  const steel = toon('#8b9398');
+  for (const x of [-75, 65]) {
+    const tower = new THREE.Group(); tower.position.set(x, track.groundH(x, 14), 14); world.add(tower);
+    for (const dx of [-1, 1]) for (const dz of [-1, 1]) {
+      const a = new V3(dx * 4, 0, dz * 4), b = new V3(dx * 1.3, 32, dz * 1.3);
+      tower.add(new THREE.Mesh(new THREE.TubeGeometry(new THREE.LineCurve3(a, b), 1, 0.28, 4), steel));
+    }
+    for (let y = 4; y <= 28; y += 6) {
+      const r = 4 - 2.7 * y / 32;
+      for (const side of [-1, 1]) {
+        addBox(tower, [r * 2, 0.22, 0.22], [0, y, side * r], steel, null, 0);
+        addBox(tower, [0.22, 0.22, r * 2], [side * r, y, 0], steel, null, 0);
+        const a = new V3(-r, y, side * r), b = new V3(r - 0.5, y + 6, side * (r - 0.5));
+        tower.add(new THREE.Mesh(new THREE.TubeGeometry(new THREE.LineCurve3(a, b), 1, 0.12, 4), steel));
+      }
+    }
+    for (const y of [26, 31]) addBox(tower, [13, 0.45, 0.5], [0, y, 0], steel, null, 0);
+  }
 }
 function decorSapporo(th) {
   roundTrees(treeSpots(100, 16), ['#39794c', '#58a565', '#78bc7a']);
@@ -3703,7 +3979,7 @@ $('#lobbyToggle').onclick = () => {
 };
 /* ロビーのタブ（PCは出走馬／コース、スマホは馬券も含む3タブ）とコースの絞り込み */
 const LOBBY_TABS = ['horses', 'tracks', 'slip'];
-const TRACK_DOMESTIC = ['sapporo', 'niigata', 'nakayama', 'tokyo', 'chukyo', 'kyoto', 'hanshin'];
+const TRACK_DOMESTIC = ['sapporo', 'niigata', 'nakayama', 'tokyo', 'kasamatsu', 'chukyo', 'kyoto', 'hanshin'];
 const TRACK_OVERSEAS = ['shatin', 'meydan', 'longchamp', 'churchill'];
 const trackGroupOf = t => !t.real ? 'fantasy' : TRACK_DOMESTIC.includes(t.theme) ? 'domestic' : 'overseas';
 const TRACK_GROUPS = [
@@ -3984,6 +4260,168 @@ $('#catalog').addEventListener('keydown', e => {
   if (e.key === 'Escape') { e.preventDefault(); closeCatalog(); }
   e.stopPropagation();
 });
+const courseCatalog = { index: null, saved: null, width: 0, height: 0, target: new V3(), yaw: 0.8, pitch: 0.65, distance: 500, pan: false, time: 0 };
+function courseCatalogList() {
+  const q = $('#courseCatalogSearch').value.trim().normalize('NFKC').toLocaleLowerCase('ja');
+  const filter = $('#courseCatalogFilter').value;
+  const matches = TRACKS.map((t, i) => ({t, i})).filter(({t}) =>
+    t.name.normalize('NFKC').toLocaleLowerCase('ja').includes(q) && (filter === 'all' || trackGroupOf(t) === filter));
+  $('#courseCatalogCount').textContent = `${matches.length} / ${TRACKS.length}コース`;
+  $('#courseCatalogList').innerHTML = matches.length ? matches.map(({t, i}) =>
+    `<button data-index="${i}" aria-pressed="${i === courseCatalog.index}">${catalogText(t.name)}<small>${SURF[t.surf]} ${t.D}m・${catalogText(t.time)}</small></button>`).join('') : '<p>該当するコースがありません。</p>';
+}
+function courseCatalogSelect(i) {
+  const t = TRACKS[i]; if (!t) return;
+  courseCatalog.index = i;
+  if (S.mode === 'courseCatalog') {
+    buildWorld(i); gate.g.visible = false; drawBoard();
+    // Exhibit cameras sit beyond race fog distances; keep the whole course clear.
+    scene.fog = null;
+    courseCatalog.width = 0; courseCatalog.height = 0;
+    courseCatalogReset();
+  }
+  const tr = new Track(t), e = catalogText;
+  let low = Infinity, high = -Infinity;
+  for (const y of tr.ys) { low = Math.min(low, y / tr.ex); high = Math.max(high, y / tr.ex); }
+  const group = TRACK_GROUPS.find(([g]) => g === trackGroupOf(t))[1];
+  $('#courseCatalogDetails').innerHTML = `<h3>${e(t.name)}</h3><p>${e(group)}・${SURF[t.surf]} ${t.D}m</p>
+    <div class="courseCatalogMap" style="--g:${t.grad}" role="img" aria-label="${e(t.name)}のコース概形。ピンクの印はゴール">${coursePreview(t)}</div>
+    <p class="catalogNote">ゲーム内のコース概形です。ピンクの印はゴール。実在の競馬場の実測図ではありません。</p>
+    <h4>コースデータ</h4><dl><dt>距離</dt><dd>${t.D}m</dd><dt>路面</dt><dd>${SURF[t.surf]}</dd><dt>舞台</dt><dd>${e(t.time)}</dd>
+    <dt>走路</dt><dd>${tr.closed ? t.dir === 'right' ? '右回り・周回' : '左回り・周回' : '一本道（スタートとゴールが別）'}</dd>
+    <dt>高低差</dt><dd>${(high - low).toFixed(1)}m（ゲーム内）</dd><dt>対応モード</dt><dd>${tr.closed ? '競馬・クラッシュ' : '競馬のみ'}</dd></dl>
+    <h4>特徴・攻略のヒント</h4><p>${e(t.desc)}</p>
+    ${t.motif ? `<h4>モチーフ</h4><p>${e(t.motif)}</p>${t.motifNote ? `<p>${e(t.motifNote)}</p>` : ''}` : ''}
+    <h4>専用区間</h4>${tr.zones.length ? `<ul>${tr.zones.map(z => `<li><b>${e(z.name)}</b>：${courseCatalogZoneText(z)}</li>`).join('')}</ul>` : '<p>専用区間なし。距離・路面・カーブ・坂を活かして走ります。</p>'}
+    <p class="catalogNote">形状・距離・高低差はゲーム向けのアレンジです。坂の見た目は強調されています。</p>`;
+  $('#courseCatalogDetails').scrollTop = 0;
+  courseCatalogList();
+}
+function courseCatalogZoneText(z) {
+  const effects = [];
+  if (z.speed > 1) effects.push('加速');
+  if (z.speed < 1) effects.push('減速');
+  if (z.drain < 0) effects.push('スタミナ消耗軽減');
+  if (z.drain > 0) effects.push('スタミナ消耗増加');
+  if (z.recover > 0) effects.push('スタミナ回復');
+  if (z.power) effects.push('パワーで速度が変化');
+  if (z.agility) effects.push('器用さで速度が変化');
+  return effects.join('・');
+}
+function courseCatalogReset() {
+  const view = $('#courseCatalogView'), aspect = Math.max(0.3, view.clientWidth / Math.max(1, view.clientHeight));
+  let low = Infinity, high = -Infinity;
+  for (const y of track.ys) { low = Math.min(low, y); high = Math.max(high, y); }
+  courseCatalog.target.set(0, (low + high) / 2, 0);
+  courseCatalog.yaw = track.def.theme === 'monaco' ? 0 : 0.8; courseCatalog.pitch = 0.65;
+  const cy = Math.cos(courseCatalog.yaw), sy = Math.sin(courseCatalog.yaw);
+  const cp = Math.cos(courseCatalog.pitch), sp = Math.sin(courseCatalog.pitch);
+  const tanV = Math.tan(Math.PI / 8), tanH = tanV * aspect, padding = W + 10;
+  let distance = 20;
+  const fit = (x, y, z) => {
+    y -= courseCatalog.target.y;
+    const along = cy * x + sy * z, depth = cp * along + sp * y;
+    distance = Math.max(distance, depth + (Math.abs(sy * x - cy * z) + padding) / tanH,
+      depth + (Math.abs(cp * y - sp * along) + padding) / tanV);
+  };
+  // Fit the actual course in camera space instead of a sphere around its longest side.
+  for (let i = 0; i <= track.N; i++) {
+    fit(track.xs[i], track.ys[i], track.zs[i]);
+  }
+  world.updateMatrixWorld(true);
+  for (const g of world.userData.landmarks || []) {
+    const box = new THREE.Box3().setFromObject(g);
+    for (const x of [box.min.x, box.max.x]) for (const y of [box.min.y, box.max.y]) for (const z of [box.min.z, box.max.z]) fit(x, y, z);
+  }
+  courseCatalog.maxDistance = Math.max(1800, distance * 1.1);
+  courseCatalog.distance = distance * 1.1;
+}
+function courseCatalogMove(dx, dy) {
+  const scale = 2 * courseCatalog.distance * Math.tan(Math.PI / 8) / Math.max(1, $('#courseCatalogView').clientHeight);
+  const right = new V3(1, 0, 0).applyQuaternion(camera.quaternion), up = new V3(0, 1, 0).applyQuaternion(camera.quaternion);
+  courseCatalog.target.addScaledVector(right, -dx * scale).addScaledVector(up, dy * scale);
+  const limit = track.extent * 2;
+  courseCatalog.target.x = clamp(courseCatalog.target.x, -limit, limit);
+  courseCatalog.target.z = clamp(courseCatalog.target.z, -limit, limit);
+  courseCatalog.target.y = clamp(courseCatalog.target.y, -50, limit);
+}
+function drawCourseCatalog(rdt) {
+  const view = $('#courseCatalogView'), w = view.clientWidth, h = view.clientHeight;
+  if (!w || !h) return;
+  if (courseCatalog.width !== w || courseCatalog.height !== h) {
+    renderer.setSize(w, h); composer.setSize(w, h);
+    camera.aspect = w / h; camera.fov = 45; camera.updateProjectionMatrix();
+    courseCatalog.width = w; courseCatalog.height = h;
+  }
+  camera.position.copy(orbit(courseCatalog.target, courseCatalog.yaw, courseCatalog.pitch, courseCatalog.distance));
+  const far = Math.max(courseCatalog.saved.far, courseCatalog.distance + track.extent * 2);
+  // A race-sized near plane loses depth precision in the distant exhibit view.
+  const near = clamp(courseCatalog.distance * 0.01, 0.1, 10);
+  if (camera.near !== near || camera.far !== far) { camera.near = near; camera.far = far; camera.updateProjectionMatrix(); }
+  camera.lookAt(courseCatalog.target);
+  sky.position.copy(camera.position);
+  sun.position.copy(courseCatalog.target).addScaledVector(sunDir, 160); sun.target.position.copy(courseCatalog.target);
+  courseCatalog.time += rdt;
+  if (amb) amb.mat.uniforms.scale.value = h * PR * 0.5;
+  themeUpd.forEach(f => f(courseCatalog.time, rdt));
+  FU.uAb.value = 0; FU.uFlash.value = 0; FU.uTime.value = courseCatalog.time; FU.uSat.value = 1.16;
+  composer.render();
+}
+function openCourseCatalog() {
+  if (S.mode !== 'lobby') return;
+  VO.stop(); AU.crowdLvl(0);
+  AU.rainLvl(0); ptrs.clear(); pinch0 = 0;
+  // Preserve the lobby world and race while the builder creates exhibit worlds.
+  courseCatalog.saved = { world, track, sun, sunDir, sky, amb, board, gate, crowd, themeUpd, themeFinish, themeReset, themeDetails, WR,
+    boardPos: boardPos.clone(), fog: scene.fog, position: camera.position.clone(), quaternion: camera.quaternion.clone(), fov: camera.fov, near: camera.near, far: camera.far,
+    uniforms: Object.fromEntries(Object.entries(FU).map(([k, u]) => [k, u.value])),
+    bloom: [bloom.strength, bloom.radius, bloom.threshold], objects: scene.children.filter(o => o !== world).map(o => [o, o.visible]) };
+  scene.remove(world); world = null; amb = null;
+  courseCatalog.saved.objects.forEach(([o]) => { o.visible = false; });
+  setMode('courseCatalog'); $('#courseCatalog').hidden = false;
+  $('#top').hidden = true; $('#fx').hidden = true;
+  $('#courseCatalogSearch').value = ''; $('#courseCatalogFilter').value = 'all';
+  $('#courseCatalogView').prepend(cv);
+  courseCatalogSelect(S.ti); $('#courseCatalogClose').focus();
+}
+function closeCourseCatalog() {
+  if (S.mode !== 'courseCatalog') return;
+  ptrs.clear(); pinch0 = 0;
+  disposeWorld();
+  const saved = courseCatalog.saved;
+  ({ world, track, sun, sunDir, sky, amb, board, gate, crowd, themeUpd, themeFinish, themeReset, themeDetails, WR } = saved);
+  boardPos.copy(saved.boardPos); scene.fog = saved.fog; scene.add(world);
+  saved.objects.forEach(([o, visible]) => { o.visible = visible; });
+  Object.entries(saved.uniforms).forEach(([k, value]) => { FU[k].value = value; });
+  [bloom.strength, bloom.radius, bloom.threshold] = saved.bloom;
+  camera.position.copy(saved.position); camera.quaternion.copy(saved.quaternion); camera.fov = saved.fov; camera.near = saved.near; camera.far = saved.far;
+  camera.aspect = innerWidth / innerHeight; camera.updateProjectionMatrix();
+  stage.appendChild(cv); renderer.setSize(innerWidth, innerHeight); composer.setSize(innerWidth, innerHeight);
+  if (amb) amb.mat.uniforms.scale.value = innerHeight * PR * 0.5;
+  courseCatalog.saved = null;
+  AU.rainLvl(wxState.rainN ? (wxState.rainN > 1000 ? 0.09 : 0.045) : 0);
+  $('#courseCatalog').hidden = true; $('#top').hidden = false; $('#fx').hidden = false;
+  setMode('lobby'); AU.crowdLvl(0.12); $('#courseCatalogOpen').focus();
+}
+$('#courseCatalogOpen').onclick = openCourseCatalog; $('#courseCatalogClose').onclick = closeCourseCatalog;
+$('#courseCatalogReset').onclick = courseCatalogReset;
+function courseCatalogPanMode(pan) {
+  courseCatalog.pan = pan;
+  $('#courseCatalogRotate').setAttribute('aria-pressed', String(!pan));
+  $('#courseCatalogPan').setAttribute('aria-pressed', String(pan));
+}
+$('#courseCatalogRotate').onclick = () => courseCatalogPanMode(false);
+$('#courseCatalogPan').onclick = () => courseCatalogPanMode(true);
+$('#courseCatalogSearch').oninput = courseCatalogList; $('#courseCatalogFilter').onchange = courseCatalogList;
+$('#courseCatalogList').onclick = e => {
+  const b = e.target.closest('button[data-index]'); if (!b) return;
+  courseCatalogSelect(+b.dataset.index);
+  $('#courseCatalogList').querySelector(`button[data-index="${courseCatalog.index}"]`)?.focus();
+};
+$('#courseCatalog').addEventListener('keydown', e => {
+  if (e.key === 'Escape') { e.preventDefault(); closeCourseCatalog(); }
+  e.stopPropagation();
+});
 const cam = { tgt: new V3(), pos: new V3(0, 60, 180), fov: 50, base: 0, yaw: 0.8, pitch: 0.25, dist: 7.5, drag: -10 };
 let timeScale = 1, timeTarget = 1, slowUntil = 0, clock = 0, realClock = 0;
 let hud = { t: 0 }, flags = {};
@@ -4217,6 +4655,7 @@ function settleCrash(reason, multiplier) {
 
 /* ============ INPUT ============ */
 addEventListener('keydown', e => {
+  if (S.mode === 'courseCatalog') { if (e.key === 'Escape') { e.preventDefault(); closeCourseCatalog(); } return; }
   if (S.mode === 'catalog') { if (e.key === 'Escape') { e.preventDefault(); closeCatalog(); } return; }
   if (e.target.closest?.('input, textarea, select, #stand button') || e.target.isContentEditable) return;
   if (e.repeat && e.code !== 'Space') return;
@@ -4243,6 +4682,15 @@ cv.addEventListener('pointerdown', e => { cv.setPointerCapture(e.pointerId); ptr
 cv.addEventListener('pointermove', e => {
   const p = ptrs.get(e.pointerId); if (!p) return;
   const dx = e.clientX - p.x, dy = e.clientY - p.y; p.x = e.clientX; p.y = e.clientY;
+  if (S.mode === 'courseCatalog') {
+    if (ptrs.size === 2) {
+      const [a, b] = [...ptrs.values()], d = Math.hypot(a.x - b.x, a.y - b.y);
+      if (pinch0 && d > 0) courseCatalog.distance = clamp(courseCatalog.distance * pinch0 / d, 4, courseCatalog.maxDistance);
+      pinch0 = d; courseCatalogMove(dx / 2, dy / 2);
+    } else if (courseCatalog.pan || e.shiftKey || (e.buttons & 2)) courseCatalogMove(dx, dy);
+    else { courseCatalog.yaw += dx * 0.006; courseCatalog.pitch = clamp(courseCatalog.pitch + dy * 0.004, 0.02, 1.5); }
+    return;
+  }
   if (S.mode === 'catalog') {
     if (ptrs.size === 2) {
       const [a,b] = [...ptrs.values()], d = Math.hypot(a.x - b.x, a.y - b.y);
@@ -4258,7 +4706,8 @@ cv.addEventListener('pointermove', e => {
 });
 const endPtr = e => { ptrs.delete(e.pointerId); if (ptrs.size < 2) pinch0 = 0; };
 cv.addEventListener('pointerup', endPtr); cv.addEventListener('pointercancel', endPtr);
-cv.addEventListener('wheel', e => { e.preventDefault(); if (S.mode === 'catalog') { catalog.zoom = clamp(catalog.zoom * Math.exp(e.deltaY * 0.0012), 0.65, 2.5); return; } if ((S.mode === 'race' || S.mode === 'finish') && S.cam !== 'free') setCam('free'); cam.dist = clamp(cam.dist * (1 + e.deltaY * 0.0012), 4, 140); cam.drag = realClock; }, { passive: false });
+cv.addEventListener('contextmenu', e => { if (S.mode === 'courseCatalog') e.preventDefault(); });
+cv.addEventListener('wheel', e => { e.preventDefault(); if (S.mode === 'courseCatalog') { courseCatalog.distance = clamp(courseCatalog.distance * Math.exp(e.deltaY * 0.0012), 4, courseCatalog.maxDistance); return; } if (S.mode === 'catalog') { catalog.zoom = clamp(catalog.zoom * Math.exp(e.deltaY * 0.0012), 0.65, 2.5); return; } if ((S.mode === 'race' || S.mode === 'finish') && S.cam !== 'free') setCam('free'); cam.dist = clamp(cam.dist * (1 + e.deltaY * 0.0012), 4, 140); cam.drag = realClock; }, { passive: false });
 addEventListener('resize', () => {
   camera.aspect = innerWidth / innerHeight; camera.updateProjectionMatrix();
   applyQuality();
@@ -4569,6 +5018,10 @@ const COURSE_CALLS = {
     intro: ['香港の華やかな舞台！山並みを背に夢が走る！', 'シャティンの長い直線へ！歓声に応えるのはどの馬か！'],
     straight: ['最後の直線！香港の舞台で脚を比べる！{L}、追う{B}！{BAND}'],
     finish: ['{RESULT}{M}、1着！香港の舞台に勝利の歓声！'] },
+  'kasamatsu:dirt': {
+    intro: ['内馬場のパドックを囲む笠松！白砂の小回りで勝負です！', '笠松の短い直線へ、まずはコーナーの位置取りに注目です！'],
+    straight: ['最後の直線！笠松の短い追い比べ！{L}、追う{B}！{BAND}'],
+    finish: ['{RESULT}{M}、1着！笠松の白砂に勝利の蹄跡を刻みました！'] },
   'skyGarden:turf': {
     intro: ['天空の庭園、夢まで高く駆け上がれ！', '浮島と虹橋の舞台！空に届くような勝負を見せてくれ！'],
     straight: ['最後の直線！天空の栄光を目指す{L}、追う{B}！{BAND}'],
@@ -4876,6 +5329,7 @@ function frame(now) {
   if (crashActive && document.hidden) return;
   const rdt = crashActive ? elapsed : Math.min(0.05, elapsed);
   if (S.mode === 'catalog') { drawCatalog(rdt); return; }
+  if (S.mode === 'courseCatalog') { drawCourseCatalog(rdt); return; }
   if (!crashActive) timeScale = damp(timeScale, timeTarget, 8, rdt);
   const dt = rdt * timeScale;
   if (!crashActive) { clock += dt; realClock += rdt; }
@@ -4901,6 +5355,7 @@ function frame(now) {
 }
 
 function applyQuality() {
+  courseCatalog.width = 0; courseCatalog.height = 0;
   catalog.width = 0; catalog.height = 0;
   const q = $('#quality').value;
   const light = q === 'low' || (q === 'auto' && matchMedia('(max-width:760px)').matches);
