@@ -743,7 +743,7 @@ const ROSTER = [
     st: { spd: 7, sta: 8, acc: 6, pow: 8, agi: 6 }, aff: { turf: 1, dirt: 2, snow: 1, sand: 1 },
     skill: { name: '怪物の根性', desc: '残り20%で先頭に迫る2〜4番手にいると、叩き合いで絶対に引かない。', color: '#dfe6ff' },
     blurb: 'どの路面でも崩れない叩き上げ。競り合いになるほど強くなる。' },
-  { name: 'イジゲンエスケープ', type: '栗毛・名馬モチーフ', kind: 'real', sk: 'suzuka', style: 'nige', body: '#b8541f', mane: '#e07e3e', muzzle: '#efb98f', look: { size: 0.98, blaze: true, blazeWidth: 0.045, barrel: 0.86, chest: 0.9 },
+  { name: 'イジゲンエスケープ', type: '栗毛・名馬モチーフ', kind: 'real', sk: 'suzuka', style: 'nige', body: '#854321', mane: '#41271b', muzzle: '#49332c', look: { size: 0.98, blaze: true, blazeWidth: 0.045, snip: true, hood: '#285e50', hoodTrim: '#eee9d9', socks: [0, 1], sockHeights: [0.3, 0.26, 0, 0], barrel: 0.86, chest: 0.94, forelock: 0.7 },
     motif: true, motifNote: '圧倒的な大逃げで「異次元の逃亡者」と呼ばれた快速馬',
     st: { spd: 9, sta: 5, acc: 8, pow: 4, agi: 6 }, aff: { turf: 2, dirt: -1, snow: 0, sand: 0 },
     skill: { name: '異次元の大逃げ', desc: 'スタート直後から飛ばしに飛ばし、後続を大きく引き離す。粘れるかはスタミナしだい。', color: '#ff7a59' },
@@ -768,11 +768,11 @@ const ROSTER = [
     st: { spd: 8, sta: 8, acc: 6, pow: 7, agi: 5 }, aff: { turf: 1, dirt: 2, snow: 0, sand: 1 },
     skill: { name: '31馬身の独走', desc: '残り40%を切って先頭にいると、さらに突き放す独走モードに入る。', color: '#4d8dff' },
     blurb: '青と白のチェックのメンコがトレードマーク。先頭に立ったら止められない。' },
-  { name: 'ティアラクイーン', type: '鹿毛・名馬モチーフ', kind: 'real', sk: 'queen', style: 'sashi', body: '#8a4b25', mane: '#2c170b', muzzle: '#c9997a', look: { size: 0.95, blaze: true, blazeWidth: 0.055, tiara: true, barrel: 0.94, chest: 0.95, legColor: '#291c16' },
+  { name: 'ティアラクイーン', type: '鹿毛・名馬モチーフ', kind: 'real', sk: 'queen', style: 'sashi', body: '#744629', mane: '#171713', muzzle: '#5c4433', look: { size: 0.95, hood: '#202126', hoodTrim: true, noseband: true, tiara: true, socks: [2, 3], sockHeights: [0, 0, 0.22, 0.22], wrapBands: '#304889', barrel: 0.94, chest: 0.95, legColor: '#241e19', forelock: 0.8 },
     motif: true, motifNote: '芝のG1を9勝した女王',
     st: { spd: 8, sta: 6, acc: 8, pow: 6, agi: 7 }, aff: { turf: 2, dirt: -1, snow: 0, sand: 0 },
     skill: { name: '女王の瞬発力', desc: '残り20%で一瞬にしてトップスピードへ。どの位置からでも届く鋭い脚。', color: '#ff9ad5' },
-    blurb: '気品と速さを兼ね備えた女王。ティアラが光ったら勝負どころ。' },
+    blurb: '黒い覆面と白い鼻の帯が目印の女王。気品と鋭い加速でライバルを置き去りにする。' },
   { name: 'アンビートゥン', type: '鹿毛・名馬モチーフ', kind: 'real', sk: 'unbeaten', style: 'senko', body: '#5a2e17', mane: '#1a0c05', muzzle: '#a47a60', look: { size: 1.08, star: true, snip: true, socks: [0, 1, 2, 3], sockHeights: [0.18, 0.2, 0.24, 0.22], barrel: 1.07, chest: 1.12, legColor: '#201611' },
     motif: true, motifNote: 'イギリスで14戦14勝、一度も負けなかった',
     st: { spd: 8, sta: 7, acc: 7, pow: 7, agi: 6 }, aff: { turf: 2, dirt: 0, snow: 0, sand: 0 },
@@ -784,7 +784,7 @@ const ROSTER = [
     st: { spd: 7, sta: 7, acc: 8, pow: 7, agi: 8 }, aff: { turf: 2, dirt: 0, snow: 0, sand: 0 },
     skill: { name: '奇跡の復活', desc: '残り22%で4番手以下にいると、弾むようなステップで息を吹き返す。', color: '#5ad1ff' },
     blurb: '跳ねるような軽い足取り。どん底からでも帰ってくる。' },
-  { name: 'セイキマツハオウ', type: '栗毛・名馬モチーフ', kind: 'real', sk: 'haou', style: 'senko', body: '#b9571f', mane: '#7a3510', muzzle: '#eab08a', look: { size: 1.02, crown: true, barrel: 1.02, chest: 1.08 },
+  { name: 'セイキマツハオウ', type: '栗毛・名馬モチーフ', kind: 'real', sk: 'haou', style: 'senko', body: '#b9571f', mane: '#7a3510', muzzle: '#eab08a', look: { size: 1.02, crown: true, backpack: { body: '#d44d9b', accent: '#abc94c', stripe: '#4e745e' }, barrel: 1.02, chest: 1.08 },
     motif: true, motifNote: '2000年に8戦8勝、G1を5勝して年間無敗の「世紀末覇王」。有馬記念では馬群に包まれながら、ゴール前のわずかな隙間を突き抜けた',
     st: { spd: 8, sta: 8, acc: 6, pow: 7, agi: 6 }, aff: { turf: 2, dirt: 0, snow: 0, sand: 0 },
     skill: { name: '覇王の抜け出し', desc: '残り22%で前をふさがれると、わずかな隙間をこじ開けて突き抜ける。', color: '#ffcf3f' },
@@ -1994,17 +1994,45 @@ function buildHorse(d, i) {
       const b = new THREE.Mesh(CIRC, blush); b.scale.setScalar(0.075); b.position.set(0.28, -0.08, 0.318 * s); b.rotation.y = s > 0 ? 0.35 : Math.PI - 0.35; head.add(b);
     }
   }
-  const hoodMat = L.hood ? toon('#ffffff', { map: hoodTex(L.hood, L.check), side: THREE.DoubleSide }) : null;
+  const hoodMat = L.hood ? (L.hoodTrim ? toon(L.hood, { side: THREE.DoubleSide }) : toon('#ffffff', { map: hoodTex(L.hood, L.check), side: THREE.DoubleSide })) : null;
   if (hoodMat) {
     part(head, SPH, hoodMat, [-0.13, 0.14, 0], [0.36, 0.32, 0.39], null, 0.05);
-    for (const s of [1, -1]) {
+    if (L.hoodTrim) {
+      // A plain racing hood leaves the eyes uncovered; the padded version extends down the nose.
+      const vertices = [], indices = [];
+      for (let row = 0; row <= 8; row++) {
+        const y = L.noseband ? 0.34 - row / 8 * 0.44 : 0.12 + row / 8 * 0.22;
+        const halfWidth = L.noseband && y < 0.12 ? 0.095 : Math.min(0.23, 0.38 * Math.sqrt(1 - (y / 0.4) ** 2) * 0.9);
+        for (let col = 0; col <= 12; col++) {
+          const z = (col / 12 * 2 - 1) * halfWidth;
+          const headX = 0.44 * Math.sqrt(Math.max(0, 1 - (y / 0.4) ** 2 - (z / 0.38) ** 2));
+          const muzzleX = L.noseband && Math.abs(y + 0.13) < 0.24 ? 0.33 + 0.3 * Math.sqrt(Math.max(0, 1 - ((y + 0.13) / 0.24) ** 2 - (z / 0.27) ** 2)) : 0;
+          vertices.push(Math.max(headX, muzzleX) + 0.012, y, z);
+          if (row < 8 && col < 12) { const a = row * 13 + col; indices.push(a, a + 1, a + 13, a + 1, a + 14, a + 13); }
+        }
+      }
+      const forehead = new THREE.BufferGeometry();
+      forehead.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3)); forehead.setIndex(indices); forehead.computeVertexNormals();
+      part(head, forehead, hoodMat, null, null, null, 0);
+    } else for (const s of [1, -1]) {
       part(head, HCUP, hoodMat, [0.1, 0.08, 0.3 * s], [0.16, 0.12, 0.16], [s > 0 ? Math.PI / 2 : -Math.PI / 2, 0, 0], 0.08);
     }
   }
   const white = toon('#ffffff');
+  if (L.noseband) {
+    // A soft continuous band follows the muzzle, without detailed straps or hardware.
+    const points = [];
+    for (let j = 0; j <= 16; j++) {
+      const z = (j / 16 * 2 - 1) * 0.25;
+      const headX = 0.44 * Math.sqrt(Math.max(0, 1 - (0.02 / 0.4) ** 2 - (z / 0.38) ** 2));
+      const muzzleX = 0.33 + 0.3 * Math.sqrt(Math.max(0, 1 - (0.15 / 0.24) ** 2 - (z / 0.27) ** 2));
+      points.push(new V3(Math.max(headX, muzzleX) + 0.025, 0.02, z));
+    }
+    part(head, new THREE.TubeGeometry(new THREE.CatmullRomCurve3(points), 24, 0.055, 8, false), white, null, null, null, 0);
+  }
   // Follow the exposed head/muzzle surface so facial markings do not sink into the mesh.
   const faceMark = (y, width, height) => {
-    const headX = 0.44 * Math.sqrt(Math.max(0, 1 - (y / 0.4) ** 2));
+    const headX = 0.44 * Math.sqrt(Math.max(0, 1 - (y / 0.4) ** 2)) + (L.hoodTrim && y >= 0.12 ? 0.014 : 0);
     const muzzleX = 0.33 + 0.3 * Math.sqrt(Math.max(0, 1 - ((y + 0.13) / 0.24) ** 2));
     const x = Math.abs(y + 0.13) < 0.24 ? Math.max(headX, muzzleX) : headX;
     part(head, SPH, white, [x + 0.005, y, 0], [0.018, height, width], null, 0);
@@ -2031,7 +2059,7 @@ function buildHorse(d, i) {
   const pinkIn = toon(k === 'mech' ? '#39f3ff' : '#ffb3cc');
   for (const s of [1, -1]) {
     part(head, CONE, hoodMat || body, [-0.06, 0.38, 0.17 * s], [0.1, 0.28, 0.1], [0.25 * s, 0, 0.15]);
-    part(head, CONE, pinkIn, [-0.03, 0.36, 0.175 * s], [0.055, 0.18, 0.05], [0.25 * s, 0, 0.15], 0);
+    part(head, CONE, L.hoodTrim ? hoodMat : pinkIn, [-0.03, 0.36, 0.175 * s], [0.055, 0.18, 0.05], [0.25 * s, 0, 0.15], 0);
   }
   const fore = L.forelock || (k === 'pony' ? 1.5 : 1);
   part(head, SPH, mane, [0.1, 0.36, 0], [0.14 * fore, 0.11 * fore, 0.15 * fore]);
@@ -2059,6 +2087,10 @@ function buildHorse(d, i) {
     if (L.socks && L.socks.includes(li)) {
       const height = L.sockHeights?.[li] || 0.24;
       part(pv, LEG, white, [0, -0.72 + height / 2, 0], [1.04, height / 0.72, 1.04], null, 0);
+      if (L.wrapBands) {
+        const band = toon(L.wrapBands);
+        for (let j = 0; j < 2; j++) part(pv, LEG, band, [0, -0.72 + height - 0.035 - j * 0.045, 0], [1.06, 0.02 / 0.72, 1.06], null, 0);
+      }
     }
     if (k === 'rocking') pv.rotation.z = lp[0] > 0 ? 0.32 : -0.32;
     if (k === 'carousel') pv.rotation.z = lp[0] > 0 ? 1.0 : -0.35;
@@ -2075,6 +2107,35 @@ function buildHorse(d, i) {
     const pl = new THREE.Mesh(NUMPL, numMat); pl.position.set(-0.05, 1.22, numberOffset * s); pl.rotation.y = s > 0 ? 0 : Math.PI; bob.add(pl);
   }
   part(bob, SPH, toon('#502645'), [0.03, 1.58, 0], [0.3, 0.07, 0.25]);
+  if (L.backpack) {
+    const pack = new THREE.Group(); pack.position.set(0.03, 1.81, 0); pack.rotation.z = -Math.PI / 2; bob.add(pack);
+    const fabric = toon(L.backpack.body), accent = toon(L.backpack.accent), zipper = toon('#f5e5b7');
+    // Lay the bag along the back with its outer pocket facing upward, above the saddle.
+    part(pack, SPH, fabric, [0, 0, 0], [0.27, 0.36, 0.34], null, 0.04);
+    // One continuous, flat stripe wraps around the rounded bag above its pockets.
+    const stripeVertices = [], stripeIndices = [];
+    for (let edge = 0; edge < 2; edge++) {
+      const y = 0.15 + (edge - 0.5) * 0.12, radius = Math.sqrt(1 - (y / 0.36) ** 2);
+      for (let j = 0; j <= 40; j++) {
+        const angle = j / 40 * Math.PI * 2;
+        stripeVertices.push((0.27 * radius + 0.006) * Math.cos(angle), y, (0.34 * radius + 0.006) * Math.sin(angle));
+        if (edge === 0 && j < 40) stripeIndices.push(j, j + 41, j + 1, j + 1, j + 41, j + 42);
+      }
+    }
+    const stripe = new THREE.BufferGeometry();
+    stripe.setAttribute('position', new THREE.Float32BufferAttribute(stripeVertices, 3)); stripe.setIndex(stripeIndices); stripe.computeVertexNormals();
+    const stripeMat = new THREE.MeshBasicMaterial({ color: C(L.backpack.stripe), toneMapped: false });
+    part(pack, stripe, stripeMat, null, null, null, 0);
+    part(pack, SPH, accent, [-0.22, -0.09, 0], [0.11, 0.19, 0.27], null, 0.03);
+    part(pack, BOX, fabric, [-0.315, -0.04, 0], [0.025, 0.06, 0.43], null, 0);
+    part(pack, BOX, zipper, [-0.335, -0.04, 0.15], [0.012, 0.075, 0.023], null, 0);
+    part(pack, new THREE.TorusGeometry(0.075, 0.018, 6, 18, Math.PI), accent, [0, 0.35, 0], null, [0, Math.PI / 2, 0], 0);
+    for (const s of [-1, 1]) {
+      part(pack, SPH, accent, [-0.01, -0.12, 0.31 * s], [0.13, 0.17, 0.07], null, 0.03);
+      const points = [[0.11, 0.23, 0.21 * s], [0.24, 0.04, 0.29 * s], [0.26, -0.2, 0.35 * s], [0.05, -0.35, 0.29 * s]].map(p => new V3(...p));
+      part(pack, new THREE.TubeGeometry(new THREE.CatmullRomCurve3(points), 12, 0.026, 6, false), accent, null, null, null, 0);
+    }
+  }
   if (k === 'pegasus') {
     for (const s of [1, -1]) {
       const wg = new THREE.Group(); wg.position.set(0.1, 1.55, 0.34 * s); bob.add(wg);
