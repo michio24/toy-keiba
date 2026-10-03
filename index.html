@@ -146,6 +146,10 @@ h2{font-family:var(--f-disp);font-weight:400;font-size:13px;letter-spacing:.14em
 #cams button{display:flex;flex-direction:column;align-items:center;gap:1px;padding:6px 11px;border-radius:12px;font-size:12px;font-weight:700;white-space:nowrap;color:var(--dim)}
 #cams button kbd{font-family:var(--f-num);font-size:10px;opacity:.7}
 #cams button.on{background:var(--candy);color:#fff}
+#cams button{flex:none}
+#stand .srow{text-align:left}
+#stand .srow.watching{outline:2px solid var(--mint);outline-offset:-2px}
+#stand .srow:focus-visible{outline:2px solid var(--mint);outline-offset:2px}
 #cheer{position:absolute;right:16px;bottom:calc(env(safe-area-inset-bottom,0px) + 16px);width:104px;height:104px;border-radius:50%;padding:0;display:grid;place-items:center;background:conic-gradient(var(--gold) calc(var(--p,0)*1%),rgba(255,255,255,.1) 0);box-shadow:0 10px 30px rgba(8,2,30,.5);pointer-events:auto}
 #cheer span{width:86px;height:86px;border-radius:50%;background:var(--ink);display:grid;place-items:center;text-align:center;font-family:var(--f-disp);font-size:17px;line-height:1.1}
 #cheer span small{display:block;font-family:var(--f-num);font-size:10px;color:var(--dim);letter-spacing:.1em;margin-top:3px}
@@ -1135,10 +1139,12 @@ const crashAccount = store.get('crashAccount', null);
 const S = {
   mode: 'loading', ti: clamp(store.get('track', 0) | 0, 0, TRACKS.length - 1), sel: clamp(store.get('sel', 0) | 0, 0, 7),
   betType: 'win', bet: 100, coins: store.get('coins', 1000), streak: store.get('streak', 0),
-  cam: 'broadcast', cheer: 0, muted: store.get('muted', false), odds: null, conds: null, myBet: null,
+  cam: 'broadcast', camTarget: null, cheer: 0, muted: store.get('muted', false), odds: null, conds: null, myBet: null,
   playType: store.get('playType', 'race') === 'crash' ? 'crash' : 'race', crash: null,
   interrupted: !!crashAccount?.pending
 };
+// Monaco must be explicitly selected from the course list in this session.
+if (TRACKS[S.ti].theme === 'monaco') S.ti = 0;
 if (Number.isSafeInteger(crashAccount?.coins) && crashAccount.coins >= 0) S.coins = crashAccount.coins;
 if (typeof S.coins !== 'number' || !isFinite(S.coins)) S.coins = 1000;
 
@@ -1461,6 +1467,17 @@ class Track {
     const gs = new Float32Array(N + 1);
     for (let i = 0; i <= N; i++) { const a = Math.max(0, i - 2), b = Math.min(N, i + 2); gs[i] = (ys[b] - ys[a]) / ((b - a) * ds); }
     Object.assign(this, { xs, zs, hs, ks, ys, gs });
+    if (def.theme === 'monaco' && this.hasElev) {
+      // Index the same samples as groundH; beyond this radius all heights fade to zero.
+      const cells = new Map(); let radius = W / 2 + 80;
+      for (let i = 0; i <= N; i += 4) {
+        const cx = Math.floor(xs[i] / 64), cz = Math.floor(zs[i] / 64);
+        let column = cells.get(cx); if (!column) cells.set(cx, column = new Map());
+        let bucket = column.get(cz); if (!bucket) column.set(cz, bucket = []);
+        bucket.push(i); radius = Math.max(radius, W / 2 + 80 + ys[i] * 4);
+      }
+      this.groundGrid = { cells, radius };
+    }
     let minR = 1e9; for (const g of segs) if (g.r) minR = Math.min(minR, g.r - W / 2);
     if (segs.some(g => g.curve)) for (const curvature of ks) if (curvature > 1e-4) minR = Math.min(minR, 1 / curvature - W / 2);
     this.R = minR < 1e8 ? minR : 150;                  // tightest inner-rail radius (infield depth)
@@ -1491,7 +1508,23 @@ class Track {
   groundH(x, z) {
     if (!this.hasElev) return 0;
     let best = 1e18, bi = 0;
-    for (let i = 0; i <= this.N; i += 4) { const dx = this.xs[i] - x, dz = this.zs[i] - z, d = dx * dx + dz * dz; if (d < best) { best = d; bi = i; } }
+    if (this.groundGrid) {
+      const { cells, radius } = this.groundGrid;
+      const z0 = Math.floor((z - radius) / 64), z1 = Math.floor((z + radius) / 64);
+      for (let cx = Math.floor((x - radius) / 64), x1 = Math.floor((x + radius) / 64); cx <= x1; cx++) {
+        const column = cells.get(cx); if (!column) continue;
+        for (let cz = z0; cz <= z1; cz++) {
+          const bucket = column.get(cz); if (!bucket) continue;
+          for (const i of bucket) {
+            const dx = this.xs[i] - x, dz = this.zs[i] - z, d = dx * dx + dz * dz;
+            if (d < best || (d === best && i < bi)) { best = d; bi = i; }
+          }
+        }
+      }
+      if (best >= radius * radius) return 0;
+    } else {
+      for (let i = 0; i <= this.N; i += 4) { const dx = this.xs[i] - x, dz = this.zs[i] - z, d = dx * dx + dz * dz; if (d < best) { best = d; bi = i; } }
+    }
     const d = Math.sqrt(best), w = 1 - THREE.MathUtils.smoothstep(d, W / 2 + 2, W / 2 + 80 + this.ys[bi] * 4);
     return (this.ys[bi] - 0.12) * w;
   }
@@ -1516,8 +1549,11 @@ function availableTracks(playType) {
   return TRACKS.map((t, i) => ({t, i})).filter(({t}) => playType !== 'crash' || t.closed !== false);
 }
 function nextTrackIndex(index, playType) {
-  const courses = availableTracks(playType);
-  return courses[(courses.findIndex(c => c.i === index) + 1) % courses.length].i;
+  for (let offset = 1; offset <= TRACKS.length; offset++) {
+    const i = (index + offset) % TRACKS.length, t = TRACKS[i];
+    if (t.theme !== 'monaco' && (playType !== 'crash' || t.closed !== false)) return i;
+  }
+  return 0;
 }
 function makeRace(tr, conds, wx) {
   wx = wx || { w: 'sunny', g: 0 };
@@ -1702,16 +1738,40 @@ function stepRace(R, dt, full) {
     if (!R.continuous && !r.fin && r.s >= R.D) { r.fin = true; r.place = ++R.finished; r.finT = R.t - (r.s - R.D) / Math.max(1, r.v); if (full && R.onFinish) R.onFinish(r); }
   }
 }
+function oddsWeights(tr, conds, wx) {
+  const long = clamp((tr.def.D - 1000) / 3000, 0, 1), short = clamp(1 - tr.def.D / 1000, 0, 1);
+  const scores = HORSES.map((d, i) => {
+    const st = d.st;
+    return st.spd * 0.45 + st.sta * 0.25 + st.acc * 0.15 + st.pow * 0.1 + st.agi * 0.05
+      + (st.sta - 5) * long * 0.15 + (st.acc - 5) * short * 0.1
+      + affinityOf(d, tr.def.surf) * 0.6 + conds[i] * 0.4 + mudOf(d) * wx.g * 0.15;
+  });
+  const max = Math.max(...scores), weights = scores.map(s => Math.exp((s - max) / 1.5));
+  const total = weights.reduce((a, b) => a + b, 0);
+  return weights.map(w => w / total);
+}
 function calcOdds(tr, conds, wx) {
-  const N = 320, win = new Array(8).fill(0), plc = new Array(8).fill(0);
+  wx = wx || { w: 'sunny', g: 0 };
+  // Blend eight race samples with a 24-sample ability prior to keep rare results stable.
+  const N = 8, prior = 24, weights = oddsWeights(tr, conds, wx);
+  const win = weights.map(p => p * prior), plc = new Array(HORSES.length).fill(0);
+  // Weighted selection without replacement gives coherent top-three probabilities.
+  for (let a = 0; a < weights.length; a++) for (let b = 0; b < weights.length; b++) {
+    if (a === b) continue;
+    for (let c = 0; c < weights.length; c++) {
+      if (c === a || c === b) continue;
+      const p = weights[a] * weights[b] / (1 - weights[a]) * weights[c] / (1 - weights[a] - weights[b]) * prior;
+      plc[a] += p; plc[b] += p; plc[c] += p;
+    }
+  }
   for (let n = 0; n < N; n++) {
     const R = makeRace(tr, conds, wx);
     let guard = 0;
     while (R.finished < 3 && guard++ < 2000) stepRace(R, 0.2, false);
     for (const r of R.runners) { if (r.place === 1) win[r.i]++; if (r.place >= 1 && r.place <= 3) plc[r.i]++; }
   }
-  const w = win.map(c => clamp(Math.round(0.8 / Math.max(c / N, 0.004) * 10) / 10, 1.2, 199.9));
-  const p = plc.map(c => clamp(Math.round(0.8 / Math.max(c / N, 0.012) * 10) / 10, 1.0, 60));
+  const w = win.map(c => clamp(Math.round(0.8 / Math.max(c / (N + prior), 0.004) * 10) / 10, 1.2, 199.9));
+  const p = plc.map(c => clamp(Math.round(0.8 / Math.max(c / (N + prior), 0.012) * 10) / 10, 1.0, 60));
   const pop = w.map((o, i) => [o, i]).sort((a, b) => a[0] - b[0]).map(x => x[1]);
   const rank = new Array(8); pop.forEach((i, k) => rank[i] = k + 1);
   return { win: w, place: p, pop: rank };
@@ -2463,6 +2523,8 @@ function ambient(tex, additive, rate, fn) {
 /* ---- Monaco streets, harbor and covered tunnel ---- */
 function decorMonaco() {
   const concrete = toon('#d1c9ba'), red = toon('#e44b4d'), white = toon('#fff5df');
+  const facades = ['#f0d8b4','#eab8a2','#f6e6cc','#d6dfdf'].map(color => toon(color));
+  const roof = toon('#c57963'), windowMat = toon('#526c83'), yachtWindow = toon('#537b96');
   const nearest = (x, z) => { let d = Infinity; for (let i = 0; i <= track.N; i += 8) d = Math.min(d, Math.hypot(track.xs[i] - x, track.zs[i] - z)); return d; };
   // Harbor sits inside the coastal half of the loop; keep the road clear.
   const water = new THREE.Mesh(new THREE.CircleGeometry(1, 48), new THREE.MeshStandardMaterial({ color: '#218cb3', roughness: 0.25, metalness: 0.2 }));
@@ -2470,15 +2532,15 @@ function decorMonaco() {
   for (let i = 0; i < 7; i++) {
     const yacht = new THREE.Group(); yacht.position.set(-365 + i * 23, 0.3, 75 + (i % 2) * 25); yacht.rotation.y = -0.25; world.add(yacht);
     addBox(yacht, [17, 2.5, 6], [0, 1.3, 0], white); addBox(yacht, [9, 3, 4.5], [-1, 3.5, 0], white);
-    addBox(yacht, [7, 1.2, 4.7], [-1, 3.8, 0], toon('#537b96')); addBox(yacht, [6, 0.4, 4.8], [-1, 5.2, 0], white);
+    addBox(yacht, [7, 1.2, 4.7], [-1, 3.8, 0], yachtWindow); addBox(yacht, [6, 0.4, 4.8], [-1, 5.2, 0], white);
   }
   for (let i = 0; i < 65; i++) {
     const f = tp(i / 65 * track.L, W + 28 + (i % 3) * 14), x = f.v.x, z = f.v.z;
     if (nearest(x, z) < 23 || (Math.abs(x + 290) < 145 && Math.abs(z - 90) < 105)) continue;
     const g = new THREE.Group(); g.position.set(x, track.groundH(x, z), z); g.rotation.y = -f.h; world.add(g);
-    const height = 14 + (i % 5) * 6, facade = toon(['#f0d8b4','#eab8a2','#f6e6cc','#d6dfdf'][i % 4]);
-    addBox(g, [18, height, 15], [0, height / 2, 0], facade); addBox(g, [20, 1.5, 17], [0, height, 0], toon('#c57963'));
-    for (let y = 5; y < height - 2; y += 5) for (let x2 = -6; x2 <= 6; x2 += 6) addBox(g, [2.5, 3, 0.15], [x2, y, 7.6], toon('#526c83'));
+    const height = 14 + (i % 5) * 6, facade = facades[i % 4];
+    addBox(g, [18, height, 15], [0, height / 2, 0], facade); addBox(g, [20, 1.5, 17], [0, height, 0], roof);
+    for (let y = 5; y < height - 2; y += 5) for (let x2 = -6; x2 <= 6; x2 += 6) addBox(g, [2.5, 3, 0.15], [x2, y, 7.6], windowMat);
   }
   for (let i = 0; i < Math.floor(track.L / 8); i++) for (const lane of [-1.3, W + 1.3]) {
     const f = tp(i * 8, lane), barrier = new THREE.Group(); barrier.position.copy(f.v); barrier.rotation.y = -f.h; world.add(barrier);
@@ -3225,10 +3287,23 @@ function selectHorse(i, quiet) {
 const CAMS = [['broadcast', '中継'], ['chase', '追走'], ['aerial', '空撮'], ['front', '正面'], ['pov', '馬目線'], ['free', 'フリー']];
 $('#cams').innerHTML = CAMS.map(([k, l], i) => `<button data-c="${k}"><kbd>${i + 1}</kbd>${l}</button>`).join('');
 $('#cams').addEventListener('click', e => { const b = e.target.closest('button'); if (b) setCam(b.dataset.c); });
+$('#stand').addEventListener('click', e => { const b = e.target.closest('button[data-runner]'); if (!b) return; const i = Number(b.dataset.runner); setCamTarget(S.camTarget === i ? null : i); });
 function setCam(k) {
   if (k === 'free' && S.cam !== 'free') { const d = camera.position.clone().sub(cam.tgt); cam.dist = clamp(d.length(), 8, 120); cam.yaw = Math.atan2(d.z, d.x); cam.pitch = clamp(Math.asin(d.y / Math.max(d.length(), 0.01)), 0.05, 1.4); }
   S.cam = k; S.photo = false;
   $('#cams').querySelectorAll('button').forEach(b => b.classList.toggle('on', b.dataset.c === k));
+}
+function setCamTarget(i) {
+  if (i !== null && !R.runners.some(r => r.i === i)) return;
+  S.camTarget = i; cam.spr = null; cam.bf = null;
+  if (i !== null && (S.photo || (S.photoDone && !S.photoEnd))) { S.photo = false; S.photoEnd = true; timeTarget = 1; slowUntil = 0; }
+  updateCamTargetUI();
+}
+function updateCamTargetUI() {
+  $('#stand').querySelectorAll('button[data-runner]').forEach(b => {
+    const watching = Number(b.dataset.runner) === S.camTarget;
+    b.classList.toggle('watching', watching); b.setAttribute('aria-pressed', String(watching));
+  });
 }
 function toast(html, color) { const el = document.createElement('div'); el.style.setProperty('--c', color); el.innerHTML = html; const f = $('#feed'); f.prepend(el); while (f.children.length > 4) f.lastChild.remove(); setTimeout(() => el.remove(), 4200); }
 let tickT = 0;
@@ -3421,6 +3496,7 @@ function startRace() {
   S.coins -= amt; setCoins();
   S.myBet = { h: S.sel, type: S.playType === 'crash' ? 'crash' : S.betType, amt, odds: S.betType === 'win' ? S.odds.win[S.sel] : S.odds.place[S.sel], streak: S.streak };
   setMode('intro'); S.introT = 0; cam.spr = null; cam.bf = null; flags = {}; S.photoDone = false; S.photoEnd = false; S.cheer = 30; S.photo = false;
+  S.camTarget = null;
   buildHud();
   setCam('broadcast');
   say(`${track.def.name}、天候${WX[S.wx.w]}、馬場は${GOING[S.wx.g]}。本命は${HORSES[S.odds.pop.indexOf(1)].name}！`);
@@ -3436,7 +3512,8 @@ function buildHud() {
   $('#myRank').textContent = '—';
   $('#remain').previousElementSibling.textContent = R.continuous ? '走行距離' : '残り';
   $('#rname').textContent = `${track.def.name}　${SURF[track.def.surf]}${track.def.D}m・${WX[S.wx.w]}・${GOING[S.wx.g]}`;
-  $('#stand').innerHTML = R.runners.map(r => `<div class="srow ${r.i === S.myBet.h ? 'me' : ''}" id="sr${r.i}"><span class="spos">${r.i + 1}</span><span class="num" style="background:${WAKU[r.i][0]};color:${WAKU[r.i][1]}">${r.i + 1}</span><span class="sname">${r.i === S.myBet.h ? '<small>あなたの馬</small>' : ''}${r.def.name}</span><span class="sgap"></span></div>`).join('');
+  $('#stand').innerHTML = R.runners.map(r => `<button type="button" class="srow ${r.i === S.myBet.h ? 'me' : ''}" id="sr${r.i}" data-runner="${r.i}" aria-label="${r.i + 1}番 ${r.def.name}を観戦" aria-pressed="false"><span class="spos">${r.i + 1}</span><span class="num" style="background:${WAKU[r.i][0]};color:${WAKU[r.i][1]}">${r.i + 1}</span><span class="sname">${r.i === S.myBet.h ? '<small>あなたの馬</small>' : ''}${r.def.name}</span><span class="sgap"></span></button>`).join('');
+  updateCamTargetUI();
   $('#pbar').innerHTML = R.runners.map(r => `<i id="pd${r.i}" class="${r.i === S.myBet.h ? 'me' : ''}" style="background:${WAKU[r.i][0]};left:0%"></i>`).join('') + '<b class="flag"></b>';
   $('#feed').innerHTML = '';
 }
@@ -3494,7 +3571,7 @@ function showResult() {
   setupShare(me, pay, reward);
   // レース後は出走馬・オッズが入れ替わるので、出走馬タブから再開する
   $('#again').onclick = () => { AU.pop(); setLobbyTab('horses'); enterLobby(false); };
-  $('#other').onclick = () => { AU.pop(); S.ti = (S.ti + 1) % TRACKS.length; store.set('track', S.ti); setLobbyTab('horses'); enterLobby(true); };
+  $('#other').onclick = () => { AU.pop(); S.ti = nextTrackIndex(S.ti, S.playType); store.set('track', S.ti); setLobbyTab('horses'); enterLobby(true); };
   if (hit) {
     big(big10 ? '大穴的中!!' : '的中!!', big10 ? 'rainbow' : '', big10 ? 1900 : 1300);
     AU.jackpot(); FX.flash = 0.8; confetti(big10 ? 320 : 180); coinShower(big10 ? 150 : 90);
@@ -3591,6 +3668,7 @@ function settleCrash(reason, multiplier) {
 /* ============ INPUT ============ */
 addEventListener('keydown', e => {
   if (S.mode === 'catalog') { if (e.key === 'Escape') { e.preventDefault(); closeCatalog(); } return; }
+  if (e.target.closest?.('input, textarea, select, #stand button') || e.target.isContentEditable) return;
   if (e.repeat && e.code !== 'Space') return;
   if (e.key === 'Enter' && S.playType === 'crash' && S.mode === 'race') { e.preventDefault(); cashOutCrash(); return; }
   const race = S.mode === 'race' || S.mode === 'finish' || S.mode === 'countdown' || S.mode === 'intro';
@@ -3639,7 +3717,16 @@ addEventListener('resize', () => {
 });
 
 /* ============ CAMERA ============ */
+function cameraRunner() {
+  return (S.camTarget === null ? null : R.runners.find(r => r.i === S.camTarget)) || R.order[0];
+}
+function updateCameraVisibility() {
+  // 馬目線では観戦対象の頭が視界をふさぐため、その馬だけを描かない。
+  const povHorse = S.cam === 'pov' && !S.photo && (S.mode === 'race' || S.mode === 'finish') ? cameraRunner().i : -1;
+  horses.forEach((H, k) => { H.root.visible = k !== povHorse; });
+}
 function focus() {
+  if (S.camTarget !== null) { const r = cameraRunner(); return tp(R.s0 + r.s, r.lane); }
   const lead = R.order[0], third = R.order[Math.min(2, R.order.length - 1)];
   return tp(R.s0 + lead.s - Math.min(lead.s - third.s, 20) * 0.4, (lead.lane + third.lane) / 2);
 }
@@ -3668,12 +3755,12 @@ function updCamera(dt, rdt) {
     const q = track.pos(R.s0 + lead.s, lead.lane); t = new V3(q.x, q.y + 1.5, q.z);
     cam.yaw += rdt * 0.35; p = orbit(t, cam.yaw, 0.25, 9); fov = 40; lam = 2.5;
   } else {
-    const me = R.runners[S.myBet.h];
+    const me = cameraRunner();
     const mq = tp(R.s0 + me.s, me.lane, 0), mpos = mq.v.clone().add(new V3(0, me.fly * 1.8, 0));
     let c = S.photo ? 'photo' : S.cam;
     if (c === 'broadcast') {
-      // Keep the leader in frame: aim between leader and pack, widen FOV if the field stretches out, never let the leader leave the screen.
-      const lead = R.order[0], third = R.order[Math.min(2, R.order.length - 1)];
+      // Follow the selected horse, or frame the leading pack in automatic mode.
+      const lead = me, third = S.camTarget === null ? R.order[Math.min(2, R.order.length - 1)] : me;
       const spr = clamp(lead.s - third.s, 0, 45);
       cam.spr = cam.spr == null ? spr : damp(cam.spr, spr, 2.5, rdt);
       const d = 24, asp = Math.max(0.3, camera.aspect);
@@ -3687,7 +3774,7 @@ function updCamera(dt, rdt) {
     }
     else if (c === 'chase') { p = mpos.clone().addScaledVector(mq.dir, -7.5).addScaledVector(mq.n, 1.2).add(new V3(0, 3.2, 0)); t = mpos.clone().addScaledVector(mq.dir, 6).add(new V3(0, 1.3, 0)); fov = 52; lam = 5; }
     else if (c === 'aerial') { const F = focus(); const a = realClock * 0.08; p = F.v.clone().add(new V3(Math.cos(a) * 22, 32, Math.sin(a) * 22)); t = F.v.clone(); fov = 50; lam = 2.5; }
-    else if (c === 'front') { const lead = R.order[0]; const L = tp(R.s0 + lead.s, W / 2); p = L.v.clone().addScaledVector(L.dir, 16).add(new V3(0, 1.9, 0)); const F = focus(); t = F.v.clone().add(new V3(0, 1.1, 0)); fov = 36; lam = 5; }
+    else if (c === 'front') { const L = tp(R.s0 + me.s, S.camTarget === null ? W / 2 : me.lane); p = L.v.clone().addScaledVector(L.dir, 16).add(new V3(0, 1.9, 0)); const F = focus(); t = F.v.clone().add(new V3(0, 1.1, 0)); fov = 36; lam = 5; }
     else if (c === 'pov') { const H = horses[me.i]; H.eye.updateWorldMatrix(true, false); p = new V3().setFromMatrixPosition(H.eye.matrixWorld).addScaledVector(mq.dir, 0.25); t = p.clone().addScaledVector(mq.dir, 12).add(new V3(0, -0.8, 0)); fov = 82; lam = 30; tl = 30; }
     else if (c === 'free') { const F = focus(); t = F.v.clone().add(new V3(0, 1, 0)); p = orbit(t, cam.yaw, cam.pitch, cam.dist); fov = 50; lam = 6; }
     else if (c === 'photo') { const f = tp(track.finishS, W + 7); p = f.v.clone().add(new V3(0, 2.2, 0)); t = tp(track.finishS - 3, W / 2, 1).v; fov = 30; lam = 8; }
@@ -3816,7 +3903,7 @@ function updRaceFrame(dt, rdt) {
       me.pr = me.rank;
       commentary();
       const lead = R.order[0], second = R.order[1];
-      if (!R.continuous && !S.photoDone && !lead.fin && R.D - lead.s < 16 && (lead.s - second.s) < 3.2) { S.photoDone = true; S.photo = true; timeTarget = 0.28; slowUntil = realClock + 99; }
+      if (S.camTarget === null && !R.continuous && !S.photoDone && !lead.fin && R.D - lead.s < 16 && (lead.s - second.s) < 3.2) { S.photoDone = true; S.photo = true; timeTarget = 0.28; slowUntil = realClock + 99; }
       if (S.photoDone && !S.photoEnd && lead.fin && realClock - (R.firstFinT || realClock) > 0.9) { S.photoEnd = true; S.photo = false; timeTarget = 1; slowUntil = 0; }
       const hotNow = !R.continuous && !me.fin && me.s / R.D > 0.8 && me.rank <= 3 && (R.order[0].s - me.s) < 3.6;
       const hel = $('#hot');
@@ -3932,6 +4019,7 @@ const RC = {
 function commentary() { RC.update(R, track); }
 function updHud(rdt) {
   hud.t -= rdt; if (hud.t > 0) return; hud.t = 0.1;
+  updateCamTargetUI();
   const ord = R.order, lead = ord[0];
   const rh = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--rh')) || 30;
   ord.forEach((r, k) => {
@@ -3982,9 +4070,7 @@ function frame(now) {
   FU.uSat.value = (1.16 + (timeScale < 0.6 ? 0.15 : 0)) * (wxState.sat || 1);
   if (AU.ctx && S.mode === 'race') { AU.ht = (AU.ht || 0) - rdt; if (AU.ht <= 0) { AU.ht = rand(0.05, 0.1) / Math.max(timeScale, 0.3); AU.thump(0.05 + 0.05 * Math.random()); } }
   fxDraw(rdt);
-  // 馬目線ではカメラが自分の馬の頭（輪郭線の殻）に入り込んで視界をふさぐため、自分の馬は描かない
-  const povHorse = S.cam === 'pov' && S.myBet ? S.myBet.h : -1;
-  horses.forEach((H, k) => { H.root.visible = k !== povHorse; });
+  updateCameraVisibility();
   composer.render();
 }
 
