@@ -786,7 +786,7 @@ const ROSTER = [
     blurb: '跳ねるような軽い足取り。どん底からでも帰ってくる。' },
   { name: 'セイキマツハオウ', type: '栗毛・名馬モチーフ', kind: 'real', sk: 'haou', style: 'senko', body: '#b9571f', mane: '#7a3510', muzzle: '#eab08a', look: { size: 1.02, crown: true, backpack: { body: '#d44d9b', accent: '#abc94c', stripe: '#4e745e' }, barrel: 1.02, chest: 1.08 },
     motif: true, motifNote: '2000年に8戦8勝、G1を5勝して年間無敗の「世紀末覇王」。有馬記念では馬群に包まれながら、ゴール前のわずかな隙間を突き抜けた',
-    st: { spd: 8, sta: 8, acc: 6, pow: 7, agi: 6 }, aff: { turf: 2, dirt: 0, snow: 0, sand: 0 },
+    st: { spd: 8, sta: 8, acc: 6, pow: 9, agi: 9 }, aff: { turf: 2, dirt: 0, snow: 0, sand: 0 },
     skill: { name: '覇王の抜け出し', desc: '残り22%で前をふさがれると、わずかな隙間をこじ開けて突き抜ける。', color: '#ffcf3f' },
     blurb: '王冠をいただく絶対王者。どんなに包まれても、最後には前にいる。' },
   // ---- スペシャル ----
@@ -849,7 +849,7 @@ const ROSTER = [
   // ---- 日本の名馬モチーフ（プロフィールと能力はゲーム用の創作） ----
   { name: 'コウテイノシルシ', type: '鹿毛・名馬モチーフ', kind: 'real', sk: 'rudolf', style: 'senko', body: '#704326', mane: '#20140c', muzzle: '#b58c6d', look: { size: 1.04, star: true, crown: true, barrel: 1.02, chest: 1.06, legColor: '#281d16' },
     motif: true, motifNote: '1984年、無敗でクラシック三冠を手にした鹿毛の「皇帝」。堂々とした走りに、王者の風格が漂う。',
-    st: { spd: 8, sta: 8, acc: 7, pow: 7, agi: 7 }, aff: { turf: 2, dirt: 0, snow: 0, sand: 0 },
+    st: { spd: 8, sta: 8, acc: 7, pow: 7, agi: 9 }, aff: { turf: 2, dirt: 0, snow: 0, sand: 0 },
     skill: { name: '皇帝の采配', desc: '残り25%から6秒間、落ち着いた走りで加速する。', color: '#e8c56a' },
     profile: { personality: '堂々として面倒見がよい。勝負にも礼儀正しい。', favorite: '整った馬具と朝の見回り' },
     blurb: '小さな王冠に大きな自信。慌てず騒がず、勝負どころで堂々と前へ進む。' },
@@ -859,7 +859,7 @@ const ROSTER = [
     skill: { name: '影を裂く豪脚', desc: '残り30%で先頭にいなければ、5秒間、力強い末脚で加速する。', color: '#a99bdc' },
     profile: { personality: '無口な集中派。走りで気持ちを伝える。', favorite: '静かな練習場と長い直線' },
     blurb: '黒い影が直線で一気に伸びる。力強い胸と脚で、追いかける景色を切り開く。' },
-  { name: 'アオバノヒットマン', type: '黒鹿毛・名馬モチーフ', kind: 'real', sk: 'rice', style: 'sashi', body: '#382b25', mane: '#161210', muzzle: '#94715d', look: { size: 0.92, star: true, barrel: 0.9, chest: 0.94, legColor: '#1e1714' },
+  { name: 'アオバノヒットマン', type: '黒鹿毛・名馬モチーフ', kind: 'real', sk: 'rice', style: 'sashi', body: '#382b25', mane: '#161210', muzzle: '#94715d', look: { size: 0.92, star: true, socks: [0, 1], sockHeights: [0.3, 0.3, 0, 0], sockColor: '#5377df', wrapBands: '#172d65', barrel: 0.9, chest: 0.94, legColor: '#1e1714' },
     motif: true, motifNote: '菊花賞で無敗の三冠を、翌春の天皇賞で三連覇を阻んだ小さな黒鹿毛。淀の長丁場で光る、静かな追走と揺るがない底力。',
     st: { spd: 7, sta: 9, acc: 6, pow: 7, agi: 7 }, aff: { turf: 2, dirt: -1, snow: 0, sand: 0 },
     skill: { name: '静かな追撃', desc: '残り25%で先頭から10m未満の2〜4番手にいると、5秒間、狙いを定めて加速する。', color: '#79a9ec' },
@@ -2062,9 +2062,11 @@ function buildHorse(d, i) {
     part(head, CONE, L.hoodTrim ? hoodMat : pinkIn, [-0.03, 0.36, 0.175 * s], [0.055, 0.18, 0.05], [0.25 * s, 0, 0.15], 0);
   }
   const fore = L.forelock || (k === 'pony' ? 1.5 : 1);
+  if (k !== 'sushi') {
   part(head, SPH, mane, [0.1, 0.36, 0], [0.14 * fore, 0.11 * fore, 0.15 * fore]);
   part(head, SPH, mane, [0.02, 0.4, 0.08], [0.1 * fore, 0.09 * fore, 0.1 * fore]);
   part(head, SPH, mane, [0.02, 0.4, -0.08], [0.1 * fore, 0.09 * fore, 0.1 * fore]);
+  }
   for (let j = 0; j < 6; j++) {
     const t = j / 5; const m = k === 'unicorn' ? toon(RAINBOW[j]) : mane; const r = 0.15 - t * 0.04;
     part(bob, SPH, m, [0.8 - t * 0.5, 2.12 - t * 0.66, 0], [r, r * 1.1, r * 0.85]);
@@ -2077,6 +2079,7 @@ function buildHorse(d, i) {
   const tf = k === 'pony' ? 1.25 : 1;
   [[-0.08, 0.02, 0.15], [-0.22, -0.1, 0.14], [-0.33, -0.28, 0.13], [-0.38, -0.48, 0.11]].forEach((q, j) => part(tail, SPH, k === 'unicorn' ? toon(RAINBOW[j + 1]) : mane, [q[0], q[1], 0], [q[2] * tf, q[2] * tf, q[2] * tf]));
   const lowerLeg = L.legColor ? toon(L.legColor) : null;
+  const sockMat = L.sockColor ? toon(L.sockColor) : white;
   // Leg indices: front left, front right, hind left, hind right (+Z is the horse's left).
   const legPos = [[0.5, 0.22], [0.5, -0.22], [-0.52, 0.22], [-0.52, -0.22]];
   legPos.forEach((lp, li) => {
@@ -2086,7 +2089,7 @@ function buildHorse(d, i) {
     if (lowerLeg) part(pv, LEG, lowerLeg, [0, -0.55, 0], [1.015, 0.47, 1.015], null, 0);
     if (L.socks && L.socks.includes(li)) {
       const height = L.sockHeights?.[li] || 0.24;
-      part(pv, LEG, white, [0, -0.72 + height / 2, 0], [1.04, height / 0.72, 1.04], null, 0);
+      part(pv, LEG, sockMat, [0, -0.72 + height / 2, 0], [1.04, height / 0.72, 1.04], null, 0);
       if (L.wrapBands) {
         const band = toon(L.wrapBands);
         for (let j = 0; j < 2; j++) part(pv, LEG, band, [0, -0.72 + height - 0.035 - j * 0.045, 0], [1.06, 0.02 / 0.72, 1.06], null, 0);
@@ -2283,9 +2286,32 @@ function addNoveltyParts(H) {
     }
   }
   if (k === 'sushi') {
-    const salmon = toon('#ff947b'), fat = toon('#ffe0c3'), rice = toon('#ffffff'); H.glowMats.push(salmon);
-    part(bob, BOX, salmon, [-0.12, 1.66, 0], [1.65, 0.18, 0.86]);
-    for (let j = 0; j < 7; j++) part(bob, BOX, fat, [-0.8 + j * 0.22, 1.757, 0], [0.035, 0.012, 0.85], [0, -0.25, 0], 0);
+    // A small, uneven mound of grated wasabi rests on the head instead of a forelock.
+    const wasabi = new THREE.Group(); wasabi.position.set(0.07, 0.36, 0); head.add(wasabi);
+    const paste = ['#b2c65a', '#cadb7a', '#92a549'].map(color => new THREE.MeshBasicMaterial({ color: C(color) }));
+    part(wasabi, SPH_LO, paste[0], [0, 0.05, 0], [0.2, 0.11, 0.18], null, 0.025);
+    part(wasabi, SPH_LO, paste[0], [-0.015, 0.17, 0], [0.14, 0.12, 0.13], null, 0);
+    part(wasabi, SPH_LO, paste[1], [-0.025, 0.28, 0.01], [0.075, 0.09, 0.07], null, 0);
+    for (let j = 0; j < 24; j++) {
+      const t = j / 24, angle = j * 2.4, radius = 0.18 * (1 - t), grain = 0.03 + j % 3 * 0.006;
+      part(wasabi, SPH_LO, paste[j % 3], [Math.cos(angle) * radius - t * 0.025, 0.04 + t * 0.29, Math.sin(angle) * radius], [grain, grain * 0.85, grain], [0, angle, angle * 0.4], 0);
+    }
+    const salmon = new THREE.MeshBasicMaterial({ color: C('#e982a0') }), fat = new THREE.MeshBasicMaterial({ color: C('#ffe0e8') }), rice = toon('#ffffff');
+    const skinTex = ctex(128, 64, g => {
+      g.fillStyle = '#74828b'; g.fillRect(0, 0, 128, 64);
+      g.strokeStyle = '#b3bec4'; g.lineWidth = 1.5;
+      for (let row = 0; row < 5; row++) for (let col = 0; col < 9; col++) {
+        g.beginPath(); g.arc(col * 16 + row % 2 * 8, row * 14, 8, 0, Math.PI); g.stroke();
+      }
+    });
+    const skin = new THREE.MeshStandardMaterial({ color: C('#b5bec4'), map: skinTex, roughness: 0.48, metalness: 0.3 });
+    // A visible silver skin layer under the pink flesh makes the fillet readable from the sides.
+    part(bob, BOX, skin, [-0.12, 1.565, 0], [1.66, 0.1, 0.87], null, 0.025);
+    part(bob, BOX, salmon, [-0.12, 1.69, 0], [1.65, 0.22, 0.86]);
+    for (let j = 0; j < 7; j++) {
+      part(bob, BOX, fat, [-0.8 + j * 0.22, 1.805, 0], [0.035, 0.012, 0.85], [0, -0.25, 0], 0);
+      for (const s of [-1, 1]) part(bob, BOX, fat, [-0.8 + j * 0.22 + 0.1 * s, 1.71, 0.436 * s], [0.026, 0.16, 0.012], [0, 0, -0.25], 0);
+    }
     for (const s of [-1, 1]) for (let j = 0; j < 12; j++) part(bob, SPH_LO, rice, [-0.7 + j % 6 * 0.24, 0.99 + Math.floor(j / 6) * 0.19, 0.43 * s], [0.1, 0.055, 0.035], [0, 0, (j % 3 - 1) * 0.3], 0);
     H.tears = new THREE.Group(); head.add(H.tears); H.tears.visible = false;
     for (const s of [-1, 1]) part(H.tears, SPH_LO, toon('#80d9ff'), [0.17, -0.12, 0.36 * s], [0.045, 0.1, 0.025], null, 0);
