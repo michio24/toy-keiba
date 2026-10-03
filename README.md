@@ -92,9 +92,11 @@
 
 ## 実況・実績・結果カード
 
-- **実況**：先頭交代、接戦、残り距離、ゴールの着差などに合わせてテキストを表示し、ブラウザの読み上げ機能で再生します。音の設定は効果音と共通です。声や日本語音声の利用可否はブラウザ・OSによって異なります。
+- **実況**：先頭交代、接戦、残り距離、ゴールの着差などに合わせてテキストを表示し、ブラウザの読み上げ機能で再生します。全25コース、名馬モチーフ18頭、歴史名馬5頭と、コース・馬の10組の組み合わせに、有名実況を連想させるオリジナルの専用実況202文を追加しています。導入・直線・スキル・追い上げ・勝利の場面で、条件に合う組み合わせ、馬、コースの順に専用実況を選び、それ以外は汎用実況を使います。残り距離や着差は実際の展開に合わせ、クラッシュでは最終直線や勝利の実況を出しません。音の設定は効果音と共通です。声や日本語音声の利用可否はブラウザ・OSによって異なります。
 - **実績**：完走、異なる馬やコースでの完走、応援ブーストで実績と称号を獲得できます。勝敗に関係なく進捗を保存し、コイン報酬は実績ごとに一度だけ受け取れます。
 - **結果カード**：結果画面の「結果カードを保存・共有」からPNGを保存できます。共有に対応したブラウザでは共有メニューを開き、それ以外では共有文のコピーまたは表示に切り替わります。
+
+過去の名実況から短いフレーズを使った実況8種類も追加しています。既存のオリジナル実況に混ぜて選び、同じ候補群では直前と同じ文を避けます。馬名はゲーム内の名前に置き換わります。逃げのフレーズはイジゲンエスケープが後続を離して最終直線に入った場面、接戦のフレーズは僅差のゴールに限定します。セイキマツハオウには2000年有馬記念を基に、中山で残り300m以内に順位を上げた場面と、僅差で勝った場面の実況を追加しています。クラッシュではこの2種類を使いません。京都の桜のフレーズは過去の実況を紹介する導入として使い、現在の季節や三冠達成を断定しません。
 
 ## 画質と保存データ
 
@@ -117,6 +119,7 @@ python -m http.server 8000
 | `index.html` | ゲーム本体。HTML・CSS・JavaScriptを収録 |
 | `lib/three/` | 3D描画ライブラリ three.js r147 と関連スクリプト |
 | `lib/three/LICENSE` | three.js の MIT License |
+| `tests/commentary.test.cjs` | 専用実況の網羅性・選択順・着差・発話間隔・競馬／クラッシュ・読み上げ連携の検証（`node --test tests/commentary.test.cjs`） |
 | `tests/crash.test.cjs` | クラッシュの倍率・終了順・精算・RTP検証（`node --test tests/crash.test.cjs`） |
 | `tests/camera.test.cjs` | 観戦対象・カメラ追従・馬目線・ゴール演出の検証（`node --test tests/camera.test.cjs`） |
 | `tests/fantasy.test.cjs` | 追加7コースの周回・坂・区間効果と、箱根の下り・完走・クラッシュ除外、保存番号・天候の検証（`node --test tests/fantasy.test.cjs`） |
@@ -134,3 +137,16 @@ python -m http.server 8000
 - 国内コース：[東京](https://www.jra.go.jp/facilities/race/tokyo/course/)・[中山](https://www.jra.go.jp/facilities/race/nakayama/course/)・[京都](https://www.jra.go.jp/facilities/race/kyoto/course/)・[阪神](https://www.jra.go.jp/facilities/race/hanshin/course/)・[中京](https://www.jra.go.jp/facilities/race/chukyo/course/)・[札幌](https://www.jra.go.jp/facilities/race/sapporo/course/)のJRA公式資料
 - 海外コース：[ロンシャン（France Galop）](https://www7.france-galop.com/hippo_premium/0001_ParisLongchamp.pdf)、[チャーチルダウンズ](https://www.churchilldowns.com/racing/)、[メイダン（ERA）](https://emiratesracing.com/racecourses/meydan)、[シャティン（HKJC）](https://racing.hkjc.com/racing/english/racing-info/racing_course.asp)
 - 名実況：[JRA創立70周年記念誌](https://www.jra.go.jp/special/event70th/pdf/memorial_book.pdf)。実際のアナウンサーの録音は使用せず、ブラウザの音声で読み上げます。
+
+追加した過去の名実況の出典と使用場面：
+
+| モチーフ・場面 | 元のレースと実況者 | 確認資料 |
+|---|---|---|
+| アシゲノカイブツの追い上げ | 1990年有馬記念／白川次郎 | [テレビ東京・本人出演の番組紹介](https://www.tv-tokyo.co.jp/broad_tvtokyo/program/detail/201712/18073_201712132248.html) |
+| イジゲンエスケープの独走する最終直線 | 1998年毎日王冠／青嶋達也 | [日刊スポーツ・本人インタビュー](https://www.nikkansports.com/keiba/column/rapusodi/news/202510200000459.html?Page=1) |
+| 僅差のゴール | 2008年天皇賞（秋）／青嶋達也 | [日刊スポーツ・本人インタビュー](https://www.nikkansports.com/keiba/column/rapusodi/news/202510200000459.html?Page=1) |
+| 京都の導入で過去の実況を紹介 | 1987年菊花賞／杉本清 | [カンテレ競馬公式・サクラスターオー](https://www.youtube.com/watch?v=FSn22kw5N8g) |
+| コンジキボウクンの勝利 | 2011年菊花賞／岡安譲 | [Number×カンテレ競馬・三冠実況対談](https://www.youtube.com/watch?v=NUgdhlHAKOs) |
+| ソラトブインパクトの京都での勝利 | 2005年菊花賞／馬場鉄志 | [WEBザテレビジョン・カンテレ追悼企画の紹介](https://thetv.jp/news/detail/199858/p2/) |
+| セイキマツハオウの中山での終盤の追い上げ | 2000年有馬記念／堺正幸 | [ファミ通・テイエムオペラオーのレースと実況の紹介](https://www.famitsu.com/news/202112/31246776.html) |
+| セイキマツハオウの中山での僅差の勝利 | 2000年有馬記念／堺正幸 | [競馬名実況集・短い実況抜粋](https://meijikkyou.blog84.fc2.com/blog-entry-372.html) |
