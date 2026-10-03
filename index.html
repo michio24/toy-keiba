@@ -939,7 +939,7 @@ const HORSE_PROFILES = [
   ['気品あふれる努力家。身だしなみも忘れない。', '磨きたてのティアラ'],
   ['落ち着いた自信家。毎日の練習を大切にする。', '朝もやの芝と静かな時間'],
   ['軽やかで明るい、あきらめない挑戦者。', '弾むステップと再会の拍手'],
-  ['責任感の強い王様。困ったときほど冷静。', '王冠のお手入れと知恵くらべ'],
+  ['責任感の強い王様。困ったときほど冷静。', '背中のお気に入りのリュック'],
   ['甘えん坊で、寒い日ほど元気になる。', '涼しい木陰とチョコの香り'],
   ['まっすぐで集中力抜群。目標へ一直線。', 'ぴかぴかのボディと長い直線'],
   ['のんびり屋。ゆらゆらしているとご機嫌。', '子ども部屋の子守歌'],
@@ -2593,6 +2593,7 @@ function buildWorld(ti) {
     const negativePost = addBox(arch, [0.6, 8, 0.6], [0, 4, -W / 2 - 2.6], pm, null, 0.04);
     const positivePost = addBox(arch, [0.6, 8, 0.6], [0, 4, W / 2 + 2.6], pm, null, 0.04);
     world.userData.photoPost = track.sgn > 0 ? positivePost : negativePost;
+    world.userData.finishPosts = [negativePost, positivePost];
     addBox(arch, [0.9, 1.8, W + 6.2], [0, 8.2, 0], am, null, 0.03);
     const goalTex = ctex(1024, 128, g => {
       const gr = g.createLinearGradient(0, 0, 1024, 0); gr.addColorStop(0, '#ff4f9a'); gr.addColorStop(0.5, '#ffcf3f'); gr.addColorStop(1, '#ff4f9a');
@@ -3969,6 +3970,7 @@ function setMode(m) {
   drawBoard();
 }
 function enterLobby(rebuild) {
+  if (R) { R.finishPhoto = null; R.finishPhotoPending = false; }
   VO.stop();
   clearCrashPressure();
   S.crash = null;
@@ -4050,6 +4052,7 @@ function onSkill(r) {
   if (r.i === S.myBet.h || R.t - tickT >= 3) RC.emit('skill', {M: r.def.name, SK: r.def.skill.name}, false, {horse: r.def});
 }
 function onFinish(r) {
+  if (S.playType === 'race' && r.i === S.myBet.h) R.finishPhotoPending = true;
   if (r.place === 1) {
     if (S.playType === 'race' && !R.themeCelebrated) { R.themeCelebrated = true; if (themeFinish) themeFinish(); }
     say(RC.finish(R, r, track), true);
@@ -4086,7 +4089,7 @@ function showResult() {
     <div style="overflow-x:auto"><table><thead><tr><th>着</th><th>馬番</th><th>馬名</th><th>タイム</th><th>着差</th></tr></thead><tbody>${rows}</tbody></table></div>
     <div id="payout" class="${hit ? '' : 'miss'}"><div class="l"><b>${b.h + 1}番 ${HORSES[b.h].name}</b><br>${b.type === 'win' ? '単勝' : '複勝'} ${b.odds.toFixed(1)}倍 × ${fmt(b.amt)}コイン${hit && b.streak ? `<br>連勝ボーナス ×${bonus.toFixed(1)}` : ''}${!hit ? `<br>結果は${me.place}着でした` : ''}</div><div class="r" id="payNum">${hit ? '+0' : '0'}</div></div>
     <p id="rewardNote">${unlocked.length ? unlocked.map(g => `🏅 ${g.title} +${g.reward}コイン`).join(' ／ ') : `完走記録：${progress.races}レース。実績の進み具合はロビーで確認できます。`}</p>
-    <details><summary>結果カードを保存・共有</summary><canvas id="shareCard" width="840" height="560" aria-label="レース結果カード"></canvas><div class="shareActions"><button id="saveCard">画像を保存</button><button id="shareResult">結果を共有</button></div><p id="shareStatus" role="status"></p></details>
+    <details><summary>結果カードを保存・共有</summary><canvas id="shareCard" width="840" height="720" aria-label="応援した馬のゴール写真付きレース結果カード"></canvas><div class="shareActions"><button id="saveCard">画像を保存</button><button id="shareResult">結果を共有</button></div><p id="shareStatus" role="status"></p></details>
     <div class="rbtns"><button id="again" class="pri">次のレースへ</button><button id="other">次のコースへ</button></div>
   </div>`;
   setupShare(me, pay, reward);
@@ -4411,7 +4414,13 @@ function updRaceFrame(dt, rdt) {
           R.t = before + event.elapsed;
           settleCrash(event.reason, event.multiplier); return;
         }
-      } else stepRace(R, h, true);
+      } else {
+        stepRace(R, h, true);
+        if (R.finishPhotoPending) {
+          R.finishPhotoPending = false;
+          R.finishPhoto = captureFinishPhoto(R.runners[S.myBet.h]);
+        }
+      }
       R.acc -= h; n++;
     }
     if (n === 15) R.acc = 0;
@@ -4876,18 +4885,90 @@ function applyQuality() {
   applyThemeQuality();
   [dustP, sparkP, fireP, amb].forEach(p => { if (p) p.mat.uniforms.scale.value = innerHeight * PR * 0.5; });
 }
+function captureFinishPhoto(me) {
+  // Capture after the complete simulation step, before another step moves the horses.
+  const width = 840, height = 360;
+  const roots = horses.map(H => ({ position: H.root.position.clone(), rotation: H.root.rotation.clone(), visible: H.root.visible }));
+  const posts = world.userData.finishPosts, postVisibility = posts.map(post => post.visible);
+  const skyPosition = sky.position.clone(), sunPosition = sun.position.clone(), sunTarget = sun.target.position.clone();
+  const previousTarget = renderer.getRenderTarget(), viewport = renderer.getViewport(new THREE.Vector4()), scissor = renderer.getScissor(new THREE.Vector4()), scissorTest = renderer.getScissorTest();
+  let raw, output, pass;
+  try {
+    if (renderer.getContext().isContextLost()) return null;
+    R.runners.forEach(r => {
+      const H = horses[r.i], s = r.i === me.i ? R.D : r.s, q = track.pos(R.s0 + s, r.lane);
+      H.root.position.set(q.x, q.y + r.fly * (r.flyH || 1.8) + H.hopY, q.z);
+      H.root.rotation.set(0, -q.h + H.yaw + (H.drift || 0), Math.atan(track.visGrade(R.s0 + s)) * 0.8, 'YZX');
+      H.root.visible = true;
+    });
+    const f = tp(R.s0 + R.D, me.lane), H = horses[me.i];
+    const target = H.root.position.clone().add(new V3(0, 1.3 * H.scale, 0));
+    const distance = Math.max(8, 10 * H.scale);
+    const side = me.lane < W / 2 ? -1 : 1;
+    const shotCamera = new THREE.PerspectiveCamera(32, width / height, 0.1, camera.far);
+    shotCamera.position.copy(target).addScaledVector(f.n, distance * side).addScaledVector(f.dir, distance * 0.35).add(new V3(0, distance * 0.3, 0));
+    shotCamera.lookAt(target);
+    posts.forEach(post => { post.visible = false; });
+    sky.position.copy(shotCamera.position);
+    sun.position.copy(target).addScaledVector(sunDir, 160); sun.target.position.copy(target);
+    raw = new THREE.WebGLRenderTarget(width, height, { type: THREE.HalfFloatType });
+    output = new THREE.WebGLRenderTarget(width, height);
+    pass = new THREE.ShaderPass(FinalShader);
+    pass.uniforms.uExp.value = FU.uExp.value;
+    pass.uniforms.uSat.value = FU.uSat.value;
+    pass.uniforms.uTime.value = realClock;
+    // Apply the game's colour grading without the GOAL flash or camera shake.
+    renderer.setRenderTarget(raw); renderer.setScissorTest(false); renderer.clear(); renderer.render(scene, shotCamera);
+    pass.render(renderer, output, raw);
+    const pixels = new Uint8Array(width * height * 4);
+    renderer.readRenderTargetPixels(output, 0, 0, width, height, pixels);
+    if (renderer.getContext().isContextLost() || !pixels.some((v, i) => i % 4 === 3 && v)) return null;
+    const photo = document.createElement('canvas'); photo.width = width; photo.height = height;
+    const c = photo.getContext('2d'), image = c.createImageData(width, height), stride = width * 4;
+    for (let y = 0; y < height; y++) image.data.set(pixels.subarray((height - 1 - y) * stride, (height - y) * stride), y * stride);
+    c.putImageData(image, 0, 0);
+    return photo;
+  } catch (e) {
+    return null;
+  } finally {
+    horses.forEach((H, i) => { H.root.position.copy(roots[i].position); H.root.rotation.copy(roots[i].rotation); H.root.visible = roots[i].visible; });
+    posts.forEach((post, i) => { post.visible = postVisibility[i]; });
+    sky.position.copy(skyPosition); sun.position.copy(sunPosition); sun.target.position.copy(sunTarget);
+    renderer.setRenderTarget(previousTarget); renderer.setViewport(viewport); renderer.setScissor(scissor); renderer.setScissorTest(scissorTest);
+    raw?.dispose(); output?.dispose();
+    // FullScreenQuad shares its geometry with the live composer; dispose only our material.
+    pass?.material.dispose();
+  }
+}
 function setupShare(me, pay, reward) {
   const canvas = $('#shareCard'), c = canvas.getContext('2d');
-  const gradient = c.createLinearGradient(0,0,840,560); gradient.addColorStop(0,'#35204f'); gradient.addColorStop(1,'#951f63');
-  c.fillStyle = gradient; c.fillRect(0,0,840,560);
-  c.fillStyle = '#ffcf3f'; c.font = 'bold 42px sans-serif'; c.fillText('トイ競馬',48,70);
-  c.fillStyle = '#fff5fb'; c.font = 'bold 82px sans-serif'; c.fillText(`${me.place}着！`,48,175);
-  c.font = 'bold 36px sans-serif'; c.fillText(me.def.name,48,240,744);
-  c.font = '26px sans-serif'; c.fillText(track.def.name,48,300,744);
-  c.fillText(`${WX[S.wx.w]}・${GOING[S.wx.g]} ／ タイム ${fmtTime(me.finT)}`,48,350,744);
-  c.fillStyle = '#46f0c6'; c.fillText(`払戻 ${fmt(pay)} ／ 実績報酬 ${fmt(reward)} コイン`,48,410,744);
+  const photo = R.finishPhoto;
+  canvas.height = photo ? 720 : 560;
+  canvas.setAttribute('aria-label', photo ? '応援した馬のゴール写真付きレース結果カード' : 'レース結果カード');
   const url = /^https?:$/.test(location.protocol) ? location.href.split('#')[0].split('?')[0] : '';
-  c.fillStyle = '#fff5fb'; c.font = '20px sans-serif'; c.fillText(url || 'かわいい馬を選んで、応援しよう！',48,510,744);
+  if (photo) {
+    c.fillStyle = '#35204f'; c.fillRect(0, 0, 840, 720);
+    c.drawImage(photo, 0, 0, 840, 360);
+    c.fillStyle = 'rgba(26,8,48,0.85)'; c.fillRect(24, 24, 320, 48);
+    c.fillStyle = '#fff5fb'; c.font = 'bold 24px sans-serif'; c.fillText(`ゴールの瞬間 ／ ${me.i + 1}番`, 40, 57);
+    c.fillStyle = '#ffcf3f'; c.font = 'bold 36px sans-serif'; c.fillText('トイ競馬', 40, 418);
+    c.font = 'bold 48px sans-serif'; c.textAlign = 'right'; c.fillText(`${me.place}着！`, 800, 424); c.textAlign = 'left';
+    c.fillStyle = '#fff5fb'; c.font = 'bold 36px sans-serif'; c.fillText(`${me.i + 1}番 ${me.def.name}`, 40, 480, 760);
+    c.font = '24px sans-serif'; c.fillText(track.def.name, 40, 526, 760);
+    c.fillText(`${WX[S.wx.w]}・${GOING[S.wx.g]} ／ タイム ${fmtTime(me.finT)}`, 40, 567, 760);
+    c.fillStyle = '#46f0c6'; c.fillText(`払戻 ${fmt(pay)} ／ 実績報酬 ${fmt(reward)} コイン`, 40, 614, 760);
+    c.fillStyle = '#fff5fb'; c.font = '20px sans-serif'; c.fillText(url || 'かわいい馬を選んで、応援しよう！', 40, 682, 760);
+  } else {
+    const gradient = c.createLinearGradient(0,0,840,560); gradient.addColorStop(0,'#35204f'); gradient.addColorStop(1,'#951f63');
+    c.fillStyle = gradient; c.fillRect(0,0,840,560);
+    c.fillStyle = '#ffcf3f'; c.font = 'bold 42px sans-serif'; c.fillText('トイ競馬',48,70);
+    c.fillStyle = '#fff5fb'; c.font = 'bold 82px sans-serif'; c.fillText(`${me.place}着！`,48,175);
+    c.font = 'bold 36px sans-serif'; c.fillText(me.def.name,48,240,744);
+    c.font = '26px sans-serif'; c.fillText(track.def.name,48,300,744);
+    c.fillText(`${WX[S.wx.w]}・${GOING[S.wx.g]} ／ タイム ${fmtTime(me.finT)}`,48,350,744);
+    c.fillStyle = '#46f0c6'; c.fillText(`払戻 ${fmt(pay)} ／ 実績報酬 ${fmt(reward)} コイン`,48,410,744);
+    c.fillStyle = '#fff5fb'; c.font = '20px sans-serif'; c.fillText(url || 'かわいい馬を選んで、応援しよう！',48,510,744);
+  }
   const text = `トイ競馬で${me.def.name}を応援して${me.place}着！ ${track.def.name}`;
   const blobPromise = new Promise(resolve => canvas.toBlob(resolve,'image/png'));
   $('#saveCard').onclick = async () => {
