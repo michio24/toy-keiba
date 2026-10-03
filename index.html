@@ -4043,7 +4043,7 @@ function startRace() {
   S.coins -= amt; setCoins();
   S.myBet = { h: S.sel, type: S.playType === 'crash' ? 'crash' : S.betType, amt, odds: S.betType === 'win' ? S.odds.win[S.sel] : S.odds.place[S.sel], streak: S.streak };
   setMode('intro'); S.introT = 0; cam.spr = null; cam.bf = null; flags = {}; S.photoDone = false; S.photoEnd = false; S.cheer = 30; S.photo = false;
-  S.camTarget = null;
+  S.camTarget = S.playType === 'crash' ? S.myBet.h : null;
   buildHud();
   setCam('broadcast');
   say(RC.line('intro', {T: track.def.name, WX: WX[S.wx.w], GOING: GOING[S.wx.g], F: HORSES[S.odds.pop.indexOf(1)].name}, {tr: track}));
