@@ -1059,9 +1059,11 @@ const TRACKS = [
   // ---- 実在の競馬場モチーフ（公式平面図をもとに中心線を近似。距離約1/2、坂は視覚的に誇張） ----
   // curve: absolute cubic Bézier controls/end in metres; z is mirrored for left-handed courses.
   { name: '府中ダービーコース', kick: 1.25, real: true, theme: 'tokyo', surf: 'turf', dir: 'left', D: 1200, time: '左回り', scale: 0.5, stand: 'big',
-    segs: [{ len: 600 }, { curve: [[810, 0], [800, 300], [580, 300]] }, { curve: [[400, 300], [210, 300], [30, 300]] }, { curve: [[-170, 300], [-170, 0], [0, 0]] }], finish: [0, 525.9], elevEx: 3.5,
-    elev: [[0, 0, 0], [0, 0.11, 0], [0, 0.377, 2.0], [0, 1, 2.0], [1, 0.5, 1.8], [1, 1, 1.5], [2, 0.4, 1.0], [2, 0.9, 2.5], [3, 0.3, 1.0], [3, 1, 0]],
-    motif: '東京競馬場　芝2400m（日本ダービー）', motifNote: '左回りで、直線は525.9mと長い。直線の途中に高低差2mの坂。3コーナーの大ケヤキ、晴れた日にはスタンドから富士山。',
+    // 1周2083.1m（Aコース）：ゴール後34mで1コーナー（2400m発走から約350m）、大きく回る3〜4コーナー
+    segs: [{ len: 560 }, { curve: [[770, 0], [760, 300], [540, 300]] }, { curve: [[360, 300], [180, 300], [0, 300]] }, { curve: [[-211, 300], [-211, 0], [0, 0]] }], finish: [0, 525.9], elevEx: 3.5,
+    // 1・2コーナーは下り、向正面半ばに上り坂、3〜4コーナーは下り、直線の残り460〜300mに高低差2mの坂（全体の高低差2.7m）
+    elev: [[0, 0, 0.3], [0, 0.118, 0], [0, 0.403, 2.0], [0, 0.94, 2.2], [0, 1, 2.2], [1, 0.5, 1.8], [1, 1, 1.2], [2, 0.15, 1.0], [2, 0.55, 2.7], [2, 1, 2.4], [3, 0.35, 1.5], [3, 0.75, 0.6], [3, 1, 0.3]],
+    motif: '東京競馬場　芝2400m（日本ダービー）', motifNote: '左回りで1周2083.1m、直線は525.9mと長い。直線の残り460〜300mに高低差2mの坂、向正面にも上り坂（全体の高低差2.7m）。内側にダートコース、2000m・1600mの発走ポケット。3コーナーの大ケヤキ、晴れた日にはスタンドから富士山。',
     desc: '長い直線で差し・追込が届く大きなコース。直線の坂を上ってからもうひと伸びできるかが勝負。',
     grad: 'linear-gradient(135deg,#2f7fe0,#bfe0ff 55%,#6fbf5c)' },
   { name: '中山グランプリコース', kick: 0.55, real: true, theme: 'nakayama', surf: 'turf', dir: 'right', D: 1250, time: '右回り', scale: 0.5,
@@ -4556,9 +4558,31 @@ function decorRacecourseLandmarks() {
   }
 }
 function decorTokyo(th) {
-  roundTrees(treeSpots(110, 18), ['#3f8f3a', '#4fa546', '#5fb853', '#377d34']);
-  // 大ケヤキ: a lone giant zelkova inside the 3rd corner
-  { const q = tp(track.segStart[3] + track.segs[3].len2 * 0.12, -16); q.v.y = track.groundH(q.v.x, q.v.z); roundTrees([{ p: q.v, s: 3.4 }], ['#3a7f36', '#4a9442', '#2f6e2c'], '#5a3e2b'); }
+  // 内馬場の木はダートコースより内側に置く
+  const infield = Array.from({ length: 18 }, () => { const q = tp(Math.random() * track.L, -rand(26, Math.max(30, track.R - 14))); q.v.y = track.groundH(q.v.x, q.v.z); return { p: q.v }; })
+    .filter(it => it.p.distanceTo(boardPos) > 26);
+  roundTrees([...treeSpots(110, 0), ...infield], ['#3f8f3a', '#4fa546', '#5fb853', '#377d34']);
+  // 芝の内側のダートコース（飾り）。内柵を挟んで並走し、1周は約1/2縮尺で実物の1899mに近い
+  decorCourseLane(track, 'dirt', 0, track.L, { lanes: [-3.5, -14.5], onGround: true });
+  { const np = Math.ceil(track.L / 3), pts = [];
+    for (let i = 0; i < np; i++) { const q = track.pos(i / np * track.L, -15.3); pts.push(new V3(q.x, track.groundH(q.x, q.z) + 1, q.z)); }
+    world.add(new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts, true), np * 2, 0.09, 6, true), toon(th.rail))); }
+  // 芝の発走ポケット（飾り）：2000mは1コーナー奥へ直進、1600mは向正面から2コーナー奥へ延びる引き込み線
+  const pocket = (s, length, forward) => {
+    const q = track.pos(s, W / 2), tr = new Track({ surf: 'turf', dir: 'left', closed: false, segs: [{ len: length }], finish: [0, length], D: length });
+    const origin = tr.pos(forward ? 0 : tr.L, W / 2);
+    for (let i = 0; i <= tr.N; i++) {
+      const x = tr.xs[i] - origin.x, z = tr.zs[i] - origin.z;
+      tr.xs[i] = q.x + x * Math.cos(q.h) - z * Math.sin(q.h); tr.zs[i] = q.z + x * Math.sin(q.h) + z * Math.cos(q.h); tr.hs[i] = q.h;
+    }
+    decorCourseLane(tr, 'turf', 0, tr.L, { lanes: [-1.6, W + 1.6], cols: 18, step: 1.5, onGround: true, mat: pocketMat, hide: onMainTurf });
+  };
+  // 芝と同じ見た目にする（雨の色変化も本線と共有）。本線の芝の上にある頂点は沈めて、重なりのちらつきを防ぐ
+  const pocketMat = WR.tMat.clone(); pocketMat.color = WR.tMat.color; pocketMat.side = THREE.DoubleSide;
+  const onMainTurf = p => { for (let i = 0; i <= track.N; i += 2) if ((track.xs[i] - p.x) ** 2 + (track.zs[i] - p.z) ** 2 < (W / 2 + 1.8) ** 2) return true; return false; };
+  pocket(track.segStart[1], 60, true); pocket(track.segStart[2], 55, false);
+  // 大ケヤキ: a lone giant zelkova inside the 3rd corner, beyond the dirt course
+  { const q = tp(track.segStart[3] + track.segs[3].len2 * 0.12, -32); q.v.y = track.groundH(q.v.x, q.v.z); roundTrees([{ p: q.v, s: 3.4 }], ['#3a7f36', '#4a9442', '#2f6e2c'], '#5a3e2b'); }
   // 富士山 across the infield from the stands
   { const f = farPoint(1050, true, 0.5); const g = new THREE.ConeGeometry(1, 1, 48); g.translate(0, 0.5, 0);
     const fuji = new THREE.Mesh(g, toon('#6f86b8', { fog: false })); fuji.position.set(f.x, -8, f.z); fuji.scale.set(430, 250, 430); world.add(fuji);
@@ -4566,15 +4590,19 @@ function decorTokyo(th) {
   mountains(th.mount, 10, false);
 }
 // Decorative lanes do not participate in race physics or replace the selected course.
-function decorCourseLane(tr, surf, from = 0, to = tr.L) {
-  const n = Math.ceil((to - from) / 3), pts = [], indices = [];
+// opts.lanes: 描く幅（レーン範囲）、opts.onGround: 坂のあるコースでは地形の高さに沿わせる、opts.mat: 材質の指定（UVは走路面と同じ割り付け）
+// opts.cols: 横方向の分割数、opts.hide(p): trueの頂点は地面の下に沈めて隠す（本線と重なる部分を本線に任せる）
+function decorCourseLane(tr, surf, from = 0, to = tr.L, opts = {}) {
+  const [laneA, laneB] = opts.lanes || [2, W - 2], cols = opts.cols || 1;
+  const n = Math.ceil((to - from) / (opts.step || 3)), pts = [], uv = [], indices = [];
+  const y = p => opts.hide && opts.hide(p) ? track.groundH(p.x, p.z) - 0.6 : opts.onGround ? track.groundH(p.x, p.z) + 0.1 : 0.005;
   for (let i = 0; i <= n; i++) {
-    const s = lerp(from, to, i / n), a = tr.pos(s, 2), b = tr.pos(s, W - 2);
-    pts.push(a.x, 0.005, a.z, b.x, 0.005, b.z);
-    if (i < n) { const k = i * 2; indices.push(k, k + 1, k + 2, k + 1, k + 3, k + 2); }
+    const s = lerp(from, to, i / n);
+    for (let j = 0; j <= cols; j++) { const p = tr.pos(s, lerp(laneA, laneB, j / cols)); pts.push(p.x, y(p), p.z); uv.push(s / 16, j / cols); }
+    if (i < n) for (let j = 0; j < cols; j++) { const k = i * (cols + 1) + j, k2 = k + cols + 1; indices.push(k, k + 1, k2, k + 1, k2 + 1, k2); }
   }
-  const geo = new THREE.BufferGeometry(); geo.setAttribute('position', new THREE.Float32BufferAttribute(pts, 3)); geo.setIndex(indices); geo.computeVertexNormals();
-  const lane = new THREE.Mesh(geo, toon(surf === 'turf' ? '#438d57' : '#99734f', { side: THREE.DoubleSide })); lane.receiveShadow = true; world.add(lane);
+  const geo = new THREE.BufferGeometry(); geo.setAttribute('position', new THREE.Float32BufferAttribute(pts, 3)); geo.setAttribute('uv', new THREE.Float32BufferAttribute(uv, 2)); geo.setIndex(indices); geo.computeVertexNormals();
+  const lane = new THREE.Mesh(geo, opts.mat || toon(surf === 'turf' ? '#438d57' : '#99734f', { side: THREE.DoubleSide })); lane.receiveShadow = true; world.add(lane);
 }
 function decorMeydan() {
   const otherDef = TRACKS.find(t => t.theme === 'meydan' && t.surf !== track.def.surf);
