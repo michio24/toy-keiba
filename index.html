@@ -562,7 +562,7 @@ body[data-play=crash] #guideNote{top:430px}
       <div class="seg" id="btype"></div>
       <div id="crashSettings" hidden>
         <label><input id="autoEnabled" type="checkbox">自動キャッシュアウト <input id="autoMultiplier" type="number" min="1.01" max="100" step="0.01" value="2.00" aria-label="自動キャッシュアウト倍率" disabled> x</label>
-        <p id="crashRules">上位ほど倍率が速く上昇。応援で順位を上げ、疾走終了前に確定しよう。先頭のゴールまたは100.00xで自動確定。<br>理論RTP 96.5%。整数丸めにより実際の期待払戻はわずかに下がります。無料補充はRTPに含みません。連勝・実績報酬は対象外です。<br>コインはゲーム内専用です。未確定で再読み込みすると払戻はありません。</p>
+        <p id="crashRules">上位ほど倍率が速く上昇。応援で順位を上げ、疾走終了前に確定しよう。ゴールを通過して走り続けます。100.00xで自動確定。区間ごとにスタミナが回復し、スキルを再び使えます。<br>理論RTP 96.5%。整数丸めにより実際の期待払戻はわずかに下がります。無料補充はRTPに含みません。連勝・実績報酬は対象外です。<br>コインはゲーム内専用です。未確定で再読み込みすると払戻はありません。</p>
       </div>
       <div class="chips" id="chips"></div>
     </div>
@@ -1107,7 +1107,7 @@ function renderJourney() {
   // ガイドは初回（または「遊び方」押下時）だけ表示し、実績はメニュー行のボタンから開閉する
   const j = $('#journey'); j.hidden = !guiding; $('#showGuide').hidden = guiding;
   j.innerHTML = guiding ? '<b>はじめてのトイ競馬</b><p>①「出走馬」から好きな馬を選ぶ → ②「出走！」 → ③応援ボタンで後押し。コースは「コース」タブで変更できます。コインはゲーム内専用です。</p><div class="jbtns"><button id="easyStart">おまかせで初レース</button><button id="skipGuide">ガイドを終了</button></div>' : '';
-  if (guiding && S.playType === 'crash') j.innerHTML = '<b>競馬クラッシュの遊び方</b><p>①馬と賭け額を選んで出走 → ②応援で順位を上げると倍率が速く上昇 → ③疾走終了前にボタンかEnterで確定。自動確定も設定できます。先頭のゴールで自動確定します。開始直後に終了する場合もあります。未確定で再読み込みすると払戻はありません。</p><div class="jbtns"><button id="easyStart">100コインで初クラッシュ</button><button id="skipGuide">ガイドを終了</button></div>';
+  if (guiding && S.playType === 'crash') j.innerHTML = '<b>競馬クラッシュの遊び方</b><p>①馬と賭け額を選んで出走 → ②応援で順位を上げると倍率が速く上昇 → ③疾走終了前にボタンかEnterで確定。自動確定も設定できます。ゴールを通過して走り続けます。100.00xで自動確定します。開始直後に終了する場合もあります。未確定で再読み込みすると払戻はありません。</p><div class="jbtns"><button id="easyStart">100コインで初クラッシュ</button><button id="skipGuide">ガイドを終了</button></div>';
   $('#achCount').textContent = `${progress.claimed.length}/${goals.length}`;
   $('#achList').innerHTML = `<p>勝っても負けても、完走で記録が増えます。</p><ul>${goals.map(g => `<li class="${progress.claimed.includes(g.id) ? 'done' : ''}"><span>${progress.claimed.includes(g.id) ? '🏅' : '○'}</span><b>${g.title}</b><small>${g.desc}（${Math.min(g.value(),g.target)}/${g.target}）・${g.reward}コイン</small></li>`).join('')}</ul>`;
   if (guiding) {
@@ -1184,19 +1184,18 @@ function crashPressure(multiplier) {
   return { level, milestone };
 }
 // Resolve crossings by simulated time, rather than by the order of frame callbacks.
-function advanceCrash(round, rank, dt, goalTime = Infinity) {
+function advanceCrash(round, rank, dt) {
   const rate = crashRate(rank), start = round.multiplier;
   const crossing = value => Math.max(0, Math.log(value / start) / rate);
   const events = [
     { reason: 'crash', time: crossing(round.point), value: Math.max(1, round.point), priority: 0 },
     { reason: 'auto', time: round.auto == null ? Infinity : crossing(round.auto), value: round.auto, priority: 1 },
-    { reason: 'limit', time: crossing(CRASH_MAX), value: CRASH_MAX, priority: 2 },
-    { reason: 'goal', time: goalTime, priority: 3 }
+    { reason: 'limit', time: crossing(CRASH_MAX), value: CRASH_MAX, priority: 2 }
   ];
   events.sort((a, b) => Math.abs(a.time - b.time) < 1e-10 ? a.priority - b.priority : a.time - b.time);
   const event = events[0];
   if (event.time <= dt + 1e-10) {
-    const multiplier = event.reason === 'goal' ? start * Math.exp(rate * event.time) : event.value;
+    const multiplier = event.value;
     return { reason: event.reason, elapsed: event.time, multiplier };
   }
   return { reason: null, elapsed: dt, multiplier: start * Math.exp(rate * dt) };
@@ -1504,9 +1503,25 @@ function tp(sa, lane, y = 0) {
 
 /* ============ RACE SIM ============ */
 const TOP = d => 21.2 + d.st.spd * 0.18;
+// Distance stays cumulative; only the ability cycle wraps at the configured distance.
+function raceSectionDistance(r, R) { return R.continuous ? mod(Math.max(0, r.s), R.D) : r.s; }
+function resetRaceSection(r, R) {
+  const section = Math.floor(Math.max(0, r.s) / R.D);
+  if (!R.continuous || section === (r.section || 0)) return;
+  r.section = section; r.st = r.stMax; r.used = false; r.g1 = false; r.pc = false;
+  r.fx = r.fx.filter(e => e.cheer);
+  r.dec = 0; r.tLane = r.lane; r.warp = 0;
+}
+function availableTracks(playType) {
+  return TRACKS.map((t, i) => ({t, i})).filter(({t}) => playType !== 'crash' || t.closed !== false);
+}
+function nextTrackIndex(index, playType) {
+  const courses = availableTracks(playType);
+  return courses[(courses.findIndex(c => c.i === index) + 1) % courses.length].i;
+}
 function makeRace(tr, conds, wx) {
   wx = wx || { w: 'sunny', g: 0 };
-  const R = { track: tr, wx, D: tr.def.D, t: 0, s0: tr.closed ? mod(tr.finishS - tr.def.D, tr.L) : tr.finishS - tr.def.D, runners: [], finished: 0, running: false, night: !!tr.def.night || tr.def.theme === 'neon', acc: 0, random: S.playType === 'crash' ? createCrashRaceRandom() : Math.random };
+  const R = { track: tr, wx, D: tr.def.D, t: 0, s0: tr.closed ? mod(tr.finishS - tr.def.D, tr.L) : tr.finishS - tr.def.D, runners: [], finished: 0, running: false, continuous: false, night: !!tr.def.night || tr.def.theme === 'neon', acc: 0, random: S.playType === 'crash' ? createCrashRaceRandom() : Math.random };
   HORSES.forEach((d, i) => {
     const stMax = 60 + d.st.sta * 9;
     R.runners.push({ def: d, i, s: 0, v: 0, stMax, st: stMax, lane: 1 + i * 1.95, tLane: 1 + i * 1.95, cond: 1 + conds[i] * 0.015, luck: 1 + (R.random() * 2 - 1) * 0.03,
@@ -1517,21 +1532,21 @@ function makeRace(tr, conds, wx) {
 }
 function trySkill(r, R, p, dt, full) {
   const note = (txt, good) => { if (full && R.onNote) R.onNote(r, txt, good); };
-  const sk = r.def.sk;
+  const sk = r.def.sk, distance = raceSectionDistance(r, R);
   if (sk === 'goldship' && !r.g1) { r.g1 = true; if (R.random() < 0.3) { r.fx.push({ mult: 0.5, t: 2.2 }); note('まさかの大出遅れ！', false); } }
-  if (sk === 'windup' && !r.g1 && r.s > 1) { r.g1 = true; r.fx.push({ mult: 1.1, t: 5, then: { mult: 0.965, t: 999, wind: true } }); }
+  if (sk === 'windup' && !r.g1 && distance > 1) { r.g1 = true; r.fx.push({ mult: 1.1, t: 5, then: { mult: 0.965, t: 999, wind: true } }); }
   if (r.used) return;
   const fire = (mult, t, extra) => { r.used = true; r.fx.push(Object.assign({ mult, t, skill: true }, extra || {})); if (full && R.onSkill) R.onSkill(r); };
   switch (r.def.sk) {
     case 'thoro': if (p > 0.75 && r.rank >= 3) fire(1.08, 5); break;
-    case 'pony': if (r.s > 2.5) fire(1.2, 4); break;
+    case 'pony': if (distance > 2.5) fire(1.2, 4); break;
     case 'shiro': if (p >= 0.75 && r.rank > 1) fire(1.1, 5); break;
     case 'unicorn': if (p >= 0.6) { r.st = Math.min(r.stMax, r.st + r.stMax * 0.3); fire(1.05, 6); } break;
     case 'banei': if (p >= 0.7) fire(1.08 + (R.track.def.surf === 'dirt' || R.track.def.surf === 'snow' ? 0.03 : 0), 7); break;
     case 'zebra': if (p > 0.35 && p < 0.85 && R.random() < 0.28 * dt) { r.warp = 1; r.s += 6; fire(1.04, 3); } break;
     case 'pegasus': { const oc = R.track.onCurve(R.s0 + r.s); if (r.pc && !oc && p > 0.45 && p < 0.92) fire(1.09, 4.2, { fly: true }); r.pc = oc; break; }
     case 'mech': if (p >= 0.5) fire(R.night ? 1.13 : 1.10, 4, { then: { mult: 0.97, t: 3 } }); break;
-    case 'redhare': if (r.s > 3) fire(1.1, 7); break;
+    case 'redhare': if (distance > 3) fire(1.1, 7); break;
     case 'wuzhui': if (p >= 0.75 && r.rank > 1) fire(1.1, 5); break;
     case 'buce': if (p >= 0.6) fire(1.09, 5); break;
     case 'marengo': if (p >= 0.6) { r.st = Math.min(r.stMax, r.st + r.stMax * 0.2); fire(1.05, 6); } break;
@@ -1539,13 +1554,13 @@ function trySkill(r, R, p, dt, full) {
     case 'rudolf': if (p >= 0.75) fire(1.07, 6); break;
     case 'brian': if (p >= 0.7 && r.rank > 1) fire(1.1, 5); break;
     case 'rice': if (p >= 0.75 && r.rank >= 2 && r.rank <= 4 && R.leadS - r.s < 10) fire(1.11, 5); break;
-    case 'bakushin': if (r.s > 3) fire(1.15, 4); break;
+    case 'bakushin': if (distance > 3) fire(1.15, 4); break;
     case 'kurofune': if (p >= 0.6) fire(R.track.def.surf === 'dirt' ? 1.1 : 1.06, 6); break;
     case 'equinox': if (p >= 0.7) fire(1.08, 7); break;
     case 'deep': if (p >= 0.78 && r.rank > 1) fire(1.12, 4.5, { fly: true, lift: 0.7 }); break;
     case 'orfe': if (p >= 0.7) { if (R.random() < 0.5) { fire(1.14, 5); note('覚醒した！金色の暴君が爆走！', true); } else { r.tLane = W - 0.9; r.dec = 1.8; fire(0.86, 1.8, { then: { mult: 1.14, t: 4.5, skill: true } }); note('外へ逸走！？…いや、猛然と追ってくる！', false); } } break;
     case 'oguri': if (p >= 0.8 && r.rank >= 2 && r.rank <= 4 && R.leadS - r.s < 10) fire(1.1, 5); break;
-    case 'suzuka': if (r.s > 3) fire(1.1, 7); break;
+    case 'suzuka': if (distance > 3) fire(1.1, 7); break;
     case 'goldship': if (p >= 0.5) fire(1.07, 12); break;
     case 'matsuri': if (p >= 0.7 && r.rank === 1) { r.st = Math.min(r.stMax, r.st + r.stMax * 0.25); fire(1.06, 5); } break;
     case 'urara': if (p >= 0.75) { if (R.random() < 0.2) { fire(1.38, 6, { jackpot: true }); note('奇跡の一勝へ！みんなの声援が届いた！', true); } else r.used = true; } break;
@@ -1588,7 +1603,7 @@ function stepRace(R, dt, full) {
     let tgt;
     if (r.fin) tgt = Math.max(7, r.v - 5);
     else {
-      const p = r.s / R.D;
+      const p = raceSectionDistance(r, R) / R.D;
       trySkill(r, R, p, dt, full);
       let f;
       switch (d.style) {
@@ -1683,7 +1698,8 @@ function stepRace(R, dt, full) {
       if (safePath(nextLane)) r.lane = nextLane;
     }
     r.s += r.v * dt;
-    if (!r.fin && r.s >= R.D) { r.fin = true; r.place = ++R.finished; r.finT = R.t - (r.s - R.D) / Math.max(1, r.v); if (full && R.onFinish) R.onFinish(r); }
+    resetRaceSection(r, R);
+    if (!R.continuous && !r.fin && r.s >= R.D) { r.fin = true; r.place = ++R.finished; r.finT = R.t - (r.s - R.D) / Math.max(1, r.v); if (full && R.onFinish) R.onFinish(r); }
   }
 }
 function calcOdds(tr, conds, wx) {
@@ -2874,8 +2890,8 @@ function drawBoard() {
       g.textAlign = 'left'; g.fillStyle = S.myBet && r.i === S.myBet.h ? '#ffcf3f' : '#fff'; g.font = '26px "Dela Gothic One", sans-serif'; g.fillText(r.def.name, 134, y + 23);
     });
     const lead = ord[0]; const rem = Math.max(0, Math.ceil(R.D - lead.s));
-    g.textAlign = 'center'; g.fillStyle = '#cbbfe6'; g.font = '30px "Dela Gothic One", sans-serif'; g.fillText(lead.fin ? 'GOAL' : '残り', 842, 150);
-    g.fillStyle = '#ffffff'; g.font = '800 120px "Oxanium", sans-serif'; g.fillText(lead.fin ? '★' : String(rem), 842, 250);
+    g.textAlign = 'center'; g.fillStyle = '#cbbfe6'; g.font = '30px "Dela Gothic One", sans-serif'; g.fillText(R.continuous ? '走行距離' : lead.fin ? 'GOAL' : '残り', 842, 150);
+    g.fillStyle = '#ffffff'; g.font = '800 120px "Oxanium", sans-serif'; g.fillText(R.continuous ? String(Math.floor(Math.max(0, lead.s))) : lead.fin ? '★' : String(rem), 842, 250);
     g.fillStyle = '#cbbfe6'; g.font = '800 34px "Oxanium", sans-serif'; g.fillText(fmtTime(R.t), 842, 360);
   } else if (mode === 'result') {
     g.fillText('RESULT', Wd - 22, 35);
@@ -3119,9 +3135,9 @@ $('#lobbyTabs').addEventListener('keydown', e => {
 $('#raceTrack').addEventListener('click', () => { AU.init(); AU.pop(); setLobbyTab('tracks'); });
 $('#tgroups').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; trackGroup = b.dataset.g; store.set('trackGroup', trackGroup); AU.init(); AU.pop(); renderTracks(); $('#rail').scrollTop = 0; });
 function renderTracks() {
-  const courses = TRACKS.map((t, i) => ({t, i}));
+  const courses = availableTracks(S.playType);
   if (trackGroup !== 'all' && !TRACK_GROUPS.some(([g]) => g === trackGroup)) trackGroup = trackGroupOf(TRACKS[S.ti]);
-  $('#tgroups').innerHTML = [['all', 'すべて'], ...TRACK_GROUPS].map(([g, label]) => `<button data-g="${g}" aria-pressed="${g === trackGroup}">${label}<small>${g === 'all' ? TRACKS.length : courses.filter(({t}) => trackGroupOf(t) === g).length}</small></button>`).join('');
+  $('#tgroups').innerHTML = [['all', 'すべて'], ...TRACK_GROUPS].map(([g, label]) => `<button data-g="${g}" aria-pressed="${g === trackGroup}">${label}<small>${g === 'all' ? courses.length : courses.filter(({t}) => trackGroupOf(t) === g).length}</small></button>`).join('');
   const tcard = (t, i) => `<button class="tcard ${i === S.ti ? 'on' : ''}" data-i="${i}" aria-pressed="${i === S.ti}" style="--g:${t.grad}"><span class="tsw">${coursePreview(t)}${t.real ? '<i class="meiba">名コース</i>' : ''}</span><span class="tname">${t.name}</span><span class="tmeta"><b>${SURF[t.surf]}</b>${t.D}m・${t.time}</span></button>`;
   $('#tracks').innerHTML = TRACK_GROUPS.filter(([g]) => trackGroup === 'all' || trackGroup === g).map(([g, , label, sort]) =>
     `<span class="tgrp">${label}</span>` + courses.filter(({t}) => trackGroupOf(t) === g).sort(sort).map(({t, i}) => tcard(t, i)).join('')).join('');
@@ -3133,7 +3149,7 @@ function renderLobby() {
   $('#recoveryNote').textContent = '前回の未確定クラッシュは終了しました。賭けたコインの払戻はありません。';
   renderJourney();
   renderTracks();
-  $('#trackCount').textContent = `${TRACKS.length}`;
+  $('#trackCount').textContent = `${availableTracks(S.playType).length}`;
   { const t = TRACKS[S.ti];
     $('#raceTrack').style.setProperty('--g', t.grad);
     $('#raceTrack').innerHTML = `<span class="tsw">${coursePreview(t)}</span><span class="rtx"><small>今日のレース${t.real ? '<i class="meiba">名コース</i>' : ''}</small><b>${t.name}</b><span class="tmeta"><b>${SURF[t.surf]}</b>${t.D}m・${t.time}</span></span><span class="chg">変更</span>`; }
@@ -3363,6 +3379,9 @@ function enterLobby(rebuild) {
   VO.stop();
   clearCrashPressure();
   S.crash = null;
+  if (S.playType === 'crash' && TRACKS[S.ti].closed === false) {
+    S.ti = 0; store.set('track', S.ti); rebuild = true;
+  }
   if (rebuild || !world) buildWorld(S.ti);
   setField();
   S.conds = HORSES.map(() => [-1, 0, 0, 1, 1, 2][(Math.random() * 6) | 0]);
@@ -3386,6 +3405,7 @@ function enterLobby(rebuild) {
 function startRace() {
   if (S.mode !== 'lobby') return;
   if (S.playType === 'crash' && $('#autoEnabled').checked && !validCrashAuto($('#autoMultiplier').value)) return;
+  R.continuous = S.playType === 'crash';
   raceCheers = 0;
   $('#guideNote').hidden = !guiding;
   $('#guideNote').textContent = '応援が100%になったら、右下の応援ボタンを押そう！';
@@ -3414,6 +3434,7 @@ function buildHud() {
   if (S.crash) renderCrashHud();
   $('#myName').textContent = `${S.myBet.h + 1}番 ${HORSES[S.myBet.h].name}`;
   $('#myRank').textContent = '—';
+  $('#remain').previousElementSibling.textContent = R.continuous ? '走行距離' : '残り';
   $('#rname').textContent = `${track.def.name}　${SURF[track.def.surf]}${track.def.D}m・${WX[S.wx.w]}・${GOING[S.wx.g]}`;
   $('#stand').innerHTML = R.runners.map(r => `<div class="srow ${r.i === S.myBet.h ? 'me' : ''}" id="sr${r.i}"><span class="spos">${r.i + 1}</span><span class="num" style="background:${WAKU[r.i][0]};color:${WAKU[r.i][1]}">${r.i + 1}</span><span class="sname">${r.i === S.myBet.h ? '<small>あなたの馬</small>' : ''}${r.def.name}</span><span class="sgap"></span></div>`).join('');
   $('#pbar').innerHTML = R.runners.map(r => `<i id="pd${r.i}" class="${r.i === S.myBet.h ? 'me' : ''}" style="background:${WAKU[r.i][0]};left:0%"></i>`).join('') + '<b class="flag"></b>';
@@ -3557,12 +3578,12 @@ function settleCrash(reason, multiplier) {
   $('#hot').classList.remove('on'); $('#guideNote').hidden = true; VO.stop();
   const ordered = R.runners.slice().sort((a, d) => d.s - a.s || a.i - d.i);
   const rank = ordered.findIndex(r => r.i === b.h) + 1;
-  const labels = { crash: 'クラッシュ — 疾走終了', manual: 'キャッシュアウト成功！', auto: '設定倍率で自動確定！', goal: '先頭ゴールで自動確定！', limit: '100.00x到達で自動確定！' };
+  const labels = { crash: 'クラッシュ — 疾走終了', manual: 'キャッシュアウト成功！', auto: '設定倍率で自動確定！', limit: '100.00x到達で自動確定！' };
   const net = pay - b.amt;
   setMode('result');
   $('#result').innerHTML = `<div class="panel"><div id="resTitle" class="${lost ? '' : 'win'}">${labels[reason]}</div><div class="resultHero"><strong>${lost ? '終了' : confirmed.toFixed(2) + 'x'}</strong><div><small>終了時点 ${rank}位</small><b>${b.h + 1}番 ${HORSES[b.h].name}</b></div></div><p id="resSub">${track.def.name} ／ ${lost ? `終了倍率 ${Math.max(1, multiplier).toFixed(2)}x` : `確定倍率 ${confirmed.toFixed(2)}x`}</p><div id="payout" class="${lost ? 'miss' : ''}"><div class="l"><b>ベット ${fmt(b.amt)} コイン</b><br>払戻（賭け分を含む）<br>差引収支 ${net > 0 ? '+' : ''}${fmt(net)} コイン</div><div class="r">${fmt(pay)}</div></div><p id="rewardNote">理論RTP 96.5%。整数丸めにより実際の期待払戻はわずかに下がります。無料補充は対象外。競馬の連勝・実績は更新されません。</p><div class="rbtns"><button id="again" class="pri">次のクラッシュへ</button><button id="other">次のコースへ</button></div></div>`;
   $('#again').onclick = () => { AU.pop(); enterLobby(false); };
-  $('#other').onclick = () => { AU.pop(); S.ti = (S.ti + 1) % TRACKS.length; store.set('track', S.ti); enterLobby(true); };
+  $('#other').onclick = () => { AU.pop(); S.ti = nextTrackIndex(S.ti, S.playType); store.set('track', S.ti); enterLobby(true); };
   if (lost) { big('疾走終了', 'sad', 1300); AU.sad(); }
   else { big('確定！', '', 1300); AU.jackpot(); confetti(120); coinShower(60); }
 }
@@ -3583,7 +3604,7 @@ function useCheer() {
   if (S.mode !== 'race' || S.cheer < 100) return;
   const r = R.runners[S.myBet.h]; if (r.fin) return;
   raceCheers++;
-  if (guiding) $('#guideNote').textContent = '応援成功！ゴールまで見届けよう。';
+  if (guiding) $('#guideNote').textContent = S.playType === 'crash' ? '応援成功！クラッシュ前に確定しよう。' : '応援成功！ゴールまで見届けよう。';
   S.cheer = 0; r.fx.push({ mult: 1.06, t: 3, cheer: true });
   AU.pop(); AU.whoosh(); FX.lines = 1; FX.ab = 0.6; horses[r.i].glow = 1; crowd.userData.exc = 1;
   const q = track.pos(R.s0 + r.s, r.lane); ringBurst(new V3(q.x, q.y + 1, q.z), '#ffcf3f');
@@ -3734,7 +3755,7 @@ function updHorses(dt, rdt) {
 function updCrowd(t, rdt) {
   if (!crowd) return;
   const u = crowd.userData, m4 = new THREE.Matrix4();
-  const target = S.mode === 'race' ? 0.35 + 0.9 * clamp((R.order[0].s / R.D - 0.6) / 0.4, 0, 1) : S.mode === 'lobby' ? 0.15 : 0.5;
+  const target = S.mode === 'race' ? 0.35 + 0.9 * clamp((raceSectionDistance(R.order[0], R) / R.D - 0.6) / 0.4, 0, 1) : S.mode === 'lobby' ? 0.15 : 0.5;
   u.exc = damp(u.exc, target, 0.7, rdt);
   for (let i = 0; i < u.base.length; i++) { const b = u.base[i]; const j = Math.max(0, Math.sin(t * b[4] + b[3])) * 0.35 * u.exc; m4.makeTranslation(b[0], b[1] + j, b[2]); crowd.setMatrixAt(i, m4); }
   crowd.instanceMatrix.needsUpdate = true;
@@ -3775,8 +3796,7 @@ function updRaceFrame(dt, rdt) {
         const positions = R.runners.map(r => r.s), before = R.t;
         const rank = R.runners.slice().sort((a, b) => b.s - a.s || a.i - b.i).findIndex(r => r.i === S.myBet.h) + 1;
         stepRace(R, h, true);
-        const goalTime = Math.min(...R.runners.filter(r => r.fin).map(r => Math.max(0, r.finT - before)));
-        const event = advanceCrash(S.crash, rank, h, goalTime);
+        const event = advanceCrash(S.crash, rank, h);
         S.crash.multiplier = event.multiplier;
         if (event.reason) {
           R.runners.forEach((r, i) => { r.s = lerp(positions[i], r.s, clamp(event.elapsed / h, 0, 1)); });
@@ -3796,14 +3816,14 @@ function updRaceFrame(dt, rdt) {
       me.pr = me.rank;
       commentary();
       const lead = R.order[0], second = R.order[1];
-      if (!S.photoDone && !lead.fin && R.D - lead.s < 16 && (lead.s - second.s) < 3.2) { S.photoDone = true; S.photo = true; timeTarget = 0.28; slowUntil = realClock + 99; }
+      if (!R.continuous && !S.photoDone && !lead.fin && R.D - lead.s < 16 && (lead.s - second.s) < 3.2) { S.photoDone = true; S.photo = true; timeTarget = 0.28; slowUntil = realClock + 99; }
       if (S.photoDone && !S.photoEnd && lead.fin && realClock - (R.firstFinT || realClock) > 0.9) { S.photoEnd = true; S.photo = false; timeTarget = 1; slowUntil = 0; }
-      const hotNow = !me.fin && me.s / R.D > 0.8 && me.rank <= 3 && (R.order[0].s - me.s) < 3.6;
+      const hotNow = !R.continuous && !me.fin && me.s / R.D > 0.8 && me.rank <= 3 && (R.order[0].s - me.s) < 3.6;
       const hel = $('#hot');
       if (hotNow && !flags.hot) { flags.hot = true; hel.classList.add('on'); AU.heart(); FX.shake = Math.max(FX.shake, 0.2); }
       if (!hotNow && flags.hot) { flags.hot = false; hel.classList.remove('on'); }
       if (hotNow && Math.random() < rdt * 1.4) AU.heart();
-      if (R.finished >= 8 || (R.firstFinT && realClock - R.firstFinT > 14)) { setMode('finish'); S.finT = realClock; hel.classList.remove('on'); }
+      if (!R.continuous && (R.finished >= 8 || (R.firstFinT && realClock - R.firstFinT > 14))) { setMode('finish'); S.finT = realClock; hel.classList.remove('on'); }
     }
     if (S.mode === 'finish' && realClock - S.finT > 1.6) { timeTarget = 1; showResult(); }
   }
@@ -3870,7 +3890,7 @@ const RC = {
     if (tr.def.theme === 'monaco' && race.t >= 8 && !this.milestones.has('monaco')) {
       this.milestones.add('monaco'); this.emit('monaco', data); return;
     }
-    for (const distance of [100, 200, 400]) {
+    for (const distance of race.continuous ? [] : [100, 200, 400]) {
       if (race.D > distance && remaining <= distance && !this.milestones.has(distance)) {
         [400, 200, 100].filter(n => n >= distance).forEach(n => this.milestones.add(n));
         if (remaining < distance - 70) continue;
@@ -3880,21 +3900,21 @@ const RC = {
       }
     }
     const straightLength = tr.finishS - tr.homeS0;
-    if (!this.milestones.has('straight') && remaining < straightLength && progress > 0.5) {
+    if (!race.continuous && !this.milestones.has('straight') && remaining < straightLength && progress > 0.5) {
       this.milestones.add('straight');
       if (remaining > 100) { this.emit('straight' + band, data, true); crowd.userData.exc = 1.3; return; }
     }
     if (!this.milestones.has('hana') && race.t > 3) {
       this.milestones.add('hana'); this.lastLead = lead.i; this.emit('hana', data); return;
     }
-    if (!this.milestones.has('half') && progress >= 0.5) {
+    if (!race.continuous && !this.milestones.has('half') && progress >= 0.5) {
       this.milestones.add('half');
       if (progress < 0.65 && remaining > 200) { this.emit('half', data); return; }
     }
     if (race.t - Math.max(this.lastT, tickT) < 5) return;
     const mover = history && order.find((r, i) => history[r.i] && history[r.i].rank - (i + 1) >= 2 && i > 0);
-    if (remaining < 300 && lead.s - third.s < 1.8) this.emit('three', data);
-    else if (remaining < 400 && gap < 1.2) this.emit('duel', data);
+    if ((race.continuous || remaining < 300) && lead.s - third.s < 1.8) this.emit('three', data);
+    else if ((race.continuous || remaining < 400) && gap < 1.2) this.emit('duel', data);
     else if (gap > 1.2 && gap < 12 && second.v - lead.v > 0.7) this.emit('closing', data);
     else if (mover) {
       const rank = order.indexOf(mover) + 1;
@@ -3919,11 +3939,11 @@ function updHud(rdt) {
     el.style.transform = `translateY(${k * rh}px)`;
     el.children[0].textContent = k + 1;
     el.children[3].textContent = r.fin ? `${r.place}着` : k === 0 ? '先頭' : gapTxt((lead.s - r.s) / 2.4);
-    const d = document.getElementById('pd' + r.i); if (d) d.style.left = clamp(r.s / R.D * 100, 0, 100) + '%';
+    const d = document.getElementById('pd' + r.i); if (d) d.style.left = clamp(raceSectionDistance(r, R) / R.D * 100, 0, 100) + '%';
   });
   const mine = R.runners[S.myBet.h];
   $('#myRank').textContent = `${mine.fin ? mine.place : ord.indexOf(mine) + 1}位`;
-  $('#remain').textContent = Math.max(0, Math.ceil(R.D - (lead.fin ? R.D : lead.s)));
+  $('#remain').textContent = R.continuous ? Math.floor(Math.max(0, lead.s)) : Math.max(0, Math.ceil(R.D - (lead.fin ? R.D : lead.s)));
   $('#rtime').textContent = fmtTime(R.running ? R.t : 0);
   const ch = $('#cheer'); ch.style.setProperty('--p', S.cheer.toFixed(0)); ch.classList.toggle('ready', S.cheer >= 100 && S.mode === 'race' && !mine.fin);
   ch.disabled = S.cheer < 100 || S.mode !== 'race' || mine.fin;
