@@ -1132,15 +1132,35 @@ const TRACKS = [
     desc: '大きな外回りを下り、桜色の直線で追い比べ。ゴール前の強調された坂をもうひと踏ん張り！',
     grad: 'linear-gradient(135deg,#458bdf,#ffcee5 55%,#78ba72)' },
   { name: '中京スパイラルカップ', kick: 0.95, real: true, theme: 'chukyo', surf: 'turf', dir: 'left', D: 1000, time: '左回り', scale: 0.5, elevEx: 4,
-    segs: [{ len: 460 }, { curve: [[635, 0], [650, 280], [470, 295]] }, { curve: [[300, 309], [140, 323], [-30, 337]] }, { curve: [[-310, 360], [-170, 0], [0, 0]] }], finish: [0, 412.5],
-    elev: [[0, 0, 0], [0, 0.04, 0], [0, 0.26, 2], [0, 1, 2.2], [1, 1, 3], [2, 0.45, 3.5], [2, 1, 2.8], [3, 0.5, 1.2], [3, 1, 0]],
-    motif: '中京競馬場　芝2000m', motifNote: '左回り。傾いた向こう正面から、曲がり具合が変わる3・4コーナーを下って直線へ。直線412.5mの入口側に急坂があります。',
+    // 芝1周1705.9m（Aコース）の中心線を地図のコースの位置から近似：4コーナー出口から直線412.5m＋ゴール後約26mで1コーナー、
+    // 丸い1〜2コーナー、直線より約5度内へ傾いた向正面384m、入口が緩く（半径約140m）出口ほどきつくなる（同約55m）スパイラルカーブの3〜4コーナー。
+    // 2000mの発走は直線の坂の途中（ゴールの約294m手前）
+    segs: [{ len: 438 }, { curve: [[525, 0], [593, 37.4], [593, 128]] }, { curve: [[593, 213.5], [509, 251.8], [474, 255]] }, { len: 384.1 },
+      { curve: [[-23, 301.3], [-102.5, 236.4], [-102.5, 128]] }, { curve: [[-102.5, 93], [-92.5, 71.8], [-70, 45]] }, { curve: [[-47.5, 18.2], [-35, 0], [0, 0]] }], finish: [0, 412.5],
+    // スタンドは直線のゴール寄りから1コーナーの向かいまで（ペガサス・ツインハット）。standAt：スタンド中央の周回距離、standLen：長さ（どちらも実寸m）
+    standAt: 438, standLen: 300,
+    // 中心線に沿った実際の標高（国土地理院、高低差は公式の3.5mに合わせる）：ゴールから1〜2コーナーはほぼ平坦で、向正面をゆるやかに上り、
+    // 3コーナー手前の最高地点から4コーナー出口の最低地点まで下り続ける。直線の入口側（残り340〜240m付近）に高低差2.0m・勾配2.0%の急坂
+    elev: [[0, 0, 0], [0, 0.166, 0], [0, 0.394, 2.0], [0, 0.942, 2.2], [1, 0.39, 2.15], [2, 0.5, 2.3], [3, 0.163, 2.6], [3, 0.427, 2.75], [3, 0.65, 3.2], [3, 0.839, 3.5], [3, 0.95, 3.4],
+      [4, 0.086, 2.75], [4, 0.242, 1.95], [4, 0.385, 1.5], [4, 0.538, 1.1], [4, 0.688, 0.8], [4, 0.789, 0.55], [4, 0.939, 0.3], [5, 0.29, 0.1], [6, 0.5, 0]],
+    motif: '中京競馬場　芝2000m', motifNote: '左回りで芝1周1705.9m。ゴールから1〜2コーナーを回り、内へ少し傾いた向正面をゆるやかに上って、3コーナー手前から4コーナーの出口まで下り続ける。3〜4コーナーは入口が緩く出口ほどきつくなるスパイラルカーブ。直線412.5mの入口側に高低差2.0mの急坂（勾配2.0%、全体の高低差3.5m）。2000mは直線の坂の途中から発走し、ゴール前でもう一度坂を上る。内側にダートコース（1周1530m）、4コーナー奥と2コーナー奥の発走ポケット。スタンドは4階建てのペガサスと6階建てのツインハット、スタンドの裏に名鉄のパノラマカー。',
     desc: '下りの勢いでスパイラルカーブへ。直線に入ってすぐの強調された坂を越え、最後は長い追い比べ。',
     grad: 'linear-gradient(135deg,#368cbe,#d6ecae 55%,#74a854)' },
   { name: '札幌洋芝ラウンド', kick: 0.65, real: true, theme: 'sapporo', surf: 'turf', dir: 'right', D: 1000, time: '右回り', scale: 0.5, elevEx: 2.5,
-    segs: [{ len: 310 }, { curve: [[535, 0], [535, 325], [310, 325]] }, { len: 310 }, { curve: [[-225, 325], [-225, 0], [0, 0]] }], finish: [0, 266.1],
-    elev: [[0, 0, 0], [1, 0.5, 0.3], [2, 0.5, 0.7], [3, 0.5, 0.3], [3, 1, 0]],
-    motif: '札幌競馬場　芝2000m（札幌記念）', motifNote: '右回りの丸みのあるコース。短い直線266.1mと大きなカーブ、ほぼ平坦な洋芝が特徴です。',
+    // 芝1周1640.9m（Aコース）の中心線を地図の内柵の位置から近似：スタンド前を北へ向かう直線266.1m（ゴールの約2m先から1コーナー）、
+    // 少しずつ半径の違う大きな1〜2コーナー、直線と平行な向正面270m、3〜4コーナー。4つのコーナーで丸みのある楕円形になる。
+    // 2000mの発走は4コーナー奥のポケット（4コーナー出口の約93m手前）で、ゴール前を2度通る
+    segs: [{ len: 268 }, { curve: [[329, 0], [384.8, 34.2], [414.2, 87.4]] }, { curve: [[442.2, 138], [442.9, 209.3], [410.6, 258]] }, { curve: [[373.7, 313.8], [324.4, 336.7], [258.6, 336.7]] }, { len: 270 },
+      { curve: [[-79.9, 336.7], [-133.7, 313.4], [-169.5, 252.8]] }, { curve: [[-201.2, 199.3], [-199.5, 124.7], [-163.8, 73.5]] }, { curve: [[-121.4, 12.6], [-69.3, 0], [0, 0]] }], finish: [0, 266.1],
+    // スタンドは4コーナー寄りのもいわテラスの棟から、ゴール前の5階建ての本館まで。standAt：スタンド中央の周回距離、standLen：長さ（どちらも実寸m）
+    standAt: 140, standLen: 280,
+    // ターフビジョン：馬場内のゴール手前（空中写真の影から推定）。boardAt：周回距離（実寸m）
+    boardAt: 100, boardLane: -26,
+    // 中心線に沿った実際の標高（国土地理院、高低差は公式の0.7m）：直線はゴールへ向けてわずかに上り、1〜2コーナーが最も低い。
+    // 向正面の後半から上って3コーナーが最も高く、4コーナーをゆるやかに下る
+    elev: [[0, 0, 0.1], [0, 0.6, 0.3], [0, 0.9, 0.35], [1, 0.4, 0.2], [1, 0.9, 0.05], [2, 0.5, 0], [3, 0.5, 0.05], [4, 0.3, 0.1], [4, 0.65, 0.25], [4, 0.9, 0.5],
+      [5, 0.15, 0.7], [5, 0.6, 0.65], [6, 0.2, 0.55], [6, 0.6, 0.45], [7, 0.1, 0.45], [7, 0.5, 0.25], [7, 0.85, 0.15]],
+    motif: '札幌競馬場　芝2000m（札幌記念）', motifNote: '右回りで芝1周1640.9m。4つのコーナーが少しずつ違う半径で回る、丸みのある大きな楕円形で、直線は266.1mと短い。高低差0.7mのほぼ平坦な洋芝で、向正面の後半から3コーナーが最も高く、1〜2コーナーが最も低い。2000mは4コーナー奥のポケットから発走し、ゴール前を2度通る。内側にダートコース（1周1487m）と2コーナーからの引き込み線、1コーナー奥・2コーナー奥・4コーナー奥の発走ポケット。スタンドは2014年に建て替えた5階建てで、2階の屋上に長さ120mの「もいわテラス」。馬場内のターフパークにはセイテンスタンドやじゃぶじゃぶ池。',
     desc: '北海道の緑に囲まれた丸いコース。短い直線に備え、大きなカーブで早めに仕掛けよう。',
     grad: 'linear-gradient(135deg,#54a6dd,#d5f2d2 55%,#4c9b62)' },
   { name: 'メイダン・ゴールデンダート', kick: 0.9, real: true, theme: 'meydan', surf: 'dirt', dir: 'left', D: 1000, time: '左回り・夜', night: true, scale: 0.5, stand: 'meydan',
@@ -3030,7 +3050,9 @@ function buildWorld(ti) {
   // Railway platforms replace the common grandstand on the city loop.
   // 箱根の下りもスタンドを置かず、沿道の観客（decorHakone）で盛り上げる
   if (!RAIL_LINES[def.theme] && def.theme !== 'hakone') {
-    const len = Math.min(track.S - 20, def.stand === 'meydan' ? 420 : 250), sc0 = clamp(track.finishS - len * 0.35, track.homeS0 + len / 2 + 6, track.homeS1 - len / 2 - 6);
+    // standAt・standLen（実寸m）があれば、地図のスタンドの位置と長さに合わせる
+    const k0 = def.scale || 1, len = def.standLen ? def.standLen * k0 : Math.min(track.S - 20, def.stand === 'meydan' ? 420 : 250);
+    const sc0 = def.standAt != null ? def.standAt * k0 : clamp(track.finishS - len * 0.35, track.homeS0 + len / 2 + 6, track.homeS1 - len / 2 - 6);
     const x0 = -len / 2, z0 = W / 2 + (def.stand === 'meydan' ? 42 : 18);
     let ymin = 1e9; for (let s2 = sc0 - len / 2; s2 <= sc0 + len / 2; s2 += 4) ymin = Math.min(ymin, track.pos(s2, W / 2).y);
     const sf = tp(sc0, W / 2); const stand = new THREE.Group(); stand.position.set(sf.v.x, ymin - 0.3, sf.v.z); stand.rotation.y = -sf.h; stand.scale.z = track.sgn; world.add(stand);
@@ -3087,8 +3109,9 @@ function buildWorld(ti) {
 
   // jumbotron in the infield facing the stands
   {
-    // boardLane があればそのレーンへ（峠道は内側が狭いので外側の山側に立てる）
-    const bf = tp(clamp(track.finishS - 70, track.homeS0 + 20, track.homeS1 - 20), def.boardLane ?? -Math.min(30, track.R * 0.55));
+    // boardLane があればそのレーンへ（峠道は内側が狭いので外側の山側に立てる）。boardAt（実寸m）があれば地図の位置に合わせる
+    const bs = def.boardAt != null ? def.boardAt * (def.scale || 1) : clamp(track.finishS - 70, track.homeS0 + 20, track.homeS1 - 20);
+    const bf = tp(bs, def.boardLane ?? -Math.min(30, track.R * 0.55));
     boardPos.set(bf.v.x, track.groundH(bf.v.x, bf.v.z), bf.v.z);
     const g = new THREE.Group(); g.position.copy(boardPos); g.rotation.y = -bf.h + (track.sgn < 0 ? Math.PI : 0) + (def.boardLane > W / 2 ? Math.PI : 0); world.add(g);
     if (def.stand === 'big') g.scale.setScalar(1.35);
@@ -5976,8 +5999,62 @@ function decorLandmarkStand(stand, len, z0, roof, sc0) {
     }
   } else if (theme === 'chukyo') {
     roof.visible = false;
-    for (const x of [-len * 0.25, len * 0.25]) box([len * 0.53, 1.2, 25], [x, 17, z0 + 9], cream, [0, 0, x < 0 ? 0.1 : -0.1]);
-    box([len - 4, 5, 0.4], [0, 12, z0 + 18], glass);
+    // 地図の実寸（x：4コーナー出口から直線の向き、z：コースの内側が正）をスタンドの座標へ。奥行きはコースの中心線からの外向きの距離
+    const k = track.def.scale, lx = x => x * k - sc0, lz = z => -z * k, white = toon('#f4f3ee'), steel = toon('#9aa3a8'), seat = toon('#4f7fb5');
+    // ペガサス（2012年）：ゴール前の4階建て。2階から上も屋外の観覧席が段々に重なり、翼を広げたような白い大屋根をのせる
+    const pa = lx(365), pb = lx(486), pw = pb - pa, pc = (pa + pb) / 2;
+    box([pw, 9, 8], [pc, 3.5, 48], white); box([pw, 10, 4], [pc, -5.5, 34], white);
+    for (let i = 0; i < 3; i++) {
+      const y = 9 + i * 4.4, zf = 33 + i * 2.4;
+      box([pw + 2, 0.7, 50 - zf], [pc, y, (zf + 50) / 2], white);
+      for (let j = 0; j < 3; j++) box([pw - 3, 0.5 + j * 0.5, 1.7], [pc, y + 0.5 + j * 0.25, zf + 1.6 + j * 1.7], seat);
+      box([pw - 1, 1, 0.2], [pc, y + 0.9, zf + 0.2], glass);
+      box([pw - 4, 3.6, 0.4], [pc, y + 2.2, zf + 7.4], glass);
+    }
+    // 翼の大屋根：中央からゴール側と1コーナー側へ、端ほど高く反り上がる2枚の屋根
+    for (const s of [-1, 1]) box([pw / 2 + 4, 0.9, 26], [pc + s * (pw / 4 + 1), 25.5, 42], white, [-0.06, 0, -s * 0.09]);
+    for (let x = pa + 4; x <= pb - 4; x += (pw - 8) / 5) box([0.9, 26, 0.9], [x, 12, 50.5], steel);
+    // スタンドの裏で楕円のパドックを馬蹄形に囲む棟（1コーナー側だけ開いている）。内側は段々の観覧席
+    { const pg = new THREE.Group(); pg.position.set(lx(419), 0, lz(-127)); pg.rotation.y = 0.47; g.add(pg); registerLandmark(pg, 'パドック');
+      part(pg, new THREE.CircleGeometry(1, 48), toon('#6fbf5c'), [0, 0.12, 0], [12.5, 6.5, 1], [-Math.PI / 2, 0, 0], 0);
+      part(pg, new THREE.RingGeometry(0.82, 1, 48), toon('#d9c7a0'), [0, 0.14, 0], [15, 8.5, 1], [-Math.PI / 2, 0, 0], 0);
+      addBox(pg, [36, 0.3, 22], [0, -0.05, 0], toon('#cfc8b8'), null, 0); addBox(pg, [50, 10, 38], [0, -5.2, 0], white, null, 0);
+      const steps = [], walls = [], bands = [];
+      for (let j = 0; j < 4; j++) {
+        const rx = 16 + j * 1.7, rz = 10 + j * 1.7, h = 1 + j * 1.1, n = 36;
+        for (let i = 0; i < n; i++) {
+          const a0 = 0.45 + (i / n) * (Math.PI * 2 - 0.9), a1 = 0.45 + ((i + 1) / n) * (Math.PI * 2 - 0.9);
+          const p0 = [Math.cos(a0) * rx, Math.sin(a0) * rz], p1 = [Math.cos(a1) * rx, Math.sin(a1) * rz], dx = p1[0] - p0[0], dz = p1[1] - p0[1];
+          steps.push({ p: new V3((p0[0] + p1[0]) / 2, h / 2, (p0[1] + p1[1]) / 2), s: new V3(Math.hypot(dx, dz) + 0.3, h, 1.8), r: [0, -Math.atan2(dz, dx), 0] });
+          if (j === 3) { const q0 = [p0[0] * 1.12, p0[1] * 1.16], q1 = [p1[0] * 1.12, p1[1] * 1.16], m = [(q0[0] + q1[0]) / 2, (q0[1] + q1[1]) / 2], L = Math.hypot(q1[0] - q0[0], q1[1] - q0[1]) + 0.3, ry = -Math.atan2(q1[1] - q0[1], q1[0] - q0[0]);
+            walls.push({ p: new V3(m[0], 5, m[1]), s: new V3(L, 14, 2), r: [0, ry, 0] });
+            // 外壁の窓の帯（2階・3階）
+            for (const y of [6.5, 10]) bands.push({ p: new V3(m[0], y, m[1]), s: new V3(L, 1.8, 2.3), r: [0, ry, 0] }); }
+        }
+      }
+      pg.add(inst(BOX, seat, steps, false), inst(BOX, white, walls, false), inst(BOX, glass, bands, false));
+      // 周回する出走馬：ゆっくりと楕円を歩く
+      const walkers = [];
+      for (let i = 0; i < 5; i++) { const h = landmarkHorse(pg, [0, 0.15, 0], 'walk', ['#6b4a35', '#3b2a20', '#8a5a3a'][i % 3], 0.45); h.children[0].visible = false; walkers.push(h); }
+      themeUpd.push(t => walkers.forEach((h, i) => { const a = t * 0.08 + i * Math.PI * 2 / 5, x = Math.cos(a) * 13.6, z = Math.sin(a) * 7.6; h.position.set(x, 0.15, z); h.rotation.y = -Math.atan2(Math.cos(a) * 7.6, -Math.sin(a) * 13.6); })); }
+    // ツインハット：1コーナー寄りの6階建ての屋内スタンド。2本の円筒の塔の上に、つばの広い帽子のような屋根がのる
+    const ta = lx(487), tb = lx(567), tw = tb - ta, tc = (ta + tb) / 2;
+    box([tw, 9, 12], [tc, 3.5, 50], white); box([tw, 10, 4], [tc, -5.5, 44], white);
+    for (let i = 0; i < 5; i++) {
+      const y = 9 + i * 3.7;
+      box([tw - 3, 3, 13], [tc, y + 1.8, 47 - i * 0.5], glass);
+      box([tw + 1, 0.6, 15], [tc, y + 3.5, 47 - i * 0.5], white);
+    }
+    box([tw + 2, 1.2, 18], [tc, 28.5, 48], white);
+    const hat = toon('#3f6f86'), band = toon('#f4f3ee');
+    for (const [x, z, r] of [[578, -98, 6.4], [503, -123, 6.8]]) {
+      part(g, new THREE.CylinderGeometry(r, r, 38, 24), white, [lx(x), 13, lz(z)], null, null, 0);
+      for (let y = 10; y <= 28; y += 3.7) part(g, new THREE.CylinderGeometry(r + 0.15, r + 0.15, 1.6, 24), glass, [lx(x), y, lz(z)], null, null, 0);
+      part(g, new THREE.CylinderGeometry(r * 1.75, r * 1.8, 0.9, 32), hat, [lx(x), 32.4, lz(z)], null, null, 0);
+      part(g, new THREE.CylinderGeometry(r * 0.85, r * 0.95, 4, 24), hat, [lx(x), 34.8, lz(z)], null, null, 0);
+      part(g, new THREE.CylinderGeometry(r * 0.96, r * 0.96, 1, 24), band, [lx(x), 33.4, lz(z)], null, null, 0);
+      part(g, new THREE.SphereGeometry(r * 0.85, 24, 8, 0, Math.PI * 2, 0, Math.PI / 2), hat, [lx(x), 36.8, lz(z)], [1, 0.45, 1], null, 0);
+    }
   } else if (theme === 'niigata') {
     roof.visible = false;
     const white = toon('#f3f1ea'), steel = toon('#b9bec4');
@@ -6003,12 +6080,74 @@ function decorLandmarkStand(stand, len, z0, roof, sc0) {
     box([nw + 10, 0.5, 0.6], [nx, 30.9, z0 - 15], steel, [0.05, 0, 0]);
     for (let x = nx - nw / 2 + 6; x <= nx + nw / 2 - 6; x += (nw - 12) / 4) box([1.2, 12, 1.2], [x, 24, z0 + 24], steel);
   } else if (theme === 'sapporo') {
-    box([len * 0.7, 0.6, 13], [0, 14.1, z0 - 4]);
-    box([len * 0.7, 1.1, 0.2], [0, 15, z0 - 10.4], glass);
-    for (let x = -len * 0.3; x <= len * 0.3; x += 18) box([0.3, 3.5, 0.3], [x, 15.8, z0 - 4]);
-    box([len * 0.72, 0.5, 12], [0, 17.8, z0 - 4]);
-    // An open stepped seating terrace beside the main stand.
-    for (let i = 0; i < 4; i++) box([len * 0.25, 1 + i, 3], [len * 0.68, (1 + i) / 2, z0 + i * 3], toon('#9dba9a'));
+    roof.visible = false;
+    // 地図の実寸（x：4コーナー出口から直線の向き、z：コースの内側が正）をスタンドの座標へ。奥行きはコースの中心線からの外向きの距離
+    const k = track.def.scale, lx = x => x * k - sc0, lz = z => -z * k, white = toon('#f4f3ee'), steel = toon('#9aa3a8'), seat = toon('#3f6fa8'), wood = toon('#b98a5a');
+    // 本館（2014年）：ゴール前の5階建て。1〜2階の外の観覧席の上へ、3階から上の観覧席が段々に張り出し、薄い大屋根をのせる
+    const ma = lx(146), mb = lx(280), mw = mb - ma, mc = (ma + mb) / 2;
+    box([mw, 10, 12], [mc, 5, 44], white);
+    for (let i = 0; i < 3; i++) {
+      const y = 10 + i * 4.4, zf = 29 + i * 2.6;
+      box([mw + 1, 0.7, 50 - zf], [mc, y, (zf + 50) / 2], white);
+      for (let j = 0; j < 2; j++) box([mw - 3, 0.5 + j * 0.5, 1.7], [mc, y + 0.5 + j * 0.25, zf + 1.6 + j * 1.7], seat);
+      box([mw - 1, 1, 0.2], [mc, y + 0.9, zf + 0.2], glass);
+      box([mw - 2, 3.6, 0.4], [mc, y + 2.2, zf + 5.6], glass);
+    }
+    box([mw + 4, 0.8, 30], [mc, 24.6, 37], white, [-0.04, 0, 0]);
+    box([mw + 4, 0.5, 0.6], [mc, 25.2, 22.2], steel, [-0.04, 0, 0]);
+    for (let x = ma + 6; x <= mb - 6; x += (mw - 12) / 6) box([0.9, 24, 0.9], [x, 12, 50.5], steel);
+    // 4コーナー側の端の白い塔：コース側の角はガラス張り、テラス側の白い壁に緑のJRAのマーク
+    { const ta = lx(127), tw = ma - ta, tc = (ta + ma) / 2;
+      box([tw, 30, 24], [tc, 15, 38], white);
+      box([tw - 1, 22, 3], [tc + 0.5, 17, 26], glass);
+      box([tw + 1, 0.8, 26], [tc, 30.2, 38], white);
+      const logo = ctex(256, 128, g2 => {
+        g2.fillStyle = '#ffffff'; g2.fillRect(0, 0, 256, 128);
+        g2.strokeStyle = '#0f8a4f'; g2.lineWidth = 12; g2.beginPath(); g2.arc(56, 64, 36, 0.5, Math.PI * 2 - 0.5); g2.stroke();
+        g2.fillStyle = '#0f8a4f'; g2.font = '900 60px "Oxanium", sans-serif'; g2.textBaseline = 'middle'; g2.fillText('JRA', 104, 68);
+      });
+      // スタンドは回る向きに合わせて鏡像になるので、文字が裏返らないよう板も反転させる
+      const plate = new THREE.Mesh(new THREE.PlaneGeometry(9, 4.5), new THREE.MeshBasicMaterial({ map: logo }));
+      plate.position.set(ta - 0.06, 24, 40); plate.rotation.y = -Math.PI / 2; plate.scale.x = track.sgn; g.add(plate); }
+    // もいわテラス：4コーナー側の棟の2階の屋上。長さ120mのウッドデッキから藻岩山と札幌の街並み、コース全体を見渡す
+    { const t = new THREE.Group(); g.add(t); registerLandmark(t, 'もいわテラス');
+      const ta = lx(5), tb = lx(127), tw = tb - ta, tc = (ta + tb) / 2, tb2 = (s, p, m = white) => addBox(t, s, p, m, null, 0);
+      tb2([tw, 8, 17], [tc, 4, 39.5]); tb2([tw - 2, 5, 0.4], [tc, 4, 30.9], glass);
+      tb2([tw, 0.4, 16.6], [tc, 8.2, 39.5], wood);
+      tb2([tw, 1.1, 0.15], [tc, 9, 31.2], glass); tb2([tw, 0.15, 0.3], [tc, 9.6, 31.2], steel);
+      const pots = [], tables = [];
+      for (let x = ta + 4; x <= tb - 4; x += 6) { pots.push({ p: new V3(x, 9, 33), s: new V3(1.4, 1.2, 1.4) }); if ((x - ta) % 12 < 6) tables.push({ p: new V3(x + 3, 9.1, 40), s: new V3(1.6, 0.8, 1.6) }); }
+      t.add(inst(BOX, toon('#5d5a57'), pots, false), inst(SPH_LO, toon('#4f8f3a'), pots.map(o => ({ p: o.p.clone().setY(10.3), s: new V3(0.9, 0.9, 0.9) })), false), inst(BOX, wood, tables, false));
+      // ファンファーレホール：テラスの奥の天井の高い屋内広場。弓なりの屋根の下に大きなガラス窓
+      const hall = new THREE.Mesh(new THREE.CylinderGeometry(8, 8, tw - 6, 24, 1, false, 0, Math.PI), white);
+      hall.rotation.z = Math.PI / 2; hall.position.set(tc, 7, 56); hall.castShadow = true; t.add(hall);
+      tb2([tw - 6, 7, 16], [tc, 3.5, 56]); tb2([tw - 8, 5, 16.4], [tc, 3.8, 56], glass); }
+    // ターフサイドシート：ゴール前の外ラチ沿い、走る馬を間近で見る低い観覧席
+    { const t = new THREE.Group(); g.add(t); registerLandmark(t, 'ターフサイドシート');
+      for (let j = 0; j < 3; j++) addBox(t, [56, 0.5 + j * 0.4, 1.2], [lx(200), 0.25 + j * 0.2, 15 + j * 1.3], seat, null, 0); }
+    // パドック：本館の裏の楕円の周回路。観客は周りの段から見下ろし、低い視線のダッグアウトパドックもある。奥（1コーナー側）に電光掲示板
+    { const pg = new THREE.Group(); pg.position.set(lx(193), 0, lz(-128)); g.add(pg); registerLandmark(pg, 'パドック');
+      part(pg, new THREE.CircleGeometry(1, 48), toon('#6fbf5c'), [0, 0.12, 0], [10, 4.4, 1], [-Math.PI / 2, 0, 0], 0);
+      part(pg, new THREE.RingGeometry(0.76, 1, 48), toon('#b9674a'), [0, 0.14, 0], [12.6, 6.6, 1], [-Math.PI / 2, 0, 0], 0);
+      const rail = [];
+      for (let i = 0; i < 48; i++) { const a = i / 48 * Math.PI * 2; rail.push(new V3(Math.cos(a) * 12.9, 1.1, Math.sin(a) * 6.9)); }
+      pg.add(new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(rail, true), 96, 0.12, 4, true), toon('#f4f2ea')));
+      const steps = [];
+      for (let j = 0; j < 3; j++) for (let i = 0; i < 40; i++) {
+        const a0 = i / 40 * Math.PI * 2, a1 = (i + 1) / 40 * Math.PI * 2, rx = 14 + j * 1.4, rz = 8 + j * 1.4, h = 0.6 + j * 0.6;
+        const p0 = [Math.cos(a0) * rx, Math.sin(a0) * rz], p1 = [Math.cos(a1) * rx, Math.sin(a1) * rz];
+        steps.push({ p: new V3((p0[0] + p1[0]) / 2, h / 2, (p0[1] + p1[1]) / 2), s: new V3(Math.hypot(p1[0] - p0[0], p1[1] - p0[1]) + 0.3, h, 1.5), r: [0, -Math.atan2(p1[1] - p0[1], p1[0] - p0[0]), 0] });
+      }
+      pg.add(inst(BOX, toon('#d8d2c4'), steps, false));
+      const frame = toon('#231a3d');
+      addBox(pg, [0.8, 6, 9], [19.5, 6, 0], frame, null, 0); for (const z of [-3, 3]) addBox(pg, [0.6, 4, 0.6], [19.5, 2, z], frame, null, 0);
+      const scr = new THREE.Mesh(new THREE.PlaneGeometry(8.4, 5.4), glowMat('#ffd27a', 1.1)); scr.position.set(19.05, 6, 0); scr.rotation.y = -Math.PI / 2; pg.add(scr);
+      const walkers = [];
+      for (let i = 0; i < 5; i++) { const h = landmarkHorse(pg, [0, 0.15, 0], 'walk', ['#6b4a35', '#3b2a20', '#8a5a3a'][i % 3], 0.45); h.children[0].visible = false; walkers.push(h); }
+      themeUpd.push(t => walkers.forEach((h, i) => { const a = t * 0.08 + i * Math.PI * 2 / 5, x = Math.cos(a) * 11.3, z = Math.sin(a) * 5.5; h.position.set(x, 0.15, z); h.rotation.y = -Math.atan2(Math.cos(a) * 5.5, -Math.sin(a) * 11.3); })); }
+    // パドックの1コーナー側を囲む別棟
+    box([lx(280) - lx(233), 9, lz(-152) - lz(-107)], [(lx(233) + lx(280)) / 2, 4.5, (lz(-107) + lz(-152)) / 2], white);
+    box([lx(233) - lx(197), 6, 8], [(lx(197) + lx(233)) / 2, 3, lz(-158)], white);
   } else {
     for (const x of [-len * 0.18, len * 0.18]) {
       box([6.5, 9, 6.5], [x, 17.7, z0 + 10]);
@@ -6165,20 +6304,6 @@ function decorRacecourseLandmarks() {
     const gl = landmarkGroup('グラディアトゥール像', 0.93, W + 80); landmarkFoundation(gl, 18, 14);
     addBox(gl, [10, 5, 5.5], [0, 2.5, 0], toon('#d8d0bc'), null, 0); addBox(gl, [11, 0.6, 6.5], [0, 5.3, 0], toon('#c9c0aa'), null, 0);
     landmarkHorse(gl, [0, 5.6, 0], 'walk', '#4f5a52', 1.6); landmarkFlowers(gl, 8, 6, '#d9493a');
-  }
-  if (theme === 'chukyo') {
-    const g = landmarkGroup('パノラマステーション', 0.45); landmarkFoundation(g, 54, 15);
-    const red = toon('#bb3932'), glass = toon('#4b6b7d'), steel = toon('#777d83');
-    for (const x of [-13, 13]) {
-      addBox(g, [25, 6, 7], [x, 5, 0], red, null, 0);
-      addBox(g, [25, 0.7, 7.5], [x, 8.3, 0], toon('#d6cec4'), null, 0);
-      for (let j = 0; j < 6; j++) for (const z of [-3.55, 3.55]) addBox(g, [2.8, 2.1, 0.15], [x - 9 + j * 3.6, 6, z], glass, null, 0);
-      for (const dx of [-7, 7]) for (const z of [-2.5, 2.5]) part(g, new THREE.CylinderGeometry(1.2, 1.2, 0.5, 10), steel, [x + dx, 1.2, z], null, [Math.PI / 2, 0, 0], 0);
-    }
-    for (const x of [-24.8, 24.8]) {
-      addBox(g, [3, 3, 6.2], [x, 8.4, 0], red, null, 0);
-      addBox(g, [0.18, 2.1, 5.5], [x + Math.sign(x) * 1.55, 8.5, 0], glass, null, 0);
-    }
   }
   if (theme === 'hanshin') {
     const g = landmarkGroup('セントウルガーデン', 0.5); landmarkFoundation(g, 42, 30, '#93aa79');
@@ -6426,9 +6551,249 @@ function decorHanshin(th) {
   mountains(th.mount, 8, false);
   fallingLeaves(TEX_PETAL, ['#ffd5e7', '#f5add0'], 35);
 }
+// 中京の地図座標（実寸m）をワールド座標へ変換する。x：4コーナー出口から直線の向き、z：コースの内側を正（コースの区間segsと同じ座標）
+function chukyoAt(x, z) { const k = track.def.scale; return new V3(track.xs[0] + x * k, 0, track.zs[0] + z * k * track.turn); }
 function decorChukyo(th) {
-  roundTrees(treeSpots(105, 18), ['#4b913e', '#65a950', '#8abb61']);
-  mountains(th.mount, 14, false);
+  // 配置はOpenStreetMapのコース・建物・線路の位置と、JRAの場内マップを参考にしたデフォルメ
+  const at = chukyoAt, k = track.def.scale, mat = decorTurfMat(), v = (x, z) => new V3(x, 0, z);
+  const route = pts => {
+    const ps = pts.map(([x, z]) => at(x, z)), curve = ps.length > 2 ? new THREE.CatmullRomCurve3(ps, false, 'centripetal') : new THREE.LineCurve3(ps[0], ps[1]);
+    return decorPath(curve.getSpacedPoints(Math.ceil(curve.getLength() / 1.5)));
+  };
+  const near = (p, pts, d) => pts.some(q => (q.x - p.x) ** 2 + (q.z - p.z) ** 2 < d * d);
+  const ground = p => { p.y = track.groundH(p.x, p.z); return p; };
+  // 地図の向きにそろえた飾りのグループ：ローカルのxは地図のx（直線の向き）からangだけ内側へ回した向き、+zはコースの外側
+  const group = (name, x, z, ang = 0) => {
+    const g = new THREE.Group(); g.position.copy(ground(at(x, z))); g.rotation.y = -ang * track.turn; g.scale.z = track.sgn; world.add(g);
+    return name ? registerLandmark(g, name) : g;
+  };
+  // 地図の多角形の内外判定と、平らな面（ShapeGeometryを地面に沿わせる）
+  const inPoly = (poly, p) => { let c = false; for (let i = 0, j = poly.length - 1; i < poly.length; j = i++) { const a = poly[i], b = poly[j]; if ((a.z > p.z) !== (b.z > p.z) && p.x < (b.x - a.x) * (p.z - a.z) / (b.z - a.z) + a.x) c = !c; } return c; };
+  const flat = (poly, color, lift = 0.1) => {
+    const geo = new THREE.ShapeGeometry(new THREE.Shape(poly.map(p => new THREE.Vector2(p.x, p.z)))), pp = geo.attributes.position;
+    for (let i = 0; i < pp.count; i++) { const x = pp.getX(i), z = pp.getY(i); pp.setXYZ(i, x, track.groundH(x, z) + lift, z); }
+    geo.computeVertexNormals();
+    const m = new THREE.Mesh(geo, toon(color, { side: THREE.DoubleSide })); m.receiveShadow = true; world.add(m); return m;
+  };
+  const deg = d => d * Math.PI / 180, white = toon('#f1eee6'), steel = toon('#9aa3a8');
+  const DEG41 = deg(41), DEG19 = deg(-19);
+
+  // ---- 飾りのコース（レースは芝の周回上で行う） ----
+  // 芝の内側のダートコース（1周1530m・直線410.7m）。内柵を挟んで並走し、1周は約1/2縮尺で実物に近い
+  decorCourseLane(track, 'dirt', 0, track.L, { lanes: [-2.5, -13], cols: 4, step: 1.5, onGround: true, lift: 0.25 });
+  decorInnerRail(-13.8, th.rail);
+  // 発走ポケット：4コーナー奥（芝2200m）、2コーナー奥（芝1400m・1600m）
+  decorTurfPocket(0, 55, false, mat); decorTurfPocket(track.segStart[3], 60, false, mat);
+
+  // ---- 内馬場 ----
+  // 乗馬センター：柵で囲んだ砂の馬場と、丸い屋根のウォーキングマシン
+  { const g = group('乗馬センター', 74, 132);
+    flat([[13, 76], [134, 74], [136, 188], [14, 189]].map(([x, z]) => at(x, z)), '#d8c39a', 0.12);
+    const fence = [], rail = toon('#f4f2ea');
+    for (let x = -30; x <= 30; x += 4) for (const z of [-28, 28]) fence.push({ p: new V3(x, 0.7, z), s: new V3(0.3, 1.4, 0.3) });
+    for (let z = -28; z <= 28; z += 4) for (const x of [-30, 30]) fence.push({ p: new V3(x, 0.7, z), s: new V3(0.3, 1.4, 0.3) });
+    for (const y of [0.7, 1.3]) { fence.push({ p: new V3(0, y, -28), s: new V3(60, 0.15, 0.15) }, { p: new V3(0, y, 28), s: new V3(60, 0.15, 0.15) }, { p: new V3(-30, y, 0), s: new V3(0.15, 0.15, 56) }, { p: new V3(30, y, 0), s: new V3(0.15, 0.15, 56) }); }
+    g.add(inst(BOX, rail, fence, false));
+    const walker = new THREE.Group(); walker.position.set((59.5 - 74) * k, 0, -(88.5 - 132) * k); g.add(walker);
+    part(walker, new THREE.CylinderGeometry(4.6, 4.6, 0.5, 24), toon('#4f6f5a'), [0, 3.4, 0], null, null, 0);
+    for (let i = 0; i < 6; i++) { const a = i / 6 * Math.PI * 2; addBox(walker, [0.3, 3.2, 0.3], [Math.cos(a) * 4.2, 1.6, Math.sin(a) * 4.2], steel, null, 0); }
+    const ride = []; for (let i = 0; i < 2; i++) { const h = landmarkHorse(g, [0, 0, 0], 'walk', i ? '#8a5a3a' : '#3b2a20', 0.45); h.children[0].visible = false; ride.push(h); }
+    themeUpd.push(t => ride.forEach((h, i) => { const a = t * 0.12 + i * Math.PI, x = Math.cos(a) * 20, z = Math.sin(a) * 16; h.position.set(x, 0, z); h.rotation.y = -Math.atan2(Math.cos(a) * 16, -Math.sin(a) * 20); })); }
+  // 馬場内プレイランド：カラフルな遊具の塔と、ポニーに乗れる楕円の小さな馬場（ポニーリンク）
+  { const g = group('馬場内プレイランド', 230, 150), cols = ['#e8534a', '#f2b33d', '#4fa3d9', '#7cc36a'];
+    for (const [x, z, c] of [[175, 110, 0], [205, 175, 1], [250, 130, 2], [280, 180, 3]]) {
+      const p = new V3((x - 230) * k, 0, -(z - 150) * k);
+      for (const dx of [-1.6, 1.6]) for (const dz of [-1.6, 1.6]) addBox(g, [0.35, 4.2, 0.35], [p.x + dx, 2.1, p.z + dz], steel, null, 0);
+      addBox(g, [3.8, 0.4, 3.8], [p.x, 3.2, p.z], toon(cols[c]), null, 0);
+      part(g, CONE, toon(cols[(c + 1) % 4]), [p.x, 5.4, p.z], [3, 2.2, 3], null, 0);
+      addBox(g, [5, 0.25, 1.4], [p.x + 3.6, 1.7, p.z], toon(cols[(c + 2) % 4]), [0, 0, -0.55], 0);
+    }
+    const pony = group('ポニーリンク', 317, 103);
+    part(pony, new THREE.RingGeometry(0.72, 1, 40), toon('#d9c7a0', { side: THREE.DoubleSide }), [0, 0.15, 0], [9, 4.5, 1], [-Math.PI / 2, 0, 0], 0);
+    part(pony, new THREE.CircleGeometry(1, 32), toon('#7fbf62'), [0, 0.12, 0], [6.4, 3.2, 1], [-Math.PI / 2, 0, 0], 0);
+    const ponies = []; for (let i = 0; i < 3; i++) { const h = landmarkHorse(pony, [0, 0, 0], 'walk', ['#d9b98a', '#6b4a35', '#f0ece2'][i], 0.28); h.children[0].visible = false; ponies.push(h); }
+    themeUpd.push(t => ponies.forEach((h, i) => { const a = -t * 0.2 + i * Math.PI * 2 / 3, x = Math.cos(a) * 7.7, z = Math.sin(a) * 3.85; h.position.set(x, 0.1, z); h.rotation.y = -Math.atan2(-Math.cos(a) * 3.85, Math.sin(a) * 7.7); })); }
+
+  // ---- スタンドの裏（1コーナー側） ----
+  // 木馬園：ツインハットの裏の子ども広場。木馬の回転木馬がゆっくり回る
+  { const g = group('木馬園', 530, -172); landmarkFoundation(g, 30, 26, '#cfe0b0');
+    part(g, new THREE.CylinderGeometry(6.5, 6.5, 0.6, 28), toon('#e7d6b5'), [0, 0.3, 0], null, null, 0);
+    part(g, new THREE.ConeGeometry(7.4, 3.2, 16), toon('#e8534a'), [0, 7.4, 0], null, null, 0);
+    part(g, new THREE.CylinderGeometry(7.2, 7.2, 0.8, 16), toon('#f6efe0'), [0, 5.6, 0], null, null, 0);
+    part(g, new THREE.CylinderGeometry(0.9, 0.9, 5.4, 12), toon('#f2b33d'), [0, 3, 0], null, null, 0);
+    const spin = new THREE.Group(); g.add(spin);
+    for (let i = 0; i < 8; i++) {
+      const a = i / 8 * Math.PI * 2, h = landmarkHorse(spin, [Math.cos(a) * 4.8, 0.8, Math.sin(a) * 4.8], 'gallop', i % 2 ? '#c9925a' : '#f4ead8', 0.32);
+      h.rotation.y = Math.PI / 2 - a; h.children[0].visible = false;
+      addBox(spin, [0.15, 4.6, 0.15], [Math.cos(a) * 4.8, 3.2, Math.sin(a) * 4.8], toon('#d9b24a'), null, 0);
+    }
+    themeUpd.push(t => { spin.rotation.y = t * 0.35; });
+    // 揺れる木馬の遊具
+    for (const [x, z, c] of [[-10, -8, '#c9925a'], [-11, 7, '#a8744a'], [10, 9, '#d9b98a']]) {
+      const h = landmarkHorse(g, [x, 0.6, z], 'walk', c, 0.5); h.rotation.y = 0.6; addBox(g, [0.3, 1.2, 0.3], [x, 0.6, z], steel, null, 0);
+    } }
+  // パノラマカー（名鉄7000系、1961〜2009年）：運転席を屋根の上に上げ、先頭を展望席にした赤い電車。スタンドの裏のパノラマステーションに保存されている
+  { const g = group('パノラマステーション', 597, -176); landmarkFoundation(g, 30, 9, '#cfc8b8');
+    const red = toon('#c8302c'), pane = toon('#4b6b7d'), dark = toon('#3a3a3e');
+    for (const z of [-1.1, 1.1]) addBox(g, [30, 0.2, 0.25], [0, 0.35, z], toon('#5d5a57'), null, 0);
+    for (const x of [-7.2, 7.2]) {
+      addBox(g, [13.8, 3.2, 3.2], [x, 2.6, 0], red, null, 0.03);
+      addBox(g, [13.9, 0.25, 3.25], [x, 4.3, 0], toon('#e7e0d4'), null, 0);
+      for (let j = 0; j < 5; j++) for (const z of [-1.62, 1.62]) addBox(g, [1.7, 1.1, 0.1], [x - 4.4 + j * 2.2 + Math.sign(x) * 0.6, 3, z], pane, null, 0);
+      for (const dx of [-4.5, 4.5]) for (const z of [-1, 1]) part(g, new THREE.CylinderGeometry(0.55, 0.55, 0.3, 10), dark, [x + dx, 0.8, z], null, [Math.PI / 2, 0, 0], 0);
+      // 展望席の大きな前面窓と、屋根の上の運転席
+      const s = Math.sign(x), fx = x + s * 6.9;
+      addBox(g, [0.2, 1.6, 2.8], [fx + s * 0.05, 3, 0], pane, null, 0);
+      addBox(g, [2.2, 1.3, 2.2], [fx - s * 1.4, 4.9, 0], red, null, 0);
+      addBox(g, [0.15, 0.7, 1.8], [fx - s * 0.25, 5, 0], pane, null, 0);
+    } }
+  // 西入場門：名鉄の中京競馬場前駅から歩いて約10分。弓なりの白い大屋根の下にガラスの入口
+  { const g = group('西入場門', 655, -122); landmarkFoundation(g, 34, 22, '#d8d2c4');
+    for (let j = 0; j < 12; j++) {
+      const a0 = Math.PI * (0.15 + j / 12 * 0.7), a1 = Math.PI * (0.15 + (j + 1) / 12 * 0.7);
+      const p0 = [Math.cos(a0) * 16, Math.sin(a0) * 9], p1 = [Math.cos(a1) * 16, Math.sin(a1) * 9];
+      addBox(g, [32, 0.6, Math.hypot(p1[0] - p0[0], p1[1] - p0[1]) + 0.2], [0, (p0[1] + p1[1]) / 2, (p0[0] + p1[0]) / 2], white, [Math.atan2(p1[1] - p0[1], p1[0] - p0[0]), 0, 0], 0);
+    }
+    addBox(g, [26, 5, 0.3], [0, 2.6, -2], toon('#7ca6b9'), null, 0);
+    for (const x of [-13, 13]) addBox(g, [1.2, 6, 14], [x, 3, 0], white, null, 0); }
+  // 西入場門から名鉄の駅へ続く歩道
+  const walkLine = route([[688, -120], [850, -112], [1050, -96], [1250, -78], [1350, -66]]);
+  decorCourseLane(walkLine, 'dirt', 0, walkLine.L, { lanes: [W / 2 - 3.5, W / 2 + 3.5], cols: 2, step: 3, onGround: true, lift: 0.1, mat: toon('#d9d2c2', { side: THREE.DoubleSide }) });
+  world.children[world.children.length - 1].userData.backdrop = true;
+
+  // ---- スタンドの裏（4コーナー側）：2棟の立体駐車場、スタンドへ渡る連絡デッキ、広い平面駐車場 ----
+  for (const [x, z, n] of [[125, -213, '立体駐車場'], [85, -168, null]]) {
+    const g = group(n, x, z, DEG41);
+    for (let i = 0; i < 4; i++) { addBox(g, [43, 0.8, 24], [0, 0.4 + i * 3.4, 0], toon('#d8d5cc'), null, 0); if (i) for (const zz of [-11.8, 11.8]) addBox(g, [43, 1, 0.3], [0, i * 3.4 + 1.1, zz], toon('#b9b5aa'), null, 0); }
+    for (let x2 = -20; x2 <= 20; x2 += 8) for (const zz of [-11, 11]) addBox(g, [0.8, 10.6, 0.8], [x2, 5.3, zz], steel, null, 0);
+    addBox(g, [5, 13, 5], [-19, 6.5, 9], white, null, 0);
+  }
+  { const deck = new THREE.CatmullRomCurve3([[96, -122], [200, -172], [232, -166], [262, -112], [300, -104]].map(([x, z]) => at(x, z)), false, 'centripetal'), slabs = [], posts = [], roofs = [];
+    const pts = deck.getSpacedPoints(Math.ceil(deck.getLength() / 2));
+    for (let i = 0; i < pts.length - 1; i++) {
+      const a = pts[i], b = pts[i + 1], m = a.clone().add(b).multiplyScalar(0.5), h = Math.atan2(b.z - a.z, b.x - a.x), L = a.distanceTo(b) + 0.2, y = track.groundH(m.x, m.z);
+      slabs.push({ p: new V3(m.x, y + 6, m.z), s: new V3(L, 0.6, 4.5), r: [0, -h, 0] }); roofs.push({ p: new V3(m.x, y + 9.4, m.z), s: new V3(L, 0.3, 5.5), r: [0, -h, 0] });
+      if (i % 4 === 0) posts.push({ p: new V3(m.x, y + 4.7, m.z), s: new V3(0.6, 9.4, 0.6), r: [0, -h, 0] });
+    }
+    inst(BOX, toon('#d3cfc5'), slabs, false); inst(BOX, white, roofs, false); inst(BOX, steel, posts, false); }
+  const lot = [[94, -297], [183, -401], [248, -350], [304, -309], [347, -281], [384, -263], [391, -249], [385, -236], [240, -172], [192, -214], [186, -215]].map(([x, z]) => at(x, z));
+  flat(lot, '#8c8f93', 0.08);
+  { const cars = [], carCol = ['#f4f4f2', '#2f3438', '#c8302c', '#9aa3ab', '#3b5f8f', '#e9e2cf'].map(C);
+    for (let n = 0; n < 1500 && cars.length < 160; n++) {
+      const x = rand(94, 391), z = rand(-401, -172), row = Math.round(z / 7) * 7, p = at(x, row);
+      if (!inPoly(lot, p) || Math.random() < 0.35) continue;
+      const q = ground(p); cars.push({ p: new V3(q.x, q.y + 0.55, q.z), s: new V3(1.1, 0.8, 2.2), r: [0, 0, 0], c: carCol[n % 6] });
+    }
+    inst(BOX, toon('#ffffff'), cars, false); }
+  // 厩舎：スタンドの1コーナー側の奥に、細長い平屋の馬房が並ぶ
+  { const walls = [], roofs = [];
+    const barns = [[532, -411, 42, 8, 4.9], [536, -399, 44, 6, 6.6], [540, -388, 42, 8, 4.5], [546, -370, 42, 8, 4.4], [550, -359, 44, 6, 6.2], [554, -348, 42, 8, 6], [557, -340, 42, 8, 6.8], [560, -329, 44, 6, 6.4],
+      [564, -317, 43, 8, 5.3], [611, -393, 45, 8, 4.3], [615, -382, 44, 6, 6.1], [619, -371, 45, 8, 5.1], [622, -362, 45, 8, 5.9], [625, -351, 44, 6, 6.4], [629, -340, 45, 8, 5.3], [678, -415, 45, 10, 7.3],
+      [687, -390, 45, 8, 4.9], [690, -378, 44, 6, 6.5], [694, -367, 45, 8, 5.2]];
+    for (const [x, z, l, w, h] of barns) {
+      const p = ground(at(x, z)), ry = -DEG19 * track.turn;
+      walls.push({ p: new V3(p.x, p.y + h * 0.3 - 0.5, p.z), s: new V3(l * k, h * 0.6 + 1, w * k), r: [0, ry, 0] });
+      roofs.push({ p: new V3(p.x, p.y + h * 0.6 + 0.4, p.z), s: new V3(l * k + 0.6, 0.9, w * k + 1.2), r: [0, ry, 0] });
+    }
+    inst(BOX, toon('#e8e2d2'), walls, false); inst(BOX, toon('#5f6f7a'), roofs, false); }
+
+  // ---- 場外：名鉄名古屋本線と中京競馬場前駅、国道1号、桶狭間古戦場伝説地 ----
+  const railCurve = new THREE.CatmullRomCurve3([[1653, -929], [1660, -801], [1689, -623], [1684, -549], [1663, -475], [1626, -406], [1545, -301], [1369, -63], [1308, 50], [1202, 268], [1113, 449], [1074, 550], [1046, 704], [985, 1125]]
+    .map(([x, z]) => at(x, z)), false, 'centripetal');
+  const railLine = railCurve.getSpacedPoints(Math.ceil(railCurve.getLength() / 2)), deckY = 0.9;
+  // 競馬場から700m以上離れているので遠景と同じ扱いにする（図鑑の全景では隠し、ランドマークにも登録しない）
+  const backdrop = o => { o.userData.backdrop = true; return o; }, lastAdded = () => backdrop(world.children[world.children.length - 1]);
+  { const bed = [], rails = [];
+    for (let i = 0; i < railLine.length - 1; i++) {
+      const a = railLine[i], b = railLine[i + 1], m = a.clone().add(b).multiplyScalar(0.5), h = Math.atan2(b.z - a.z, b.x - a.x), L = a.distanceTo(b) + 0.2, nx = -Math.sin(h), nz = Math.cos(h);
+      bed.push({ p: new V3(m.x, deckY / 2 - 0.4, m.z), s: new V3(L, deckY + 0.8, 8), r: [0, -h, 0] });
+      for (const o of [-2.2, -0.8, 0.8, 2.2]) rails.push({ p: new V3(m.x + nx * o, deckY + 0.1, m.z + nz * o), s: new V3(L, 0.2, 0.25), r: [0, -h, 0] });
+    }
+    backdrop(inst(BOX, toon('#a59c8c'), bed, false)); backdrop(inst(BOX, toon('#5d5a57'), rails, false)); }
+  // 中京競馬場前駅（名鉄名古屋本線）
+  { const g = backdrop(group(null, 1346, -20, Math.atan2(88, -45)));
+    for (const z of [-5.6, 5.6]) { addBox(g, [62, deckY + 0.4, 3.2], [0, (deckY + 0.4) / 2, z], toon('#d8d0c0'), null, 0); addBox(g, [44, 0.5, 3.8], [0, 5, z], toon('#7f8f9c'), null, 0);
+      for (let x = -20; x <= 20; x += 8) addBox(g, [0.4, 4, 0.4], [x, 3, z], steel, null, 0); }
+    addBox(g, [10, 6, 16], [26, 3, -13], toon('#ece5d4'), null, 0); }
+  { const RL = railCurve.getLength(), cars = [], body = toon('#d22730'), pane = toon('#3f4b55'), skirt = toon('#9a1d22');
+    for (let i = 0; i < 4; i++) {
+      const c = backdrop(new THREE.Group()); world.add(c);
+      addBox(c, [9, 3.4, 3.2], [0, 1.9, 0], body, null, 0.03);
+      for (const z of [-1.62, 1.62]) { addBox(c, [9.05, 0.4, 0.1], [0, 0.4, z], skirt, null, 0); for (let j = 0; j < 3; j++) addBox(c, [1.8, 1.1, 0.1], [-3 + j * 3, 2.5, z], pane, null, 0); }
+      cars.push(c);
+    }
+    // 名鉄の赤い電車：線路の端から端まで、ゆっくり行って戻ってくる
+    themeUpd.push(t => {
+      const c = (t * 0.03) % 2, u = c < 1 ? c : 2 - c, s0 = 6 + THREE.MathUtils.smootherstep(u, 0.08, 0.92) * (RL - 50);
+      cars.forEach((car, i) => { const s = (s0 + i * 9.6) / RL, p = railCurve.getPointAt(s), tg = railCurve.getTangentAt(s); car.position.set(p.x, deckY + 0.2, p.z); car.rotation.y = -Math.atan2(tg.z, tg.x); });
+    }); }
+  const roadPts = [[1735, -590], [1662, -420], [1574, -274], [1454, -67], [1408, -12], [1294, 46], [1194, 105], [1112, 189], [1083, 240], [1016, 384], [967, 500], [925, 629], [893, 734], [850, 900]];
+  const road = route(roadPts);
+  decorCourseLane(road, 'dirt', 0, road.L, { lanes: [W / 2 - 5, W / 2 + 5], cols: 2, step: 3, onGround: true, lift: 0.1, mat: toon('#6f7275', { side: THREE.DoubleSide }) }); lastAdded();
+  decorCourseLane(road, 'dirt', 0, road.L, { lanes: [W / 2 - 0.2, W / 2 + 0.2], cols: 1, step: 3, onGround: true, lift: 0.14, mat: toon('#f2f0e6', { side: THREE.DoubleSide }) }); lastAdded();
+  // 桶狭間古戦場伝説地：1560年の桶狭間の戦いで今川義元が討たれたと伝わる地。石碑と松
+  { const g = backdrop(group(null, 1150, 215)); landmarkFoundation(g, 16, 12, '#cbbf9f');
+    addBox(g, [1.6, 5.6, 0.9], [0, 2.8, 0], toon('#8d8f88'), null, 0); addBox(g, [3.2, 0.7, 2.2], [0, 0.35, 0], toon('#a6a39a'), null, 0);
+    const pine = new THREE.ConeGeometry(1, 1, 7); pine.translate(0, 0.5, 0);
+    for (const [x, z] of [[-5, -3.5], [5.5, -3], [-4.5, 4], [4, 4.2]]) {
+      part(g, new THREE.CylinderGeometry(0.3, 0.45, 3, 6), toon('#6b4a35'), [x, 1.5, z], null, null, 0);
+      for (const [r, y] of [[2.6, 2.6], [1.8, 4.2]]) part(g, pine, toon('#2f6a3e'), [x, y, z], [r, 2, r], null, 0);
+    } }
+
+  // ---- 木：本線・建物・線路・道路を避けて置く ----
+  const ring = []; for (let i = 0; i < track.N; i += 6) ring.push(v(track.xs[i], track.zs[i]));
+  const gap = p => { let d = 1e18; for (const q of ring) d = Math.min(d, (q.x - p.x) ** 2 + (q.z - p.z) ** 2); return Math.sqrt(d); };
+  const inside = p => inPoly(ring, p);
+  // スタンド・パドック・駐車場・厩舎・西入場門の範囲（地図の実寸）
+  const busy = (x, z) => x > 20 && x < 720 && z < -35 && z > -440;
+  const greens = ['#3f8f3a', '#4fa546', '#5fb853', '#377d34', '#6aa84f'], spots = [];
+  // 外側は中継カメラ（走路の外24m）の通り道をあけ、走路から44m以上離す。向正面の外の丘は雑木林
+  for (let n = 0; n < 2600 && spots.length < 340; n++) {
+    const x = rand(-450, 1050), z = rand(-650, 760), p = at(x, z);
+    if (busy(x, z) || inside(p) || gap(p) < 44 || gap(p) > 270 || near(p, railLine, 10) || near(p, walkLine.pts, 8) || near(p, road.pts, 10)) continue;
+    spots.push({ p: ground(p), s: z > 280 ? rand(1, 1.4) : rand(0.8, 1.1) });
+  }
+  // 内馬場：ダートコースの内側に、遊具とターフビジョンを避けてまばらに
+  const infieldBusy = p => [[74, 132, 70], [230, 150, 85], [317, 103, 30]].some(([x, z, r]) => p.distanceTo(at(x, z)) < r * k);
+  for (let n = 0; n < 600 && spots.length < 400; n++) {
+    const p = at(rand(-90, 580), rand(40, 270));
+    if (!inside(p) || gap(p) < 30 || infieldBusy(p) || p.distanceTo(boardPos) < 34) continue;
+    spots.push({ p: ground(p) });
+  }
+  roundTrees(spots, greens);
+
+  // ---- 遠景（図鑑の全景では隠す）：丘の上に広がる名古屋市緑区・豊明市の住宅地、尾張丘陵、猿投山、名古屋駅前の高層ビル群 ----
+  { const walls = [], roofs = [], blocks = [], bands = [];
+    const wallCol = ['#efe8da', '#e6dccb', '#f3efe6', '#d9d2c4'].map(C), roofCol = ['#5a5f66', '#4f555c', '#7a5b4a', '#6b6f73'].map(C);
+    for (let n = 0; n < 3200 && walls.length + blocks.length < 640; n++) {
+      const x = rand(-1400, 1900), z = rand(-1400, 1400), p = at(x, z), ry = rand(-0.2, 0.2) + deg(36);
+      if (inside(p) || gap(p) < 90 || busy(x, z) || near(p, railLine, 14) || near(p, road.pts, 14) || near(p, walkLine.pts, 10)) continue;
+      // ところどころに中層の集合住宅（各階の窓の帯つき）
+      if (n % 11 === 0 && gap(p) > 150) { const h = rand(12, 24), w = rand(22, 34); blocks.push({ p: new V3(p.x, h / 2 - 1, p.z), s: new V3(w, h, 8), r: [0, ry, 0], c: wallCol[n % 4] });
+        for (let y = 2.4; y < h - 2; y += 3) bands.push({ p: new V3(p.x, y, p.z), s: new V3(w - 2, 1.1, 8.3), r: [0, ry, 0] }); continue; }
+      if (n % 11 === 0) continue;
+      const w = rand(6, 9), h = rand(4.5, 7);
+      walls.push({ p: new V3(p.x, h / 2 - 1, p.z), s: new V3(w, h, w * 0.8), r: [0, ry, 0], c: wallCol[n % 4] });
+      roofs.push({ p: new V3(p.x, h - 1, p.z), s: new V3(w * 0.55, 3, w * 0.45), r: [0, ry, 0], c: roofCol[n % 4] });
+    }
+    // 四角すいの角を箱の角に合わせる（45度回して底面を±1の正方形にする）
+    const roofG = new THREE.ConeGeometry(Math.SQRT2, 1, 4); roofG.rotateY(Math.PI / 4); roofG.translate(0, 0.5, 0);
+    for (const m of [inst(BOX, toon('#ffffff'), walls, false), inst(roofG, toon('#ffffff'), roofs, false), inst(BOX, toon('#ffffff'), blocks, false), inst(BOX, toon('#8fa3b3', { fog: true }), bands, false)]) backdrop(m); }
+  { const base = at(250, 140), toward = (a, dist) => base.clone().add(new V3(Math.cos(a), 0, Math.sin(a) * track.turn).multiplyScalar(dist));
+    const cone = new THREE.ConeGeometry(1, 1, 8); cone.translate(0, 0.5, 0);
+    // 尾張丘陵：なだらかな低い丘がぐるりと続く
+    const hills = [];
+    for (let i = 0; i < 26; i++) { const p = toward(deg(i / 26 * 360 + rand(-5, 5)), 1250 + rand(-80, 120)); p.y = -6; hills.push({ p, s: new V3(rand(170, 240), rand(28, 55), rand(140, 200)), r: [0, rand(0, 3), 0] }); }
+    backdrop(inst(cone, toon(th.mount, { fog: true }), hills, false));
+    // 猿投山：東の遠く、尾張と三河の境にそびえる
+    const sanage = toward(deg(-168.5), 1500); backdrop(part(world, cone, toon('#7f96a8', { fog: true }), [sanage.x, -8, sanage.z], [300, 78, 260], null, 0));
+    // 名古屋駅前の高層ビル群：北北西の遠く。2本の円筒のJRセントラルタワーズと、ひときわ高いミッドランドスクエア
+    const city = new THREE.Group(), cp = toward(deg(-84.4), 1450); city.position.set(cp.x, 0, cp.z); world.add(backdrop(city));
+    const tower = toon('#c9d3db', { fog: true }), tower2 = toon('#9fb0bf', { fog: true });
+    for (const [x, r, h] of [[-8, 9, 112], [8, 8, 102]]) part(city, new THREE.CylinderGeometry(r, r, h, 20), tower, [x, h / 2, 0], null, null, 0);
+    addBox(city, [40, 30, 26], [0, 15, 0], tower, null, 0);
+    addBox(city, [20, 116, 20], [-38, 58, 18], tower2, null, 0); addBox(city, [18, 92, 18], [32, 46, 16], tower, null, 0);
+    for (const [x, z, h] of [[-70, 10, 55], [-56, -24, 70], [54, -20, 64], [74, 22, 48], [-90, -10, 40], [92, -6, 38]]) addBox(city, [16, h, 16], [x, h / 2, z], tower2, null, 0); }
 }
 function decorKasamatsu(th) {
   roundTrees(treeSpots(60, 0, 18, 70), ['#608952', '#7ba066', '#94b978']);
@@ -6462,9 +6827,292 @@ function decorKasamatsu(th) {
     for (const y of [26, 31]) addBox(tower, [13, 0.45, 0.5], [0, y, 0], steel, null, 0);
   }
 }
+// 札幌の地図座標（実寸m）をワールド座標へ変換する。x：4コーナー出口から直線の向き（ほぼ北）、z：コースの内側（ほぼ東）が正（コースの区間segsと同じ座標）
+function sapporoAt(x, z) { const k = track.def.scale; return new V3(track.xs[0] + x * k, 0, track.zs[0] + z * k * track.turn); }
 function decorSapporo(th) {
-  roundTrees(treeSpots(100, 16), ['#39794c', '#58a565', '#78bc7a']);
-  mountains(th.mount, 16, false);
+  // 配置はOpenStreetMapのコース・建物・線路・道路の位置と、国土地理院の空中写真、JRAの場内マップを参考にしたデフォルメ
+  const at = sapporoAt, k = track.def.scale, mat = decorTurfMat(), v = (x, z) => new V3(x, 0, z);
+  const route = (pts, closed = false) => {
+    const ps = pts.map(([x, z]) => at(x, z)), curve = ps.length > 2 ? new THREE.CatmullRomCurve3(ps, closed, 'centripetal') : new THREE.LineCurve3(ps[0], ps[1]);
+    const sp = curve.getSpacedPoints(Math.ceil(curve.getLength() / 1.5)); if (closed) sp.push(sp[0].clone());
+    return decorPath(sp);
+  };
+  const near = (p, pts, d) => pts.some(q => (q.x - p.x) ** 2 + (q.z - p.z) ** 2 < d * d);
+  const ground = p => { p.y = track.groundH(p.x, p.z); return p; };
+  // 地図の向きにそろえた飾りのグループ：ローカルのxは地図のx（直線の向き）からangだけ内側へ回した向き、+zはコースの外側
+  const group = (name, x, z, ang = 0) => {
+    const g = new THREE.Group(); g.position.copy(ground(at(x, z))); g.rotation.y = -ang * track.turn; g.scale.z = track.sgn; world.add(g);
+    return name ? registerLandmark(g, name) : g;
+  };
+  // 地図の多角形の内外判定と、平らな面（ShapeGeometryを地面に沿わせる）
+  const inPoly = (poly, p) => { let c = false; for (let i = 0, j = poly.length - 1; i < poly.length; j = i++) { const a = poly[i], b = poly[j]; if ((a.z > p.z) !== (b.z > p.z) && p.x < (b.x - a.x) * (p.z - a.z) / (b.z - a.z) + a.x) c = !c; } return c; };
+  const flat = (poly, color, lift = 0.1) => {
+    const geo = new THREE.ShapeGeometry(new THREE.Shape(poly.map(p => new THREE.Vector2(p.x, p.z)))), pp = geo.attributes.position;
+    for (let i = 0; i < pp.count; i++) { const x = pp.getX(i), z = pp.getY(i); pp.setXYZ(i, x, track.groundH(x, z) + lift, z); }
+    geo.computeVertexNormals();
+    const m = new THREE.Mesh(geo, toon(color, { side: THREE.DoubleSide })); m.receiveShadow = true; world.add(m); return m;
+  };
+  const poly = pts => pts.map(([x, z]) => at(x, z));
+  const deg = d => d * Math.PI / 180, white = toon('#f1eee6'), steel = toon('#9aa3a8'), wood = toon('#b98a5a');
+  const backdrop = o => { o.userData.backdrop = true; return o; };
+
+  // ---- 飾りのコース（レースは芝の周回上で行う） ----
+  // 芝の内側のダートコース（1周1487m・直線264.3m）。内柵を挟んで並走し、1周は約1/2縮尺で実物に近い
+  decorCourseLane(track, 'dirt', 0, track.L, { lanes: [-2.5, -13], cols: 4, step: 1.5, onGround: true, lift: 0.25 });
+  decorInnerRail(-13.8, th.rail);
+  // 芝の発走ポケット：4コーナー奥（2000m、直線の延長）、1コーナー奥（1500m、直線の先）、2コーナー奥（1200m、向正面の延長）
+  decorTurfPocket(0, 130 * k, false, mat); decorTurfPocket(track.segStart[1], 214 * k, true, mat); decorTurfPocket(track.segStart[4], 150 * k, false, mat);
+  // ダートの引き込み線（1000m）：2コーナーの内側から向正面へ斜めに合流する
+  const dchute = route([[357, 266], [230, 293], [104, 310]]);
+  decorCourseLane(dchute, 'dirt', 0, dchute.L, { lanes: [W / 2 - 4.5, W / 2 + 4.5], cols: 2, step: 1.5, onGround: true, lift: 0.2 });
+
+  // ---- 馬場内の北側：2本の楕円の周回路（外は砂、内はウッドチップ）と、その内側の砂の広場 ----
+  const ringA = route([[213, 164], [229, 151], [244, 141], [259, 132], [274, 122], [288, 113], [303, 103], [319, 94], [342, 89], [367, 96], [384, 115], [390, 139], [383, 163], [367, 180], [352, 190], [336, 199],
+    [321, 209], [306, 219], [291, 228], [276, 238], [252, 246], [224, 238], [205, 218], [201, 190]], true);
+  const ringB = route([[229, 167], [242, 158], [254, 150], [266, 142], [278, 134], [290, 126], [302, 118], [315, 110], [333, 104], [354, 110], [369, 126], [372, 147], [362, 167], [349, 177], [337, 185], [325, 192],
+    [313, 200], [301, 208], [289, 216], [277, 224], [260, 231], [238, 226], [222, 210], [219, 188]], true);
+  decorCourseLane(ringA, 'dirt', 0, ringA.L, { lanes: [W / 2 - 2.8, W / 2 + 2.8], cols: 2, step: 1.5, onGround: true, lift: 0.14, mat: toon('#d8c39a', { side: THREE.DoubleSide }) });
+  decorCourseLane(ringB, 'dirt', 0, ringB.L, { lanes: [W / 2 - 2.7, W / 2 + 2.7], cols: 2, step: 1.5, onGround: true, lift: 0.14, mat: toon('#9a7a58', { side: THREE.DoubleSide }) });
+  flat(poly([[323, 114], [345, 113], [362, 128], [365, 146], [354, 165], [267, 222], [245, 222], [228, 206], [227, 184], [237, 170]]), '#c9b48e', 0.12);
+
+  // ---- ターフパーク（馬場内）：直線の向かいの遊び場 ----
+  // セイテンスタンド：2階建ての観覧棟。コース側の壁に描かれた馬の絵「セイテンダイチ」が名前の由来で、2階から最後の直線が一望できる
+  { const g = group('セイテンスタンド', 176, 59); landmarkFoundation(g, 15, 7, '#cdbf9f');
+    addBox(g, [13.4, 0.8, 5.6], [0, 0.4, 0], toon('#a5523f'), null, 0);
+    addBox(g, [13, 6.6, 5], [0, 4, 0], toon('#ddd2bf'), null, 0);
+    for (const z of [-2.5, 2.5]) addBox(g, [13, 1, 0.12], [0, 7.8, z], toon('#2f3a4f'), null, 0);
+    for (const x of [-6.5, 6.5]) addBox(g, [0.12, 1, 5], [x, 7.8, 0], toon('#2f3a4f'), null, 0);
+    ['#4f9a6a', '#d9a441', '#6aa0c8'].forEach((c, i) => {
+      const h = landmarkHorse(g, [-4 + i * 4, 1.6, 2.6], 'gallop', c, 0.42); h.scale.z = 0.05; h.children[0].visible = false; if (h.children[2]) h.children[2].visible = false;
+    }); }
+  // テラステーブル：JRA初の馬場内の指定席。大屋根の下に4人掛けのテーブルが並ぶ
+  for (const [x, len, name] of [[139.5, 31, 'テラステーブル'], [208, 24, null]]) {
+    const g = group(name, x, 57.5), L = len * k;
+    addBox(g, [L + 1, 0.4, 5.4], [0, 4.6, 0], white, null, 0); addBox(g, [L + 1.1, 0.6, 5.5], [0, 4.2, 0], toon('#2f7a4f'), null, 0);
+    for (let x2 = -L / 2 + 1; x2 <= L / 2 - 0.9; x2 += L / 4 - 0.5) for (const z of [-2, 2]) addBox(g, [0.5, 4, 0.5], [x2, 2, z], toon('#c8743a'), null, 0);
+    for (let x2 = -L / 2 + 2; x2 <= L / 2 - 1.9; x2 += 3) addBox(g, [1.2, 0.8, 1.2], [x2, 0.4, 0], wood, null, 0);
+  }
+  // 売店の棟（赤い屋根）と、遊び場の奥の休憩所
+  { const g = group(null, 38.5, 68.5); addBox(g, [15, 3.4, 3.4], [0, 1.7, 0], toon('#ece5d4'), null, 0); addBox(g, [15.6, 0.6, 4], [0, 3.7, 0], toon('#b8473a'), null, 0); }
+  { const g = group(null, 180, 101.5); addBox(g, [9, 5, 25], [0, 2.5, 0], toon('#ece8de'), null, 0); addBox(g, [9.6, 0.6, 25.6], [0, 5.3, 0], white, null, 0); }
+  // ふわふわドーム：白い大きなトランポリンのドーム
+  { const g = group('ふわふわドーム', 136, 101); landmarkFoundation(g, 12, 12, '#c9c3b5');
+    part(g, new THREE.SphereGeometry(1, 24, 12, 0, Math.PI * 2, 0, Math.PI / 2), toon('#fbf7ff'), [0, 0, 0], [5, 4, 5], null, 0.03); }
+  // じゃぶじゃぶ池：夏の開催の子どもの水遊び場。豆の形の浅い池
+  { const g = group('じゃぶじゃぶ池', 89, 96); landmarkFoundation(g, 14, 10, '#d9d2c2');
+    for (const [x, z, r] of [[-2.4, 0.6, 3.4], [2.6, -0.4, 4]]) {
+      part(g, new THREE.CylinderGeometry(r + 0.5, r + 0.5, 0.3, 28), toon('#c9c3b5'), [x, 0.15, z], null, null, 0);
+      part(g, new THREE.CircleGeometry(r, 28), toon('#8fd3f0'), [x, 0.32, z], null, [-Math.PI / 2, 0, 0], 0);
+    } }
+  // ターフパークステージ：キャラクターショーなどのイベントの舞台と、半円の段々の客席
+  { const g = group('ターフパークステージ', 99, 146);
+    addBox(g, [8, 1, 4.5], [0, 0.5, -5], toon('#d8d2c4'), null, 0); addBox(g, [9, 0.4, 5.5], [0, 5.4, -5], white, null, 0); addBox(g, [8, 4.4, 0.3], [0, 3.2, -7.3], toon('#2f6a8f'), null, 0);
+    for (const x of [-4.2, 4.2]) addBox(g, [0.4, 4.6, 0.4], [x, 3, -2.8], steel, null, 0);
+    const steps = [];
+    for (let j = 0; j < 4; j++) for (let i = 0; i < 12; i++) {
+      const a0 = i / 12 * Math.PI, a1 = (i + 1) / 12 * Math.PI, r = 4.5 + j * 1.3, h = 0.3 + j * 0.3;
+      const p0 = [Math.cos(a0) * r, Math.sin(a0) * r - 4], p1 = [Math.cos(a1) * r, Math.sin(a1) * r - 4];
+      steps.push({ p: new V3((p0[0] + p1[0]) / 2, h / 2, (p0[1] + p1[1]) / 2), s: new V3(Math.hypot(p1[0] - p0[0], p1[1] - p0[1]) + 0.2, h, 1.1), r: [0, -Math.atan2(p1[1] - p0[1], p1[0] - p0[0]), 0] });
+    }
+    g.add(inst(BOX, toon('#c98a5a'), steps, false)); }
+  // 円い花壇
+  { const g = group(null, 147, 127); part(g, new THREE.CircleGeometry(6, 32), toon('#7fbf62'), [0, 0.1, 0], null, [-Math.PI / 2, 0, 0], 0); landmarkFlowers(g, 5, 5, '#f2a33a'); landmarkFlowers(g, 2.6, 2.6, '#e8534a'); }
+  // 大型遊具
+  { const g = group('大型遊具', 80, 181), cols = ['#e8534a', '#f2b33d', '#4fa3d9', '#7cc36a'];
+    for (const [x, z, c] of [[-2.5, -1.5, 0], [2.5, 1.5, 2]]) {
+      for (const dx of [-1.4, 1.4]) for (const dz of [-1.4, 1.4]) addBox(g, [0.3, 4, 0.3], [x + dx, 2, z + dz], steel, null, 0);
+      addBox(g, [3.4, 0.4, 3.4], [x, 3, z], toon(cols[c]), null, 0); part(g, CONE, toon(cols[c + 1]), [x, 5.1, z], [2.7, 2, 2.7], null, 0);
+    }
+    addBox(g, [4.6, 0.25, 1.3], [0.3, 1.6, -3.4], toon(cols[3]), [0, 0, -0.5], 0); addBox(g, [5, 0.3, 0.9], [0, 3.1, 0], wood, [0, 0.6, 0], 0); }
+  // ミニ新幹線：遊び場の4コーナー寄りの楕円の線路を回る。内側には赤い屋根の小屋を囲む砂の周回路
+  { const g = group('ミニ新幹線', 11, 112), rx = 18, rz = 22.5;
+    part(g, new THREE.RingGeometry(0.94, 1, 64), toon('#6d6a66', { side: THREE.DoubleSide }), [0, 0.18, 0], [rx, rz, 1], [-Math.PI / 2, 0, 0], 0);
+    part(g, new THREE.RingGeometry(0.7, 1, 48), toon('#c9925a', { side: THREE.DoubleSide }), [-6 * k, 0.16, 12 * k], [8.5, 14.5, 1], [-Math.PI / 2, 0, 0], 0);
+    addBox(g, [5, 3, 6], [-5 * k, 1.5, 14 * k], toon('#ece5d4'), null, 0); addBox(g, [5.6, 0.6, 6.6], [-5 * k, 3.3, 14 * k], toon('#b8473a'), null, 0);
+    const cars = [];
+    for (let i = 0; i < 3; i++) {
+      const c = new THREE.Group(); g.add(c); cars.push(c);
+      addBox(c, [3, 1.1, 1.1], [0, 0.9, 0], toon('#f5f5f2'), null, 0.03); addBox(c, [3.02, 0.3, 1.12], [0, 0.65, 0], toon('#2b6cb0'), null, 0);
+    }
+    part(cars[0], CONE, toon('#f5f5f2'), [2.1, 0.9, 0], [0.55, 1.4, 0.55], [0, 0, -Math.PI / 2], 0.03);
+    themeUpd.push(t => cars.forEach((c, i) => { const a = t * 0.4 - i * 0.18, r = 0.97; c.position.set(Math.cos(a) * rx * r, 0, Math.sin(a) * rz * r); c.rotation.y = -Math.atan2(Math.cos(a) * rz, -Math.sin(a) * rx); })); }
+
+  // ---- スタンドの4コーナー側 ----
+  // まきばガーデン：緑に囲まれた放牧地。柵の中で馬がのんびり草を食む
+  const garden = poly([[-8, -40], [-8, -100], [-20, -110], [-39, -110], [-53, -102], [-64, -89], [-75, -66], [-80, -40]]);
+  { flat(garden, '#8cc46a', 0.14);
+    const fence = garden.map(p => ground(p.clone()).add(new V3(0, 1.1, 0)));
+    world.add(new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(fence, true, 'catmullrom', 0.1), 120, 0.12, 4, true), toon('#f4f2ea')));
+    const g = group('まきばガーデン', -40, -72), herd = [];
+    for (let i = 0; i < 3; i++) { const h = landmarkHorse(g, [0, 0.2, 0], 'walk', ['#8a5a3a', '#3b2a20', '#c9a27a'][i], 0.45); h.children[0].visible = false; herd.push(h); }
+    // 放牧地の中をゆっくり歩き回る
+    themeUpd.push(t => herd.forEach((h, i) => { const a = t * 0.05 + i * 2.1, x = Math.cos(a) * 9 + Math.sin(a * 2.3) * 2, z = Math.sin(a) * 5; h.position.set(x, 0.2, z); h.rotation.y = -Math.atan2(Math.cos(a) * 5, -Math.sin(a) * 9); }));
+    addBox(g, [5, 3, 3.4], [-12, 1.5, 9], toon('#b8473a'), null, 0); addBox(g, [5.6, 0.5, 4], [-12, 3.2, 9], toon('#5f6f7a'), null, 0); }
+  // スタンドから南西の道路へ延びる屋根付きの連絡通路
+  { const c = new THREE.CatmullRomCurve3(poly([[-52, -117], [-4, -128], [15, -180]]), false, 'centripetal'), pts = c.getSpacedPoints(Math.ceil(c.getLength() / 2)), roofs = [], posts = [];
+    for (let i = 0; i < pts.length - 1; i++) {
+      const a = pts[i], b = pts[i + 1], m = a.clone().add(b).multiplyScalar(0.5), h = Math.atan2(b.z - a.z, b.x - a.x), y = track.groundH(m.x, m.z);
+      roofs.push({ p: new V3(m.x, y + 4.2, m.z), s: new V3(a.distanceTo(b) + 0.2, 0.4, 3.6), r: [0, -h, 0] });
+      if (i % 3 === 0) for (const o of [-1.5, 1.5]) posts.push({ p: new V3(m.x - Math.sin(h) * o, y + 2, m.z + Math.cos(h) * o), s: new V3(0.3, 4, 0.3) });
+    }
+    inst(BOX, white, roofs, false); inst(BOX, steel, posts, false); }
+  // 駐車場（スタンドの裏と4コーナーの外）
+  const lots = [[[-56, -226], [-83, -234], [-100, -225], [-119, -207], [-184, -112], [-134, -82], [-93, -144], [-77, -168], [-59, -210]],
+    [[102, -171], [62, -178], [17, -195], [-35, -219], [-14, -273], [18, -292], [53, -304], [77, -266], [103, -234], [126, -214], [136, -202], [128, -183], [158, -187], [163, -177], [129, -169]],
+    [[278, -168], [275, -151], [234, -157], [197, -168], [167, -155], [144, -144], [125, -138], [101, -138], [100, -152], [131, -156], [161, -171], [182, -180], [216, -175]],
+    [[-133, -259], [-209, -131], [-262, -161], [-183, -289]]].map(poly);
+  { const cars = [], carCol = ['#f4f4f2', '#2f3438', '#c8302c', '#9aa3ab', '#3b5f8f', '#e9e2cf'].map(C);
+    for (const lot of lots) {
+      flat(lot, '#8c8f93', 0.08);
+      const xs = lot.map(p => p.x), zs = lot.map(p => p.z);
+      for (let n = 0; n < 400; n++) {
+        const p = v(rand(Math.min(...xs), Math.max(...xs)), Math.round(rand(Math.min(...zs), Math.max(...zs)) / 3.5) * 3.5);
+        if (!inPoly(lot, p) || Math.random() < 0.4) continue;
+        const q = ground(p); cars.push({ p: new V3(q.x, q.y + 0.55, q.z), s: new V3(2.2, 0.8, 1.1), c: carCol[n % 6] });
+      }
+    }
+    inst(BOX, toon('#ffffff'), cars, false); }
+
+  // ---- 厩舎：1コーナーの奥から2コーナーの外へ、細長い平屋の馬房が並ぶ（赤い屋根と青い屋根） ----
+  const ring = []; for (let i = 0; i < track.N; i += 6) ring.push(v(track.xs[i], track.zs[i]));
+  const gap = p => { let d = 1e18; for (const q of ring) d = Math.min(d, (q.x - p.x) ** 2 + (q.z - p.z) ** 2); return Math.sqrt(d); };
+  const inside = p => inPoly(ring, p);
+  { const barns = [[402, -70, 9, 52], [420, -70, 9, 51], [436, -70, 9, 51], [453, -70, 9, 52], [471, -70, 8, 51], [489, -66, 9, 46], [406, -125, 31, 41], [435, -125, 22, 45], [507, -7, 9, 46], [523, -7, 8, 46], [542, -7, 10, 45],
+      [559, -2, 9, 36], [500, 39, 12, 29], [534, 40, 31, 27], [562, 40, 9, 30], [583, 49, 8, 32], [495, 83, 10, 41], [513, 83, 9, 41], [530, 84, 10, 43], [546, 83, 10, 41], [564, 83, 9, 42],
+      [495, 134, 9, 41], [512, 134, 9, 41], [529, 133, 10, 41], [546, 132, 9, 41], [564, 131, 9, 36], [493, 195, 9, 41], [512, 196, 9, 41], [529, 196, 9, 41], [546, 195, 11, 42],
+      [479, 244, 9, 41], [497, 246, 9, 41], [514, 245, 10, 42], [531, 245, 10, 41], [547, 246, 10, 42], [459, 297, 10, 42], [476, 295, 10, 41], [493, 296, 10, 41], [510, 296, 10, 41], [527, 296, 10, 41],
+      [546, 294, 10, 36], [424, 318, 17, 52], [461, 345, 8, 35], [477, 345, 10, 35], [494, 344, 9, 35], [520, 346, 10, 29], [538, 346, 10, 30], [384, -234, 11, 51], [386, -294, 10, 52], [403, -294, 10, 52]];
+    const walls = [], roofs = [], red = C('#b8473a'), blue = C('#4f78a8');
+    for (const [x, z, dx, dz] of barns) {
+      const p = ground(at(x, z)), h = dx > 20 ? 6 : 4.2;
+      // 中継カメラ（走路の外24m）の通り道にかかる棟は置かない
+      if (gap(p) < 40) continue;
+      walls.push({ p: new V3(p.x, p.y + h / 2 - 0.5, p.z), s: new V3(dx * k, h, dz * k) });
+      roofs.push({ p: new V3(p.x, p.y + h, p.z), s: new V3(dx * k + 0.8, 0.8, dz * k + 0.6), c: z < 215 ? red : blue });
+    }
+    inst(BOX, toon('#ece6d6'), walls, false); inst(BOX, toon('#ffffff'), roofs, false); }
+
+  // ---- 場外：環状通・石山通・鉄工団地通と、JR函館本線・札沼線（学園都市線）の高架 ----
+  const roads = [[[24, -404], [42, -382], [74, -303], [98, -259], [127, -229], [175, -202], [203, -192], [420, -164], [464, -142], [609, -19], [585, 180], [567, 423], [444, 454], [343, 482], [138, 540], [8, 576], [-42, 596], [-195, 699], [-357, 812]],
+    [[24, -404], [18, -390], [-21, -288], [-44, -226], [-71, -160], [-122, -80], [-131, -65], [-344, 275], [-409, 379], [-505, 533]], [[-131, -65], [-274, -154], [-405, -138], [-660, -95]]].map(r => route(r));
+  for (const r of roads) {
+    decorCourseLane(r, 'dirt', 0, r.L, { lanes: [W / 2 - 5, W / 2 + 5], cols: 2, step: 3, onGround: true, lift: 0.1, mat: toon('#6f7275', { side: THREE.DoubleSide }) });
+    decorCourseLane(r, 'dirt', 0, r.L, { lanes: [W / 2 - 0.2, W / 2 + 0.2], cols: 1, step: 3, onGround: true, lift: 0.14, mat: toon('#f2f0e6', { side: THREE.DoubleSide }) });
+  }
+  // 札幌市中央卸売市場：南西の大きな平たい建物
+  { const lot = poly([[-22, -417], [-112, -447], [-328, -484], [-470, -476], [-399, -149], [-275, -165]]), h = 7, walls = [];
+    flat(lot, '#8f949a', h);
+    for (let i = 0; i < lot.length; i++) { const a = lot[i], b = lot[(i + 1) % lot.length], m = a.clone().add(b).multiplyScalar(0.5); walls.push({ p: new V3(m.x, h / 2 - 0.5, m.z), s: new V3(a.distanceTo(b), h + 1, 0.6), r: [0, -Math.atan2(b.z - a.z, b.x - a.x), 0] }); }
+    inst(BOX, toon('#c9c4b8'), walls, false); }
+  const rails = [];
+  const viaduct = (pts, y, width, tracks) => {
+    const curve = new THREE.CatmullRomCurve3(poly(pts), false, 'centripetal'), line = curve.getSpacedPoints(Math.ceil(curve.getLength() / 2)), slab = [], piers = [], bars = [], walls = [];
+    for (let i = 0; i < line.length - 1; i++) {
+      const a = line[i], b = line[i + 1], m = a.clone().add(b).multiplyScalar(0.5), h = Math.atan2(b.z - a.z, b.x - a.x), L = a.distanceTo(b) + 0.2, nx = -Math.sin(h), nz = Math.cos(h);
+      slab.push({ p: new V3(m.x, y - 0.6, m.z), s: new V3(L, 1.2, width), r: [0, -h, 0] });
+      for (const t of tracks) for (const o of [-0.7, 0.7]) bars.push({ p: new V3(m.x + nx * (t + o), y + 0.1, m.z + nz * (t + o)), s: new V3(L, 0.2, 0.25), r: [0, -h, 0] });
+      for (const o of [-width / 2 + 0.2, width / 2 - 0.2]) walls.push({ p: new V3(m.x + nx * o, y + 0.5, m.z + nz * o), s: new V3(L, 1, 0.35), r: [0, -h, 0] });
+      if (i % 7 === 0) piers.push({ p: new V3(m.x, (y - 1.2) / 2, m.z), s: new V3(1.6, y - 1.2, width - 2), r: [0, -h, 0] });
+    }
+    inst(BOX, toon('#cfccc4'), slab, false); inst(BOX, toon('#b9b6ae'), piers, false); inst(BOX, toon('#5d5a57'), bars, false); inst(BOX, toon('#e2dfd8'), walls, false);
+    rails.push({ curve, y, line }); return line;
+  };
+  const hakodate = viaduct([[410, -1100], [-145, -201], [-296, 47], [-419, 237], [-518, 398], [-571, 491], [-622, 578], [-646, 621], [-678, 675], [-734, 766], [-790, 849]], 7, 9, [-2.2, 2.2]);
+  const sassho = viaduct([[965, -424], [119, -334], [64, -323], [22, -309], [-18, -291], [-70, -258], [-117, -218], [-144, -187], [-179, -139], [-232, -46], [-376, 182], [-493, 373], [-531, 447], [-559, 498]], 7.4, 5, [0]);
+  // JR北海道の電車：銀色の車体に緑の帯。線路の端から端まで、ゆっくり行って戻ってくる
+  { const body = toon('#d9dde0'), band = toon('#2f9a4f'), band2 = toon('#a8d86a'), pane = toon('#3f4b55');
+    rails.forEach(({ curve, y }, n) => {
+      const RL = curve.getLength(), cars = [];
+      for (let i = 0; i < 3; i++) {
+        const c = new THREE.Group(); world.add(c); cars.push(c);
+        addBox(c, [9, 3.4, 3.2], [0, 1.9, 0], body, null, 0.03);
+        for (const z of [-1.62, 1.62]) { addBox(c, [9.05, 0.35, 0.1], [0, 1.2, z], band, null, 0); addBox(c, [9.05, 0.15, 0.1], [0, 1.5, z], band2, null, 0); for (let j = 0; j < 3; j++) addBox(c, [1.8, 1.1, 0.1], [-3 + j * 3, 2.5, z], pane, null, 0); }
+      }
+      themeUpd.push(t => {
+        const c = (t * 0.025 + n * 0.7) % 2, u = c < 1 ? c : 2 - c, s0 = 6 + THREE.MathUtils.smootherstep(u, 0.08, 0.92) * (RL - 40);
+        cars.forEach((car, i) => { const s = (s0 + i * 9.6) / RL, p = curve.getPointAt(s), tg = curve.getTangentAt(s); car.position.set(p.x, y + 0.2, p.z); car.rotation.y = -Math.atan2(tg.z, tg.x); });
+      });
+    }); }
+  // 桑園駅：南東の高架駅（競馬場から約700m。遠景として扱う）
+  { const g = backdrop(group(null, -614, 570, Math.atan2(130, -75)));
+    addBox(g, [70, 7 - 1.2, 18], [0, (7 - 1.2) / 2, 0], toon('#ece5d4'), null, 0);
+    addBox(g, [60, 0.8, 20], [0, 12.5, 0], toon('#7f8f9c'), null, 0);
+    for (let x = -26; x <= 26; x += 13) addBox(g, [0.6, 5.4, 0.6], [x, 9.6, 0], steel, null, 0); }
+
+  // ---- 木：本線・建物・線路・道路を避けて置く ----
+  // スタンド・パドック・駐車場・まきばガーデン・厩舎・市場の範囲（地図の実寸）
+  const busy = (x, z) => (x > -270 && x < 300 && z < -28 && z > -320) || (x > 370 && x < 620 && z > -140 && z < 370) || (x > -480 && x < 0 && z < -140 && z > -500);
+  const greens = ['#3f8f3a', '#4fa546', '#5fb853', '#377d34', '#6aa84f'], spots = [];
+  const lines = [hakodate, sassho, ...roads.map(r => r.pts)];
+  // 外側は中継カメラ（走路の外24m）の通り道をあけ、走路から44m以上離す
+  for (let n = 0; n < 2600 && spots.length < 300; n++) {
+    const x = rand(-520, 800), z = rand(-560, 760), p = at(x, z);
+    if (busy(x, z) || inside(p) || gap(p) < 44 || gap(p) > 260 || lines.some(l => near(p, l, 9))) continue;
+    spots.push({ p: ground(p) });
+  }
+  // 林（スタンドの裏の木立）
+  { const wood2 = poly([[95, -168], [87, -154], [63, -153], [40, -153], [31, -149], [31, -140], [6, -138], [22, -188], [48, -178], [90, -169]]);
+    for (let n = 0; n < 60; n++) { const p = at(rand(6, 95), rand(-188, -138)); if (inPoly(wood2, p)) spots.push({ p: ground(p), s: rand(0.9, 1.3) }); } }
+  // まきばガーデンの木
+  for (const [x, z] of [[-70, -48], [-62, -80], [-15, -50], [-30, -104]]) spots.push({ p: ground(at(x, z)), s: rand(1.1, 1.4) });
+  // 内馬場：ダートコースの内側に、遊び場・周回路・ターフビジョンを避けてまばらに
+  const park = [[11, 112, 60], [89, 96, 22], [136, 101, 22], [99, 146, 28], [147, 127, 16], [80, 181, 20], [180, 101, 34], [176, 59, 22], [139, 57, 24], [208, 57, 20], [38, 68, 22], [298, 170, 118]];
+  for (let n = 0; n < 700 && spots.length < 380; n++) {
+    const x = rand(-170, 420), z = rand(30, 320), p = at(x, z);
+    if (!inside(p) || gap(p) < 30 || park.some(([px, pz, r]) => p.distanceTo(at(px, pz)) < r * k) || near(p, dchute.pts, 10) || p.distanceTo(boardPos) < 34) continue;
+    spots.push({ p: ground(p) });
+  }
+  roundTrees(spots, greens);
+
+  // ---- 遠景（図鑑の全景では隠す）：札幌の住宅地（色とりどりの金属屋根）と中層の集合住宅、南東の都心の高層ビル群、南から西の山並み ----
+  { const walls = [], roofs = [], blocks = [], bands = [];
+    const wallCol = ['#efe8da', '#e6dccb', '#f3efe6', '#d9d2c4'].map(C), roofCol = ['#b8473a', '#3f6fa8', '#3f8f5a', '#7a5b4a', '#5a5f66', '#8a3f3a'].map(C);
+    for (let n = 0; n < 3400 && walls.length + blocks.length < 680; n++) {
+      const x = rand(-1400, 1600), z = rand(-1400, 1500), p = at(x, z), ry = rand(-0.08, 0.08);
+      if (inside(p) || gap(p) < 90 || busy(x, z) || lines.some(l => near(p, l, 14))) continue;
+      // ところどころに中層の集合住宅（各階の窓の帯つき）
+      if (n % 6 === 0 && gap(p) > 140) { const h = rand(12, 30), w = rand(18, 30); blocks.push({ p: new V3(p.x, h / 2 - 1, p.z), s: new V3(w, h, 9), r: [0, ry, 0], c: wallCol[n % 4] });
+        for (let y = 2.4; y < h - 2; y += 3) bands.push({ p: new V3(p.x, y, p.z), s: new V3(w - 2, 1.1, 9.3), r: [0, ry, 0] }); continue; }
+      // 北海道の家：雪を落とさない平たい屋根や、ゆるい勾配の金属屋根
+      const w = rand(6, 9), h = rand(5, 7.5);
+      walls.push({ p: new V3(p.x, h / 2 - 1, p.z), s: new V3(w, h, w * 0.8), r: [0, ry, 0], c: wallCol[n % 4] });
+      roofs.push({ p: new V3(p.x, h - 0.8, p.z), s: new V3(w + 0.6, 0.6, w * 0.8 + 0.6), r: [n % 3 ? 0 : 0.12, ry, 0], c: roofCol[n % 6] });
+    }
+    for (const m of [inst(BOX, toon('#ffffff'), walls, false), inst(BOX, toon('#ffffff'), roofs, false), inst(BOX, toon('#ffffff'), blocks, false), inst(BOX, toon('#8fa3b3', { fog: true }), bands, false)]) backdrop(m); }
+  { const base = at(130, 170), toward = (a, dist) => base.clone().add(new V3(Math.cos(a), 0, Math.sin(a) * track.turn).multiplyScalar(dist));
+    const cone = new THREE.ConeGeometry(1, 1, 8); cone.translate(0, 0.5, 0);
+    const dome = (b, dist, s, color) => { const p = toward(deg(b), dist), m = new THREE.Mesh(new THREE.SphereGeometry(1, 24, 12, 0, Math.PI * 2, 0, Math.PI / 2), toon(color, { fog: true })); m.position.set(p.x, -6, p.z); m.scale.set(...s); world.add(backdrop(m)); return p; };
+    // 山並み：南の藻岩山から南西の円山・三角山・大倉山、西の手稲山へ。北（石狩平野）と東は開けている
+    const ridge = [];
+    const range = (a0, a1, dist, n, h0, h1) => { for (let i = 0; i < n; i++) { const p = toward(deg(lerp(a0, a1, i / (n - 1))), dist + rand(-60, 80)); p.y = -6; ridge.push({ p, s: new V3(rand(150, 210), rand(h0, h1), rand(120, 170)), r: [0, rand(0, 3), 0] }); } };
+    range(190, 262, 1450, 10, 80, 150);   // 砥石山から奥三角山へ続く山並み
+    range(276, 302, 1700, 5, 90, 160);    // 手稲山の北の山すそ
+    backdrop(inst(cone, toon(th.mount, { fog: true }), ridge, false));
+    // 藻岩山（531m）：真南の近く。山頂に電波塔が並ぶ、もいわテラスの名前の由来の山
+    const moiwa = dome(183, 1150, [230, 135, 200], '#6f8f6a');
+    for (const [dx, dz, h] of [[-12, 4, 30], [6, -8, 24], [16, 10, 20]]) backdrop(part(world, new THREE.CylinderGeometry(0.8, 1.6, h, 6), toon('#e8e4da', { fog: true }), [moiwa.x + dx, 127 + h / 2, moiwa.z + dz], null, null, 0));
+    // 円山・三角山：都心の西の小さな丸い山
+    dome(203, 900, [120, 55, 110], '#6f8f6a'); dome(248, 950, [110, 60, 100], '#73926c');
+    // 大倉山：南西の山の東の斜面に、白いジャンプ台のランディングバーンが延びる
+    { const p = dome(224, 1050, [150, 85, 130], '#6a8a66'), g = backdrop(new THREE.Group()); g.position.set(p.x, -6, p.z); g.lookAt(base.x, -6, base.z); world.add(g);
+      // 斜面に沿わせて、山頂寄りの緩い区間と下のきつい区間に分ける
+      const snow = toon('#f4f2ec', { fog: true });
+      addBox(g, [10, 1, 52], [0, 81.5, 45], snow, [0.19, 0, 0], 0); addBox(g, [10, 1, 67], [0, 58, 97], snow, [0.59, 0, 0], 0);
+      addBox(g, [5, 16, 5], [0, 90, 8], toon('#d8d2c4', { fog: true }), null, 0); }
+    // 手稲山（1023m）：西の遠く。山頂の電波塔
+    { const p = toward(deg(271), 1700); backdrop(part(world, cone, toon('#7f96a8', { fog: true }), [p.x, -8, p.z], [380, 230, 320], null, 0));
+      for (const dx of [-10, 10]) backdrop(part(world, new THREE.CylinderGeometry(1, 2, 34, 6), toon('#e8e4da', { fog: true }), [p.x + dx, 222 - 8 + 17, p.z], null, null, 0)); }
+    // 都心の高層ビル群：南東。ひときわ高いJRタワーと、赤い鉄塔に大時計のさっぽろテレビ塔
+    const city = new THREE.Group(), cp = toward(deg(122), 900); city.position.set(cp.x, 0, cp.z); city.lookAt(base.x, 0, base.z); world.add(backdrop(city));
+    const tower = toon('#c9d3db', { fog: true }), tower2 = toon('#9fb0bf', { fog: true });
+    addBox(city, [26, 30, 22], [-40, 15, 30], tower, null, 0); addBox(city, [18, 120, 16], [-40, 60, 30], tower2, null, 0); addBox(city, [12, 10, 10], [-40, 125, 30], tower, null, 0);
+    for (const [x, z, h, w] of [[-75, 50, 60, 18], [-10, 60, 48, 22], [20, -20, 70, 16], [55, -10, 52, 20], [-100, 10, 40, 24], [90, 30, 44, 18], [-60, -30, 56, 16], [35, 70, 36, 26], [110, -40, 34, 20]]) addBox(city, [w, h, w * 0.8], [x, h / 2, z], x % 2 ? tower : tower2, null, 0);
+    { const tv = new THREE.Group(); tv.position.set(70, 0, -90); city.add(tv); const red = toon('#d2553a', { fog: true });
+      for (const dx of [-1, 1]) for (const dz of [-1, 1]) tv.add(new THREE.Mesh(new THREE.TubeGeometry(new THREE.LineCurve3(new V3(dx * 9, 0, dz * 9), new V3(dx * 2.5, 70, dz * 2.5)), 1, 0.7, 4), red));
+      for (let y = 10; y <= 60; y += 10) { const r = 9 - 6.5 * y / 70; addBox(tv, [r * 2, 0.6, r * 2], [0, y, 0], red, null, 0); }
+      addBox(tv, [10, 6, 10], [0, 50, 0], toon('#e8e4da', { fog: true }), null, 0);
+      part(tv, new THREE.CircleGeometry(3, 20), toon('#ffffff', { fog: true }), [0, 40, 6.6], null, null, 0);
+      part(tv, new THREE.CylinderGeometry(0.4, 0.8, 26, 6), red, [0, 83, 0], null, null, 0); } }
 }
 function decorNakayama(th) {
   // 外回り（飾り）：内回りの2コーナー入口で分かれ、2コーナー出口の外側の頂点まで大きく回ってから、
