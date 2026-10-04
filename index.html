@@ -1106,9 +1106,13 @@ const TRACKS = [
     desc: '街を駆け上がり、ヘアピンからトンネルへ！ 港のヨットを横目にシケインを抜ける、舗装路の特別レース。とうふデリバリーは舗装路が得意です。',
     grad: 'linear-gradient(135deg,#219ed0,#f9dfb4 55%,#ef7066)' },
   { name: '阪神桜花コース', kick: 1.1, real: true, theme: 'hanshin', surf: 'turf', dir: 'right', D: 800, time: '右回り', scale: 0.5, elevEx: 4,
-    segs: [{ len: 520 }, { curve: [[695, 0], [665, 220], [510, 260]] }, { curve: [[350, 301], [190, 342], [30, 383]] }, { curve: [[-315, 471], [-325, 0], [0, 0]] }], finish: [0, 473.6],
-    elev: [[0, 0, 0.8], [0, 0.526, 0], [0, 0.757, 1.8], [0, 0.92, 1.8], [0, 1, 1.8], [1, 0.6, 2.4], [2, 1, 2.4], [3, 0.65, 2.4], [3, 1, 0.8]],
-    motif: '阪神競馬場（外回り）　芝1600m（桜花賞）', motifNote: '右回り。傾いた長い向こう正面と、外へ大きく張り出す3・4コーナー。直線473.6mの最後に急坂が待っています。',
+    // 外回り1周2089m（Aコース）：直線473.6m＋ゴール後26mで1コーナー、1〜2コーナー約287m、外へ傾いた向正面約620m、大きく張り出す3〜4コーナー約682m。
+    // 1600mの発走は向正面の中ほど（3コーナーまで約444m）、1800mは2コーナー出口付近（同約645m）
+    segs: [{ len: 500 }, { curve: [[616, 0], [637, 166], [524, 194]] }, { len: 620 }, { curve: [[-320, 404], [-415, 0], [0, 0]] }], finish: [0, 473.6],
+    // 平坦な向正面から、3コーナー手前の内回りとの分岐で上って最高地点。3〜4コーナーから直線半ばまでゆるやかに下り、
+    // 直線の残り200〜80mに高低差1.8mの急坂（全体の高低差2.4m）。坂を上るとゴールまでほぼ平坦
+    elev: [[0, 0, 0.8], [0, 0.547, 0], [0, 0.787, 1.8], [0, 1, 1.8], [1, 1, 1.8], [2, 0.6, 1.8], [2, 0.82, 2.4], [3, 0.06, 2.3], [3, 0.5, 1.5], [3, 1, 0.8]],
+    motif: '阪神競馬場（外回り）　芝1600m（桜花賞）', motifNote: '右回りで外回り1周2089m。向正面の中ほどから発走し、3コーナー手前の内回りとの分岐で上ったあと、外へ大きく張り出す3・4コーナーを下って直線473.6mへ。直線の残り200m付近から高低差1.8mの急坂（全体の高低差2.4m）。3コーナー手前で分かれて直線で合流する内回り（1周1689m・直線356.5m）、内側のダートコース（1周1517.6m）、襷コースのある障害コース。向正面の奥に六甲の山並みと甲山、場外に阪急今津線の仁川駅。',
     desc: '大きな外回りを下り、桜色の直線で追い比べ。ゴール前の強調された坂をもうひと踏ん張り！',
     grad: 'linear-gradient(135deg,#458bdf,#ffcee5 55%,#78ba72)' },
   { name: '中京スパイラルカップ', kick: 0.95, real: true, theme: 'chukyo', surf: 'turf', dir: 'left', D: 1000, time: '左回り', scale: 0.5, elevEx: 4,
@@ -1176,14 +1180,17 @@ const TRACKS = [
       { seg: 6, from: 0.12, to: 0.88, name: '歯車シケイン', color: '#f7ad75', speed: 0.98, agility: 0.004, motion: 3 }],
     desc: '四角い回廊と歯車シケインの機械仕掛けコース。高さ4mの搬送路で加速し、連続切り返しでは器用さが問われる。',
     grad: 'linear-gradient(135deg,#648eae,#dcb573 55%,#8f6351)' },
-  { name: '箱根 下り', theme: 'hakone', surf: 'asphalt', D: 2000, time: '峠・下り', dir: 'right', kick: 0.85, closed: false, scale: 0.8782058266,
-    segs: [{ len: 400 }, { curve: [[466.274, 0], [466.274, 120], [400, 120]] }, { len: 300 },
-      { curve: [[33.726, 120], [33.726, 240], [100, 240]] }, { len: 300 },
-      { curve: [[466.274, 240], [466.274, 360], [400, 360]] }, { len: 300 },
-      { curve: [[33.726, 360], [33.726, 480], [100, 480]] }, { len: 400 }], home: 8, finish: [8, 340], elevEx: 1,
-    elev: [[0, 0, 120], [0, 1, 100], [1, 1, 98], [2, 1, 72], [3, 1, 70], [4, 1, 44], [5, 1, 42], [6, 1, 16], [7, 1, 14], [8, 0.85, 0], [8, 1, 0]],
-    motif: '箱根の峠道をモチーフにした下りコース', motifNote: '山頂から麓へ、4つのヘアピンを折り返す一本道。実際の道路の距離・形状を再現したものではありません。競馬モード専用です。',
-    desc: '高低差120mを駆け下りる舗装路2000m。下りの加速と4連続ヘアピンで器用さが問われる、スタートとゴールのある峠レース。競馬専用。',
+  { name: '箱根 下り', theme: 'hakone', surf: 'asphalt', D: 2000, time: '峠・下り', dir: 'right', kick: 0.85, closed: false, boardLane: 40, broadcastSide: -1,
+    // 国道1号の最高地点（標高874m）から箱根湯本駅前まで、実際の道路の線形を約1/6.5に縮めた制御点（北が-z）
+    points: [[0,0],[8.3,-5.6],[16.6,-11.2],[24.9,-16.9],[33.1,-22.6],[41.4,-28.2],[49.7,-33.8],[58,-39.4],[66.2,-45.1],[74.6,-50.7],[82.9,-56.3],[91.1,-62],[99.5,-67.6],[107.7,-73.3],[116,-78.8],[125,-83.1],[134.8,-85.4],[144.8,-85.8],[154.8,-86.1],[164.8,-86.4],[174.5,-88.5],[182.9,-93.8],[189,-101.8],[191.8,-111.3],[191.2,-121.3],[187.1,-130.4],[180.2,-137.7],[174.2,-145.6],[171,-155],[171.1,-165],[174,-174.5],[177.4,-183.9],[180.7,-193.5],[184,-202.9],[187.4,-212.3],[190.8,-221.8],[194.1,-231.2],[198.4,-240.2],[203.6,-248.8],[208.9,-257.3],[214.2,-265.8],[219.4,-274.4],[222.6,-283.8],[222.5,-293.7],[218.9,-303.1],[212.1,-310.4],[203.4,-315.2],[195.2,-320.7],[189.3,-328.8],[186.5,-338.3],[187.2,-348.2],[190.5,-357.7],[192.3,-367.5],[191.7,-377.5],[188.6,-387],[184.5,-396.1],[180.2,-405.2],[176.1,-414.4],[172,-423.5],[167.8,-432.6],[163.7,-441.8],[159.6,-450.8],[155.3,-459.9],[151.2,-469.1],[147.8,-478.5],[146.5,-488.3],[147.4,-498.4],[148.6,-508.3],[150.1,-518.2],[154.5,-527.1],[162,-533.7],[171.3,-537.2],[181.2,-536.8],[190.6,-533.3],[198.1,-526.8],[202.9,-518.1],[206.8,-508.9],[213.5,-501.5],[222.2,-496.8],[232.1,-495.4],[242.1,-496.9],[251.9,-498.6],[261.7,-500.3],[271.2,-503.7],[279,-509.8],[286.1,-516.9],[293.1,-523.9],[300.1,-531.3],[305.1,-539.9],[309.5,-548.8],[314,-557.8],[318.5,-566.8],[323.1,-575.6],[329.6,-583.3],[337.6,-589.3],[346,-594.7],[354.6,-599.9],[363.8,-603.7],[373.6,-605.4],[383.6,-604.8],[393.2,-602.1],[402,-597.3],[409.6,-590.9],[417,-584.1],[424.3,-577.2],[431.6,-570.4],[439.1,-563.6],[446.4,-556.9],[453.7,-550],[461,-543.2],[468.4,-536.4],[475.7,-529.6],[483.1,-522.7],[490.4,-515.9],[497.8,-509.1],[505.1,-502.3],[512.4,-495.4],[519.7,-488.6],[527.2,-481.8],[534.5,-475],[541.8,-468.2],[549.2,-461.5],[557.8,-456.3],[567.3,-453.1],[577.2,-452.1],[587.2,-453.2],[596.8,-455.6],[605.7,-460.1],[612.6,-467.5],[616.3,-476.7],[616.6,-486.6],[614.6,-496.4],[612.7,-506.2],[613.4,-516.1],[617.7,-525.2],[624.7,-532.2],[633.8,-536.3],[643.8,-536.9],[653.3,-534],[661.2,-528],[666.7,-519.6],[670.5,-510.4],[674.3,-501.2],[678.2,-491.8],[682,-482.6],[685.9,-473.4],[689.7,-464.1],[693.5,-454.9],[697.5,-445.7],[701.3,-436.3],[705.3,-427.2],[711.2,-419.2],[718.9,-412.9],[727,-406.8],[735,-400.9],[743,-394.9],[751.1,-388.9],[759.1,-382.9],[767,-376.8],[775,-370.8],[783.1,-364.8],[791.1,-358.8],[800,-354.3],[809.9,-352.8],[819.6,-354.8],[828.4,-359.6],[836.9,-365],[845.5,-370],[855.2,-372.2],[865.1,-370.8],[873.8,-366.1],[880.4,-358.7],[886.7,-350.9],[895.4,-345.9],[905.1,-343.8],[915,-342.4],[925,-341],[934.9,-339.6],[944.8,-338.2],[954.7,-336.8],[964.6,-335.4],[974.6,-334.8],[984.6,-335.7],[994.5,-337],[1004.4,-338.3],[1014.4,-339.6],[1024.3,-341],[1034.3,-342.3],[1044.2,-343.6],[1054.1,-344.9],[1064.1,-346.1],[1074.1,-346.2],[1084.1,-346.2],[1094.1,-346.2],[1104.1,-346.2],[1114.1,-346.2],[1124.2,-346.2],[1134.2,-346.2],[1144.2,-346.2],[1154.2,-346.2],[1164.2,-346.2],[1174.2,-346.2],[1184.3,-346.2],[1194.3,-346.2],[1204.4,-346.2],[1214.3,-346.2],[1224.3,-346.2],[1234.4,-346.2],[1244.4,-346.2]], pointScale: 1,
+    segs: [{ len: 1 }], finish: [0, 2040], homeLength: 170, elevEx: 1,
+    // 実際の標高（地理院の標高データ）を、勾配の配分を保ったまま落差120mに縮めたもの
+    elev: [[0,0,120],[0,0.034,116.7],[0,0.067,116.2],[0,0.101,111.4],[0,0.135,106.3],[0,0.168,102.9],[0,0.202,99.4],[0,0.236,94.5],[0,0.269,90.2],[0,0.303,87.5],[0,0.337,82.5],[0,0.37,76.2],[0,0.404,69.9],[0,0.438,66],[0,0.471,59.8],[0,0.505,56.8],[0,0.538,54.7],[0,0.572,52.5],[0,0.606,48],[0,0.639,43.5],[0,0.673,38.4],[0,0.707,32.5],[0,0.74,27.8],[0,0.774,23.5],[0,0.808,18.1],[0,0.841,12.8],[0,0.875,7],[0,0.909,3.6],[0,0.942,1.6],[0,1,0]],
+    // broadcastSide: -1 で中継カメラを谷側（右）に置き、山側（左）の名所を馬越しに見せる
+    // 先頭馬が通過したときの地点実況（コース上の距離）
+    placeCalls: [[860, '小涌谷の踏切を越えた！先頭は{L}、2番手{B}！'], [1000, '宮ノ下の温泉街を通過！先頭は{L}！'], [1300, '大平台のヘアピンカーブ！{L}が先頭で回っていく！']],
+    motif: '国道1号・箱根の下り（箱根駅伝6区の山下り）', motifNote: '国道1号の最高地点（標高874m）から芦之湯・小涌谷・宮ノ下・大平台を経て箱根湯本駅前まで、約13.4kmの実際の道路を2kmに縮めたコースです。曲がり方と高低差777mの下り坂の配分を、馬が走れる幅と半径に整えています。競馬モード専用です。',
+    desc: '最高地点から箱根湯本へ、高低差120mを駆け下りる舗装路2000m。小涌谷の踏切、宮ノ下の温泉街、大平台のヘアピンを抜け、早川沿いを湯本へ。下りの勢いと切り返しの器用さが鍵。競馬専用。',
     grad: 'linear-gradient(135deg,#547985,#c4d49a 45%,#65714a)' },
   { name: '妖精の丘クロスカントリー', theme: 'boxHill', surf: 'turf', D: 1800, S: 280, R: 70, kick: 0.8, time: '丘陵・昼', elevEx: 1.5,
     segs: fantasyLoop(280, [[420, 120, 100, 100], [300, 330, 160, 90], [90, 390, 210, 85], [-80, 285, 255, 80], [-140, 115, 285, 85], [0, 0, 0, 85]]), finish: [0, 255],
@@ -1478,6 +1485,13 @@ const CIRC = keep(new THREE.CircleGeometry(1, 20));
 const OUT = keep(new THREE.MeshBasicMaterial({ color: C('#2a1438'), side: THREE.BackSide }));
 function toon(color, extra) { return new THREE.MeshToonMaterial(Object.assign({ color: C(color), gradientMap: GRAD }, extra || {})); }
 function glowMat(color, k) { return new THREE.MeshBasicMaterial({ color: C(color).multiplyScalar(k || 2) }); }
+// 文字入りの看板：両面表示だと裏から鏡文字になるので、片面の板を背中合わせに2枚貼る
+function signPanel(w, h, map, extra) {
+  const g = new THREE.Group(), geo = new THREE.PlaneGeometry(w, h), mat = new THREE.MeshBasicMaterial(Object.assign({ map }, extra || {}));
+  g.add(new THREE.Mesh(geo, mat));
+  const back = new THREE.Mesh(geo, mat); back.rotation.y = Math.PI; g.add(back);
+  return g;
+}
 
 function ctex(w, h, draw, rep, srgb = true) {
   const c = document.createElement('canvas'); c.width = w; c.height = h;
@@ -1596,15 +1610,17 @@ class Track {
       const controls = def.points.map(([px, pz]) => new V3(px * k * (def.pointScale || 1.6), 0, pz * k * (def.pointScale || 1.6)));
       let rounded = controls;
       // Round street junctions before sampling, keeping the narrow hairpin driveable.
+      // 一本道（closed: false）は両端の点を固定したまま角だけを丸める
       for (let pass = 0; pass < 2; pass++) {
-        const next = [];
-        for (let i = 0; i < rounded.length; i++) {
+        const next = this.closed ? [] : [rounded[0]];
+        for (let i = 0; i < rounded.length - (this.closed ? 0 : 1); i++) {
           const a = rounded[i], b = rounded[(i + 1) % rounded.length];
           next.push(a.clone().lerp(b, 0.25), a.clone().lerp(b, 0.75));
         }
+        if (!this.closed) next.push(rounded[rounded.length - 1]);
         rounded = next;
       }
-      const curve = new THREE.CatmullRomCurve3(rounded, true, 'centripetal');
+      const curve = new THREE.CatmullRomCurve3(rounded, this.closed, 'centripetal');
       curve.arcLengthDivisions = 4000;
       sAcc = curve.getLength();
       if (def.normalizedLength) {
@@ -1688,6 +1704,8 @@ class Track {
     const fin = def.finish || [0, def.S - 25];
     this.finishS = segStart[fin[0]] + fin[1] * (def.segs ? k : 1);
     const hsg = def.home || 0; this.homeS0 = segStart[hsg]; this.homeS1 = segStart[hsg] + (def.homeLength || segs[hsg].len2);
+    // 制御点で描く一本道は、終点側の homeLength をゴール前の直線として扱う
+    if (def.points && !this.closed) { this.homeS1 = L; this.homeS0 = L - (def.homeLength || 200); }
     this.S = this.homeS1 - this.homeS0;
     this.stations = (def.stations || []).map(([name, px, pz, major], index) => {
       const factor = k * (def.pointScale || 1.6) * pointRatio;
@@ -2979,7 +2997,8 @@ function buildWorld(ti) {
   }
 
   // Railway platforms replace the common grandstand on the city loop.
-  if (!RAIL_LINES[def.theme]) {
+  // 箱根の下りもスタンドを置かず、沿道の観客（decorHakone）で盛り上げる
+  if (!RAIL_LINES[def.theme] && def.theme !== 'hakone') {
     const len = Math.min(track.S - 20, def.stand === 'meydan' ? 420 : 250), sc0 = clamp(track.finishS - len * 0.35, track.homeS0 + len / 2 + 6, track.homeS1 - len / 2 - 6);
     const x0 = -len / 2, z0 = W / 2 + (def.stand === 'meydan' ? 42 : 18);
     let ymin = 1e9; for (let s2 = sc0 - len / 2; s2 <= sc0 + len / 2; s2 += 4) ymin = Math.min(ymin, track.pos(s2, W / 2).y);
@@ -3037,11 +3056,19 @@ function buildWorld(ti) {
 
   // jumbotron in the infield facing the stands
   {
-    const bf = tp(clamp(track.finishS - 70, track.homeS0 + 20, track.homeS1 - 20), -Math.min(30, track.R * 0.55));
+    // boardLane があればそのレーンへ（峠道は内側が狭いので外側の山側に立てる）
+    const bf = tp(clamp(track.finishS - 70, track.homeS0 + 20, track.homeS1 - 20), def.boardLane ?? -Math.min(30, track.R * 0.55));
     boardPos.set(bf.v.x, track.groundH(bf.v.x, bf.v.z), bf.v.z);
-    const g = new THREE.Group(); g.position.copy(boardPos); g.rotation.y = -bf.h + (track.sgn < 0 ? Math.PI : 0); world.add(g);
+    const g = new THREE.Group(); g.position.copy(boardPos); g.rotation.y = -bf.h + (track.sgn < 0 ? Math.PI : 0) + (def.boardLane > W / 2 ? Math.PI : 0); world.add(g);
     if (def.stand === 'big') g.scale.setScalar(1.35);
     const frameM = toon('#231a3d');
+    if (def.theme === 'tokyo' || def.theme === 'nakayama') {
+      // 東京・中山のマルチ画面ターフビジョン：中央の大画面の左右に横長の画面が続く、幅の広い構え
+      for (const x of [-27, 27]) {
+        addBox(g, [18, 11, 1.4], [x, 11, -0.8], frameM, null, 0.02); addBox(g, [1.2, 5.5, 1.2], [x, 2.75, -0.8], frameM);
+        const side = new THREE.Mesh(new THREE.PlaneGeometry(16.6, 9.6), glowMat(x < 0 ? '#7cc7ff' : '#9fe38a', 1.1)); side.position.set(x, 11, 0.01); g.add(side);
+      }
+    }
     addBox(g, [36, 17, 1.4], [0, 12.5, -0.8], frameM, null, 0.02);
     addBox(g, [1.2, 5, 1.2], [-10, 2.5, -0.8], frameM); addBox(g, [1.2, 5, 1.2], [10, 2.5, -0.8], frameM);
     const tex = ctex(1024, 480, () => {}, false);
@@ -3371,49 +3398,494 @@ function decorBoxHill(th) {
   part(lookout, new THREE.CylinderGeometry(1, 1.4, 4, 8), toon('#eee8d1'), [0, 3.5, 0]);
   part(lookout, SPH_LO, glowMat('#e7ffb7', 1.4), [0, 6, 0], [1.2, 1.2, 1.2]);
 }
+/* ---- 箱根の下り：国道1号の沿道（最高地点〜箱根湯本） ---- */
+// 名所はコース上の距離 s と、制御点と同じ地図座標（走路の始点が原点・北が-z）で置く。
+// この一本道は右回り扱いなので、レーン > W が進行方向の左、レーン < 0 が右になる
 function decorHakone(th) {
-  mountains(th.mount, 18, false);
-  const paint = toon('#eee5c3', { side: THREE.DoubleSide });
-  courseRibbon(0, track.L, 0.3, 0.6, 0.12, paint); courseRibbon(0, track.L, W - 0.6, W - 0.3, 0.12, paint);
-  const dashes = [];
-  for (let s = 0; s < track.L; s += 14) {
-    const p = track.pos(s, W / 2);
-    dashes.push({ p: new V3(p.x, p.y + 0.15, p.z), s: new V3(5, 0.05, 0.25), r: [0, -p.h, Math.atan(track.grade(s))] });
+  mountains(th.mount, 10, false);
+  // 走路中心までの距離：32m格子に標本を登録し、近くのセルだけを調べる（skip の区間の標本は除く）
+  const CELL = 32, cells = new Map(), cellKey = (cx, cz) => cx * 4096 + cz;
+  for (let i = 0; i <= track.N; i += 4) {
+    const key = cellKey(Math.floor(track.xs[i] / CELL), Math.floor(track.zs[i] / CELL));
+    if (!cells.has(key)) cells.set(key, []);
+    cells.get(key).push(i);
   }
-  inst(BOX, paint, dashes, false);
-  const trunks = [], crowns = [], road = [];
-  for (let s = 0; s <= track.L; s += 10) road.push(track.pos(s, W / 2));
-  for (let i = 0; i < 220; i++) {
-    const s = rand(0, track.homeS0), q = track.pos(s, i % 2 ? -rand(18, 42) : W + rand(18, 42));
-    if (road.some(p => Math.hypot(q.x - p.x, q.z - p.z) < 24)) continue;
-    const y = track.groundH(q.x, q.z), h = rand(13, 23);
-    trunks.push({ p: new V3(q.x, y + h * 0.3, q.z), s: new V3(0.7, h * 0.6, 0.7) });
-    crowns.push({ p: new V3(q.x, y + h * 0.7, q.z), s: new V3(5, h * 0.9, 5), c: C(['#3d7856', '#527b49', '#789454'][i % 3]) });
+  const roadDist = (x, z, r = 64, skip = null) => {
+    let best = r * r;
+    for (let cx = Math.floor((x - r) / CELL); cx <= Math.floor((x + r) / CELL); cx++) {
+      for (let cz = Math.floor((z - r) / CELL); cz <= Math.floor((z + r) / CELL); cz++) {
+        for (const i of cells.get(cellKey(cx, cz)) || []) {
+          if (skip && i * track.ds > skip[0] && i * track.ds < skip[1]) continue;
+          best = Math.min(best, (track.xs[i] - x) ** 2 + (track.zs[i] - z) ** 2);
+        }
+      }
+    }
+    return Math.sqrt(best);
+  };
+  const groundAt = p => track.groundH(p.x, p.z);
+  const mapAt = (x, z) => new V3(track.xs[0] + x, 0, track.zs[0] + z);
+  const label = (text, w, h, bg, fg, font = 'bold 60px sans-serif') => new THREE.Sprite(new THREE.SpriteMaterial({ map: ctex(512, Math.round(512 * h / w), c => {
+    c.fillStyle = bg; c.fillRect(0, 0, 512, 512 * h / w); c.fillStyle = fg; c.font = font; c.textAlign = 'center'; c.textBaseline = 'middle';
+    c.fillText(text, 256, 256 * h / w + 4, 490);
+  }) }));
+  const signAt = (g, text, y, w = 14, bg = '#2c4a3b', fg = '#fff3c4') => { const sp = label(text, w, w / 4, bg, fg); sp.position.set(0, y, 0); sp.scale.set(w, w / 4, 1); g.add(sp); return sp; };
+
+  // 建物の土台：長方形の角と辺の中点が走路から十分離れるまで外へずらし、斜面では台座で水平にする。
+  // 向きは「-Zが走路側、+Zが走路から離れる側」にそろえる
+  const footprint = (g, w, d) => {
+    g.updateMatrixWorld(true);
+    return [[-1, -1], [1, -1], [1, 1], [-1, 1], [0, -1], [0, 1], [-1, 0], [1, 0], [0, 0]].map(([a, b]) => g.localToWorld(new V3(a * w / 2, 0, b * d / 2)));
+  };
+  const occupied = [];
+  const site = (name, s, lane, w, d, color = '#c9c1ae', clear = W / 2 + 5) => {
+    const out = lane > W / 2 ? 1 : -1, g = new THREE.Group();
+    for (let k = 0, ln = lane; k < 40; k++, ln += out * 2) {
+      const f = tp(s, ln); g.position.set(f.v.x, 0, f.v.z);
+      g.rotation.y = -f.h + (track.sgn < 0 ? Math.PI : 0) + (out < 0 ? Math.PI : 0);
+      if (footprint(g, w, d).every(p => roadDist(p.x, p.z) >= clear)) break;
+    }
+    world.add(g); landmarkFoundation(g, w, d, color); g.updateMatrixWorld(true);
+    occupied.push({ x: g.position.x, z: g.position.z, r: Math.hypot(w, d) / 2 + 4 });
+    return registerLandmark(g, name);
+  };
+  const PRISM = (() => {
+    const geo = new THREE.ExtrudeGeometry(new THREE.Shape([new THREE.Vector2(-0.5, 0), new THREE.Vector2(0.5, 0), new THREE.Vector2(0, 1)]), { depth: 1, bevelEnabled: false });
+    geo.translate(0, 0, -0.5); geo.rotateY(Math.PI / 2); return geo;
+  })();
+  // 切妻屋根の建物（棟は local x 方向）
+  const house = (g, w, h, d, x, z, wall, roof, roofH = d * 0.35) => {
+    addBox(g, [w, h, d], [x, h / 2, z], wall, null, 0);
+    part(g, PRISM, roof, [x, h, z], [w + 1, roofH, d + 1.2], null, 0);
+  };
+  const windows = (g, w, h, d, x, z, mat, floors, perFloor, y0 = 2) => {
+    const list = [];
+    for (let f = 0; f < floors; f++) for (let j = 0; j < perFloor; j++) {
+      list.push({ p: new V3(x + (j - (perFloor - 1) / 2) * w / perFloor, y0 + f * (h - y0) / floors, z - d / 2 - 0.06), s: new V3(w / perFloor * 0.55, 1.3, 0.12) });
+    }
+    const mesh = inst(BOX, mat, list, false); g.add(mesh); mesh.userData.fullCount = list.length; themeDetails.push(mesh);
+  };
+  const glass = toon('#4f6f7f'), darkWood = toon('#4d3a2c'), plaster = toon('#efe9da'), slate = toon('#4b5752'), stone = toon('#a9a493');
+
+  // 路面：白い外側線と、はみ出し禁止の黄色い中央線
+  const white = toon('#eeeee6', { side: THREE.DoubleSide }), yellow = toon('#f0c23a', { side: THREE.DoubleSide });
+  courseRibbon(0, track.L, 0.3, 0.6, 0.12, white); courseRibbon(0, track.L, W - 0.6, W - 0.3, 0.12, white);
+  courseRibbon(0, track.L, W / 2 - 0.32, W / 2 - 0.1, 0.13, yellow); courseRibbon(0, track.L, W / 2 + 0.1, W / 2 + 0.32, 0.13, yellow);
+
+  // 実在の山：駒ヶ岳・神山（西）、二子山（最高地点の南東）、鷹巣山・浅間山（コースの内側）、明星ヶ岳（北）
+  const peakGeo = new THREE.ConeGeometry(1, 1, 28); peakGeo.translate(0, 0.5, 0);
+  const peak = (x, z, radius, height, color) => {
+    const p = mapAt(x, z), r = Math.min(radius, roadDist(p.x, p.z, radius + 40) - 30);
+    if (r < 20) return null;
+    // 斜面に浮かないよう、裾の周りで一番低い地面に合わせる
+    let base = groundAt(p);
+    for (let k = 0; k < 8; k++) base = Math.min(base, track.groundH(p.x + Math.cos(k * Math.PI / 4) * r, p.z + Math.sin(k * Math.PI / 4) * r));
+    const m = new THREE.Mesh(peakGeo, toon(color)); m.position.set(p.x, base - 2, p.z); m.scale.set(r, height * r / radius, r); world.add(m);
+    return m;
+  };
+  peak(-249, -169, 170, 120, '#5f7d6c'); peak(-319, -359, 200, 150, '#577563');
+  peak(150, 70, 60, 52, '#56795b'); peak(205, 52, 52, 40, '#5c8061');
+  peak(285, -209, 55, 34, '#62855e'); peak(384, -359, 120, 60, '#5b7f5a');
+  const myojo = peak(530, -864, 240, 130, '#668467');
+  if (myojo) {
+    // 明星ヶ岳の南斜面に浮かぶ「大」の字（大文字焼きの火床）
+    const r = myojo.scale.x, h = myojo.scale.y, phi = Math.atan2(r, h), t = 0.5;
+    const dai = new THREE.Mesh(new THREE.PlaneGeometry(60, 60), new THREE.MeshBasicMaterial({ map: ctex(256, 256, c => {
+      c.clearRect(0, 0, 256, 256); c.fillStyle = '#f4f1e4'; c.font = 'bold 230px serif'; c.textAlign = 'center'; c.textBaseline = 'middle'; c.fillText('大', 128, 136);
+    }), transparent: true, depthWrite: false }));
+    dai.position.set(myojo.position.x, myojo.position.y + h * t + Math.sin(phi) * 2, myojo.position.z + r * (1 - t) + Math.cos(phi) * 2);
+    dai.rotation.x = -phi; world.add(dai);
   }
-  fantasyInst(new THREE.CylinderGeometry(1, 1.1, 1, 8), toon('#655240'), trunks);
-  fantasyInst(CONE, toon('#ffffff'), crowns);
-  for (let i = 0; i < 4; i++) {
-    const seg = i * 2 + 1, s = track.segStart[seg] - 18, q = tp(s, W + 6);
-    const g = fantasyGroup(q.v); g.rotation.y = -q.h;
-    addBox(g, [0.4, 7, 0.4], [0, 3.5, 0], toon('#78857d'));
-    const tex = ctex(256, 128, c => {
-      c.fillStyle = '#ffd45c'; c.fillRect(0, 0, 256, 128); c.fillStyle = '#23392e'; c.textAlign = 'center'; c.font = 'bold 48px sans-serif';
-      c.fillText(i % 2 ? '← HAIRPIN' : 'HAIRPIN →', 128, 55, 240); c.font = '32px sans-serif'; c.fillText('第' + (i + 1) + 'カーブ', 128, 105);
+
+  // 最高地点：スタート横の標識と国道1号の標識、背後の精進池と石仏
+  {
+    const start = track.finishS - track.def.D;
+    const g = site('国道1号最高地点', start + 6, W + 5, 4, 2, '#9b9784', W / 2 + 3);
+    addBox(g, [0.3, 5, 0.3], [-1.2, 2.5, 0], toon('#7b857f')); addBox(g, [0.3, 5, 0.3], [1.2, 2.5, 0], toon('#7b857f'));
+    const board = signPanel(6, 3, ctex(512, 256, c => {
+      c.fillStyle = '#f6f3e6'; c.fillRect(0, 0, 512, 256); c.strokeStyle = '#2d5a8c'; c.lineWidth = 14; c.strokeRect(10, 10, 492, 236);
+      c.fillStyle = '#20324a'; c.textAlign = 'center'; c.textBaseline = 'middle'; c.font = 'bold 56px sans-serif'; c.fillText('国道1号 最高地点', 256, 92, 470);
+      c.font = 'bold 64px sans-serif'; c.fillText('標高 874m', 256, 180, 470);
+    }));
+    board.position.set(0, 4.4, -0.2); g.add(board);
+    // 国道の「おにぎり」標識（青い逆三角形に白い1）
+    const shield = signPanel(2.2, 2.2, ctex(128, 128, c => {
+      c.clearRect(0, 0, 128, 128); c.fillStyle = '#1f5fa8'; c.beginPath(); c.moveTo(8, 10); c.lineTo(120, 10); c.lineTo(64, 122); c.closePath(); c.fill();
+      c.strokeStyle = '#fff'; c.lineWidth = 5; c.stroke(); c.fillStyle = '#fff'; c.font = 'bold 64px sans-serif'; c.textAlign = 'center'; c.fillText('1', 64, 72);
+    }), { transparent: true });
+    shield.position.set(0, 7, -0.2); g.add(shield);
+    const marker = label('箱根 下り　最高地点 START', 24, 4, '#294b3c', '#fff1b7', 'bold 48px sans-serif');
+    const sq = tp(start, W / 2); marker.position.copy(sq.v).add(new V3(0, 13, 0)); marker.scale.set(24, 4, 1); world.add(marker);
+    const pond = mapAt(-56, 70), water = new THREE.Mesh(new THREE.CircleGeometry(1, 40), toon('#4d7f8c'));
+    water.rotation.x = -Math.PI / 2; water.position.set(pond.x, groundAt(pond) + 0.08, pond.z); water.scale.set(26, 15, 1); world.add(water);
+    const buddhas = [];
+    for (let i = 0; i < 7; i++) {
+      const a = 2.2 + i * 0.18, q = new V3(pond.x + Math.cos(a) * 31, 0, pond.z + Math.sin(a) * 19);
+      buddhas.push({ p: new V3(q.x, groundAt(q) + 0.9, q.z), s: new V3(0.8, 1.8, 0.6) });
+    }
+    inst(new THREE.CapsuleGeometry(0.5, 0.6, 3, 8), stone, buddhas);
+    const g2 = new THREE.Group(); g2.position.set(pond.x, groundAt(pond), pond.z); world.add(g2); signAt(g2, '精進池', 6, 10);
+  }
+
+  // 芦之湯：湯けむりの上がる温泉宿
+  const steam = [];
+  {
+    const g = site('芦之湯', 110, W + 14, 26, 12);
+    house(g, 13, 7, 10, -6, 0, plaster, slate); house(g, 10, 5.5, 9, 7.5, 0.5, toon('#e6dcc6'), toon('#5a4a3c'));
+    windows(g, 13, 7, 10, -6, 0, glass, 2, 5); addBox(g, [13.2, 0.4, 0.3], [-6, 3.6, -5.1], darkWood);
+    signAt(g, '芦之湯', 13, 12);
+    for (const x of [-10, 2, 11]) steam.push({ p: g.localToWorld(new V3(x, 8, 4)), t: Math.random() * 4 });
+  }
+
+  // つつじの庭園：丸い植え込みと池（進行方向の左）。ホテルの庭園なので看板は出さない
+  {
+    const g = site('つつじの庭園', 590, W + 12, 30, 22, '#8fa06f');
+    const bushes = [], cols = ['#e2557d', '#f088a8', '#f6f0f2', '#d9406a', '#ef9bb4'].map(C);
+    for (let i = 0; i < 46; i++) {
+      const x = rand(-13, 13), z = rand(-9, 9); if (Math.hypot(x - 6, z - 2) < 5) continue;
+      const s = rand(1.2, 2.2); bushes.push({ p: new V3(x, s * 0.55, z), s: new V3(s, s * 0.7, s), c: cols[i % cols.length] });
+    }
+    const mesh = inst(SPH_LO, toon('#ffffff'), bushes, false); g.add(mesh); mesh.userData.fullCount = bushes.length; themeDetails.push(mesh);
+    const pondG = new THREE.Mesh(new THREE.CircleGeometry(4.5, 24), toon('#5d8f9a')); pondG.rotation.x = -Math.PI / 2; pondG.position.set(6, 0.06, 2); g.add(pondG);
+  }
+
+  // 小涌谷の山あいのホテル（進行方向の左）。企業名の看板は出さない
+  {
+    const g = site('山あいのホテル', 647, W + 14, 44, 16);
+    addBox(g, [40, 13, 12], [0, 6.5, 0], toon('#e8e2d2'), null, 0); addBox(g, [42, 0.8, 13.5], [0, 13.2, 0], slate, null, 0);
+    addBox(g, [12, 6, 8], [-10, 3, -9], toon('#d8cfbb'), null, 0);
+    windows(g, 40, 13, 12, 0, 0, glass, 3, 12, 3);
+  }
+
+  // 登山電車：赤い車体に白い帯。front は +X
+  const trainRed = toon('#c7352c'), trainWin = toon('#2c3940'), trainRoof = toon('#9aa2a6'), trainUnder = toon('#33383c');
+  const lamp = glowMat('#fff3cf', 2.4), tail = glowMat('#ff4a3a', 2);
+  const tozan = (cars = 2) => {
+    const g = new THREE.Group(), CAR = 14;
+    for (let i = 0; i < cars; i++) {
+      const x = -i * (CAR + 0.6);
+      addBox(g, [CAR, 2.6, 2.7], [x, 2.0, 0], trainRed, null, 0.02);
+      addBox(g, [CAR + 0.04, 0.95, 2.74], [x, 2.6, 0], trainWin, null, 0);
+      addBox(g, [CAR + 0.06, 0.18, 2.76], [x, 1.6, 0], toon('#f4f1ea'), null, 0);
+      addBox(g, [CAR - 0.4, 0.35, 2.4], [x, 3.45, 0], trainRoof, null, 0);
+      addBox(g, [CAR - 3, 0.6, 2.2], [x, 0.55, 0], trainUnder, null, 0);
+      for (const end of [1, -1]) {
+        if (!(end > 0 ? i === 0 : i === cars - 1)) continue;
+        for (const z of [-0.8, 0.8]) addBox(g, [0.2, 0.25, 0.4], [x + end * (CAR / 2 + 0.06), 1.3, z], end > 0 ? lamp : tail, null, 0);
+      }
+    }
+    world.add(g); return g;
+  };
+  const railMats = { wood: toon('#5f5446'), steel: toon('#b8c0c2') };
+  // 線路の通り道（森の木を生やさない帯）
+  const corridors = [];
+  const nearCorridor = p => corridors.some(([a, b, r]) => {
+    const ab = b.clone().sub(a), t = clamp(((p.x - a.x) * ab.x + (p.z - a.z) * ab.z) / Math.max(1e-6, ab.x * ab.x + ab.z * ab.z), 0, 1);
+    return Math.hypot(a.x + ab.x * t - p.x, a.z + ab.z * t - p.z) < r;
+  });
+  // a→b の直線に線路を敷く（y を省くと地面の高さに沿わせる）
+  const railLine = (a, b, fixedY = null) => {
+    corridors.push([a.clone(), b.clone(), 6]);
+    const len = a.distanceTo(b), dir = b.clone().sub(a).normalize(), yaw = -Math.atan2(dir.z, dir.x), sleepers = [], rails = [];
+    for (let u = 0; u <= len; u += 2.5) {
+      const p = a.clone().addScaledVector(dir, u), y = fixedY ?? groundAt(p);
+      sleepers.push({ p: new V3(p.x, y + 0.08, p.z), s: new V3(0.35, 0.1, 2.2), r: [0, yaw + Math.PI / 2, 0] });
+      for (const off of [-0.6, 0.6]) rails.push({ p: new V3(p.x - dir.z * off, y + 0.2, p.z + dir.x * off), s: new V3(2.6, 0.12, 0.12), r: [0, yaw, 0] });
+    }
+    inst(BOX, railMats.wood, sleepers, false); inst(BOX, railMats.steel, rails, false);
+  };
+
+  // 小涌谷踏切：登山電車の線路が国道を横切る。ホームと電車は走路の左側に置き、電車は走路へ出ない
+  {
+    const s = 851, f = tp(s, W / 2), n = f.n.clone(), skip = [s - 45, s + 45];
+    // 走路の外側へ、別の区間の走路に近づくまで線路を延ばす
+    const arm = side => { let u = W / 2 + 2; while (u < 120) { const p = f.v.clone().addScaledVector(n, side * (u + 3)); if (roadDist(p.x, p.z, 40, skip) < 22) break; u += 3; } return u; };
+    const left = arm(1), right = arm(-1);
+    railLine(f.v.clone().addScaledVector(n, -right), f.v.clone().addScaledVector(n, left));
+    const g = new THREE.Group(); g.position.copy(f.v); g.rotation.y = -f.h; world.add(g);
+    // 踏切の警報機と遮断機（上げた状態）：踏切警標は黄と黒
+    const crossbuck = ctex(128, 128, c => {
+      c.clearRect(0, 0, 128, 128); c.lineWidth = 20; c.lineCap = 'butt';
+      for (const [x0, y0, x1, y1] of [[14, 14, 114, 114], [114, 14, 14, 114]]) {
+        const gr = c.createLinearGradient(x0, y0, x1, y1); for (let k = 0; k <= 8; k++) { gr.addColorStop(k / 8, k % 2 ? '#1b1b1b' : '#f2c62e'); if (k < 8) gr.addColorStop((k + 1) / 8 - 0.001, k % 2 ? '#1b1b1b' : '#f2c62e'); }
+        c.strokeStyle = gr; c.beginPath(); c.moveTo(x0, y0); c.lineTo(x1, y1); c.stroke();
+      }
     });
-    const sign = new THREE.Sprite(new THREE.SpriteMaterial({ map: tex })); sign.position.y = 7; sign.scale.set(10, 5, 1); g.add(sign);
-    // Chevron boards stay beyond the rails, following each hairpin at its true altitude.
+    const lamps = [];
+    for (const side of [1, -1]) for (const along of [-4.5, 4.5]) {
+      if (Math.sign(along) !== side) continue;
+      const z = side * (W / 2 + 2.6), x = along;
+      addBox(g, [0.25, 4.6, 0.25], [x, 2.3, z], toon('#e9e9e2'));
+      const cb = new THREE.Mesh(new THREE.PlaneGeometry(1.8, 1.8), new THREE.MeshBasicMaterial({ map: crossbuck, transparent: true, side: THREE.DoubleSide }));
+      cb.position.set(x, 4.3, z); cb.rotation.y = Math.PI / 2; g.add(cb);
+      for (const dz of [-0.45, 0.45]) lamps.push(addBox(g, [0.3, 0.42, 0.42], [x, 3.2, z + dz], toon('#5a1612'), null, 0));
+      // 遮断かんは縦に上げてある
+      addBox(g, [0.6, 0.9, 0.6], [x + side * 1.1, 0.45, z], toon('#e9e9e2'));
+      for (let k = 0; k < 6; k++) addBox(g, [0.14, 1, 0.14], [x + side * 1.1, 1.4 + k, z], toon(k % 2 ? '#1b1b1b' : '#f2c62e'), null, 0);
+    }
+    // 小涌谷駅のホーム（線路の左側の腕）
+    const pa = Math.min(left - 4, W / 2 + 46), pb = W / 2 + 16;
+    if (pa > pb + 10) {
+      const mid = (pa + pb) / 2, p = f.v.clone().addScaledVector(n, mid), gp = new THREE.Group();
+      gp.position.set(p.x - f.dir.x * 2.6, groundAt(p), p.z - f.dir.z * 2.6); gp.rotation.y = -Math.atan2(n.z, n.x); world.add(gp);
+      addBox(gp, [pa - pb, 1.0, 2.6], [0, 0.5, 0], toon('#d6d1c3'), null, 0);
+      addBox(gp, [(pa - pb) * 0.6, 0.3, 3.2], [0, 3.6, 0.2], slate, null, 0);
+      for (const x of [-(pa - pb) * 0.25, (pa - pb) * 0.25]) addBox(gp, [0.25, 2.6, 0.25], [x, 2.3, 0.8], toon('#6b6f6c'));
+      const sp = label('小涌谷', 10, 3, '#f7f6f0', '#1d2b33'); sp.position.set(0, 5.2, 0); sp.scale.set(8, 2.4, 1); gp.add(sp);
+      registerLandmark(gp, '小涌谷駅');
+      occupied.push({ x: p.x, z: p.z, r: (pa - pb) / 2 + 6 });
+    }
+    // 電車は左の腕の奥とホームの間を行き来し、ホームで停まる
+    const train = tozan(2), near = W / 2 + 28, far = Math.max(near, left - 24);
+    let clock = rand(0, 30);
+    const move = dt => {
+      clock += dt;
+      const t = clock % 34, k = t < 10 ? 0 : t < 17 ? (t - 10) / 7 : t < 27 ? 1 : 1 - (t - 27) / 7;
+      const u = lerp(near, far, (1 - Math.cos(k * Math.PI)) / 2), p = f.v.clone().addScaledVector(n, u);
+      train.position.set(p.x, groundAt(p) + 0.25, p.z); train.rotation.y = -Math.atan2(-n.z, -n.x);
+      const blink = t > 8 && t < 10 || t > 25 && t < 27;
+      lamps.forEach((m, i) => m.material.color.set(blink && (Math.floor(clock * 3) + i) % 2 ? '#ff3b2a' : '#5a1612'));
+    };
+    move(0); themeUpd.push((t, dt) => move(Math.min(dt, 0.1)));
+  }
+
+  // 宮ノ下の老舗ホテル風の建物：白壁に木組み、寺社風の屋根を重ねた本館と、塔のような別館。企業名の看板は出さない
+  {
+    const g = site('宮ノ下のクラシックホテル', 993, W + 16, 46, 22, '#b9b29f');
+    const roofG = toon('#3f524b'), red = toon('#a8432f');
+    addBox(g, [30, 9, 12], [-6, 4.5, 2], plaster, null, 0);
+    for (const y of [3.1, 6.2, 9]) addBox(g, [30.3, 0.35, 12.3], [-6, y, 2], darkWood, null, 0);
+    for (let x = -20; x <= 8; x += 4) addBox(g, [0.35, 9, 12.3], [x, 4.5, 2], darkWood, null, 0);
+    windows(g, 30, 9, 12, -6, 2, toon('#6d4b3a'), 2, 8, 2.2);
+    part(g, PRISM, roofG, [-6, 9, 2], [32, 5, 14.5], null, 0);
+    // 正面玄関の唐破風（反りのある小さな屋根）
+    part(g, new THREE.CylinderGeometry(3.2, 3.2, 6, 16, 1, false, 0, Math.PI), roofG, [-6, 7.6, -5.4], [1, 0.5, 1], [0, 0, Math.PI / 2], 0);
+    addBox(g, [5, 5.5, 3], [-6, 2.75, -5], red, null, 0);
+    // 花御殿：三層の屋根を重ねた建物
+    for (let k = 0; k < 3; k++) {
+      addBox(g, [12 - k * 2, 4, 10 - k * 2], [15, 2 + k * 4.4, 3], plaster, null, 0);
+      part(g, new THREE.ConeGeometry(1, 1, 4), roofG, [15, 4.4 + k * 4.4, 3], [(12 - k * 2) * 0.82, 1.6, (10 - k * 2) * 0.82], [0, Math.PI / 4, 0], 0);
+    }
+  }
+
+  // 宮ノ下：国道沿いの小さな商店
+  {
+    const shops = [['宮ノ下', W + 12, 1046], ['骨董', W + 12, 1060], ['ベーカリー', W + 12, 1074], ['土産', W + 12, 1088]];
+    const awnings = ['#2f6b5a', '#a33b33', '#365f8c', '#8c6a2f'];
+    shops.forEach(([name, lane, s], i) => {
+      const g = site(`宮ノ下・${name}`, s, lane, 9, 7, '#bdb6a6');
+      house(g, 8, 6, 6, 0, 0, i % 2 ? plaster : toon('#e3d7bf'), slate, 2);
+      addBox(g, [8.2, 0.3, 1.6], [0, 2.8, -3.6], toon(awnings[i]), [0.25, 0, 0], 0);
+      windows(g, 8, 6, 6, 0, 0, glass, 1, 3, 4.3);
+      if (!i) signAt(g, '宮ノ下', 10, 10);
+    });
+  }
+
+  // 大平台：ヘアピン手前の黄色い警告板と、駅に停まる登山電車
+  {
+    const g = site('大平台ヘアピン標識', 1240, W + 5, 3, 1, '#8c8a7c', W / 2 + 2.5);
+    addBox(g, [0.3, 4.5, 0.3], [0, 2.25, 0], toon('#7b857f'));
+    const board = signPanel(6, 3, ctex(256, 128, c => {
+      c.fillStyle = '#ffd23f'; c.fillRect(0, 0, 256, 128); c.strokeStyle = '#222'; c.lineWidth = 8; c.strokeRect(4, 4, 248, 120);
+      c.fillStyle = '#222'; c.textAlign = 'center'; c.font = 'bold 46px sans-serif'; c.fillText('大平台', 128, 54); c.font = 'bold 34px sans-serif'; c.fillText('ヘアピンカーブ', 128, 102, 240);
+    }));
+    board.position.set(0, 5, -0.2); g.add(board);
+    // ホーム（走路側）と屋根、その奥の線路に停まる電車
+    const st = site('大平台駅', 1296, W + 18, 34, 10, '#b8b2a2');
+    addBox(st, [32, 1, 3.4], [0, 0.5, -2.6], toon('#d6d1c3'), null, 0);
+    addBox(st, [14, 0.3, 3.8], [0, 3.9, -2.6], toon('#7a3a2e'), null, 0);
+    for (const x of [-6, 0, 6]) addBox(st, [0.25, 2.9, 0.25], [x, 2.45, -3.6], toon('#6b6f6c'));
+    const sp = label('大平台', 10, 3, '#f7f6f0', '#1d2b33'); sp.position.set(0, 5.6, -2.6); sp.scale.set(8, 2.4, 1); st.add(sp);
+    const a = st.localToWorld(new V3(-17, 0, 1.4)), b = st.localToWorld(new V3(17, 0, 1.4));
+    railLine(a, b, st.position.y);
+    const tr = tozan(2); tr.position.copy(st.localToWorld(new V3(7, 0.15, 1.4))); tr.rotation.y = st.rotation.y;
+  }
+
+  // 早川：大平台から湯本まで、走路の右側の谷を流れる川（走路から離した滑らかな線）
+  const river = [];
+  {
+    const raw = [];
+    for (let s = 1420; s <= track.L + 40; s += 6) { const q = tp(Math.min(s, track.L), -24); if (s > track.L) q.v.addScaledVector(q.dir, s - track.L); raw.push(q.v); }
+    for (let i = 0; i < raw.length; i++) {
+      const p = new V3(); let k = 0;
+      for (let j = Math.max(0, i - 6); j <= Math.min(raw.length - 1, i + 6); j++) { p.add(raw[j]); k++; }
+      p.multiplyScalar(1 / k);
+      for (let tries = 0; tries < 20 && roadDist(p.x, p.z) < W / 2 + 13; tries++) {
+        const q = tp(clamp(1420 + i * 6, 0, track.L), W / 2); p.add(q.n.clone().multiplyScalar(-1.5));
+      }
+      river.push(p);
+    }
+    // 上流側は走路から離れる向きへ延ばし、細い流れから始める
+    const back = river[0].clone().sub(river[1]).normalize();
+    for (let k = 0; k < 30; k++) {
+      const p = river[0].clone().addScaledVector(back, 6);
+      if (roadDist(p.x, p.z) < W / 2 + 13 || nearCorridor(p)) break;
+      river.unshift(p);
+    }
+    const pts = [], idx = [];
+    river.forEach((p, i) => {
+      const nx = river[Math.min(i + 1, river.length - 1)], pv = river[Math.max(i - 1, 0)], d = nx.clone().sub(pv).normalize(), side = new V3(-d.z, 0, d.x);
+      const half = 5 * Math.min(1, 0.2 + i / 12);
+      for (const w of [-half, half]) { const q = p.clone().addScaledVector(side, w); pts.push(q.x, groundAt(q) + 0.06, q.z); }
+      if (i < river.length - 1) { const k = i * 2; idx.push(k, k + 2, k + 1, k + 1, k + 2, k + 3); }
+    });
+    const geo = new THREE.BufferGeometry(); geo.setAttribute('position', new THREE.Float32BufferAttribute(pts, 3)); geo.setIndex(idx); geo.computeVertexNormals();
+    const water = new THREE.Mesh(geo, toon('#5e93a3', { side: THREE.DoubleSide, polygonOffset: true, polygonOffsetFactor: -2, polygonOffsetUnits: -2 })); water.receiveShadow = true; world.add(water);
+    const rocks = [];
+    river.forEach((p, i) => { if (i % 2) return; for (const w of [-6, 6]) { const nx = river[Math.min(i + 1, river.length - 1)], d = nx.clone().sub(p).normalize(); const q = p.clone().add(new V3(-d.z * w, 0, d.x * w)); const s = rand(0.7, 1.6); rocks.push({ p: new V3(q.x, groundAt(q) + s * 0.3, q.z), s: new V3(s, s * 0.6, s), r: [0, rand(0, 3), 0] }); } });
+    fantasyInst(SPH_LO, toon('#9b9a8f'), rocks);
+  }
+
+  // 出山の鉄橋（早川橋梁）：川の向こう岸の谷に架かる赤いトラス橋と、渡る登山電車
+  {
+    const s = 1700, len = 46, y = 13, truss = toon('#b04a33'), g = new THREE.Group();
+    let f = tp(s, -50);
+    for (let lane = -50; lane > -90; lane -= 5) {
+      f = tp(s, lane);
+      const ends = [-1, 1].map(k => f.v.clone().addScaledVector(f.dir, k * len / 2));
+      if ([f.v, ...ends].every(p => roadDist(p.x, p.z) > W / 2 + 14)) break;
+    }
+    g.position.set(f.v.x, groundAt(f.v), f.v.z); g.rotation.y = -f.h; world.add(g);
+    for (const x of [-len / 2, len / 2]) addBox(g, [4, y + 3, 4], [x, (y - 3) / 2, 0], stone, null, 0);
+    addBox(g, [len + 4, 0.8, 3.4], [0, y, 0], truss, null, 0);
+    for (const z of [-1.6, 1.6]) {
+      addBox(g, [len, 0.4, 0.4], [0, y + 4.2, z], truss, null, 0);
+      for (let k = 0; k <= 8; k++) addBox(g, [0.35, 4.4, 0.35], [-len / 2 + k * len / 8, y + 2.2, z], truss, null, 0);
+      for (let k = 0; k < 8; k++) addBox(g, [Math.hypot(len / 8, 4.2), 0.3, 0.3], [-len / 2 + (k + 0.5) * len / 8, y + 2.2, z], truss, [0, 0, (k % 2 ? 1 : -1) * Math.atan2(4.2, len / 8)], 0);
+    }
+    const tr = tozan(2); tr.position.copy(g.localToWorld(new V3(8, y + 0.4, 0))); tr.rotation.y = g.rotation.y;
+    registerLandmark(g, '出山の鉄橋');
+  }
+
+  // 塔ノ沢：早川の対岸に建つ木造の温泉旅館（進行方向の右、川の向こう）
+  {
+    const g = site('塔ノ沢温泉', 1839, -46, 22, 12, '#9f9786', W / 2 + 34);
+    for (let k = 0; k < 4; k++) {
+      addBox(g, [20 - k, 3.6, 11 - k * 0.5], [0, 1.8 + k * 3.6, 0], k % 2 ? plaster : toon('#e3d8c2'), null, 0);
+      addBox(g, [20.6 - k, 0.35, 11.6 - k * 0.5], [0, 3.6 + k * 3.6, 0], darkWood, null, 0);
+      windows(g, 20 - k, 3.6, 11 - k * 0.5, 0, 0, toon('#7a5a43'), 1, 6, 1.9 + k * 3.6);
+    }
+    part(g, PRISM, slate, [0, 14.4, 0], [19, 4, 11.5], null, 0);
+    signAt(g, '塔ノ沢', 21, 10);
+    for (const x of [-6, 6]) steam.push({ p: g.localToWorld(new V3(x, 15, 3)), t: Math.random() * 4 });
+  }
+
+  // 函嶺洞門：湯本の手前、山側（左）に残る昭和初期のコンクリート製の洞門
+  {
+    const s0 = 1880, s1 = 1935, a = W + 12, b = W + 21, conc = toon('#cfc5ab', { side: THREE.DoubleSide });
+    courseRibbon(s0, s1, a, b, 6.2, conc);
+    const posts = [];
+    for (let s = s0; s <= s1; s += 5) {
+      const q = tp(s, a + 0.6), y0 = groundAt(q.v);
+      posts.push({ p: new V3(q.v.x, y0 + (q.v.y + 6.2 - y0) / 2, q.v.z), s: new V3(1.4, Math.max(1, q.v.y + 6.2 - y0), 1.2), r: [0, -q.h, 0] });
+      const w = tp(s, b - 0.5), wy = groundAt(w.v);
+      posts.push({ p: new V3(w.v.x, wy + (w.v.y + 6.2 - wy) / 2, w.v.z), s: new V3(5.2, Math.max(1, w.v.y + 6.2 - wy), 1.2), r: [0, -w.h, 0] });
+    }
+    inst(BOX, toon('#c3b99f'), posts);
+    const g = new THREE.Group(), mid = tp((s0 + s1) / 2, a); g.position.copy(mid.v); world.add(g); signAt(g, '函嶺洞門', 11, 12, '#4f4a3c', '#f2ead2');
+    registerLandmark(g, '函嶺洞門');
+    occupied.push({ x: mid.v.x, z: mid.v.z, r: 32 });
+  }
+
+  // 箱根湯本駅：ゴールの先、左側の駅舎と、ホームに停まる登山電車
+  {
+    // 駅舎（走路側）と、奥のホームに停まる電車
+    const st = site('箱根湯本駅', track.L - 10, W + 16, 44, 24, '#b9b4a6');
+    addBox(st, [40, 9, 14], [0, 4.5, -4], toon('#f1eee6'), null, 0);
+    for (let x = -18; x <= 18; x += 2) addBox(st, [0.5, 7, 0.3], [x, 4.8, -11.2], toon('#8a6a4a'), null, 0);
+    addBox(st, [44, 0.8, 16], [0, 9.4, -4.5], slate, null, 0);
+    addBox(st, [34, 1, 3], [0, 0.5, 5], toon('#d6d1c3'), null, 0);
+    signAt(st, '箱根湯本駅', 13, 16, '#f7f6f0', '#1d2b33');
+    railLine(st.localToWorld(new V3(-21, 0, 8.2)), st.localToWorld(new V3(21, 0, 8.2)), st.position.y);
+    const tr = tozan(2); tr.position.copy(st.localToWorld(new V3(7, 0.15, 8.2))); tr.rotation.y = st.rotation.y;
+    // 湯本の土産物店（ゴール前の両側）
+    [[1996, W + 10], [2009, W + 10], [2022, W + 10], [2002, -44]].forEach(([s, lane], i) => {
+      const g = site(`湯本の店${i + 1}`, s, lane, 10, 8, '#bdb6a6');
+      house(g, 9, 6.5, 7, 0, 0, i % 2 ? plaster : toon('#eadfc8'), i % 2 ? slate : toon('#6d4433'), 2.2);
+      addBox(g, [9.2, 0.3, 1.6], [0, 2.8, -4.1], toon(['#a33b33', '#2f6b5a', '#365f8c', '#8c6a2f'][i]), [0.25, 0, 0], 0);
+    });
+  }
+
+  // 湯けむり：宿の屋根からゆっくり上がって消える
+  if (steam.length) {
+    const puffs = steam.flatMap(src => Array.from({ length: 4 }, (_, k) => {
+      const sp = new THREE.Sprite(new THREE.SpriteMaterial({ map: TEX_SOFT, color: C('#ffffff'), transparent: true, opacity: 0.5, depthWrite: false }));
+      world.add(sp); return { sp, src, t: src.t + k };
+    }));
+    const drift = dt => puffs.forEach(o => {
+      o.t = (o.t + dt) % 4; const k = o.t / 4;
+      o.sp.position.set(o.src.p.x + Math.sin(o.t * 1.3) * 0.8, o.src.p.y + k * 9, o.src.p.z);
+      o.sp.scale.setScalar(2.5 + k * 6); o.sp.material.opacity = 0.55 * Math.sin(k * Math.PI);
+    });
+    drift(0); themeUpd.push((t, dt) => drift(Math.min(dt, 0.1)));
+  }
+
+  // カーブの外側に、赤と黄の矢羽根（シェブロン）を並べる。向きが大きく変わるカーブだけ
+  {
     const boards = [];
-    for (let k = 0; k < 5; k++) {
-      const p = track.pos(track.segStart[seg] + (k + 0.5) / 5 * track.segs[seg].len2, W + 4);
-      boards.push({ p: new V3(p.x, p.y + 2, p.z), s: new V3(0.25, 2.5, 3), r: [0, -p.h, 0], c: C(k % 2 ? '#ffe382' : '#c34638') });
+    let i = 0;
+    while (i <= track.N) {
+      if (track.ks[i] < 1 / 70) { i++; continue; }
+      const i0 = i; while (i <= track.N && track.ks[i] >= 1 / 70) i++;
+      const dh = track.hs[Math.min(i, track.N)] - track.hs[i0];
+      if (Math.abs(dh) < 70 * Math.PI / 180) continue;
+      const lane = Math.sign(dh) === track.sgn ? -3.2 : W + 3.2;
+      for (let s = i0 * track.ds; s < i * track.ds; s += 6) {
+        const p = track.pos(s, lane); boards.push({ p: new V3(p.x, p.y + 1.6, p.z), s: new V3(0.2, 1.6, 2.2), r: [0, -p.h, 0], c: C(boards.length % 2 ? '#ffd23f' : '#c8362c') });
+      }
     }
     fantasyInst(BOX, toon('#ffffff'), boards);
   }
-  const start = tp(track.finishS - track.def.D, W / 2);
-  const marker = new THREE.Sprite(new THREE.SpriteMaterial({ map: ctex(512, 128, c => {
-    c.fillStyle = '#294b3c'; c.fillRect(0, 0, 512, 128); c.fillStyle = '#fff1b7'; c.textAlign = 'center'; c.font = 'bold 58px sans-serif'; c.fillText('箱根 下り START', 256, 82, 490);
-  }) }));
-  marker.position.copy(start.v).add(new V3(0, 12, 0)); marker.scale.set(24, 6, 1); world.add(marker);
+
+  // 沿道の観客：宮ノ下・大平台と、函嶺洞門からゴールまで（観客アニメーションで跳ねる）
+  {
+    const people = [];
+    const lineUp = (s0, s1, lanes, step) => {
+      for (let s = s0; s <= s1; s += step) for (const lane of lanes) {
+        const q = track.pos(s + rand(-0.6, 0.6), lane + rand(-0.5, 0.5)), p = new V3(q.x, 0, q.z);
+        if (occupied.some(o => (o.x - p.x) ** 2 + (o.z - p.z) ** 2 < o.r * o.r)) continue;
+        people.push(new V3(p.x, Math.max(groundAt(p), q.y) + 0.5, p.z));
+      }
+    };
+    lineUp(1040, 1100, [-2.6, W + 2.6], 2.2); lineUp(1280, 1300, [-2.6], 1.8);
+    lineUp(1880, track.finishS + 10, [-2.4, -3.6, W + 2.4, W + 3.6], 1.3);
+    crowd.dispose(); world.remove(crowd);
+    crowd = new THREE.InstancedMesh(new THREE.CapsuleGeometry(0.24, 0.34, 3, 8), toon('#ffffff'), people.length);
+    const coats = ['#2f3542', '#e9ecef', '#3d5a80', '#c0392b', '#ffd166', '#1f6f5c', '#7a6c5d', '#ff7eb6'].map(C), m4 = new THREE.Matrix4();
+    crowd.userData.base = people.map((p, i) => {
+      m4.makeTranslation(p.x, p.y, p.z); crowd.setMatrixAt(i, m4); crowd.setColorAt(i, coats[(Math.random() * coats.length) | 0]);
+      return [p.x, p.y, p.z, Math.random() * 6, rand(4, 9)];
+    });
+    crowd.userData.exc = 0.2; world.add(crowd);
+  }
+
+  // 森：杉の木立と広葉樹。走路・川・線路・名所から離して置く。
+  // 中継カメラのいる谷側（右）は、走路から34m以内を低い植え込みだけにして馬を隠さない
+  {
+    const keepOut = (world.userData.landmarks || []).map(g => new THREE.Box3().setFromObject(g).expandByScalar(4));
+    const trunks = [], cedars = [], crowns = [], shrubs = [];
+    const cedarCols = ['#2f5a43', '#376449', '#2a5240'].map(C), leafCols = ['#4f7d45', '#6b8f4c', '#5c8a52', '#86924f', '#a3753f'].map(C);
+    for (let k = 0; k < 2800 && trunks.length < 900; k++) {
+      const s = rand(0, track.L), side = Math.random() < 0.5 ? -1 : 1, off = rand(10, 110);
+      const q = track.pos(s, side < 0 ? -off : W + off), p = new V3(q.x, 0, q.z), d = roadDist(p.x, p.z);
+      if (d < W / 2 + 7) continue;
+      if (river.some(r => (r.x - p.x) ** 2 + (r.z - p.z) ** 2 < 110) || nearCorridor(p)) continue;
+      if (occupied.some(o => (o.x - p.x) ** 2 + (o.z - p.z) ** 2 < o.r * o.r)) continue;
+      p.y = groundAt(p);
+      if (keepOut.some(b => b.containsPoint(new V3(p.x, b.min.y + 0.1, p.z)))) continue;
+      if (side < 0 && d < 34) {
+        if (shrubs.length < 260) { const r = rand(1.2, 2.4); shrubs.push({ p: new V3(p.x, p.y + r * 0.45, p.z), s: new V3(r, r * 0.7, r), c: leafCols[k % 4] }); }
+        continue;
+      }
+      const cedar = Math.random() < 0.55, h = cedar ? rand(14, 24) : rand(8, 13);
+      trunks.push({ p: new V3(p.x, p.y + h * 0.25, p.z), s: new V3(0.6, h * 0.5, 0.6) });
+      if (cedar) cedars.push({ p: new V3(p.x, p.y + h * 0.3, p.z), s: new V3(h * 0.17, h * 0.85, h * 0.17), c: cedarCols[k % 3] });
+      else crowns.push({ p: new V3(p.x, p.y + h * 0.7, p.z), s: new V3(h * 0.38, h * 0.32, h * 0.38), c: leafCols[k % 5] });
+    }
+    fantasyInst(new THREE.CylinderGeometry(1, 1.15, 1, 6), toon('#5a4636'), trunks);
+    fantasyInst(CONE, toon('#ffffff'), cedars);
+    fantasyInst(SPH_LO, toon('#ffffff'), crowns);
+    fantasyInst(SPH_LO, toon('#ffffff'), shrubs, false);
+  }
 }
 /* ---- Monaco streets, harbor and covered tunnel ---- */
 // 静的な景観は材質ごとに1つのInstancedMeshへまとめ、点光源も使わずに描画呼び出しを数十回に抑える
@@ -4443,18 +4915,38 @@ function landmarkStatue(name, fraction, pose, color) {
 }
 function decorLandmarkStand(stand, len, z0, roof) {
   const theme = track.def.theme;
-  if (!['sapporo', 'niigata', 'tokyo', 'chukyo', 'longchamp', 'churchill'].includes(theme)) return;
+  if (!['sapporo', 'niigata', 'tokyo', 'nakayama', 'chukyo', 'longchamp', 'churchill'].includes(theme)) return;
   const g = new THREE.Group(); stand.add(g); registerLandmark(g, theme + '-stand');
   const cream = theme === 'longchamp' ? null : toon('#eee8d8'), glass = theme === 'churchill' ? null : toon('#7ca6b9');
   const gold = theme === 'longchamp' || theme === 'churchill' ? toon('#ad8a51') : null;
   const box = (size, p, mat = cream, rot) => addBox(g, size, p, mat, rot, 0);
   if (theme === 'tokyo') {
     roof.visible = false;
-    for (let i = 0; i < 4; i++) {
-      box([len + 8, 0.8, 24], [0, 12 + i * 4, z0 + 9 + i * 1.5]);
-      box([len - 4, 2.9, 0.35], [0, 14 + i * 4, z0 + 19 + i * 1.5], glass);
+    // フジビュースタンド：ゴール寄りの大きなスタンド。後ろへ下がりながら積み重なるガラス張りの階と、観覧席の上へ大きく張り出す屋根
+    const mx = -len / 2 + len * 0.26, fw = len / 2 - mx, fc = (mx + len / 2) / 2;
+    for (let i = 0; i < 5; i++) {
+      box([fw - 2, 2.8, 15 - i], [fc, 12.6 + i * 3.4, z0 + 13 + i * 0.9], glass);
+      box([fw + 2, 0.6, 17 - i], [fc, 14.3 + i * 3.4, z0 + 13 + i * 0.9]);
     }
-    box([len + 14, 1.3, 34], [0, 28, z0 + 9]);
+    box([fw + 10, 1.2, 38], [fc, 30.5, z0 + 7]);
+    for (let x = mx + 6; x <= len / 2 - 4; x += 16) box([0.8, 19, 0.8], [x, 21, z0 + 5.6]);
+    // メモリアル60スタンド：4コーナー寄りに並ぶ、ひと回り低いスタンド
+    const m = new THREE.Group(); g.add(m); registerLandmark(m, 'メモリアル60スタンド');
+    const mw = mx + len / 2, mc = -len / 2 + mw / 2, wall = toon('#e6dfcf'), mglass = toon('#8fb3c2');
+    for (let i = 0; i < 3; i++) {
+      addBox(m, [mw - 4, 2.8, 14], [mc, 12.6 + i * 3.4, z0 + 13], mglass, null, 0);
+      addBox(m, [mw, 0.6, 16], [mc, 14.3 + i * 3.4, z0 + 13], wall, null, 0);
+    }
+    addBox(m, [mw + 4, 1, 30], [mc, 23, z0 + 8], wall, [0.05, 0, 0], 0);
+  } else if (theme === 'nakayama') {
+    roof.visible = false;
+    // 中山のメインスタンド：横に長いガラス張りの階が重なり、平らな大屋根が観覧席の上へ張り出す
+    for (let i = 0; i < 4; i++) {
+      box([len - 6, 2.8, 14], [0, 12.6 + i * 3.4, z0 + 14], glass);
+      box([len + 2, 0.6, 16 + i * 0.5], [0, 14.3 + i * 3.4, z0 + 14 - i * 0.25]);
+    }
+    box([len + 8, 1.2, 36], [0, 27.4, z0 + 8]);
+    for (let x = -len / 2 + 8; x <= len / 2 - 8; x += 20) box([0.8, 15, 0.8], [x, 19.5, z0 + 4]);
   } else if (theme === 'longchamp') {
     roof.visible = false;
     for (let i = 0; i < 4; i++) {
@@ -4489,12 +4981,76 @@ function decorLandmarkStand(stand, len, z0, roof) {
 }
 function decorRacecourseLandmarks() {
   const theme = track.def.theme;
-  if (theme === 'tokyo') landmarkStatue('ウオッカ像', 0.85, 'rear', '#536a60');
+  if (theme === 'tokyo') {
+    // 正門を入ってすぐ右、パドックの脇に立つ「幻の馬」トキノミノル像（待ち合わせの定番）
+    landmarkStatue('トキノミノル像', 0.62, 'walk', '#5d6b5f');
+    // スタンド裏のパドック：楕円の周回路と内側の芝、白い柵
+    const pad = landmarkGroup('パドック', 0.42, W + 100); landmarkFoundation(pad, 62, 38, '#cdbf9f');
+    part(pad, new THREE.CircleGeometry(1, 48), toon('#6fbf5c'), [0, 0.06, 0], [22, 11, 1], [-Math.PI / 2, 0, 0], 0);
+    const rail = [];
+    for (let i = 0; i < 48; i++) { const a = i / 48 * Math.PI * 2; rail.push(new V3(Math.cos(a) * 28, 1.1, Math.sin(a) * 16)); }
+    pad.add(new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(rail, true), 96, 0.12, 4, true), toon('#f4f2ea')));
+    // JR府中本町駅と西門を結ぶ連絡通路：1コーナー寄りのスタンド端から外へ延びる屋根付きの橋と、武蔵野線の電車が止まる駅
+    const jr = landmarkGroup('府中本町駅連絡通路', 1, W + 60), deck = toon('#d9d4c8'), steel = toon('#9aa3a8');
+    addBox(jr, [7, 1, 120], [0, 8, 60], deck, null, 0); addBox(jr, [8, 0.5, 120], [0, 12.5, 60], toon('#7f97a6'), null, 0);
+    for (let z = 4; z <= 116; z += 16) { addBox(jr, [1, 8, 1], [0, 4, z], steel, null, 0); for (const x of [-3.6, 3.6]) addBox(jr, [0.3, 4, 0.3], [x, 10.5, z], steel, null, 0); }
+    addBox(jr, [90, 1.4, 8], [0, 0.7, 128], toon('#c9c3b5'), null, 0); addBox(jr, [90, 0.5, 9], [0, 6, 128], toon('#8c969c'), null, 0);
+    addBox(jr, [16, 12, 10], [0, 6, 120], toon('#eee8d8'), null, 0);
+    for (const z of [134, 138]) addBox(jr, [200, 0.25, 0.3], [0, 0.4, z], toon('#5d5a57'), null, 0);
+    const train = new THREE.Group(); train.position.set(0, 0.5, 136); jr.add(train);
+    const silver = toon('#d3d8dc'), orange = toon('#e8742c'), pane = toon('#3f4b55');
+    for (let i = 0; i < 4; i++) {
+      const x = (i - 1.5) * 19;
+      addBox(train, [18, 3.6, 3.2], [x, 2.2, 0], silver, null, 0.03);
+      for (const z of [-1.62, 1.62]) { addBox(train, [18.1, 0.45, 0.1], [x, 1.5, z], orange, null, 0); for (let j = 0; j < 4; j++) addBox(train, [2.6, 1.2, 0.1], [x - 6 + j * 4, 2.9, z], pane, null, 0); }
+    }
+    // 駅に止まってから線路の端まで行って戻ってくる
+    themeUpd.push(t => { const c = (t * 0.05) % 2, u = c < 1 ? c : 2 - c; train.position.x = 60 * (2 * THREE.MathUtils.smootherstep(u, 0.15, 0.85) - 1); });
+  }
   if (theme === 'nakayama') {
-    landmarkStatue('ハイセイコー像', 0.82, 'walk', '#665648');
-    const g = landmarkGroup('グランプリガーデン', 0.2); landmarkFoundation(g, 32, 20, '#95aa75');
-    for (let i = 0; i < 7; i++) addBox(g, [2, 2.8, 0.5], [-12 + i * 4, 1.4, 6], toon('#a48b5f'), null, 0);
-    landmarkFlowers(g, 13, 8);
+    // 配置はJRAの場内マップに合わせる：ゴールはスタンドの1コーナー寄りの端。パドックはスタンドの裏、
+    // ハイセイコー号馬像はパドックと正門の間、グランプリロード（はなみち）とグランプリガーデンはスタンドの1コーナー寄りの端の外
+    const fence = (g, rx, rz, y = 1.1) => {
+      const pts = [];
+      for (let i = 0; i < 48; i++) { const a = i / 48 * Math.PI * 2; pts.push(new V3(Math.cos(a) * rx, y, Math.sin(a) * rz)); }
+      g.add(new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts, true), 96, 0.12, 4, true), toon('#f4f2ea')));
+    };
+    const pad = landmarkGroup('パドック', 0.62, W + 100); landmarkFoundation(pad, 58, 36, '#cdbf9f');
+    part(pad, new THREE.CircleGeometry(1, 48), toon('#6fbf5c'), [0, 0.06, 0], [21, 10.5, 1], [-Math.PI / 2, 0, 0], 0);
+    fence(pad, 26, 15);
+    // ハイセイコー号馬像：ピンクの御影石の台座に立つ、歩く姿の銅像と赤い花壇
+    const hs = landmarkGroup('ハイセイコー号馬像', 0.76, W + 130); landmarkFoundation(hs, 24, 18);
+    addBox(hs, [15, 2.4, 8.5], [0, 1.2, 0], toon('#a58884'), null, 0);
+    landmarkHorse(hs, [0, 2.4, 0], 'walk', '#5f7a6d'); landmarkFlowers(hs, 10.5, 7.5, '#e04a3a');
+    // グランプリロード（はなみち）：パドックからスタンドの端を回ってコースへ向かう、レンガ敷きの通路
+    const road = [[0.66, W + 100], [0.99, W + 96], [1, W + 4]].map(([f, lane]) => tp(lerp(track.homeS0, track.homeS1, f), lane).v);
+    const hanamichi = decorPath([road[0], road[1], road[2]].flatMap((q, i, a) => i ? Array.from({ length: 12 }, (_, j) => a[i - 1].clone().lerp(q, (j + 1) / 12)) : [q]));
+    decorCourseLane(hanamichi, 'dirt', 0, hanamichi.L, { lanes: [W / 2 - 2.5, W / 2 + 2.5], cols: 2, step: 1.5, onGround: true, lift: 0.2, mat: toon('#a07a68', { side: THREE.DoubleSide }) });
+    // グランプリガーデン：スタンドの1コーナー寄りの裏、はなみちの脇。レンガ敷きの広場に白い馬像の台、歴代優勝馬のプレートが並ぶ壁、松とベンチ
+    const g = landmarkGroup('グランプリガーデン', 0.93, W + 68); landmarkFoundation(g, 32, 22, '#a07e6c');
+    part(g, new THREE.CylinderGeometry(4, 4.5, 1.6, 24), toon('#e8e2d4'), [0, 0.8, 0], null, null, 0);
+    landmarkHorse(g, [0, 1.6, 0], 'rear', '#f2f0ea', 1.3); landmarkFlowers(g, 6.5, 6);
+    addBox(g, [28, 3.2, 1], [0, 1.6, 9.5], toon('#c9a77a'), null, 0); addBox(g, [28.4, 0.5, 1.3], [0, 3.4, 9.5], toon('#2f6a3e'), null, 0);
+    for (let i = 0; i < 10; i++) addBox(g, [2, 1.6, 0.15], [-11.25 + i * 2.5, 1.9, 8.95], toon('#5d5a4e'), null, 0);
+    for (const x of [-9, 9]) addBox(g, [4, 0.8, 1.2], [x, 0.4, -6], toon('#8a6446'), null, 0);
+    const pine = new THREE.ConeGeometry(1, 1, 7); pine.translate(0, 0.5, 0);
+    for (const [x, z] of [[-13, 6], [13, 6], [-13, -8]]) {
+      part(g, new THREE.CylinderGeometry(0.4, 0.6, 3, 6), toon('#6b4a35'), [x, 1.5, z], null, null, 0);
+      for (const [r, y] of [[2.8, 2.5], [2, 4.4]]) part(g, pine, toon('#2f6a3e'), [x, y, z], [r, 2.4, r], null, 0);
+    }
+    // 芝スタンド：メインスタンドの4コーナー寄りに続く、芝生の観戦斜面
+    const sh = landmarkGroup('芝スタンド', -0.08, W + 24); landmarkFoundation(sh, 32, 16, '#8fcf6a');
+    for (let i = 0; i < 5; i++) addBox(sh, [30, 0.6 + i * 0.9, 3], [0, (0.6 + i * 0.9) / 2, -6 + i * 3], toon(i % 2 ? '#7fbf5f' : '#8fcf6a'), null, 0);
+    // 馬場内棟：ターフビジョンの1コーナー寄りに建つ低い建物。屋上は見晴らしのよいテラス
+    const ib = landmarkGroup('馬場内棟', 0.84, -46); landmarkFoundation(ib, 38, 22, '#b3ac9c');
+    addBox(ib, [36, 7, 20], [0, 3.5, 0], toon('#5c6168'), null, 0.02);
+    addBox(ib, [34, 2.2, 0.2], [0, 3.8, 10.05], toon('#9cc3d6'), null, 0);
+    for (const z of [-10, 10]) addBox(ib, [36, 1, 0.2], [0, 7.5, z], toon('#e8e6e0'), null, 0);
+    for (const x of [-18, 18]) addBox(ib, [0.2, 1, 20], [x, 7.5, 0], toon('#e8e6e0'), null, 0);
+    // ポニーリンク：馬場内の奥にある、ポニーとふれあえる楕円の馬場
+    const pony = landmarkGroup('ポニーリンク', 0.86, -96); landmarkFoundation(pony, 30, 20, '#9ab577');
+    part(pony, new THREE.CircleGeometry(1, 40), toon('#c9a77a'), [0, 0.06, 0], [12, 7, 1], [-Math.PI / 2, 0, 0], 0);
+    fence(pony, 12.5, 7.5, 0.9); addBox(pony, [6, 3.5, 4], [-11, 1.75, -7], toon('#a0644a'), null, 0);
   }
   if (theme === 'kasamatsu') landmarkStatue('オグリキャップ像', 0.8, 'walk', '#b6bcb4');
   if (theme === 'churchill') landmarkStatue('バルバロ像', 0.8, 'gallop', '#746052');
@@ -4530,6 +5086,24 @@ function decorRacecourseLandmarks() {
       jets.add(new THREE.Mesh(new THREE.TubeGeometry(curve, 12, 0.12, 4), toon('#a7e5ed')));
     }
     landmarkFlowers(g, 19, 13, '#df92ae');
+    // 阪急今津線の仁川駅：スタンドの裏を直線と平行に走る線路と、1コーナー寄りの駅。マルーン色の電車が行き来する
+    const rail = landmarkGroup('仁川駅（阪急今津線）', 0.5, W + 128);
+    addBox(rail, [420, 1.2, 9], [0, 0.6, 0], toon('#a59c8c'), null, 0);
+    for (const z of [-1.4, 1.4]) addBox(rail, [420, 0.25, 0.3], [0, 1.35, z], toon('#5d5a57'), null, 0);
+    addBox(rail, [60, 1.4, 5], [105, 0.7, -7.5], toon('#d8d0c0'), null, 0);
+    addBox(rail, [60, 0.5, 6], [105, 6.6, -7.5], toon('#8a5a4a'), null, 0);
+    for (let x = 80; x <= 130; x += 10) addBox(rail, [0.4, 5, 0.4], [x, 3.8, -9.5], toon('#eee8d8'), null, 0);
+    addBox(rail, [18, 9, 10], [105, 4.5, -17], toon('#eee8d8'), null, 0);
+    const train = new THREE.Group(); train.position.y = 1.5; rail.add(train);
+    const maroon = toon('#6b1f2a'), ivory = toon('#efe6cf'), pane = toon('#3f4b55');
+    for (let i = 0; i < 3; i++) {
+      const x = (i - 1) * 19;
+      addBox(train, [18, 3.6, 3.2], [x, 2.2, 0], maroon, null, 0.03);
+      addBox(train, [18.1, 0.5, 3.3], [x, 4.15, 0], ivory, null, 0);
+      for (let j = 0; j < 4; j++) for (const z of [-1.62, 1.62]) addBox(train, [2.6, 1.2, 0.1], [x - 6 + j * 4, 2.8, z], pane, null, 0);
+    }
+    // 駅に止まってから、直線の端まで行って戻ってくる
+    themeUpd.push(t => { const c = (t * 0.06) % 2, u = c < 1 ? c : 2 - c; train.position.x = 105 - 280 * THREE.MathUtils.smootherstep(u, 0.15, 0.85); });
   }
   if (theme === 'meydan') {
     const g = landmarkGroup('メイダンホテル', 1.18, W + 106); landmarkFoundation(g, 110, 32);
@@ -4561,9 +5135,9 @@ function decorRacecourseLandmarks() {
   }
 }
 // 本線と並走する飾りの内柵（ダートコースの内側など）
-function decorInnerRail(lane, color) {
-  const np = Math.ceil(track.L / 3), pts = [];
-  for (let i = 0; i < np; i++) { const q = track.pos(i / np * track.L, lane); pts.push(new V3(q.x, track.groundH(q.x, q.z) + 1, q.z)); }
+function decorInnerRail(lane, color, path = track) {
+  const np = Math.ceil(path.L / 3), pts = [];
+  for (let i = 0; i < np; i++) { const q = path.pos(i / np * path.L, lane); pts.push(new V3(q.x, track.groundH(q.x, q.z) + 1, q.z)); }
   world.add(new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts, true), np * 2, 0.09, 6, true), toon(color)));
 }
 // 飾りの芝を本線の芝と同じ見た目にする（雨の色変化も本線と共有）
@@ -4593,9 +5167,26 @@ function decorPath(pts) {
 }
 function decorTokyo(th) {
   // 内馬場の木はダートコースより内側に置く
+  // 内馬場の日本庭園：池と太鼓橋、松（4コーナー寄り、ターフビジョンから離して置く）
+  const garden = landmarkGroup('日本庭園', 0.2, -60); landmarkFoundation(garden, 56, 34, '#88b46e');
+  { const pond = part(garden, new THREE.CircleGeometry(1, 40), toon('#5f9fc4'), [0, 0.08, 0], [20, 10, 1], [-Math.PI / 2, 0, 0], 0); pond.receiveShadow = true;
+    const arch = new THREE.Mesh(new THREE.TorusGeometry(5, 0.6, 6, 16, Math.PI), toon('#c2493a')); arch.position.set(0, 0, 0); arch.rotation.y = Math.PI / 2; arch.scale.set(1, 0.5, 2.2); garden.add(arch);
+    const pine = new THREE.ConeGeometry(1, 1, 7); pine.translate(0, 0.5, 0);
+    for (const [x, z] of [[-22, -12], [-24, 8], [22, 11], [24, -9], [-12, 14], [13, -14]]) {
+      part(garden, new THREE.CylinderGeometry(0.4, 0.6, 3, 6), toon('#6b4a35'), [x, 1.5, z], null, null, 0);
+      for (const [r, y] of [[3.6, 2.5], [2.6, 4.6]]) part(garden, pine, toon('#2f6a3e'), [x, y, z], [r, 2.4, r], null, 0);
+    }
+    for (const [x, z, sc] of [[-15, -3, 1.6], [16, 3, 1.3], [8, 9, 1]]) part(garden, SPH_LO, toon('#9c988c'), [x, 0.6, z], [sc * 1.6, sc, sc * 1.3], null, 0); }
+  const gardenPos = garden.position;
   const infield = Array.from({ length: 18 }, () => { const q = tp(Math.random() * track.L, -rand(26, Math.max(30, track.R - 14))); q.v.y = track.groundH(q.v.x, q.v.z); return { p: q.v }; })
-    .filter(it => it.p.distanceTo(boardPos) > 26);
-  roundTrees([...treeSpots(110, 0), ...infield], ['#3f8f3a', '#4fa546', '#5fb853', '#377d34']);
+    .filter(it => it.p.distanceTo(boardPos) > 26 && it.p.distanceTo(gardenPos) > 38);
+  // スタンドの裏（パドック・トキノミノル像・連絡通路）には木を置かない
+  const behind = p => { for (let s = track.homeS0; s <= track.homeS1 + 40; s += 4) { const q = track.pos(s, W + 120); if ((q.x - p.x) ** 2 + (q.z - p.z) ** 2 < 70 ** 2) return true; } return false; };
+  roundTrees([...treeSpots(110, 0).filter(it => !behind(it.p)), ...infield], ['#3f8f3a', '#4fa546', '#5fb853', '#377d34']);
+  // けやき並木：正門の先へまっすぐ延びる2列の大きなケヤキ（府中の馬場大門のケヤキ並木をイメージ）
+  { const avenue = [];
+    for (let k = 0; k < 9; k++) for (const ds of [-9, 9]) { const q = tp(lerp(track.homeS0, track.homeS1, 0.62) + ds, W + 150 + k * 14); q.v.y = track.groundH(q.v.x, q.v.z); avenue.push({ p: q.v, s: rand(1.9, 2.3) }); }
+    roundTrees(avenue, ['#3a7f36', '#4a9442', '#5aa54c'], '#5a3e2b'); }
   // 芝の内側のダートコース（飾り）。内柵を挟んで並走し、1周は約1/2縮尺で実物の1899mに近い
   decorCourseLane(track, 'dirt', 0, track.L, { lanes: [-3.5, -14.5], onGround: true });
   decorInnerRail(-15.3, th.rail);
@@ -4604,10 +5195,13 @@ function decorTokyo(th) {
   decorTurfPocket(track.segStart[1], 60, true, mat); decorTurfPocket(track.segStart[2], 55, false, mat);
   // 大ケヤキ: a lone giant zelkova inside the 3rd corner, beyond the dirt course
   { const q = tp(track.segStart[3] + track.segs[3].len2 * 0.12, -32); q.v.y = track.groundH(q.v.x, q.v.z); roundTrees([{ p: q.v, s: 3.4 }], ['#3a7f36', '#4a9442', '#2f6e2c'], '#5a3e2b'); }
-  // 富士山 across the infield from the stands
-  { const f = farPoint(1050, true, 0.5); const g = new THREE.ConeGeometry(1, 1, 48); g.translate(0, 0.5, 0);
+  // 富士山：南向きのスタンドから見て右前方（西南西）、1〜2コーナーの向こう。図鑑の全景では隠す
+  { const home = tp(lerp(track.homeS0, track.homeS1, 0.5), W / 2), a = 65 * Math.PI / 180;
+    const d = home.n.clone().negate().multiplyScalar(Math.cos(a)).addScaledVector(home.dir, Math.sin(a)), f = d.multiplyScalar(1150);
+    const g = new THREE.ConeGeometry(1, 1, 48); g.translate(0, 0.5, 0);
     const fuji = new THREE.Mesh(g, toon('#6f86b8', { fog: false })); fuji.position.set(f.x, -8, f.z); fuji.scale.set(430, 250, 430); world.add(fuji);
-    const cap = new THREE.Mesh(g, toon('#ffffff', { fog: false })); cap.position.set(f.x, -8 + 250 * 0.62, f.z); cap.scale.set(430 * 0.38, 250 * 0.38, 430 * 0.38); world.add(cap); }
+    const cap = new THREE.Mesh(g, toon('#ffffff', { fog: false })); cap.position.set(f.x, -8 + 250 * 0.62, f.z); cap.scale.set(430 * 0.38, 250 * 0.38, 430 * 0.38); world.add(cap);
+    fuji.userData.backdrop = cap.userData.backdrop = true; }
   mountains(th.mount, 10, false);
 }
 // Decorative lanes do not participate in race physics or replace the selected course.
@@ -4669,8 +5263,60 @@ function decorShatin(th) {
   inst(new THREE.ConeGeometry(1, 1, 8).translate(0, 0.5, 0), toon(th.mount), ridge, false);
 }
 function decorHanshin(th) {
-  roundTrees(treeSpots(100, 16), ['#f7b8d4', '#ffd5e7', '#ed99c1', '#70a851']);
-  mountains(th.mount, 12, false);
+  const k = track.def.scale, v = (x, z) => new V3(x, 0, z);
+  // 内回り（飾り）：向正面の3コーナー手前（外回りの3コーナーの約201m手前）で分かれ、直線の残り356.5mで外回りに合流する。
+  // 3〜4コーナーは約600m（内回り1200mの発走から最初のコーナーまで約243m）になるようハンドルの長さを決める
+  const sa = track.segStart[2] + (620 - 201) * k, sb = (473.6 - 356.5) * k, a = track.pos(sa, W / 2), b = track.pos(sb, W / 2);
+  const A = v(a.x, a.z), B = v(b.x, b.z);
+  const innerCurve = m => new THREE.CubicBezierCurve3(A, v(a.x + Math.cos(a.h) * m * 0.8, a.z + Math.sin(a.h) * m * 0.8), v(b.x - Math.cos(b.h) * m, b.z - Math.sin(b.h) * m), B);
+  let lo = 0, hi = 600;
+  for (let i = 0; i < 40; i++) { const m = (lo + hi) / 2; if (innerCurve(m).getLength() < 600.5 * k) lo = m; else hi = m; }
+  const inner = decorPath(innerCurve(lo).getSpacedPoints(Math.ceil(600.5 * k / 1.5))), mat = decorTurfMat();
+  decorCourseLane(inner, 'turf', 0, inner.L, { lanes: [-1.6, W + 1.6], cols: 18, step: 1.5, onGround: true, mat, hide: onMainTurf });
+  // 内回りの1周（直線の合流点→1〜2コーナー→向正面→分岐→内回りの3〜4コーナー）。ダート・障害コースはこの内側に並走させる
+  const loopPts = [];
+  for (let s = sb; s < sa; s += 1.5) { const q = track.pos(s, W / 2); loopPts.push(v(q.x, q.z)); }
+  loopPts.push(...inner.pts, loopPts[0].clone());
+  const loop = decorPath(loopPts);
+  // 芝の発走ポケット（飾り）：1800m（外）は2コーナー奥、2200m（内）は4コーナー奥へ延びる引き込み線
+  decorTurfPocket(track.segStart[2], 35, false, mat); decorTurfPocket(0, 35, false, mat);
+  // 内回りの内側のダートコース（飾り）。1周は約1/2縮尺で実物の1517.6mに近い
+  decorCourseLane(loop, 'dirt', 0, loop.L, { lanes: [-2.5, -13], cols: 4, step: 1.5, onGround: true, lift: 0.25 });
+  decorInnerRail(-13.8, th.rail, loop);
+  // 障害コース（飾り）：ダートの内側の周回路（1周1366.7m）と、内馬場を斜めに横切る襷コース。生垣の障害を置く
+  const jumpMat = decorTurfMat(); jumpMat.color = C('#c9e6a6');
+  decorCourseLane(loop, 'turf', 0, loop.L, { lanes: [-24, -16], cols: 6, step: 1.5, onGround: true, lift: 0.3, mat: jumpMat });
+  // 襷：内回りの3コーナー側からゴール前の内側へ斜めに横切る
+  const c0 = loop.pos(sa - sb + inner.L * 0.25, -20), c1 = loop.pos((sa - sb) * 0.3, -20);
+  const cross = decorPath(new THREE.LineCurve3(v(c0.x, c0.z), v(c1.x, c1.z)).getSpacedPoints(Math.ceil(Math.hypot(c1.x - c0.x, c1.z - c0.z) / 2)));
+  decorCourseLane(cross, 'turf', 0, cross.L, { lanes: [W / 2 - 4, W / 2 + 4], cols: 6, step: 1.5, onGround: true, lift: 0.32, mat: jumpMat });
+  const hedge = toon('#3f6b34'), hedgeTop = toon('#4f8040');
+  const jump = (path, s, lane) => {
+    const q = path.pos(s, lane), g = new THREE.Group(); g.position.set(q.x, track.groundH(q.x, q.z), q.z); g.rotation.y = -q.h; world.add(g);
+    addBox(g, [1.6, 1.3, 8.5], [0, 0.65, 0], hedge, null, 0); addBox(g, [1.9, 0.4, 8.8], [0, 1.45, 0], hedgeTop, null, 0);
+  };
+  for (const f of [0.35, 0.62]) jump(cross, cross.L * f, W / 2);
+  for (const f of [0.55, 0.75, 0.9]) jump(loop, (sa - sb) * f, -20);
+  // 木は内回り・ダート・障害コースの上に置かない（内馬場の桜は障害コースより内側）
+  const near = (p, pts, d) => pts.some(q => (q.x - p.x) ** 2 + (q.z - p.z) ** 2 < d * d);
+  const clear = p => p && !near(p, inner.pts, W / 2 + 4) && !near(p, cross.pts, 7);
+  const infield = Array.from({ length: 40 }, () => { const q = loop.pos(Math.random() * loop.L, -rand(30, 60)); return v(q.x, q.z); })
+    .filter(p => !near(p, loop.pts, 30) && p.distanceTo(boardPos) > 26).slice(0, 14).map(p => { p.y = track.groundH(p.x, p.z); return { p }; });
+  roundTrees([...treeSpots(100, 0), ...infield].filter(it => clear(it.p)), ['#f7b8d4', '#ffd5e7', '#ed99c1', '#70a851']);
+  // 仁川と桜並木：1〜2コーナーの外側を流れる川沿いに桜を並べる
+  { const river = [], bank = [];
+    for (let s = track.segStart[1] - 8; s <= track.segStart[2] + 40; s += 3) { const q = track.pos(s, W + 46); river.push(v(q.x, q.z)); }
+    const rp = decorPath(river);
+    decorCourseLane(rp, 'water', 0, rp.L, { lanes: [W / 2 - 4.5, W / 2 + 4.5], cols: 2, step: 3, onGround: true, lift: 0.15, mat: toon('#6fb4cf', { side: THREE.DoubleSide }) });
+    for (let s = track.segStart[1] - 2; s <= track.segStart[2] + 34; s += 9) for (const lane of [W + 36, W + 56]) { const q = track.pos(s + rand(-2, 2), lane); bank.push({ p: new V3(q.x, track.groundH(q.x, q.z), q.z), s: rand(1.1, 1.5) }); }
+    roundTrees(bank, ['#ffc6de', '#ffd9e8', '#f7b0d0']); }
+  // 六甲の山並みと甲山：スタンドから見て向正面の奥。甲山はお椀を伏せたような丸い山
+  { const ridge = [], f = farPoint(900, true, 0.5), home = tp(lerp(track.homeS0, track.homeS1, 0.5), W / 2), d = home.n.clone().negate(), side = home.dir;
+    for (let i = 0; i < 11; i++) { const p = f.clone().addScaledVector(side, (i - 5) * 110).addScaledVector(d, rand(0, 120)); p.y = -5; ridge.push({ p, s: new V3(150, 140 + (i % 4) * 35, 130), r: [0, i * 0.4, 0] }); }
+    inst(new THREE.ConeGeometry(1, 1, 8).translate(0, 0.5, 0), toon(th.mount), ridge, false);
+    const kabuto = new THREE.Mesh(new THREE.SphereGeometry(1, 24, 12, 0, Math.PI * 2, 0, Math.PI / 2), toon('#6f8f78'));
+    kabuto.position.copy(farPoint(780, true, -0.4)); kabuto.position.y = -6; kabuto.scale.set(110, 75, 110); world.add(kabuto); }
+  mountains(th.mount, 8, false);
   fallingLeaves(TEX_PETAL, ['#ffd5e7', '#f5add0'], 35);
 }
 function decorChukyo(th) {
@@ -4751,17 +5397,37 @@ function decorNakayama(th) {
   for (const f of [0.3, 0.5, 0.7]) jump(outer, outer.L * f, -11, 'brush');
   // 木は外回り・障害コースの上に置かない
   const near = (p, path, d) => path.pts.some(q => (q.x - p.x) ** 2 + (q.z - p.z) ** 2 < d * d);
-  const clear = p => p && !near(p, outer, W + 22) && !near(p, cross, 9);
+  // 馬場内棟・ポニーリンク（decorRacecourseLandmarksと同じ位置）とスタンド裏の施設の上にも置かない
+  const at = (f, lane) => tp(lerp(track.homeS0, track.homeS1, f), lane).v;
+  const spots = [[at(0.84, -46), 30], [at(0.86, -96), 22], [at(-0.08, W + 24), 22]];
+  const behind = p => { for (let f = -0.15; f <= 1.25; f += 0.02) { const q = at(f, W + 105); if ((q.x - p.x) ** 2 + (q.z - p.z) ** 2 < 58 ** 2) return true; } return false; };
+  const clear = p => p && !near(p, outer, W + 22) && !near(p, cross, 9) && !behind(p) && spots.every(([q, r]) => q.distanceTo(p) > r);
   const infield = Array.from({ length: 16 }, () => { const q = tp(Math.random() * track.L, -rand(22, 55)); q.v.y = track.groundH(q.v.x, q.v.z); return { p: q.v }; })
     .filter(it => it.p.distanceTo(boardPos) > 26);
+  // スタンド裏を通る県道（松戸原木線）と、その向こうのけやき公苑（冬枯れのケヤキ）
+  decorCourseLane(track, 'dirt', track.homeS0 - 30, track.homeS1 + 40, { lanes: [W + 168, W + 177], cols: 2, step: 3, onGround: true, lift: 0.15, mat: toon('#6d6f73', { side: THREE.DoubleSide }) });
+  const keyaki = Array.from({ length: 14 }, (_, i) => at(0.3 + (i % 7) * 0.06, W + 192 + Math.floor(i / 7) * 14));
   const cone = new THREE.ConeGeometry(1, 1, 8); cone.translate(0, 0.5, 0);
   const green = [], trunks = [];
   for (const it of [...treeSpots(120, 0), ...infield].filter(it => clear(it.p))) { const p = it.p, sc = rand(1, 1.8); trunks.push({ p: p.clone(), s: new V3(0.3 * sc, 2.4 * sc, 0.3 * sc) }); for (const [r, h, y] of [[2.2, 2.6, 1.6], [1.7, 2.4, 3.0], [1.1, 2.1, 4.3]]) green.push({ p: new V3(p.x, p.y + y * sc, p.z), s: new V3(r * sc, h * sc, r * sc), r: [0, rand(0, 3), 0] }); }
   inst(new THREE.CylinderGeometry(1, 1, 1, 6).translate(0, 0.5, 0), toon('#5a3e2b'), trunks); inst(cone, toon('#2f5f3e'), green);
   const bare = [], br = new THREE.CylinderGeometry(0.08, 0.16, 1, 5); br.translate(0, 0.5, 0);
-  for (let i = 0; i < 50; i++) { const p = spotOutside(10, 90, true), sc = rand(1.5, 2.6); if (!clear(p)) continue; bare.push({ p, s: new V3(sc * 2, sc * 4, sc * 2) }); for (let j = 0; j < 4; j++) bare.push({ p: new V3(p.x, p.y + sc * rand(2, 3.6), p.z), s: new V3(sc, sc * 2.2, sc), r: [rand(-0.9, 0.9), rand(0, 6), rand(-0.9, 0.9)] }); }
+  for (let i = 0; i < 50 + keyaki.length; i++) { const k = i >= 50, p = k ? keyaki[i - 50] : spotOutside(10, 90, true), sc = k ? rand(2.4, 2.9) : rand(1.5, 2.6); if (!k && !clear(p)) continue; if (k) p.y = track.groundH(p.x, p.z); bare.push({ p, s: new V3(sc * 2, sc * 4, sc * 2) }); for (let j = 0; j < 4; j++) bare.push({ p: new V3(p.x, p.y + sc * rand(2, 3.6), p.z), s: new V3(sc, sc * 2.2, sc), r: [rand(-0.9, 0.9), rand(0, 6), rand(-0.9, 0.9)] }); }
   inst(br, toon('#7a5b45'), bare);
-  mountains(th.mount, 12, true);
+  // 遠景：船橋の台地の上で近くに高い山はないため、住宅地と団地の家並み、雑木林を低く並べる（図鑑の全景では隠す）
+  { const base = track.extent + 150, houses = [], roofs = [], blocks = [], woods = [];
+    const wall = ['#efe8da', '#e6dccb', '#f3efe6', '#d9d2c4'].map(C), roofCol = ['#6b5a52', '#5a6470', '#8a4f3e', '#4f5a52'].map(C);
+    for (let i = 0; i < 320; i++) {
+      const a = rand(0, Math.PI * 2), r = rand(base, base + 420), p = new V3(Math.cos(a) * r, 0, Math.sin(a) * r), ry = rand(0, 3);
+      if (i % 9 === 0) { const h = rand(14, 28); blocks.push({ p: new V3(p.x, h / 2 - 1, p.z), s: new V3(rand(26, 40), h, 9), r: [0, ry, 0], c: wall[i % 4] }); continue; }
+      if (i % 4 === 0) { woods.push({ p: new V3(p.x, 0, p.z), s: new V3(rand(18, 34), rand(9, 15), rand(18, 34)), r: [0, ry, 0] }); continue; }
+      const w = rand(6, 9), h = rand(4.5, 7);
+      houses.push({ p: new V3(p.x, h / 2 - 1, p.z), s: new V3(w, h, w * 0.8), r: [0, ry, 0], c: wall[i % 4] });
+      roofs.push({ p: new V3(p.x, h - 1, p.z), s: new V3(w * 0.55, 3, w * 0.45), r: [0, ry, 0], c: roofCol[i % 4] });
+    }
+    // 四角すいの角を箱の角に合わせる（45度回して底面を±1の正方形にする）
+    const roofG = new THREE.ConeGeometry(Math.SQRT2, 1, 4); roofG.rotateY(Math.PI / 4); roofG.translate(0, 0.5, 0);
+    for (const m of [inst(BOX, toon('#ffffff'), houses, false), inst(roofG, toon('#ffffff'), roofs, false), inst(BOX, toon('#ffffff'), blocks, false), inst(SPH_LO, toon('#3f5a3c'), woods, false)]) m.userData.backdrop = true; }
   const sc = C('#fff3d6');
   ambient(TEX_SOFT, true, 25, (a, c) => a.emit(c.x + rand(-60, 60), c.y + rand(2, 20), c.z + rand(-60, 60), rand(-0.3, 0.3), rand(-0.2, 0.2), rand(-0.3, 0.3), 6, rand(0.15, 0.3), sc, 0, 0));
 }
@@ -6051,7 +6717,7 @@ function updCamera(dt, rdt) {
       const off = 0.18 * Math.tan(cam.bf * Math.PI / 360) * asp * d;
       const F = tp(R.s0 + lead.s - off + lead.v * 0.08, (lead.lane + third.lane) / 2);
       // Film the railway from the infield, keeping the outer station platforms behind the horses.
-      const side = railway ? -1 : 1;
+      const side = railway ? -1 : track.def.broadcastSide || 1;
       p = F.v.clone().addScaledVector(F.n, d * side).add(new V3(0, 8, 0)); t = F.v.clone().add(new V3(0, 1.2, 0)); fov = cam.bf; lam = 9; tl = 14;
     }
     else if (c === 'chase') { p = mpos.clone().addScaledVector(mq.dir, -7.5).addScaledVector(mq.n, 1.2).add(new V3(0, 3.2, 0)); t = mpos.clone().addScaledVector(mq.dir, 6).add(new V3(0, 1.3, 0)); fov = 52; lam = 5; }
@@ -6333,9 +6999,9 @@ const COURSE_CALLS = {
     straight: ['最後の直線！勝負の歯車を回せ！{L}、追う{B}！{BAND}'],
     finish: ['{RESULT}{M}、1着！ゼンマイ王国で勝利の時を刻みました！'] },
   'hakone:asphalt': {
-    intro: ['箱根の下り、四つのヘアピンに挑む！峠の主役は誰だ！', '山頂から麓へ！速さと器用さで切り開く峠の勝負です！'],
-    straight: ['最後の直線！峠の勝負をゴールへ届けろ！{L}、追う{B}！{BAND}'],
-    finish: ['{RESULT}{M}、1着！箱根の下りを走り切りました！'] },
+    intro: ['国道1号の最高地点から箱根湯本へ！箱根の山下りが始まります！', '標高874mから一気に駆け下りる！大平台のヘアピンを制するのは誰だ！'],
+    straight: ['函嶺洞門を過ぎて湯本の街へ！最後の直線、{L}、追う{B}！{BAND}'],
+    finish: ['{RESULT}{M}、1着！箱根の山を下り切って、湯本のゴールへ飛び込みました！'] },
   'boxHill:turf': {
     intro: ['妖精の丘、上って下って夢の先へ！', '二つの丘を巡る長丁場！最後まで続く脚に声援を！'],
     straight: ['最後の直線！丘の勝負にもうひと伸び！{L}、追う{B}！{BAND}'],
@@ -6544,6 +7210,13 @@ const RC = {
     if (race.t - this.lastT < 3) return;
     if (tr.def.theme === 'monaco' && race.t >= 8 && !this.milestones.has('monaco')) {
       this.milestones.add('monaco'); this.emit('monaco', data); return;
+    }
+    // 地点実況：先頭馬がその地点を過ぎた直後に一度だけ（遅れて届いた古い実況は捨てる）
+    for (const [at, text] of race.continuous ? [] : tr.def.placeCalls || []) {
+      const passed = race.s0 + lead.s - at;
+      if (passed < 0 || this.milestones.has(text)) continue;
+      this.milestones.add(text);
+      if (passed < 60) { this.lastT = race.t; say(text.replace(/\{(\w+)\}/g, (_, k) => data[k]), false); return; }
     }
     for (const distance of race.continuous ? [] : [100, 200, 400]) {
       if (race.D > distance && remaining <= distance && !this.milestones.has(distance)) {
