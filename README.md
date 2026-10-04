@@ -70,7 +70,7 @@
 |---|---|
 | 札幌 | もいわテラス・セイテンスタンド |
 | 新潟 | アイビス・NiLS21の2棟を表すスタンド |
-| 中山 | ハイセイコー像・グランプリガーデン |
+| 中山 | ハイセイコー像・グランプリガーデン（外回り・内側のダートコース・障害コース・芝1600m／2000mの発走ポケットも表示） |
 | 東京 | フジビュースタンド・ウオッカ像（大ケヤキ・富士山・内側のダートコース・芝2000m／1600mの発走ポケットも表示） |
 | 笠松 | オグリキャップ像（内馬場パドック・鉄塔も表示） |
 | 中京 | 展示パノラマカー・ツインハットの屋根 |
@@ -183,6 +183,7 @@ python -m http.server 8000
 - 歴史モチーフ：[『三国志』の赤兎馬に関する記述](https://ctext.org/dictionary.pl?char=%E8%B5%A4%E5%85%94&if=en)、[プルタルコス『アレクサンドロス伝』](https://sourcebooks.web.fordham.edu/ancient/plutarch-alexander1.asp)、[National Army Museum](https://www.nam.ac.uk/explore/horse-heroes)、[前田慶次逸話集](https://keijiyz.maeda-keiji.com/story.html)
 - 国内コース：[東京](https://www.jra.go.jp/facilities/race/tokyo/course/)・[中山](https://www.jra.go.jp/facilities/race/nakayama/course/)・[京都](https://www.jra.go.jp/facilities/race/kyoto/course/)・[阪神](https://www.jra.go.jp/facilities/race/hanshin/course/)・[中京](https://www.jra.go.jp/facilities/race/chukyo/course/)・[札幌](https://www.jra.go.jp/facilities/race/sapporo/course/)のJRA公式資料
 - 府中ダービーコース：[JRA東京競馬場のコース紹介](https://www.jra.go.jp/facilities/race/tokyo/course/)の芝1周2083.1m（Aコース）・直線525.9m・高低差2.7m、ダート1周1899m・直線501.6mを参考に、周長・直線・坂の位置（残り460〜300mの高低差2m）を合わせた近似コースです。ダートコースと発走ポケットは飾りで、レースは芝の周回上で行います。
+- 中山グランプリコース：[JRA中山競馬場のコース紹介](https://www.jra.go.jp/facilities/race/nakayama/course/)の平面図と高低断面図をもとに、芝内回り1周1667.1m（Aコース）・直線310m・各コーナーと向正面の区間長・起伏（1〜2コーナーが最高地点、直線の残り180〜70mに高低差2.2mの急坂、全体の高低差5.3m）を合わせた近似コースです。外回り（1周1839.7m、2コーナーで分岐し3〜4コーナーの境で合流するおむすび形）、ダートコース（1周1493m）、障害コース、発走ポケットは飾りで、レースは芝内回りの周回上で行います。
 - 笠松コース：[笠松けいば公式コース情報](https://www.kasamatsu-keiba.com/courseinfo)・[場内施設](https://www.kasamatsu-keiba.com/facilities)・[地方競馬公式のコース紹介](https://www.keiba.go.jp/raceseries/race/future2025/1023/)。右回り・1周1100m・直線201m・高低差1.92mを参考にした近似コースです。
 - 海外コース：[ロンシャン（France Galop）](https://www7.france-galop.com/hippo_premium/0001_ParisLongchamp.pdf)、[チャーチルダウンズ](https://www.churchilldowns.com/racing/)、[メイダン（ERA）](https://emiratesracing.com/racecourses/meydan)、[シャティン（HKJC）](https://racing.hkjc.com/racing/english/racing-info/racing_course.asp)
 - 名実況：[JRA創立70周年記念誌](https://www.jra.go.jp/special/event70th/pdf/memorial_book.pdf)。実際のアナウンサーの録音は使用せず、ブラウザの音声で読み上げます。

@@ -1067,9 +1067,12 @@ const TRACKS = [
     desc: '長い直線で差し・追込が届く大きなコース。直線の坂を上ってからもうひと伸びできるかが勝負。',
     grad: 'linear-gradient(135deg,#2f7fe0,#bfe0ff 55%,#6fbf5c)' },
   { name: '中山グランプリコース', kick: 0.55, real: true, theme: 'nakayama', surf: 'turf', dir: 'right', D: 1250, time: '右回り', scale: 0.5,
-    segs: [{ len: 410 }, { curve: [[610, 0], [630, 295], [440, 295]] }, { len: 460 }, { curve: [[-205, 295], [-215, 0], [0, 0]] }], finish: [0, 310], elevEx: 4,
-    elev: [[0, 0, 0], [0, 0.295, 0], [0, 0.585, 2.2], [0, 0.756, 2.4], [0, 1, 3.4], [1, 0.5, 4.6], [1, 1, 5.3], [2, 0.5, 3.0], [2, 1, 1.6], [3, 0.5, 0.6]],
-    motif: '中山競馬場（内回り）　芝2500m（有馬記念）', motifNote: '右回りの小回り。直線310mはJRAの主要4場で最短。ゴール前に高低差2.2mの急坂があり、コース全体の高低差5.3mはJRA最大。',
+    // 内回り1周1667.1m（Aコース、JRAの高低断面図の区間割り）：直線310m＋ゴール後73mで1コーナー、1〜2コーナー約476m、向正面約337m、3〜4コーナー約471m
+    segs: [{ len: 383 }, { curve: [[583, 0], [583, 300], [383, 300]] }, { len: 330 }, { curve: [[-147, 300], [-200, 0], [0, 0]] }], finish: [0, 310], elevEx: 4,
+    // ゴールから1コーナーへ上って1〜2コーナーが最高地点、2コーナーから向正面は下り、3〜4コーナーはほぼ平坦。
+    // 直線の残り220m付近が最低地点で、残り180〜70mに高低差2.2mの急坂（全体の高低差5.3m）。2500mの発走は内回り換算で3コーナー手前
+    elev: [[0, 0, 0.4], [0, 0.235, 0], [0, 0.339, 0.2], [0, 0.627, 2.5], [0, 0.809, 2.7], [1, 0, 3.9], [1, 0.2, 5.3], [1, 0.41, 5.3], [1, 0.62, 5.0], [1, 0.83, 3.8], [1, 1, 2.9], [2, 0.5, 1.0], [2, 1, 0.7], [3, 0.4, 0.7], [3, 0.8, 0.7]],
+    motif: '中山競馬場（内回り）　芝2500m（有馬記念）', motifNote: '右回りの小回りで内回り1周1667.1m。直線310mはJRAの主要4場で最短。直線の残り180〜70mに高低差2.2mの急坂があり、コース全体の高低差5.3mはJRA最大。2コーナーで分かれて大きく回る外回り（1周1839.7m）、内側のダートコース、内馬場を斜めに横切る障害コース（大竹柵・大いけ垣）。',
     desc: 'カーブがきつく先行有利。最後の急坂で根性（パワー）が問われる、冬のグランプリ。',
     grad: 'linear-gradient(135deg,#4a78b8,#ffd9a8 55%,#9aa47a)' },
   { name: '淀の坂ステークス', kick: 1.0, real: true, theme: 'kyoto', surf: 'turf', dir: 'right', D: 1500, time: '右回り', scale: 0.5,
@@ -4557,6 +4560,37 @@ function decorRacecourseLandmarks() {
     pond.receiveShadow = true; landmarkFlowers(park, 19, 11, '#f0c67f');
   }
 }
+// 本線と並走する飾りの内柵（ダートコースの内側など）
+function decorInnerRail(lane, color) {
+  const np = Math.ceil(track.L / 3), pts = [];
+  for (let i = 0; i < np; i++) { const q = track.pos(i / np * track.L, lane); pts.push(new V3(q.x, track.groundH(q.x, q.z) + 1, q.z)); }
+  world.add(new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts, true), np * 2, 0.09, 6, true), toon(color)));
+}
+// 飾りの芝を本線の芝と同じ見た目にする（雨の色変化も本線と共有）
+function decorTurfMat() { const m = WR.tMat.clone(); m.color = WR.tMat.color; m.side = THREE.DoubleSide; return m; }
+// 本線の芝の上にある頂点か。飾りの芝はここを沈めて、重なりのちらつきを防ぐ
+function onMainTurf(p) { for (let i = 0; i <= track.N; i += 2) if ((track.xs[i] - p.x) ** 2 + (track.zs[i] - p.z) ** 2 < (W / 2 + 1.8) ** 2) return true; return false; }
+// 本線の位置sから直線で延びる芝の発走ポケット（forward: 進行方向の先へ、false: 後ろへ）
+function decorTurfPocket(s, length, forward, mat) {
+  const q = track.pos(s, W / 2), tr = new Track({ surf: 'turf', dir: track.def.dir, closed: false, segs: [{ len: length }], finish: [0, length], D: length });
+  const origin = tr.pos(forward ? 0 : tr.L, W / 2);
+  for (let i = 0; i <= tr.N; i++) {
+    const x = tr.xs[i] - origin.x, z = tr.zs[i] - origin.z;
+    tr.xs[i] = q.x + x * Math.cos(q.h) - z * Math.sin(q.h); tr.zs[i] = q.z + x * Math.sin(q.h) + z * Math.cos(q.h); tr.hs[i] = q.h;
+  }
+  decorCourseLane(tr, 'turf', 0, tr.L, { lanes: [-1.6, W + 1.6], cols: 18, step: 1.5, onGround: true, mat, hide: onMainTurf });
+}
+// 点列を結んだ飾り用の経路。pos(s, lane)は本線のTrack.posと同じ向きでレーンをとる
+function decorPath(pts) {
+  const ss = [0];
+  for (let i = 1; i < pts.length; i++) ss.push(ss[i - 1] + Math.hypot(pts[i].x - pts[i - 1].x, pts[i].z - pts[i - 1].z));
+  return { pts, L: ss[ss.length - 1], pos(s, lane) {
+    let i = 0; while (i < pts.length - 2 && ss[i + 1] < s) i++;
+    const a = pts[i], b = pts[i + 1], t = clamp((s - ss[i]) / Math.max(1e-6, ss[i + 1] - ss[i]), 0, 1);
+    const h = Math.atan2(b.z - a.z, b.x - a.x), off = (lane - W / 2) * track.sgn, x = lerp(a.x, b.x, t), z = lerp(a.z, b.z, t);
+    return { x: x - Math.sin(h) * off, z: z + Math.cos(h) * off, h, y: 0 };
+  } };
+}
 function decorTokyo(th) {
   // 内馬場の木はダートコースより内側に置く
   const infield = Array.from({ length: 18 }, () => { const q = tp(Math.random() * track.L, -rand(26, Math.max(30, track.R - 14))); q.v.y = track.groundH(q.v.x, q.v.z); return { p: q.v }; })
@@ -4564,23 +4598,10 @@ function decorTokyo(th) {
   roundTrees([...treeSpots(110, 0), ...infield], ['#3f8f3a', '#4fa546', '#5fb853', '#377d34']);
   // 芝の内側のダートコース（飾り）。内柵を挟んで並走し、1周は約1/2縮尺で実物の1899mに近い
   decorCourseLane(track, 'dirt', 0, track.L, { lanes: [-3.5, -14.5], onGround: true });
-  { const np = Math.ceil(track.L / 3), pts = [];
-    for (let i = 0; i < np; i++) { const q = track.pos(i / np * track.L, -15.3); pts.push(new V3(q.x, track.groundH(q.x, q.z) + 1, q.z)); }
-    world.add(new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts, true), np * 2, 0.09, 6, true), toon(th.rail))); }
+  decorInnerRail(-15.3, th.rail);
   // 芝の発走ポケット（飾り）：2000mは1コーナー奥へ直進、1600mは向正面から2コーナー奥へ延びる引き込み線
-  const pocket = (s, length, forward) => {
-    const q = track.pos(s, W / 2), tr = new Track({ surf: 'turf', dir: 'left', closed: false, segs: [{ len: length }], finish: [0, length], D: length });
-    const origin = tr.pos(forward ? 0 : tr.L, W / 2);
-    for (let i = 0; i <= tr.N; i++) {
-      const x = tr.xs[i] - origin.x, z = tr.zs[i] - origin.z;
-      tr.xs[i] = q.x + x * Math.cos(q.h) - z * Math.sin(q.h); tr.zs[i] = q.z + x * Math.sin(q.h) + z * Math.cos(q.h); tr.hs[i] = q.h;
-    }
-    decorCourseLane(tr, 'turf', 0, tr.L, { lanes: [-1.6, W + 1.6], cols: 18, step: 1.5, onGround: true, mat: pocketMat, hide: onMainTurf });
-  };
-  // 芝と同じ見た目にする（雨の色変化も本線と共有）。本線の芝の上にある頂点は沈めて、重なりのちらつきを防ぐ
-  const pocketMat = WR.tMat.clone(); pocketMat.color = WR.tMat.color; pocketMat.side = THREE.DoubleSide;
-  const onMainTurf = p => { for (let i = 0; i <= track.N; i += 2) if ((track.xs[i] - p.x) ** 2 + (track.zs[i] - p.z) ** 2 < (W / 2 + 1.8) ** 2) return true; return false; };
-  pocket(track.segStart[1], 60, true); pocket(track.segStart[2], 55, false);
+  const mat = decorTurfMat();
+  decorTurfPocket(track.segStart[1], 60, true, mat); decorTurfPocket(track.segStart[2], 55, false, mat);
   // 大ケヤキ: a lone giant zelkova inside the 3rd corner, beyond the dirt course
   { const q = tp(track.segStart[3] + track.segs[3].len2 * 0.12, -32); q.v.y = track.groundH(q.v.x, q.v.z); roundTrees([{ p: q.v, s: 3.4 }], ['#3a7f36', '#4a9442', '#2f6e2c'], '#5a3e2b'); }
   // 富士山 across the infield from the stands
@@ -4591,11 +4612,11 @@ function decorTokyo(th) {
 }
 // Decorative lanes do not participate in race physics or replace the selected course.
 // opts.lanes: 描く幅（レーン範囲）、opts.onGround: 坂のあるコースでは地形の高さに沿わせる、opts.mat: 材質の指定（UVは走路面と同じ割り付け）
-// opts.cols: 横方向の分割数、opts.hide(p): trueの頂点は地面の下に沈めて隠す（本線と重なる部分を本線に任せる）
+// opts.cols: 横方向の分割数、opts.hide(p): trueの頂点は地面の下に沈めて隠す（本線と重なる部分を本線に任せる）、opts.lift: 地面からの浮かせ量
 function decorCourseLane(tr, surf, from = 0, to = tr.L, opts = {}) {
   const [laneA, laneB] = opts.lanes || [2, W - 2], cols = opts.cols || 1;
   const n = Math.ceil((to - from) / (opts.step || 3)), pts = [], uv = [], indices = [];
-  const y = p => opts.hide && opts.hide(p) ? track.groundH(p.x, p.z) - 0.6 : opts.onGround ? track.groundH(p.x, p.z) + 0.1 : 0.005;
+  const y = p => opts.hide && opts.hide(p) ? track.groundH(p.x, p.z) - 0.6 : opts.onGround ? track.groundH(p.x, p.z) + (opts.lift || 0.1) : 0.005;
   for (let i = 0; i <= n; i++) {
     const s = lerp(from, to, i / n);
     for (let j = 0; j <= cols; j++) { const p = tr.pos(s, lerp(laneA, laneB, j / cols)); pts.push(p.x, y(p), p.z); uv.push(s / 16, j / cols); }
@@ -4693,12 +4714,52 @@ function decorSapporo(th) {
   mountains(th.mount, 16, false);
 }
 function decorNakayama(th) {
+  // 外回り（飾り）：内回りの2コーナー入口で分かれ、2コーナー出口の外側の頂点まで大きく回ってから、
+  // 角度の浅い3コーナーを斜めに下って3〜4コーナーの境で合流する（おむすび形）。1周は内回り＋172.6m（1839.7m）になるよう頂点の張り出しを決める
+  const sa = track.segStart[1] + track.segs[1].len2 * 0.52, sb = track.segStart[3] + track.segs[3].len2 * 0.554, sp = track.segStart[2] + track.segs[2].len2 * 0.1;
+  const a = track.pos(sa, W / 2), b = track.pos(sb, W / 2), target = sb - sa + 172.6 * track.def.scale;
+  const v = (x, z) => new V3(x, 0, z), A = v(a.x, a.z), B = v(b.x, b.z);
+  const outerCurve = depth => {
+    const q = track.pos(sp, W / 2 + depth), P = v(q.x, q.z), d = B.clone().sub(P).normalize(), la = A.distanceTo(P), lb = B.distanceTo(P), path = new THREE.CurvePath();
+    path.add(new THREE.CubicBezierCurve3(A, v(a.x + Math.cos(a.h) * la * 0.55, a.z + Math.sin(a.h) * la * 0.55), P.clone().addScaledVector(d, -la * 0.35), P));
+    path.add(new THREE.CubicBezierCurve3(P, P.clone().addScaledVector(d, lb * 0.35), v(b.x - Math.cos(b.h) * lb * 0.3, b.z - Math.sin(b.h) * lb * 0.3), B));
+    return path;
+  };
+  let lo = 0, hi = 300;
+  for (let i = 0; i < 40; i++) { const m = (lo + hi) / 2; if (outerCurve(m).getLength() < target) lo = m; else hi = m; }
+  const outer = decorPath(outerCurve(lo).getSpacedPoints(Math.ceil(target / 1.5))), mat = decorTurfMat();
+  decorCourseLane(outer, 'turf', 0, outer.L, { lanes: [-1.6, W + 1.6], cols: 18, step: 1.5, onGround: true, mat, hide: onMainTurf });
+  // 芝の発走ポケット（飾り）：1600m（外）は1コーナー奥、2000m（内）は4コーナー奥へ延びる引き込み線
+  decorTurfPocket(track.segStart[1], 50, true, mat); decorTurfPocket(0, 45, false, mat);
+  // 芝の内側のダートコース（飾り）。1周は約1/2縮尺で実物の1493mに近い
+  decorCourseLane(track, 'dirt', 0, track.L, { lanes: [-2.5, -13], cols: 4, step: 1.5, onGround: true, lift: 0.25 });
+  decorInnerRail(-13.8, th.rail);
+  // 障害コース（飾り）：内馬場を斜めに横切る襷コースと、内回りと外回りの間の周回路。大いけ垣・大竹柵などの障害を置く
+  const p0 = tp(track.segStart[2] + track.segs[2].len2 * 0.4, -22).v, p1 = tp(track.segs[0].len2 * 0.12, -22).v;
+  const cross = decorPath(new THREE.LineCurve3(p0, p1).getSpacedPoints(Math.ceil(p0.distanceTo(p1) / 2)));
+  const jumpMat = decorTurfMat(); jumpMat.color = C('#c9e6a6');
+  decorCourseLane(cross, 'turf', 0, cross.L, { lanes: [W / 2 - 4.5, W / 2 + 4.5], cols: 6, step: 1.5, onGround: true, lift: 0.3, mat: jumpMat });
+  decorCourseLane(outer, 'turf', outer.L * 0.15, outer.L * 0.85, { lanes: [-16, -6], cols: 6, step: 1.5, onGround: true, lift: 0.3, mat: jumpMat, hide: onMainTurf });
+  const hedge = toon('#3f6b34'), hedgeTop = toon('#4f8040'), bamboo = toon('#c8b46a'), wood = toon('#7a5b45'), pole = new THREE.CylinderGeometry(0.09, 0.11, 2, 5);
+  const jump = (path, s, lane, kind) => {
+    const q = path.pos(s, lane), g = new THREE.Group(); g.position.set(q.x, track.groundH(q.x, q.z), q.z); g.rotation.y = -q.h; world.add(g);
+    if (kind === 'hedge') { addBox(g, [2.4, 1.6, 10], [0, 0.8, 0], hedge, null, 0); addBox(g, [2.7, 0.5, 10.4], [0, 1.75, 0], hedgeTop, null, 0); }
+    else if (kind === 'bamboo') { for (let z = -4.8; z <= 4.81; z += 0.4) part(g, pole, bamboo, [0, 1, z], null, null, 0); addBox(g, [0.3, 0.25, 10], [0.25, 1.5, 0], wood, null, 0); }
+    else addBox(g, [1.2, 1.1, 10], [0, 0.55, 0], hedge, null, 0);
+  };
+  jump(cross, cross.L * 0.3, W / 2, 'hedge'); jump(cross, cross.L * 0.65, W / 2, 'bamboo');
+  for (const f of [0.3, 0.5, 0.7]) jump(outer, outer.L * f, -11, 'brush');
+  // 木は外回り・障害コースの上に置かない
+  const near = (p, path, d) => path.pts.some(q => (q.x - p.x) ** 2 + (q.z - p.z) ** 2 < d * d);
+  const clear = p => p && !near(p, outer, W + 22) && !near(p, cross, 9);
+  const infield = Array.from({ length: 16 }, () => { const q = tp(Math.random() * track.L, -rand(22, 55)); q.v.y = track.groundH(q.v.x, q.v.z); return { p: q.v }; })
+    .filter(it => it.p.distanceTo(boardPos) > 26);
   const cone = new THREE.ConeGeometry(1, 1, 8); cone.translate(0, 0.5, 0);
   const green = [], trunks = [];
-  for (const it of treeSpots(120, 14)) { const p = it.p, sc = rand(1, 1.8); trunks.push({ p: p.clone(), s: new V3(0.3 * sc, 2.4 * sc, 0.3 * sc) }); for (const [r, h, y] of [[2.2, 2.6, 1.6], [1.7, 2.4, 3.0], [1.1, 2.1, 4.3]]) green.push({ p: new V3(p.x, p.y + y * sc, p.z), s: new V3(r * sc, h * sc, r * sc), r: [0, rand(0, 3), 0] }); }
+  for (const it of [...treeSpots(120, 0), ...infield].filter(it => clear(it.p))) { const p = it.p, sc = rand(1, 1.8); trunks.push({ p: p.clone(), s: new V3(0.3 * sc, 2.4 * sc, 0.3 * sc) }); for (const [r, h, y] of [[2.2, 2.6, 1.6], [1.7, 2.4, 3.0], [1.1, 2.1, 4.3]]) green.push({ p: new V3(p.x, p.y + y * sc, p.z), s: new V3(r * sc, h * sc, r * sc), r: [0, rand(0, 3), 0] }); }
   inst(new THREE.CylinderGeometry(1, 1, 1, 6).translate(0, 0.5, 0), toon('#5a3e2b'), trunks); inst(cone, toon('#2f5f3e'), green);
   const bare = [], br = new THREE.CylinderGeometry(0.08, 0.16, 1, 5); br.translate(0, 0.5, 0);
-  for (let i = 0; i < 50; i++) { const p = spotOutside(10, 90, true), sc = rand(1.5, 2.6); bare.push({ p, s: new V3(sc * 2, sc * 4, sc * 2) }); for (let j = 0; j < 4; j++) bare.push({ p: new V3(p.x, p.y + sc * rand(2, 3.6), p.z), s: new V3(sc, sc * 2.2, sc), r: [rand(-0.9, 0.9), rand(0, 6), rand(-0.9, 0.9)] }); }
+  for (let i = 0; i < 50; i++) { const p = spotOutside(10, 90, true), sc = rand(1.5, 2.6); if (!clear(p)) continue; bare.push({ p, s: new V3(sc * 2, sc * 4, sc * 2) }); for (let j = 0; j < 4; j++) bare.push({ p: new V3(p.x, p.y + sc * rand(2, 3.6), p.z), s: new V3(sc, sc * 2.2, sc), r: [rand(-0.9, 0.9), rand(0, 6), rand(-0.9, 0.9)] }); }
   inst(br, toon('#7a5b45'), bare);
   mountains(th.mount, 12, true);
   const sc = C('#fff3d6');
