@@ -1092,9 +1092,14 @@ const TRACKS = [
     desc: 'コーナーなしの1000m一直線。スタートダッシュと加速が命。馬たちは外ラチ沿いへ寄っていく。',
     grad: 'linear-gradient(90deg,#1d6fe0,#bfe4ff 50%,#58b848)' },
   { name: 'ロンシャン凱旋門', kick: 1.1, real: true, theme: 'longchamp', surf: 'turf', dir: 'right', D: 1200, time: '右回り', scale: 0.5,
-    segs: [{ len: 613 }, { curve: [[800, 0], [775, 200], [570, 270]] }, { curve: [[270, 373], [-30, 476], [-200, 490]] }, { curve: [[-490, 514], [-550, 165], [-240, 65]] }, { curve: [[-160, 39], [-100, 22], [-45, 10]] }, { curve: [[-30, 7], [-20, 0], [0, 0]] }], finish: [0, 533], elevEx: 3.5,
-    elev: [[0, 0, 0.4], [0, 0.87, 0], [0, 1, 0], [1, 0.5, 0.2], [1, 1, 0.5], [2, 0.15, 0.8], [2, 1, 9], [3, 0.4, 10], [3, 1, 8.5], [4, 1, 3.5], [5, 0.6, 1.0]],
-    motif: 'パリロンシャン競馬場　芝2400m（凱旋門賞）', motifNote: '右回り。向正面で約10mを上り、丘を下った先に「フォルスストレート（偽りの直線）」、最後に533mの直線。コース脇に風車。',
+    // グランド・ピスト（大コース）の中心線を地図の柵の位置から近似：最後の直線533m＋ゴール後42mで1コーナー、風車の手前を回る1〜2コーナー、
+    // 風車脇の引き込み線（2400mの発走地点）から南へまっすぐ延びる向正面、丘の頂上を回る3コーナー、下りの4コーナー、緩く曲がるフォルスストレート。
+    // 1周は約2764m（実物は2750m）で、2400mの発走は2コーナー出口、引き込み線との合流点のすぐ手前になる
+    segs: [{ len: 575 }, { curve: [[725, 0], [778, 162], [640, 221]] }, { len: 500 }, { curve: [[-59, 518], [-329, 581], [-418, 436]] }, { curve: [[-506, 291], [-390, 179], [-258, 108]] }, { curve: [[-170, 60], [-100, 0], [0, 0]] }], finish: [0, 533], elevEx: 3.5,
+    // 中心線に沿った実際の標高（フランス国土地理院）：発走地点から向正面を約900m上り続け、3コーナーの頂上で+9.6m。
+    // 3コーナー後半から4コーナーを下り、フォルスストレートと最後の直線はほぼ平坦
+    elev: [[0, 0, 0.7], [0, 1, 0.4], [1, 0.7, 0], [2, 0.45, 0.6], [2, 1, 3.3], [3, 0.2, 6.4], [3, 0.4, 8.9], [3, 0.55, 9.6], [3, 0.7, 8.8], [3, 0.85, 7.6], [3, 1, 5.2], [4, 0.15, 3.3], [4, 0.33, 2.2], [4, 0.5, 1.0], [4, 0.7, 0.4], [5, 0.5, 0.6]],
+    motif: 'パリロンシャン競馬場（グランド・ピスト）　芝2400m（凱旋門賞）', motifNote: '右回りで大コース1周2750m。風車脇の引き込み線から発走し、向正面を約900m上り続けて3コーナーの頂上へ（高低差約10m）。下りながら4コーナーを回ると、緩く曲がった約250mの「フォルスストレート（偽りの直線）」、その先に最後の直線533m。内馬場を斜めに横切る直線コース（1000m）と小回りのプティット・ピスト、3コーナーの内側を回るモワイエンヌ・ピスト、向正面の内側の小さな森（プチ・ボワ）。西にセーヌ川、遠くにエッフェル塔とラ・デファンスの高層ビル。',
     desc: '序盤の長い上り坂でスタミナを消耗。偽りの直線で仕掛けが早すぎると、本当の直線で脚が止まる。',
     grad: 'linear-gradient(135deg,#6a8fc4,#f4dcc0 55%,#c98a3a)' },
   { name: 'ケンタッキーローズ', kick: 0.7, real: true, theme: 'churchill', surf: 'dirt', dir: 'left', D: 1000, time: '左回り', scale: 0.5, stand: 'spires',
@@ -5899,9 +5904,24 @@ function decorLandmarkStand(stand, len, z0, roof) {
     for (let x = -len / 2 + 8; x <= len / 2 - 8; x += 20) box([0.8, 15, 0.8], [x, 19.5, z0 + 4]);
   } else if (theme === 'longchamp') {
     roof.visible = false;
+    // パリロンシャンのメインスタンド（ドミニク・ペロー設計、2018年）：4層の階が左右に少しずつずれて傾きながら重なる。
+    // 床の先端は金色の金属メッシュで包まれ、その奥にガラス張りの階。最上階の屋上はレストランのテラス
+    const deck = toon('#f4efe4'), meshTex = ctex(256, 32, c => { c.fillStyle = '#6f5630'; c.fillRect(0, 0, 256, 32); c.fillStyle = '#e4c071'; for (let x = 0; x < 256; x += 8) c.fillRect(x, 0, 5, 32); }, true);
+    meshTex.repeat.set(len / 12, 1);
+    const mesh = toon('#ffffff', { map: meshTex });
+    let top = null;
     for (let i = 0; i < 4; i++) {
-      box([len + 18 - i * 10, 1.2, 26], [-i * 5, 12 + i * 4.5, z0 + 8 + i * 2], gold);
-      box([len - i * 10, 2.6, 0.25], [-i * 5, 14 + i * 4.5, z0 + 19 + i * 2], glass);
+      const w = len + 12 - i * 16, x = (i % 2 ? 7 : -7) - i * 2, y = 11 + i * 4.8, z = z0 + 9 + i * 2.4, tilt = (i % 2 ? -1 : 1) * 0.03;
+      box([w, 0.7, 26], [x, y, z], deck, [tilt, 0, 0]);
+      box([w - 8, 3.4, 16], [x, y + 2.1, z + 5], glass, [tilt, 0, 0]);
+      for (const dz of [-13, 13]) box([w, 1.4, 0.5], [x, y + 0.1, z + dz], mesh, [tilt, 0, 0]);
+      top = { w, x, y, z };
+    }
+    box([top.w - 8, 0.5, 16], [top.x, top.y + 4, top.z + 5], deck);
+    for (let x = top.x - top.w / 2 + 14; x < top.x + top.w / 2 - 10; x += 22) {
+      box([12, 1, 2.2], [x, top.y + 4.7, top.z + 11], toon('#5f8f4a'));
+      part(g, new THREE.ConeGeometry(2.6, 1.2, 10), toon('#f7f3ea'), [x + 6, top.y + 7, top.z + 4], null, null, 0);
+      box([0.2, 2.6, 0.2], [x + 6, top.y + 5.4, top.z + 4], gold);
     }
   } else if (theme === 'chukyo') {
     roof.visible = false;
@@ -6078,6 +6098,23 @@ function decorRacecourseLandmarks() {
   }
   if (theme === 'kasamatsu') landmarkStatue('オグリキャップ像', 0.8, 'walk', '#b6bcb4');
   if (theme === 'churchill') landmarkStatue('バルバロ像', 0.8, 'gallop', '#746052');
+  if (theme === 'longchamp') {
+    // スタンドの裏の円いパドック（ロン・ド・プレザンタシオン）：スタンドの各階から見下ろせる。周りにマロニエの木
+    const pad = landmarkGroup('パドック（ロン・ド・プレザンタシオン）', 0.75, W + 112); landmarkFoundation(pad, 46, 46, '#cdbf9f');
+    part(pad, new THREE.CircleGeometry(15, 48), toon('#6fbf5c'), [0, 0.06, 0], null, [-Math.PI / 2, 0, 0], 0);
+    const rail = [];
+    for (let i = 0; i < 48; i++) { const a = i / 48 * Math.PI * 2; rail.push(new V3(Math.cos(a) * 17, 1.1, Math.sin(a) * 17)); }
+    pad.add(new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(rail, true), 96, 0.12, 4, true), toon('#f4f2ea')));
+    for (let i = 0; i < 8; i++) {
+      const a = (i + 0.5) / 8 * Math.PI * 2, x = Math.cos(a) * 20.5, z = Math.sin(a) * 20.5;
+      part(pad, new THREE.CylinderGeometry(0.35, 0.5, 3.4, 6), toon('#6b4a35'), [x, 1.7, z], null, null, 0);
+      part(pad, SPH_LO, toon(i % 2 ? '#c9772a' : '#d9a33a'), [x, 5.2, z], [2.4, 2.2, 2.4], null, 0);
+    }
+    // 正門の内側に立つグラディアトゥール像：1865年の英国三冠馬で「ワーテルローの復讐者」。イジドール・ボヌール作（1866年）
+    const gl = landmarkGroup('グラディアトゥール像', 0.93, W + 80); landmarkFoundation(gl, 18, 14);
+    addBox(gl, [10, 5, 5.5], [0, 2.5, 0], toon('#d8d0bc'), null, 0); addBox(gl, [11, 0.6, 6.5], [0, 5.3, 0], toon('#c9c0aa'), null, 0);
+    landmarkHorse(gl, [0, 5.6, 0], 'walk', '#4f5a52', 1.6); landmarkFlowers(gl, 8, 6, '#d9493a');
+  }
   if (theme === 'kyoto') {
     landmarkStatue('コントレイル像', 0.82, 'walk', '#526358');
     const g = landmarkGroup('三冠馬メモリアルロード', 0.22); landmarkFoundation(g, 58, 16);
@@ -6587,20 +6624,142 @@ function decorNiigata(th) {
     for (let j = 0; j < 9; j++) list.push({ p: new V3(cx + rand(-1.2, 1.2) * sz, 60 + rand(0, 1.6) * sz * (j < 3 ? 0.6 : 1), cz + rand(-0.6, 0.6) * sz), s: new V3(sz * rand(0.6, 1), sz * rand(0.55, 0.9), sz * rand(0.6, 1)) }); }
   const cl = inst(cg, cloud, list, false); cl.castShadow = false;
 }
+// ロンシャンの地図座標（実寸m。x：東、y：北。場内中央付近が原点）をワールド座標へ変換する。
+// コースの起点（最後の直線の入口、地図の(-207, -33)）から直線の向き（北北東）を+x、コースの内側（東）を+zとして縮尺をかける
+function longchampAt(mx, my) {
+  const k = track.def.scale, dx = mx + 207, dy = my + 33;
+  return new V3(track.xs[0] + (dx * 0.28 + dy * 0.96) * k, 0, track.zs[0] + (dx * 0.96 - dy * 0.28) * k * track.turn);
+}
 function decorLongchamp(th) {
-  roundTrees(treeSpots(150, 20), ['#e0a53a', '#c9772a', '#9aa83a', '#e8c24a', '#7f9a3a']);
-  // Moulin de Longchamp: windmill outside the bottom turn
-  { const f = tp(track.segStart[1] + track.segs[1].len2 * 0.5, W + 26); const g = new THREE.Group(); g.position.set(f.v.x, track.groundH(f.v.x, f.v.z), f.v.z); g.rotation.y = -f.h + Math.PI / 2 * track.sgn; world.add(g);
-    part(g, new THREE.CylinderGeometry(2.6, 3.4, 11, 16), toon('#efe6d6'), [0, 5.5, 0], null, null, 0.03);
-    part(g, new THREE.ConeGeometry(3.3, 3.6, 16), toon('#8a5a3a'), [0, 12.8, 0], null, null, 0.03);
-    const hub = new THREE.Group(); hub.position.set(0, 11.2, 3.1); g.add(hub);
-    for (let i = 0; i < 4; i++) { const arm = new THREE.Group(); arm.rotation.z = i * Math.PI / 2; hub.add(arm); addBox(arm, [0.35, 8.5, 0.2], [0, 4.4, 0], toon('#6b4a35'), null, 0.04); addBox(arm, [1.8, 6.5, 0.08], [0.95, 5, 0.05], toon('#f7f1e6'), null, 0.03); }
+  // 配置はOpenStreetMapの柵・建物・水辺の位置と、France Galopのコース図を参考にしたデフォルメ
+  const at = longchampAt, k = track.def.scale, mat = decorTurfMat(), v = (x, z) => new V3(x, 0, z);
+  const route = pts => {
+    const ps = pts.map(([x, y]) => at(x, y)), curve = ps.length > 2 ? new THREE.CatmullRomCurve3(ps, false, 'centripetal') : new THREE.LineCurve3(ps[0], ps[1]);
+    return decorPath(curve.getSpacedPoints(Math.ceil(curve.getLength() / 1.5)));
+  };
+  const near = (p, pts, d) => pts.some(q => (q.x - p.x) ** 2 + (q.z - p.z) ** 2 < d * d);
+  // 飾りのコースどうしが重なる所は先に描いたほうに任せて沈める（重なりのちらつき防止）
+  const drawn = [];
+  const lane = path => {
+    const others = drawn.slice();
+    decorCourseLane(path, 'turf', 0, path.L, { lanes: [-1.6, W + 1.6], cols: 18, step: 1.5, onGround: true, mat, hide: p => onMainTurf(p) || others.some(o => near(p, o.pts, W / 2 + 1.8)) });
+    drawn.push(path);
+  };
+  // 飾りのコース（レースはグランド・ピストの周回上で行う）
+  // 凱旋門賞の発走地点：風車の脇から向正面へまっすぐ延びる引き込み線
+  decorTurfPocket(track.segStart[2], 135 * k, false, mat);
+  // 内馬場を斜めに横切る直線コース（1000m）：南端の引き込み線から北北東へ延び、向正面に合流する
+  const straight = route([[-35, -601], [212, 285]]); lane(straight);
+  // プティット・ピスト（小コース）：直線コースを向正面に使い、内側の小さなカーブを回って最後の直線へ
+  const petite = route([[91, -150], [72, -215], [45, -250], [5, -272], [-40, -283], [-85, -281], [-125, -268], [-160, -238], [-184, -195], [-196, -140], [-203, -80], [-203, -30]]); lane(petite);
+  // モワイエンヌ・ピスト（中コース）：3コーナーの内側を小さく回り、フォルスストレートで合流する
+  const moyenne = route([[255, -130], [246, -215], [222, -290], [180, -355], [125, -405], [65, -438], [5, -452], [-50, -440], [-100, -410], [-140, -368], [-168, -322], [-180, -280]]); lane(moyenne);
+  // ヌーヴェル・ピストの引き込み線：3〜4コーナーの間から東南東へ延びる
+  const nouvelle = route([[30, -566], [198, -630]]); lane(nouvelle);
+
+  // 本線からの距離と、周回の内側かどうか（木や飾りの置き場所の判定）
+  const loop = []; for (let i = 0; i < track.N; i += 6) loop.push(v(track.xs[i], track.zs[i]));
+  const gap = p => { let d = 1e18; for (const q of loop) d = Math.min(d, (q.x - p.x) ** 2 + (q.z - p.z) ** 2); return Math.sqrt(d); };
+  const inside = p => { let c = false; for (let i = 0, j = loop.length - 1; i < loop.length; j = i++) { const a = loop[i], b = loop[j]; if ((a.z > p.z) !== (b.z > p.z) && p.x < (b.x - a.x) * (p.z - a.z) / (b.z - a.z) + a.x) c = !c; } return c; };
+  const clearOfCourses = p => gap(p) > W / 2 + 7 && !drawn.some(o => near(p, o.pts, W / 2 + 6));
+
+  // ムーラン・ド・ロンシャン：1〜2コーナーの外、凱旋門賞の発走地点の脇に残る、かつての修道院の石造りの風車（高さ約19m）。羽根がゆっくり回る。
+  // 中継カメラ（走路の外側）が通り抜けないよう、実際の位置（地図の(127, 695)）より少しコースから離して置く
+  { const p = at(122, 745), aim = at(100, 600), g = registerLandmark(new THREE.Group(), 'ムーラン・ド・ロンシャン（風車）');
+    g.position.set(p.x, track.groundH(p.x, p.z), p.z); g.rotation.y = Math.atan2(aim.x - p.x, aim.z - p.z); world.add(g);
+    part(g, new THREE.CylinderGeometry(3.4, 4.4, 14, 16), toon('#e6dccb'), [0, 7, 0], null, null, 0.03);
+    for (const y of [4.5, 9.5]) part(g, new THREE.CylinderGeometry(0.9, 0.9, 0.2, 12), toon('#4a3a30'), [0, y, 4.1], null, [Math.PI / 2, 0, 0], 0);
+    part(g, new THREE.ConeGeometry(4.2, 4.6, 16), toon('#6b4a35'), [0, 16.3, 0], null, null, 0.03);
+    const hub = new THREE.Group(); hub.position.set(0, 14.4, 4.3); g.add(hub);
+    for (let i = 0; i < 4; i++) { const arm = new THREE.Group(); arm.rotation.z = i * Math.PI / 2; hub.add(arm); addBox(arm, [0.45, 11, 0.25], [0, 5.6, 0], toon('#6b4a35'), null, 0.04); addBox(arm, [2.3, 8.4, 0.1], [1.2, 6.4, 0.06], toon('#f7f1e6'), null, 0.03); }
     themeUpd.push((t, dt) => { hub.rotation.z -= dt * 0.6; }); }
-  // Eiffel tower on the horizon
-  { const f = farPoint(1150, true, 0.3); const g = new THREE.Group(); g.position.set(f.x, 0, f.z); world.add(g); const m = toon('#6b5a52', { fog: false });
+
+  // 池：スタンドの裏のエタン・デ・トリビューン（観客席の池）と、フォルスストレートの外の池
+  const water = toon('#5f9fc4'), ponds = [[-360, 200, 42, 140, 0.25], [-228, -345, 28, 115, 0.12]];
+  const wet = (x, y) => ponds.some(([px, py, rx, ry]) => ((x - px) / (rx + 12)) ** 2 + ((y - py) / (ry + 12)) ** 2 < 1);
+  for (const [x, y, rx, ry, rot] of ponds) {
+    const p = at(x, y), pond = part(world, new THREE.CircleGeometry(1, 40), water, [p.x, track.groundH(p.x, p.z) + 0.12, p.z], [ry * k, rx * k, 1], [-Math.PI / 2, 0, rot - 0.28], 0);
+    pond.receiveShadow = true;
+  }
+  // セーヌ川：場内の西を北北東へ流れる（幅約170m）。東岸にはペニッシュ（住居船）が並ぶ
+  const seine = route([[-640, -900], [-680, -500], [-685, -280], [-660, -140], [-630, 10], [-591, 156], [-520, 370], [-462, 538], [-420, 700], [-383, 849], [-320, 980], [-222, 1145], [-60, 1300]]);
+  decorCourseLane(seine, 'water', 0, seine.L, { lanes: [W / 2 - 42, W / 2 + 42], cols: 4, step: 4, onGround: true, lift: 0.08, mat: toon('#5b8fb4', { side: THREE.DoubleSide }) });
+  { const hull = toon('#34434f'), cabin = toon('#efe5d0'), roofC = toon('#7a4b3a');
+    for (const [x, y] of [[-439, 359], [-424, 407], [-378, 552], [-365, 630], [-352, 710], [-336, 762]]) {
+      const p = at(x, y), g = new THREE.Group(); g.position.set(p.x, 0.1, p.z); g.rotation.y = rand(-0.06, 0.06); world.add(g);
+      addBox(g, [19, 1.6, 4.4], [0, 0.8, 0], hull, null, 0.03); addBox(g, [9, 2.2, 3.4], [-2, 2.7, 0], cabin, null, 0.03); addBox(g, [9.6, 0.4, 3.8], [-2, 3.9, 0], roofC, null, 0);
+      for (let j = 0; j < 3; j++) part(g, SPH_LO, toon(['#d9493a', '#f2b53a', '#4f9a44'][j]), [3.5 + j * 1.6, 2, 1.4], [0.6, 0.6, 0.6], null, 0);
+    } }
+
+  // 内馬場のゴルフ場（ゴルフ・パリロンシャン）：グリーンと旗、砂のバンカー
+  const greens = [[-60, -110], [-30, 90], [35, 190]];
+  for (const [x, y] of greens) {
+    const p = at(x, y), g = new THREE.Group(); g.position.set(p.x, track.groundH(p.x, p.z) + 0.1, p.z); world.add(g);
+    part(g, new THREE.CircleGeometry(1, 28), toon('#86cf6c'), [0, 0, 0], [7, 5, 1], [-Math.PI / 2, 0, 0], 0);
+    part(g, new THREE.CircleGeometry(1, 20), toon('#e8d9a8'), [5.5, 0.02, 4.5], [2.6, 1.6, 1], [-Math.PI / 2, 0, 0.4], 0);
+    addBox(g, [0.15, 4.2, 0.15], [1, 2.1, -1], toon('#f4f2ea'), null, 0); addBox(g, [1.4, 0.9, 0.05], [1.7, 3.7, -1], toon('#d9302e'), null, 0);
+  }
+
+  // 森の木（秋のブローニュの森）：場内の外側を囲む。スタンド・パドック・正門と池のある西側の直線の裏は空ける
+  const autumn = ['#c9772a', '#e0a53a', '#9aa83a', '#d9902e', '#7f9a3a', '#b5562a', '#e8c24a'];
+  const homeSide = (x, y) => { const fx = (x + 207) * 0.28 + (y + 33) * 0.96, fz = (x + 207) * 0.96 - (y + 33) * 0.28; return fz < -8 && fz > -430 && fx > -80 && fx < 720; };
+  const spots = [];
+  // 外側は中継カメラ（走路の外24m）の通り道をあけ、走路から44m以上離す
+  for (let n = 0; n < 1800 && spots.length < 340; n++) {
+    const x = rand(-480, 1000), y = rand(-950, 1100), p = at(x, y);
+    if (homeSide(x, y) || wet(x, y) || inside(p) || gap(p) < 44 || !clearOfCourses(p) || near(p, seine.pts, 54) || gap(p) > 230) continue;
+    p.y = track.groundH(p.x, p.z); spots.push({ p });
+  }
+  // 風車のそばの小さな林
+  for (let n = 0; n < 40; n++) { const p = at(rand(-50, 95), rand(664, 760)); if (gap(p) > 44 && p.distanceTo(at(122, 745)) > 10) { p.y = track.groundH(p.x, p.z); spots.push({ p }); } }
+  // 内馬場はゴルフ場の芝が広がり、木はまばら
+  for (let n = 0; n < 200 && spots.length < 370; n++) {
+    const x = rand(-200, 260), y = rand(-450, 620), p = at(x, y);
+    if (!inside(p) || !clearOfCourses(p) || p.distanceTo(boardPos) < 30 || greens.some(([gx, gy]) => Math.hypot(x - gx, y - gy) < 24)) continue;
+    p.y = track.groundH(p.x, p.z); spots.push({ p });
+  }
+  roundTrees(spots, autumn);
+  // プチ・ボワ（小さな森）：向正面の上り坂の内側、直線コースとの間にこんもり茂る小さな森
+  { const grove = [];
+    for (let n = 0; n < 120 && grove.length < 30; n++) {
+      const a = rand(0, Math.PI * 2), r = Math.sqrt(Math.random()), x = 189 + Math.cos(a) * r * 26, y = 10 + Math.sin(a) * r * 62, p = at(x, y);
+      if (!clearOfCourses(p)) continue;
+      p.y = track.groundH(p.x, p.z); grove.push({ p, s: rand(1.6, 2.3) });
+    }
+    roundTrees(grove, ['#a8601f', '#c9772a', '#7f8a32', '#d08a2a', '#6f7f30']); }
+
+  // 遠景（図鑑の全景では隠す）：川向こうの丘と町、ラ・デファンスの高層ビル、エッフェル塔
+  const base = at(0, 0), toward = (x, y, dist) => { const d = at(x, y).sub(base).setY(0).normalize(); return base.clone().addScaledVector(d, dist).setY(0); };
+  const backdrop = o => { o.userData.backdrop = true; return o; };
+  // 東のパリの町並みと北のヌイイ、川向こうのサン＝クルー・シュレーヌ：クリーム色の壁と青灰色の屋根
+  { const walls = [], roofs = [], woods = [], cream = ['#ece2cc', '#e4d6bb', '#f2ebdc', '#d9ccb2'].map(C);
+    for (let n = 0; n < 900 && walls.length < 280; n++) {
+      const x = rand(-2600, 2600), y = rand(-2400, 2800), p = at(x, y), d = Math.hypot(x - 20, y - 40);
+      if (d < 1300 || d > 3000 || near(p, seine.pts, 60)) continue;
+      // 東から南東はブローニュの森が続くので、木立の固まりを置く
+      if (x > 250 && x < 2200 && y > -1300 && y < 1400) { woods.push({ p: new V3(p.x, -2, p.z), s: new V3(rand(22, 40), rand(10, 18), rand(22, 40)), r: [0, rand(0, 3), 0] }); continue; }
+      const w = rand(14, 24), h = rand(9, 15), ry = rand(0, 3);
+      walls.push({ p: new V3(p.x, h / 2 - 1, p.z), s: new V3(w, h, w * 0.7), r: [0, ry, 0], c: cream[n % 4] });
+      roofs.push({ p: new V3(p.x, h - 1, p.z), s: new V3(w * 0.96, 2.4, w * 0.62), r: [0, ry, 0] });
+    }
+    backdrop(inst(BOX, toon('#ffffff'), walls, false)); backdrop(inst(BOX, toon('#6f7d8f'), roofs, false)); backdrop(inst(SPH_LO, toon('#8a7a3e', { fog: true }), woods, false)); }
+  // 川向こうの丘：南西のサン＝クルーの丘（公園の森）と、北西のモン・ヴァレリアン（頂上に砦）
+  { const hills = [];
+    for (let i = 0; i < 7; i++) { const p = toward(-1500, -650 + i * 160, 980 + i * 30); hills.push({ p: new V3(p.x, -10, p.z), s: new V3(170, 46 + (i % 3) * 10, 130), r: [0, i * 0.4, 0] }); }
+    const mv = toward(-1503, 1448, 1180); hills.push({ p: new V3(mv.x, -12, mv.z), s: new V3(230, 60, 190) });
+    backdrop(inst(SPH_LO, toon('#7f8a5a', { fog: true }), hills, false));
+    backdrop(addBox(world, [40, 8, 40], [mv.x, 50, mv.z], toon('#d8d2c4', { fog: true }))); }
+  // ラ・デファンス：北の遠くに並ぶ高層ビル群と、四角い門のような新凱旋門（グランダルシュ）
+  { const c = toward(183, 3924, 1350), dir = c.clone().sub(base).normalize(), g = new THREE.Group(); g.position.copy(c); g.rotation.y = Math.atan2(dir.x, dir.z); world.add(backdrop(g));
+    const glassC = ['#8fa8c0', '#6f8aa6', '#a9bdcc', '#5f7690'];
+    for (let i = 0; i < 16; i++) { const x = (i - 7.5) * 26 + rand(-6, 6), z = rand(-40, 40), h = rand(60, 190), w = rand(14, 24); addBox(g, [w, h, w], [x, h / 2, z], toon(glassC[i % 4], { fog: true })); }
+    const arch = toon('#f4f2ea', { fog: true });
+    addBox(g, [60, 8, 30], [-150, 56, -60], arch); addBox(g, [60, 6, 30], [-150, 3, -60], arch);
+    for (const x of [-177, -123]) addBox(g, [6, 50, 30], [x, 30, -60], arch); }
+  // エッフェル塔：東の遠く、ブローニュの森の向こう
+  { const f = toward(4471, 99, 1200), g = new THREE.Group(); g.position.copy(f); world.add(backdrop(g)); const m = toon('#6b5a52', { fog: false });
     for (const [sx, sz] of [[1, 1], [1, -1], [-1, 1], [-1, -1]]) part(g, BOX, m, [sx * 16, 45, sz * 16], [6, 100, 6], [sz * 0.3, 0, -sx * 0.3], 0);
     part(g, BOX, m, [0, 58, 0], [30, 4, 30], null, 0); part(g, BOX, m, [0, 115, 0], [9, 120, 9], null, 0); part(g, BOX, m, [0, 100, 0], [16, 3, 16], null, 0); part(g, CONE, m, [0, 180, 0], [3, 30, 3], null, 0); }
-  mountains(th.mount, 8, false);
   fallingLeaves(TEX_PETAL, ['#f2b53a', '#e0852a', '#d9a33a'], 40);
 }
 function decorChurchill(th) {
