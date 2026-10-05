@@ -376,6 +376,16 @@ h2{color:var(--gold);font-size:14px;letter-spacing:.06em}
 #courseCatalogViewHint{position:absolute;top:10px;left:10px;right:10px;margin:0;padding:8px;border-radius:10px;background:#fff8ffdd;font-size:12px;text-align:center;pointer-events:none}
 #courseCatalogControls{position:absolute;bottom:10px;left:10px;right:10px;display:flex;justify-content:center;flex-wrap:wrap;gap:6px}
 #courseCatalogControls button[aria-pressed=true]{background:#ead7fb;border-color:#8651ad}
+#courseDroneControls{position:absolute;inset:auto 12px 68px;display:flex;align-items:end;justify-content:space-between;gap:10px;pointer-events:none}
+#courseDroneControls[hidden]{display:none}
+#courseDroneControls>*{pointer-events:auto}
+#courseDronePad{width:104px;height:104px;border:2px solid #bfa5d2;border-radius:50%;background:#fff8ffcc;touch-action:none;display:grid;place-items:center;user-select:none}
+#courseDronePad span{display:grid;place-items:center;width:38px;height:38px;border-radius:50%;background:#ead7fb;color:#604578;pointer-events:none}
+#courseDroneHeight{display:grid;gap:6px}
+#courseDroneHeight button{touch-action:none;user-select:none;background:#fff8ffdd}
+#courseDroneSpeedLabel{align-self:center;background:#fff8ffdd;border-radius:10px;padding:5px;font-size:12px}
+#courseDroneSpeed{padding:6px!important;min-height:36px!important}
+@media(max-width:440px){#courseCatalogControls{gap:4px}#courseCatalogControls button{padding:8px;font-size:12px}#courseCatalogViewHint{font-size:11px}#courseDroneControls{bottom:66px}}
 #courseCatalogBrowse,#courseCatalogDetails{overflow:auto;background:#ffffffd9;border-radius:16px;padding:14px;overscroll-behavior:contain}
 #courseCatalogSearch,#courseCatalogFilter{width:100%;margin:6px 0 10px}
 #courseCatalogList{display:grid;gap:6px}
@@ -639,7 +649,12 @@ body[data-play=crash] #guideNote{top:430px}
     </div>
     <div id="courseCatalogView">
       <p id="courseCatalogViewHint">ドラッグで回転・ホイール／ピンチでズーム。移動モードで平行移動</p>
-      <div id="courseCatalogControls"><button id="courseCatalogRotate" aria-pressed="true">回転</button><button id="courseCatalogPan" aria-pressed="false">移動</button><button id="courseCatalogReset">全景へ戻る</button></div>
+      <div id="courseDroneControls" hidden>
+        <div id="courseDronePad" role="group" aria-label="飛行移動パッド。キーボードではWASDで移動"><span>✥</span></div>
+        <label id="courseDroneSpeedLabel">速度 <select id="courseDroneSpeed"><option value="10">低速</option><option value="40" selected>標準</option><option value="120">高速</option></select></label>
+        <div id="courseDroneHeight"><button type="button" data-drone-height="1" aria-label="上昇（E）">▲ 上昇</button><button type="button" data-drone-height="-1" aria-label="下降（Q）">▼ 下降</button></div>
+      </div>
+      <div id="courseCatalogControls"><button id="courseCatalogRotate" aria-pressed="true">回転</button><button id="courseCatalogPan" aria-pressed="false">移動</button><button id="courseCatalogDrone" aria-pressed="false">ドローン</button><button id="courseCatalogReset">全景へ戻る</button></div>
     </div>
     <article id="courseCatalogDetails" aria-label="選択したコースの情報"></article>
   </div>
@@ -3252,6 +3267,7 @@ function decorCourseZones() {
       const arrowGeo = new THREE.BufferGeometry(); arrowGeo.setAttribute('position', new THREE.Float32BufferAttribute([2.5, 0, 0, -1.5, 0, 1.6, -1.5, 0, -1.6], 3)); arrowGeo.computeVertexNormals();
       const n = Math.max(3, Math.floor((z.end - z.start) / 14)), arrows = fantasyInst(arrowGeo, stripe, Array.from({ length: n }, () => ({ p: new V3(), s: new V3(1, 1, 1) })), false);
       const m = new THREE.Matrix4(), rotation = new THREE.Quaternion(), e = new THREE.Euler();
+      arrows.userData.droneIgnore = true;
       const update = t => {
         for (let i = 0; i < arrows.count; i++) {
           const s = z.start + mod(i / arrows.count * (z.end - z.start) + (reduced.matches ? 0 : t * z.motion), z.end - z.start), p = track.pos(s, W / 2);
@@ -3371,6 +3387,7 @@ function decorSkyGarden() {
     const sunDisc = new THREE.Group(); sunDisc.position.set(-2.6, h - 1.3, 0); g.add(sunDisc);
     part(sunDisc, new THREE.CylinderGeometry(2.8, 2.8, 0.5, 28), glowMat('#ffcf4d', 1.25), [0, 0, 0], null, [0, 0, Math.PI / 2], 0.04);
     for (let i = 0; i < 12; i++) { const a = i / 12 * Math.PI * 2; addBox(sunDisc, [0.3, 1.6, 0.7], [0, Math.cos(a) * 3.9, Math.sin(a) * 3.9], gold, [a, 0, 0]); }
+    sunDisc.userData.droneIgnore = true;
     updates.push(t => { sunDisc.rotation.x = reduced.matches ? 0 : t * 0.25; });
     const sign = new THREE.Group(); sign.position.set(0, h + 4.5, 0); g.add(sign); signAt(sign, '太陽の門 インティプンク', 0, 18);
   }
@@ -3587,6 +3604,7 @@ function decorSkyGarden() {
       condors.push({ g, wings, r: 150 + i * 70, y: 55 + i * 18, ph: i * 2.1, sp: 0.05 - i * 0.008 });
       if (i) themeDetails.push(g);
     }
+    condors.forEach(o => { o.g.userData.droneIgnore = true; });
     updates.push(t => condors.forEach(({ g, wings, r, y, ph, sp }) => {
       const a = (reduced.matches ? 0 : t) * sp + ph;
       g.position.set(Math.cos(a) * r, y + Math.sin(a * 3) * 4, Math.sin(a) * r * 0.75);
@@ -3643,6 +3661,7 @@ function decorSkyGarden() {
     const clouds = [];
     for (let i = 0; i < 90; i++) { const a = i * 2.399, r = 150 + i * 6; clouds.push({ p: new V3(Math.cos(a) * r, -48 - i % 5 * 5, Math.sin(a) * r), s: new V3(rand(25, 55), rand(8, 16), rand(20, 40)) }); }
     const cloudMesh = fantasyInst(SPH_LO, toon('#f7f5ff'), clouds, false);
+    cloudMesh.userData.droneIgnore = true;
     updates.push(t => { cloudMesh.position.x = reduced.matches ? 0 : Math.sin(t * 0.035) * 10; });
     const fogMat = col => toon(col, { fog: true });
     // 浮島の向こう（虹橋の奥）に、ワイナ・ピチュの尖った緑の峰と、頂の段々畑
@@ -3678,6 +3697,7 @@ function decorSkyGarden() {
     const wings = [-1, 1].map(s => { const wing = new THREE.Group(); wing.position.x = s * 2; flyer.add(wing); part(wing, SPH_LO, blue, [s * 4, 1, 0], [5, 0.35, 3]); return wing; });
     updates.push(t => {
       const m = reduced.matches ? 0 : t;
+      flyer.userData.droneIgnore = true;
       flyer.position.set(Math.cos(m * 0.09) * 220, 65 + Math.sin(m * 0.4) * 5, -(rz + 30) + Math.sin(m * 0.09) * 90); flyer.rotation.y = -m * 0.09;
       wings.forEach((w, i) => { w.rotation.z = (reduced.matches ? 0.2 : Math.sin(t * 2.5) * 0.3) * (i ? 1 : -1); });
     });
@@ -3767,6 +3787,7 @@ function decorDragonCrater() {
   for (let i = 0; i < 5; i++) part(dragon, CONE, wingMat, [-20 + i * 9, 25, 0], [3, 8, 3]);
   part(dragon, SPH_LO, wingMat, [-4, 20, -9], [24, 3, 13], [0.3, 0, 0]);
   for (const z of [-6, 6]) addBox(dragon, [4, 0.3, 0.5], [40, 10, z], rock);
+  dragon.userData.droneIgnore = true;
   themeUpd.push(t => { dragon.scale.y = 1 + Math.sin(t * 0.7) * 0.025; });
   ambient(TEX_SOFT, true, 10, (a, c) => a.emit(c.x + rand(-70, 70), rand(2, 20), c.z + rand(-70, 70), rand(-0.5, 0.5), rand(0.5, 2), rand(-0.5, 0.5), 5, 0.25, C('#ffae66').multiplyScalar(2), 0, 0), true);
 }
@@ -3797,6 +3818,7 @@ function decorPearlOcean() {
   const whale = fantasyGroup(), blue = toon('#669fb9'), pale = toon('#bde1df');
   part(whale, SPH_LO, blue, [0, 0, 0], [28, 12, 12]); part(whale, SPH_LO, pale, [0, -5, 0], [23, 7, 10]);
   for (const s of [-1, 1]) { part(whale, SPH_LO, blue, [-29, 0, s * 7], [10, 2, 9], [0, s * 0.3, 0]); part(whale, SPH_LO, blue, [4, -5, s * 13], [9, 2, 7], [s * 0.3, 0, 0]); part(whale, SPH_LO, toon('#233b54'), [19, 2, s * 10], [1, 1, 1]); }
+  whale.userData.droneIgnore = true; jellyfish.forEach(o => { o.g.userData.droneIgnore = true; });
   themeUpd.push(t => { jellyfish.forEach(({ g, y }, i) => { g.position.y = y + Math.sin(t * 0.5 + i) * 4; g.rotation.y = Math.sin(t * 0.2 + i) * 0.2; }); whale.position.set(Math.sin(t * 0.045) * 220, 100 + Math.sin(t * 0.15) * 8, -radius - 95); whale.rotation.y = Math.cos(t * 0.045) > 0 ? 0 : Math.PI; });
   ambient(TEX_SOFT, true, 8, (a, c) => a.emit(c.x + rand(-50, 50), rand(2, 15), c.z + rand(-50, 50), 0, rand(0.4, 1), 0, 8, 0.2, C('#b9f5f4'), 0, 0), true);
 }
@@ -3885,6 +3907,7 @@ function decorClockwork(th) {
       if (t > next) { chime = 4; next = t + 15; }
       chime = Math.max(0, chime - dt);
       const k = reduced.matches ? 0 : chime;
+      bells.forEach(b => { b.userData.droneIgnore = true; }); blades.forEach(b => { b.userData.droneIgnore = true; });
       bells.forEach((b, i) => { b.rotation.x = k ? Math.sin(t * 9 + i * 0.7) * 0.12 * Math.min(1, k) : 0; });
       blades.forEach((b, i) => { b.rotation.y = k ? t * 3 + i * 0.5 : i * 0.26; });
       lamps.forEach((l, i) => { l.material.color.set(['#ff7a6b', '#ffd36f', '#7fd1ff', '#9ff59a'][i]).multiplyScalar(chime ? 1.6 + Math.sin(t * 6 + i) * 0.5 : 0.4); });
@@ -3946,7 +3969,7 @@ function decorClockwork(th) {
     const span = s1 - s0 - 30;
     updates.push(t => {
       const u = reduced.matches ? 0.5 : (Math.sin(t * 0.07) + 1) / 2, s = s0 + 15 + u * span, f = tp(s, lane);
-      train.position.copy(f.v); train.position.y += 0.3; train.rotation.y = -f.h;
+      train.userData.droneIgnore = true; train.position.copy(f.v); train.position.y += 0.3; train.rotation.y = -f.h;
     });
   }
 
@@ -3962,6 +3985,7 @@ function decorClockwork(th) {
     // 走路の縁の真鍮の枠
     courseRibbon(conveyor.start, conveyor.end, -1.6, -0.4, 0.5, toon('#b68e4c', { side: THREE.DoubleSide }));
     courseRibbon(conveyor.start, conveyor.end, W + 0.4, W + 1.6, 0.5, toon('#b68e4c', { side: THREE.DoubleSide }));
+    drives.forEach(d => { d.gr.userData.droneIgnore = true; });
     updates.push(t => { const a = reduced.matches ? 0 : t * conveyor.motion / 2.2; drives.forEach(d => { d.gr.rotation.z = -a; }); });
   }
   {
@@ -4067,6 +4091,7 @@ function decorClockwork(th) {
       const a = gear(5, 16, brass, 1.2), b = gear(3.2, 10, toon('#d6b16a'), 1.2);
       a.position.set(-2.5, 6.5, 0); b.position.set(5.6, 3.6, 0); g.add(a, b);
       addBox(g, [12, 1, 2], [1, 0.5, 0], dark); addBox(g, [0.8, 6.5, 0.8], [-2.5, 3.2, -0.8], dark); addBox(g, [0.8, 3.6, 0.8], [5.6, 1.8, -0.8], dark);
+      a.userData.droneIgnore = b.userData.droneIgnore = true;
       updates.push(t => { const r = reduced.matches ? 0 : t * 0.6; a.rotation.z = r; b.rotation.z = -r * 5 / 3.2 + 0.16; });
     });
   }
@@ -4425,6 +4450,7 @@ function decorBoxHill(th) {
       balloons.push({ g, x: 380 + i * 170, y: 95 + i * 22, z: -300 + i * 260, k: i });
       if (i) themeDetails.push(g);
     });
+    balloons.forEach(b => { b.g.userData.droneIgnore = true; });
     updates.push(t => balloons.forEach(b => {
       const m = reduced.matches ? 0 : t;
       b.g.position.set(b.x + Math.sin(m * 0.012 + b.k) * 120, b.y + Math.sin(m * 0.2 + b.k * 2) * 4, b.z + Math.cos(m * 0.009 + b.k) * 90);
@@ -4526,6 +4552,7 @@ function decorBoxHill(th) {
       return { r, k: i / 3 };
     });
     const tmp = new V3();
+    riders.forEach(o => { o.r.userData.droneIgnore = true; });
     updates.push(t => riders.forEach(({ r, k }) => {
       const u = reduced.matches ? 0.3 + k * 0.25 : mod(t * 0.006 + k, 1);
       curve.getPointAt(u, r.position); onGround(r.position, 0.18); curve.getTangentAt(u, tmp);
@@ -4680,6 +4707,7 @@ function decorBoxHill(th) {
     updates.push(t => {
       const m = reduced.matches ? 4 : t, u = (Math.sin(m * 0.35) + 1) / 2, s = lerp(riverS0 + 10, riverS1 - 10, u), dir = Math.cos(m * 0.35) >= 0 ? 0 : Math.PI;
       const p = local(s, 0, mid0 + Math.sin(m * 1.3) * 3), f = tp(s, W / 2);
+      bird.userData.droneIgnore = true; swans.forEach(g => { g.userData.droneIgnore = true; });
       bird.position.set(p.x, riverY + 1.2 + Math.abs(Math.sin(m * 3)) * 0.8, p.z); bird.rotation.y = -f.h + dir;
       swans.forEach((g, i) => { const ss = lerp(riverS0 + 20, riverS1 - 20, mod(m * 0.004 + i * 0.37, 1)), q = local(ss, 0, mid0 + (i ? 4 : -3)), ff = tp(ss, W / 2); g.position.set(q.x, riverY, q.z); g.rotation.y = -ff.h; });
     });
@@ -4760,6 +4788,7 @@ function decorBoxHill(th) {
     const m = new THREE.Matrix4(), q = new THREE.Quaternion(), e = new THREE.Euler(), sc = new V3(), ps = new V3();
     updates.push(t => {
       const tt = reduced.matches ? 0 : t;
+      fly.userData.droneIgnore = true;
       for (let i = 0; i < fly.count; i++) {
         const f = flies[i], a = tt * 0.5 + f.ph;
         ps.set(f.p.x + Math.cos(a) * f.r, f.p.y + 1 + Math.sin(tt * 1.7 + f.ph) * 0.4, f.p.z + Math.sin(a) * f.r);
@@ -5056,6 +5085,7 @@ function decorHakone(th) {
       const blink = t > 8 && t < 10 || t > 25 && t < 27;
       lamps.forEach((m, i) => m.material.color.set(blink && (Math.floor(clock * 3) + i) % 2 ? '#ff3b2a' : '#5a1612'));
     };
+    train.userData.droneIgnore = true;
     move(0); themeUpd.push((t, dt) => move(Math.min(dt, 0.1)));
   }
 
@@ -5438,6 +5468,7 @@ function decorMonaco() {
   hullGeo.rotateX(-Math.PI / 2); hullGeo.translate(0, -0.5, 0);
   [[hullGeo, toon('#ffffff'), hulls], [BOX, white, cabins], [BOX, toon('#3d6584'), glass], [BOX, white, bridges], [new THREE.CylinderGeometry(1, 1, 1, 5), toon('#e8e3d6'), masts], [BOX, toon('#9b7b5c'), piers]]
     .forEach(([geo, mat, list]) => { if (list.length) fleet.add(inst(geo, mat, list, false)); });
+  fleet.userData.droneIgnore = true;
   themeUpd.push(t => { fleet.position.y = Math.sin(t * 0.9) * 0.12; });
 
   // ---- 走路の装備：赤白のバリア、外周の金網、コーナーの縁石（すべてインスタンス化） ----
@@ -5883,7 +5914,7 @@ function decorRailLoop(line) {
       tr.s = mod(tr.s + tr.v * tr.dir * Math.min(dt, 0.1), track.L);
       tr.cars.forEach((car, i) => {
         const q = track.pos(mod(tr.s - i * (CAR + GAP) * tr.dir, track.L), tr.lane);
-        car.position.set(q.x, q.y + 0.25, q.z); car.rotation.y = -q.h + (tr.dir < 0 ? Math.PI : 0);
+        car.userData.droneIgnore = true; car.position.set(q.x, q.y + 0.25, q.z); car.rotation.y = -q.h + (tr.dir < 0 ? Math.PI : 0);
       });
     }
   };
@@ -6158,7 +6189,7 @@ function osakaLoopLandmark(station, { cream, glass, dark, block, forest, landmar
         leg.position.copy(a).add(b).multiplyScalar(0.5); leg.scale.set(1.2, a.distanceTo(b), 1.2);
         leg.quaternion.setFromUnitVectors(new V3(0, 1, 0), b.clone().sub(a).normalize()); park.add(leg);
       }
-      const wheel = new THREE.Group(); wheel.position.set(0, 32, 0); park.add(wheel);
+      const wheel = new THREE.Group(); wheel.userData.droneIgnore = true; wheel.position.set(0, 32, 0); park.add(wheel);
       part(wheel, new THREE.TorusGeometry(26, 0.8, 8, 48), frame, [0, 0, 0], null, null, 0);
       for (let i = 0; i < 12; i++) addBox(wheel, [0.4, 52, 0.4], [0, 0, 0], frame, [0, 0, i * Math.PI / 12], 0);
       const gondolas = [];
@@ -6469,6 +6500,7 @@ function decorLandmarkStand(stand, len, z0, roof, sc0) {
       // 周回する出走馬：ゆっくりと楕円を歩く
       const walkers = [];
       for (let i = 0; i < 5; i++) { const h = landmarkHorse(pg, [0, 0.15, 0], 'walk', ['#6b4a35', '#3b2a20', '#8a5a3a'][i % 3], 0.45); h.children[0].visible = false; walkers.push(h); }
+      walkers.forEach(h => { h.userData.droneIgnore = true; });
       themeUpd.push(t => walkers.forEach((h, i) => { const a = t * 0.08 + i * Math.PI * 2 / 5, x = Math.cos(a) * 13.6, z = Math.sin(a) * 7.6; h.position.set(x, 0.15, z); h.rotation.y = -Math.atan2(Math.cos(a) * 7.6, -Math.sin(a) * 13.6); })); }
     // ツインハット：1コーナー寄りの6階建ての屋内スタンド。2本の円筒の塔の上に、つばの広い帽子のような屋根がのる
     const ta = lx(487), tb = lx(567), tw = tb - ta, tc = (ta + tb) / 2;
@@ -6595,6 +6627,7 @@ function decorLandmarkStand(stand, len, z0, roof, sc0) {
       const scr = new THREE.Mesh(new THREE.PlaneGeometry(8.4, 5.4), glowMat('#ffd27a', 1.1)); scr.position.set(19.05, 6, 0); scr.rotation.y = -Math.PI / 2; pg.add(scr);
       const walkers = [];
       for (let i = 0; i < 5; i++) { const h = landmarkHorse(pg, [0, 0.15, 0], 'walk', ['#6b4a35', '#3b2a20', '#8a5a3a'][i % 3], 0.45); h.children[0].visible = false; walkers.push(h); }
+      walkers.forEach(h => { h.userData.droneIgnore = true; });
       themeUpd.push(t => walkers.forEach((h, i) => { const a = t * 0.08 + i * Math.PI * 2 / 5, x = Math.cos(a) * 11.3, z = Math.sin(a) * 5.5; h.position.set(x, 0.15, z); h.rotation.y = -Math.atan2(Math.cos(a) * 5.5, -Math.sin(a) * 11.3); })); }
     // パドックの1コーナー側を囲む別棟
     box([lx(280) - lx(233), 9, lz(-152) - lz(-107)], [(lx(233) + lx(280)) / 2, 4.5, (lz(-107) + lz(-152)) / 2], white);
@@ -6634,6 +6667,7 @@ function decorRacecourseLandmarks() {
       for (const z of [-1.62, 1.62]) { addBox(train, [18.1, 0.45, 0.1], [x, 1.5, z], orange, null, 0); for (let j = 0; j < 4; j++) addBox(train, [2.6, 1.2, 0.1], [x - 6 + j * 4, 2.9, z], pane, null, 0); }
     }
     // 駅に止まってから線路の端まで行って戻ってくる
+    train.userData.droneIgnore = true;
     themeUpd.push(t => { const c = (t * 0.05) % 2, u = c < 1 ? c : 2 - c; train.position.x = 60 * (2 * THREE.MathUtils.smootherstep(u, 0.15, 0.85) - 1); });
   }
   if (theme === 'nakayama') {
@@ -6742,6 +6776,7 @@ function decorRacecourseLandmarks() {
       addBox(c, [3, 1.1, 1.1], [0, 0.9, 0], toon('#f5f5f2'), null, 0.03); addBox(c, [3.02, 0.3, 1.12], [0, 0.65, 0], toon('#2b6cb0'), null, 0); addBox(c, [3.02, 0.08, 1.13], [0, 0.88, 0], toon('#c08a50'), null, 0);
     }
     part(cars[0], CONE, toon('#f5f5f2'), [2.1, 0.9, 0], [0.55, 1.4, 0.55], [0, 0, -Math.PI / 2], 0.03);
+    cars.forEach(c => { c.userData.droneIgnore = true; });
     themeUpd.push(t => cars.forEach((c, i) => { const a = t * 0.5 - i * 0.24; c.position.set(Math.cos(a) * 19, 0, Math.sin(a) * 9); c.rotation.y = -Math.atan2(Math.cos(a) * 9, -Math.sin(a) * 19); }));
     for (const [x, z, col] of [[-21, 11, '#ff9f43'], [-15, 11.5, '#54a0ff'], [21, 11, '#ff6b6b']]) addBox(kid, [3.5, 2.6, 3.5], [x, 1.3, z], toon(col), null, 0.03);
     // ふわふわ広場：白いふわふわドーム
@@ -7096,7 +7131,7 @@ function decorHanshin(th) {
       const c = (t * 0.025) % 2, u = c < 1 ? c : 2 - c, run = THREE.MathUtils.smootherstep(u, 0.05, 0.95);
       // 駅の前後でゆっくりにして止まる
       const s0 = 6 + (run < station ? THREE.MathUtils.smootherstep(run / station, 0, 1) * station : station + THREE.MathUtils.smootherstep((run - station) / (1 - station), 0.15, 1) * (1 - station)) * (RL - 70);
-      cars.forEach((car, i) => { const s = (s0 + i * 9.6) / RL, p = railCurve.getPointAt(s), tg = railCurve.getTangentAt(s); car.position.set(p.x, track.groundH(p.x, p.z) + 0.8, p.z); car.rotation.y = -Math.atan2(tg.z, tg.x); });
+      cars.forEach((car, i) => { const s = (s0 + i * 9.6) / RL, p = railCurve.getPointAt(s), tg = railCurve.getTangentAt(s); car.userData.droneIgnore = true; car.position.set(p.x, track.groundH(p.x, p.z) + 0.8, p.z); car.rotation.y = -Math.atan2(tg.z, tg.x); });
     }); }
 
   // ---- スタンドの4コーナー寄りの裏：セントウルガーデン、噴水広場、キッズガーデン ----
@@ -7117,6 +7152,7 @@ function decorHanshin(th) {
     const sprays = [], spray = new THREE.CylinderGeometry(0.12, 0.3, 1, 6); spray.translate(0, 0.5, 0);
     for (let i = 0; i < 5; i++) for (let j = 0; j < 4; j++) sprays.push({ x: -9 + i * 4.5, z: -6 + j * 4, ph: (i * 3 + j * 5) % 7 });
     const mesh = new THREE.InstancedMesh(spray, toon('#bfeaf2'), sprays.length); g.add(mesh); const m4 = new THREE.Matrix4(), q = new THREE.Quaternion();
+    mesh.userData.droneIgnore = true;
     themeUpd.push(t => { sprays.forEach((o, i) => { const h = Math.max(0.01, Math.sin(t * 0.9 + o.ph) * 3.2 + 0.4); m4.compose(new V3(o.x, 0, o.z), q, new V3(1, h, 1)); mesh.setMatrixAt(i, m4); }); mesh.instanceMatrix.needsUpdate = true; }); }
   // キッズガーデン：跳んで遊べるふわふわドーム、長いすべり台つきの大型アスレチック、砂場
   { const g = group('キッズガーデン', 185, -255, 0.25); landmarkFoundation(g, 60, 26, '#b9c98a');
@@ -7156,6 +7192,7 @@ function decorHanshin(th) {
     // パドックを周回する馬
     const walkers = [];
     for (let i = 0; i < 6; i++) { const h = landmarkHorse(g, [0, 0.15, 0], 'walk', ['#6b4a35', '#3b2a20', '#8a5a3a'][i % 3], 0.45); h.children[0].visible = false; walkers.push(h); }
+    walkers.forEach(h => { h.userData.droneIgnore = true; });
     themeUpd.push(t => walkers.forEach((h, i) => { const a = t * 0.08 + i * Math.PI * 2 / 6, x = Math.cos(a) * 13, z = Math.sin(a) * 6.3; h.position.set(x, 0.15, z); h.rotation.y = -Math.atan2(Math.cos(a) * 6.3, -Math.sin(a) * 13); })); }
 
   // ---- 木（春の桜）：本線・建物・線路・川を避けて置く ----
@@ -7260,6 +7297,7 @@ function decorChukyo(th) {
     part(walker, new THREE.CylinderGeometry(4.6, 4.6, 0.5, 24), toon('#4f6f5a'), [0, 3.4, 0], null, null, 0);
     for (let i = 0; i < 6; i++) { const a = i / 6 * Math.PI * 2; addBox(walker, [0.3, 3.2, 0.3], [Math.cos(a) * 4.2, 1.6, Math.sin(a) * 4.2], steel, null, 0); }
     const ride = []; for (let i = 0; i < 2; i++) { const h = landmarkHorse(g, [0, 0, 0], 'walk', i ? '#8a5a3a' : '#3b2a20', 0.45); h.children[0].visible = false; ride.push(h); }
+    ride.forEach(h => { h.userData.droneIgnore = true; });
     themeUpd.push(t => ride.forEach((h, i) => { const a = t * 0.12 + i * Math.PI, x = Math.cos(a) * 20, z = Math.sin(a) * 16; h.position.set(x, 0, z); h.rotation.y = -Math.atan2(Math.cos(a) * 16, -Math.sin(a) * 20); })); }
   // 馬場内プレイランド：カラフルな遊具の塔と、ポニーに乗れる楕円の小さな馬場（ポニーリンク）
   { const g = group('馬場内プレイランド', 230, 150), cols = ['#e8534a', '#f2b33d', '#4fa3d9', '#7cc36a'];
@@ -7274,6 +7312,7 @@ function decorChukyo(th) {
     part(pony, new THREE.RingGeometry(0.72, 1, 40), toon('#d9c7a0', { side: THREE.DoubleSide }), [0, 0.15, 0], [9, 4.5, 1], [-Math.PI / 2, 0, 0], 0);
     part(pony, new THREE.CircleGeometry(1, 32), toon('#7fbf62'), [0, 0.12, 0], [6.4, 3.2, 1], [-Math.PI / 2, 0, 0], 0);
     const ponies = []; for (let i = 0; i < 3; i++) { const h = landmarkHorse(pony, [0, 0, 0], 'walk', ['#d9b98a', '#6b4a35', '#f0ece2'][i], 0.28); h.children[0].visible = false; ponies.push(h); }
+    ponies.forEach(h => { h.userData.droneIgnore = true; });
     themeUpd.push(t => ponies.forEach((h, i) => { const a = -t * 0.2 + i * Math.PI * 2 / 3, x = Math.cos(a) * 7.7, z = Math.sin(a) * 3.85; h.position.set(x, 0.1, z); h.rotation.y = -Math.atan2(-Math.cos(a) * 3.85, Math.sin(a) * 7.7); })); }
 
   // ---- スタンドの裏（1コーナー側） ----
@@ -7289,6 +7328,7 @@ function decorChukyo(th) {
       h.rotation.y = Math.PI / 2 - a; h.children[0].visible = false;
       addBox(spin, [0.15, 4.6, 0.15], [Math.cos(a) * 4.8, 3.2, Math.sin(a) * 4.8], toon('#d9b24a'), null, 0);
     }
+    spin.userData.droneIgnore = true;
     themeUpd.push(t => { spin.rotation.y = t * 0.35; });
     // 揺れる木馬の遊具
     for (const [x, z, c] of [[-10, -8, '#c9925a'], [-11, 7, '#a8744a'], [10, 9, '#d9b98a']]) {
@@ -7387,7 +7427,7 @@ function decorChukyo(th) {
     // 名鉄の赤い電車：線路の端から端まで、ゆっくり行って戻ってくる
     themeUpd.push(t => {
       const c = (t * 0.03) % 2, u = c < 1 ? c : 2 - c, s0 = 6 + THREE.MathUtils.smootherstep(u, 0.08, 0.92) * (RL - 50);
-      cars.forEach((car, i) => { const s = (s0 + i * 9.6) / RL, p = railCurve.getPointAt(s), tg = railCurve.getTangentAt(s); car.position.set(p.x, deckY + 0.2, p.z); car.rotation.y = -Math.atan2(tg.z, tg.x); });
+      cars.forEach((car, i) => { const s = (s0 + i * 9.6) / RL, p = railCurve.getPointAt(s), tg = railCurve.getTangentAt(s); car.userData.droneIgnore = true; car.position.set(p.x, deckY + 0.2, p.z); car.rotation.y = -Math.atan2(tg.z, tg.x); });
     }); }
   const roadPts = [[1735, -590], [1662, -420], [1574, -274], [1454, -67], [1408, -12], [1294, 46], [1194, 105], [1112, 189], [1083, 240], [1016, 384], [967, 500], [925, 629], [893, 734], [850, 900]];
   const road = route(roadPts);
@@ -7597,6 +7637,7 @@ function decorSapporo(th) {
       addBox(c, [3, 1.1, 1.1], [0, 0.9, 0], toon('#f5f5f2'), null, 0.03); addBox(c, [3.02, 0.3, 1.12], [0, 0.65, 0], toon('#2b6cb0'), null, 0);
     }
     part(cars[0], CONE, toon('#f5f5f2'), [2.1, 0.9, 0], [0.55, 1.4, 0.55], [0, 0, -Math.PI / 2], 0.03);
+    cars.forEach(c => { c.userData.droneIgnore = true; });
     themeUpd.push(t => cars.forEach((c, i) => { const a = t * 0.4 - i * 0.18, r = 0.97; c.position.set(Math.cos(a) * rx * r, 0, Math.sin(a) * rz * r); c.rotation.y = -Math.atan2(Math.cos(a) * rz, -Math.sin(a) * rx); })); }
 
   // ---- スタンドの4コーナー側 ----
@@ -7608,6 +7649,7 @@ function decorSapporo(th) {
     const g = group('まきばガーデン', -40, -72), herd = [];
     for (let i = 0; i < 3; i++) { const h = landmarkHorse(g, [0, 0.2, 0], 'walk', ['#8a5a3a', '#3b2a20', '#c9a27a'][i], 0.45); h.children[0].visible = false; herd.push(h); }
     // 放牧地の中をゆっくり歩き回る
+    herd.forEach(h => { h.userData.droneIgnore = true; });
     themeUpd.push(t => herd.forEach((h, i) => { const a = t * 0.05 + i * 2.1, x = Math.cos(a) * 9 + Math.sin(a * 2.3) * 2, z = Math.sin(a) * 5; h.position.set(x, 0.2, z); h.rotation.y = -Math.atan2(Math.cos(a) * 5, -Math.sin(a) * 9); }));
     addBox(g, [5, 3, 3.4], [-12, 1.5, 9], toon('#b8473a'), null, 0); addBox(g, [5.6, 0.5, 4], [-12, 3.2, 9], toon('#5f6f7a'), null, 0); }
   // スタンドから南西の道路へ延びる屋根付きの連絡通路
@@ -7692,7 +7734,7 @@ function decorSapporo(th) {
       }
       themeUpd.push(t => {
         const c = (t * 0.025 + n * 0.7) % 2, u = c < 1 ? c : 2 - c, s0 = 6 + THREE.MathUtils.smootherstep(u, 0.08, 0.92) * (RL - 40);
-        cars.forEach((car, i) => { const s = (s0 + i * 9.6) / RL, p = curve.getPointAt(s), tg = curve.getTangentAt(s); car.position.set(p.x, y + 0.2, p.z); car.rotation.y = -Math.atan2(tg.z, tg.x); });
+        cars.forEach((car, i) => { const s = (s0 + i * 9.6) / RL, p = curve.getPointAt(s), tg = curve.getTangentAt(s); car.userData.droneIgnore = true; car.position.set(p.x, y + 0.2, p.z); car.rotation.y = -Math.atan2(tg.z, tg.x); });
       });
     }); }
   // 桑園駅：南東の高架駅（競馬場から約700m。遠景として扱う）
@@ -7885,7 +7927,7 @@ function decorNakayamaMap() {
     const p = new V3();
     themeUpd.push(t => {
       const c = (t * 0.025) % 2, u = THREE.MathUtils.smootherstep(c < 1 ? c : 2 - c, 0.08, 0.92) * (L - 62) + 62;
-      cars.forEach((car, i) => { const s = (u - i * 10.2) / L; car.position.copy(curve.getPointAt(s)); car.lookAt(p.copy(curve.getPointAt(Math.min(1, s + 0.002)))); });
+      cars.forEach((car, i) => { const s = (u - i * 10.2) / L; car.userData.droneIgnore = true; car.position.copy(curve.getPointAt(s)); car.lookAt(p.copy(curve.getPointAt(Math.min(1, s + 0.002)))); });
     }); }
 
   // 寺社：神社には朱の鳥居と鎮守の森、寺は本堂（建物データ）のまわりに木、馬頭観音などは石碑と小さな祠
@@ -8059,6 +8101,7 @@ function decorKyoto(th) {
       part(g, SPH, sw, [0, 0.35, 0], [0.9, 0.45, 0.55]); part(g, LEG, sw, [0.5, 0.9, 0], [1.1, 1.2, 1.1], [0, 0, -0.25]); part(g, SPH, sw, [0.62, 1.35, 0], [0.22, 0.2, 0.2]); part(g, CONE, bk, [0.85, 1.32, 0], [0.07, 0.25, 0.07], [0, 0, -Math.PI / 2], 0);
       g.userData.y = g.position.y; swans.push(g);
     }
+    swans.forEach(g => { g.userData.droneIgnore = true; });
     themeUpd.push(t => swans.forEach((g, i) => { g.rotation.y += 0.002 * (i % 2 ? 1 : -1); g.position.y = g.userData.y + Math.sin(t * 1.5 + i) * 0.05; })); }
 
   // ---- スタンドの裏 ----
@@ -8144,7 +8187,7 @@ function decorKyoto(th) {
     // 線路の端から端まで、ゆっくり行って戻ってくる
     themeUpd.push(t => {
       const c = (t * 0.03) % 2, u = c < 1 ? c : 2 - c, s0 = 6 + THREE.MathUtils.smootherstep(u, 0.08, 0.92) * (RL - 50);
-      cars.forEach((car, i) => { const s = (s0 + i * 9.6) / RL, p = railCurve.getPointAt(s), tg = railCurve.getTangentAt(s); car.position.set(p.x, deckY + 0.2, p.z); car.rotation.y = -Math.atan2(tg.z, tg.x); });
+      cars.forEach((car, i) => { const s = (s0 + i * 9.6) / RL, p = railCurve.getPointAt(s), tg = railCurve.getTangentAt(s); car.userData.droneIgnore = true; car.position.set(p.x, deckY + 0.2, p.z); car.rotation.y = -Math.atan2(tg.z, tg.x); });
     }); }
 
   // ---- 宇治川：向正面の向こうを南西へ流れる。両岸に芝の堤防 ----
@@ -8297,6 +8340,7 @@ function decorNiigata(th) {
       addBox(g, truck ? [9, 3, 2.4] : [4.4, 1.3, 2], [0, truck ? 2.2 : 1.35, 0], toon(carCols[i % carCols.length]), null, 0.03);
       if (!truck) addBox(g, [2.4, 0.9, 1.8], [-0.3, 2.3, 0], toon('#4a5966'), null, 0);
       g.position.set(0, 6.6, c.z + (east ? 5 : -5)); g.rotation.y = east ? 0 : Math.PI; world.add(g);
+      g.userData.droneIgnore = true;
       themeUpd.push(t => { const u = mod(phase + t * speed, len); g.position.x = track.xs[0] + (east ? hw0 + u : hw1 - u); });
     }
   }
@@ -8388,6 +8432,7 @@ function decorLongchamp(th) {
     part(g, new THREE.ConeGeometry(4.2, 4.6, 16), toon('#6b4a35'), [0, 16.3, 0], null, null, 0.03);
     const hub = new THREE.Group(); hub.position.set(0, 14.4, 4.3); g.add(hub);
     for (let i = 0; i < 4; i++) { const arm = new THREE.Group(); arm.rotation.z = i * Math.PI / 2; hub.add(arm); addBox(arm, [0.45, 11, 0.25], [0, 5.6, 0], toon('#6b4a35'), null, 0.04); addBox(arm, [2.3, 8.4, 0.1], [1.2, 6.4, 0.06], toon('#f7f1e6'), null, 0.03); }
+    hub.userData.droneIgnore = true;
     themeUpd.push((t, dt) => { hub.rotation.z -= dt * 0.6; }); }
 
   // 池：スタンドの裏のエタン・デ・トリビューン（観客席の池）と、フォルスストレートの外の池
@@ -8539,6 +8584,7 @@ function decorNeon() {
   bbm.position.set(0, 42, -(track.R + W + 90)); world.add(bbm);
   floodTowers(6);
   themeUpd.push(t => {
+    rings.forEach(r => { r.userData.droneIgnore = true; }); lasers.forEach(l => { l.userData.droneIgnore = true; });
     rings.forEach((r, i) => { r.rotation.y = t * (0.5 + i * 0.05); r.rotation.x = Math.sin(t + i) * 0.3; });
     lasers.forEach((l, i) => { l.rotation.z = Math.sin(t * 0.6 + i) * 0.7; l.rotation.x = Math.cos(t * 0.45 + i * 1.3) * 0.5; });
     bbm.material.color.setScalar(1.8 + Math.sin(t * 3) * 0.5);
@@ -9213,7 +9259,163 @@ $('#catalog').addEventListener('keydown', e => {
   if (e.key === 'Escape') { e.preventDefault(); closeCatalog(); }
   e.stopPropagation();
 });
-const courseCatalog = { index: null, saved: null, width: 0, height: 0, target: new V3(), yaw: 0.8, pitch: 0.65, distance: 500, pan: false, time: 0 };
+// Drone collision uses a two-level BVH: shared local geometry, then world instances.
+// Keep these helpers independent of the DOM so movement and continuous collision can be tested.
+function droneTree(items) {
+  if (!items.length) return null;
+  const box = new THREE.Box3(); items.forEach(o => box.union(o.box));
+  if (items.length <= 12) return { box, items };
+  const size = box.getSize(new V3()), axis = size.x >= size.y && size.x >= size.z ? 'x' : size.y >= size.z ? 'y' : 'z';
+  items.sort((a, b) => (a.box.min[axis] + a.box.max[axis]) - (b.box.min[axis] + b.box.max[axis]));
+  const mid = items.length >> 1;
+  return { box, left: droneTree(items.slice(0, mid)), right: droneTree(items.slice(mid)) };
+}
+function droneQuery(node, box, visit) {
+  if (!node || !node.box.intersectsBox(box)) return;
+  if (node.items) { for (const item of node.items) if (item.box.intersectsBox(box)) visit(item); }
+  else { droneQuery(node.left, box, visit); droneQuery(node.right, box, visit); }
+}
+function droneTriangleSweep(start, delta, triangle, radius, limit = 1) {
+  const p = new V3(), closest = new V3(), normal = new V3(); let t = 0;
+  // The closest-point plane is a separating plane of the convex rounded triangle.
+  // Advance only as far as that plane: thin surfaces cannot be skipped at any speed.
+  for (let i = 0; i < 48; i++) {
+    p.copy(start).addScaledVector(delta, t); triangle.closestPointToPoint(p, closest);
+    normal.subVectors(p, closest); const distance = normal.length();
+    if (distance < 1e-10) return t;
+    normal.multiplyScalar(1 / distance);
+    const closing = -normal.dot(delta);
+    if (closing <= 1e-10) return limit;
+    if (distance <= radius + 1e-6) return t;
+    const next = t + (distance - radius) / closing;
+    if (next >= limit) return limit;
+    t = next;
+  }
+  return t; // Conservative stop if a grazing contact converges unusually slowly.
+}
+class DroneCollision {
+  constructor(root) {
+    const geometries = new Map(), entries = [], instance = new THREE.Matrix4();
+    root.updateMatrixWorld(true);
+    const walk = o => {
+      if (!o.visible || o.userData.droneIgnore || o.userData.backdrop) return;
+      if (o.isMesh && o.geometry?.attributes.position && !o.isSkinnedMesh) {
+        const materials = Array.isArray(o.material) ? o.material : [o.material];
+        if (materials.some(m => m.visible && m.depthWrite && m.side !== THREE.BackSide)) {
+          const geo = o.geometry;
+          let data = geometries.get(geo);
+          if (!data) {
+            const pos = geo.attributes.position, idx = geo.index, count = idx ? idx.count : pos.count, triangles = [];
+            const begin = geo.drawRange.start, end = Math.min(count, begin + geo.drawRange.count);
+            for (let i = begin; i + 2 < end; i += 3) {
+              const vertices = [0, 1, 2].map(k => new V3().fromBufferAttribute(pos, idx ? idx.getX(i + k) : i + k));
+              const tri = new THREE.Triangle(...vertices);
+              if (tri.getArea() > 1e-12) triangles.push({ tri, box: new THREE.Box3().setFromPoints(vertices) });
+            }
+            data = { tree: droneTree(triangles), triangles }; geometries.set(geo, data);
+          }
+          if (data.tree) for (let i = 0, n = o.isInstancedMesh ? o.count : 1; i < n; i++) {
+            const matrix = o.matrixWorld.clone();
+            if (o.isInstancedMesh) { o.getMatrixAt(i, instance); matrix.multiply(instance); }
+            if (Math.abs(matrix.determinant()) < 1e-12) continue;
+            entries.push({ data, matrix, inverse: matrix.clone().invert(), box: data.tree.box.clone().applyMatrix4(matrix) });
+          }
+        }
+      }
+      o.children.forEach(walk);
+    };
+    walk(root); this.tree = droneTree(entries);
+  }
+  triangles(box, visit) {
+    const tri = new THREE.Triangle();
+    droneQuery(this.tree, box, entry => {
+      const local = box.clone().applyMatrix4(entry.inverse);
+      droneQuery(entry.data.tree, local, item => {
+        tri.a.copy(item.tri.a).applyMatrix4(entry.matrix);
+        tri.b.copy(item.tri.b).applyMatrix4(entry.matrix);
+        tri.c.copy(item.tri.c).applyMatrix4(entry.matrix);
+        visit(tri);
+      });
+    });
+  }
+  move(start, delta, radius = 0.5) {
+    if (!delta.lengthSq()) return start.clone();
+    const box = new THREE.Box3().setFromPoints([start, start.clone().add(delta)]).expandByScalar(radius + 0.001);
+    let fraction = 1;
+    this.triangles(box, tri => { fraction = Math.min(fraction, droneTriangleSweep(start, delta, tri, radius, fraction)); });
+    // Leave a small clearance so the next input can move away from contact freely.
+    if (fraction < 1) fraction = Math.max(0, fraction - 0.0001 / delta.length());
+    return start.clone().addScaledVector(delta, fraction);
+  }
+  overlaps(point, radius = 0.5) {
+    let overlap = false; const nearest = new V3();
+    const box = new THREE.Box3(point.clone(), point.clone()).expandByScalar(radius);
+    this.triangles(box, tri => { if (tri.closestPointToPoint(point, nearest).distanceToSquared(point) <= radius * radius) overlap = true; });
+    // Also reject positions inside solid meshes, even when far from their surface.
+    const ray = new THREE.Ray(point, new V3(0.9327, 0.2713, 0.2371).normalize()), hit = new V3();
+    droneQuery(this.tree, box, entry => {
+      if (overlap || !entry.box.containsPoint(point)) return;
+      const localRay = ray.clone().applyMatrix4(entry.inverse), distances = [];
+      for (const { tri } of entry.data.triangles) {
+        if (localRay.intersectTriangle(tri.a, tri.b, tri.c, false, hit)) distances.push(hit.distanceTo(localRay.origin));
+      }
+      distances.sort((a, b) => a - b);
+      const unique = distances.filter((d, i) => !i || d - distances[i - 1] > 1e-6);
+      if (unique.length % 2) overlap = true;
+    });
+    return overlap;
+  }
+}
+function droneDisplacement(yaw, right, forward, up, speed, dt) {
+  const v = new V3(Math.sin(yaw) * right - Math.cos(yaw) * forward, up, -Math.cos(yaw) * right - Math.sin(yaw) * forward);
+  if (v.lengthSq() > 1) v.normalize();
+  return v.multiplyScalar(speed * dt);
+}
+const courseCatalog = { index: null, saved: null, width: 0, height: 0, target: new V3(), yaw: 0.8, pitch: 0.65, distance: 500, pan: false, time: 0,
+  drone: { active: false, position: new V3(), yaw: 0, pitch: 0, speed: 40, keys: new Set(), touches: new Map(), pad: null, x: 0, z: 0, collision: null } };
+function clearCourseDroneInput() {
+  const d = courseCatalog.drone; d.keys.clear(); d.touches.clear(); d.pad = null; d.x = 0; d.z = 0;
+  $('#courseDronePad span').style.transform = ''; ptrs.clear(); pinch0 = 0;
+}
+function courseDroneUI() {
+  const d = courseCatalog.drone;
+  $('#courseDroneControls').hidden = !d.active;
+  $('#courseCatalogDrone').setAttribute('aria-pressed', String(d.active));
+  $('#courseCatalogRotate').setAttribute('aria-pressed', String(!d.active && !courseCatalog.pan));
+  $('#courseCatalogPan').setAttribute('aria-pressed', String(!d.active && courseCatalog.pan));
+  $('#courseCatalogViewHint').textContent = d.active ? 'WASD／左パッドで移動・E/Q／▲▼で上下・ドラッグ／スワイプで見回す。地形・建物で停止' : 'ドラッグで回転・ホイール／ピンチでズーム。移動モードで平行移動';
+}
+function startCourseDrone() {
+  const d = courseCatalog.drone; if (d.active) return;
+  clearCourseDroneInput();
+  d.position.copy(orbit(courseCatalog.target, courseCatalog.yaw, courseCatalog.pitch, courseCatalog.distance));
+  d.yaw = courseCatalog.yaw; d.pitch = -courseCatalog.pitch;
+  d.active = true; d.pendingStart = true; courseDroneUI();
+  cv.focus({ preventScroll: true });
+}
+function updateCourseDrone(dt) {
+  const d = courseCatalog.drone;
+  if (!d.collision) d.collision = new DroneCollision(world);
+  if (d.pendingStart) {
+    d.pendingStart = false;
+    if (d.collision.overlaps(d.position)) {
+      const saved = { target: courseCatalog.target.clone(), yaw: courseCatalog.yaw, pitch: courseCatalog.pitch, distance: courseCatalog.distance, pan: courseCatalog.pan };
+      courseCatalogReset();
+      d.position.copy(orbit(courseCatalog.target, courseCatalog.yaw, courseCatalog.pitch, courseCatalog.distance));
+      d.yaw = courseCatalog.yaw; d.pitch = -courseCatalog.pitch;
+      // Above the entire collision world is always a valid fallback.
+      if (d.collision.overlaps(d.position)) d.position.y = d.collision.tree.box.max.y + 2;
+      courseCatalog.target.copy(saved.target); courseCatalog.yaw = saved.yaw; courseCatalog.pitch = saved.pitch; courseCatalog.distance = saved.distance; courseCatalog.pan = saved.pan;
+      d.active = true; courseDroneUI();
+    }
+  }
+  const key = c => Number(d.keys.has(c));
+  const up = [...d.touches.values()].reduce((a, b) => a + b, 0) + key('KeyE') - key('KeyQ');
+  const delta = droneDisplacement(d.yaw, d.x + key('KeyD') - key('KeyA'), d.z + key('KeyW') - key('KeyS'), clamp(up, -1, 1), d.speed, dt);
+  d.position.copy(d.collision.move(d.position, delta));
+  camera.position.copy(d.position);
+  camera.lookAt(d.position.clone().add(new V3(-Math.cos(d.yaw) * Math.cos(d.pitch), Math.sin(d.pitch), -Math.sin(d.yaw) * Math.cos(d.pitch))));
+}
 function courseCatalogList() {
   const q = $('#courseCatalogSearch').value.trim().normalize('NFKC').toLocaleLowerCase('ja');
   const filter = $('#courseCatalogFilter').value;
@@ -9225,6 +9427,7 @@ function courseCatalogList() {
 }
 function courseCatalogSelect(i) {
   const t = TRACKS[i]; if (!t) return;
+  clearCourseDroneInput(); courseCatalog.drone.collision = null;
   courseCatalog.index = i;
   if (S.mode === 'courseCatalog') {
     buildWorld(i); gate.g.visible = false; drawBoard();
@@ -9264,6 +9467,7 @@ function courseCatalogZoneText(z) {
   return effects.join('・');
 }
 function courseCatalogReset() {
+  clearCourseDroneInput(); courseCatalog.drone.active = false; courseCatalog.drone.pendingStart = false; courseCatalog.pan = false; courseDroneUI();
   const view = $('#courseCatalogView'), aspect = Math.max(0.3, view.clientWidth / Math.max(1, view.clientHeight));
   let low = Infinity, high = -Infinity;
   for (const y of track.ys) { low = Math.min(low, y); high = Math.max(high, y); }
@@ -9309,22 +9513,25 @@ function drawCourseCatalog(rdt) {
     camera.aspect = w / h; camera.fov = 45; camera.updateProjectionMatrix();
     courseCatalog.width = w; courseCatalog.height = h;
   }
-  camera.position.copy(orbit(courseCatalog.target, courseCatalog.yaw, courseCatalog.pitch, courseCatalog.distance));
-  const far = Math.max(courseCatalog.saved.far, courseCatalog.distance + track.extent * 2);
-  // A race-sized near plane loses depth precision in the distant exhibit view.
-  const near = clamp(courseCatalog.distance * 0.01, 0.1, 10);
-  if (camera.near !== near || camera.far !== far) { camera.near = near; camera.far = far; camera.updateProjectionMatrix(); }
-  camera.lookAt(courseCatalog.target);
-  sky.position.copy(camera.position);
-  sun.position.copy(courseCatalog.target).addScaledVector(sunDir, 160); sun.target.position.copy(courseCatalog.target);
   courseCatalog.time += rdt;
-  if (amb) amb.mat.uniforms.scale.value = h * PR * 0.5;
   themeUpd.forEach(f => f(courseCatalog.time, rdt));
+  const drone = courseCatalog.drone;
+  if (drone.active) updateCourseDrone(rdt);
+  else { camera.position.copy(orbit(courseCatalog.target, courseCatalog.yaw, courseCatalog.pitch, courseCatalog.distance)); camera.lookAt(courseCatalog.target); }
+  const far = Math.max(courseCatalog.saved.far, camera.position.length() + track.extent * 4);
+  // A race-sized near plane loses depth precision in the distant exhibit view.
+  const near = drone.active ? 0.1 : clamp(courseCatalog.distance * 0.01, 0.1, 10);
+  if (camera.near !== near || camera.far !== far) { camera.near = near; camera.far = far; camera.updateProjectionMatrix(); }
+  sky.position.copy(camera.position);
+  const lightTarget = drone.active ? drone.position : courseCatalog.target;
+  sun.position.copy(lightTarget).addScaledVector(sunDir, 160); sun.target.position.copy(lightTarget);
+  if (amb) amb.mat.uniforms.scale.value = h * PR * 0.5;
   FU.uAb.value = 0; FU.uFlash.value = 0; FU.uTime.value = courseCatalog.time; FU.uSat.value = 1.16;
   composer.render();
 }
 function openCourseCatalog() {
   if (S.mode !== 'lobby') return;
+  courseCatalog.drone.speed = 40; $('#courseDroneSpeed').value = '40';
   VO.stop(); AU.crowdLvl(0);
   AU.rainLvl(0); ptrs.clear(); pinch0 = 0;
   // Preserve the lobby world and race while the builder creates exhibit worlds.
@@ -9342,6 +9549,7 @@ function openCourseCatalog() {
 }
 function closeCourseCatalog() {
   if (S.mode !== 'courseCatalog') return;
+  clearCourseDroneInput(); courseCatalog.drone.active = false; courseCatalog.drone.collision = null; courseCatalog.drone.pendingStart = false; courseDroneUI();
   ptrs.clear(); pinch0 = 0;
   disposeWorld();
   const saved = courseCatalog.saved;
@@ -9362,12 +9570,47 @@ function closeCourseCatalog() {
 $('#courseCatalogOpen').onclick = openCourseCatalog; $('#courseCatalogClose').onclick = closeCourseCatalog;
 $('#courseCatalogReset').onclick = courseCatalogReset;
 function courseCatalogPanMode(pan) {
+  clearCourseDroneInput(); courseCatalog.drone.active = false; courseCatalog.drone.pendingStart = false;
   courseCatalog.pan = pan;
-  $('#courseCatalogRotate').setAttribute('aria-pressed', String(!pan));
-  $('#courseCatalogPan').setAttribute('aria-pressed', String(pan));
+  courseDroneUI();
 }
 $('#courseCatalogRotate').onclick = () => courseCatalogPanMode(false);
 $('#courseCatalogPan').onclick = () => courseCatalogPanMode(true);
+$('#courseCatalogDrone').onclick = startCourseDrone;
+$('#courseDroneSpeed').onchange = e => { courseCatalog.drone.speed = +e.target.value; };
+const courseDroneCodes = new Set(['KeyW', 'KeyA', 'KeyS', 'KeyD', 'KeyE', 'KeyQ']);
+function courseDroneKey(e) {
+  if (!courseCatalog.drone.active || !courseDroneCodes.has(e.code) || e.ctrlKey || e.metaKey || e.altKey || e.isComposing || e.target.closest?.('input, textarea, select') || e.target.isContentEditable) return;
+  e.preventDefault(); courseCatalog.drone.keys.add(e.code);
+}
+addEventListener('keyup', e => { courseCatalog.drone.keys.delete(e.code); });
+addEventListener('blur', clearCourseDroneInput);
+document.addEventListener('visibilitychange', () => { if (document.hidden) clearCourseDroneInput(); });
+$('#courseCatalog').addEventListener('focusin', e => { if (e.target.closest('input, textarea, select') || e.target.isContentEditable) clearCourseDroneInput(); });
+const dronePad = $('#courseDronePad');
+function moveDronePad(e) {
+  const d = courseCatalog.drone; if (d.pad !== e.pointerId) return;
+  const r = dronePad.getBoundingClientRect(), x = (e.clientX - r.left - r.width / 2) / 34, y = (e.clientY - r.top - r.height / 2) / 34;
+  const size = Math.max(1, Math.hypot(x, y)); d.x = x / size; d.z = -y / size;
+  $('#courseDronePad span').style.transform = `translate(${d.x * 30}px, ${-d.z * 30}px)`;
+}
+dronePad.addEventListener('pointerdown', e => {
+  const d = courseCatalog.drone; if (!d.active || d.pad !== null) return;
+  e.preventDefault(); d.pad = e.pointerId; dronePad.setPointerCapture(e.pointerId); moveDronePad(e);
+});
+dronePad.addEventListener('pointermove', moveDronePad);
+function endDronePad(e) {
+  const d = courseCatalog.drone; if (d.pad !== e.pointerId) return;
+  d.pad = null; d.x = 0; d.z = 0; $('#courseDronePad span').style.transform = '';
+}
+for (const event of ['pointerup', 'pointercancel', 'lostpointercapture']) dronePad.addEventListener(event, endDronePad);
+$('#courseDroneHeight').querySelectorAll('button').forEach(b => {
+  b.addEventListener('pointerdown', e => {
+    if (!courseCatalog.drone.active) return;
+    e.preventDefault(); b.setPointerCapture(e.pointerId); courseCatalog.drone.touches.set(e.pointerId, +b.dataset.droneHeight);
+  });
+  for (const event of ['pointerup', 'pointercancel', 'lostpointercapture']) b.addEventListener(event, e => { courseCatalog.drone.touches.delete(e.pointerId); });
+});
 $('#courseCatalogSearch').oninput = courseCatalogList; $('#courseCatalogFilter').onchange = courseCatalogList;
 $('#courseCatalogList').onclick = e => {
   const b = e.target.closest('button[data-index]'); if (!b) return;
@@ -9376,6 +9619,7 @@ $('#courseCatalogList').onclick = e => {
 };
 $('#courseCatalog').addEventListener('keydown', e => {
   if (e.key === 'Escape') { e.preventDefault(); closeCourseCatalog(); }
+  else courseDroneKey(e);
   e.stopPropagation();
 });
 const cam = { tgt: new V3(), pos: new V3(0, 60, 180), fov: 50, base: 0, yaw: 0.8, pitch: 0.25, dist: 7.5, drag: -10 };
@@ -9636,11 +9880,17 @@ function useCheer() {
   toast(`<b>応援ブースト！</b> ${r.def.name}の脚に力がみなぎる`, '#ffcf3f');
 }
 const cv = renderer.domElement, ptrs = new Map(); let pinch0 = 0;
-cv.addEventListener('pointerdown', e => { cv.setPointerCapture(e.pointerId); ptrs.set(e.pointerId, { x: e.clientX, y: e.clientY }); if (ptrs.size === 2) { const [a, b] = [...ptrs.values()]; pinch0 = Math.hypot(a.x - b.x, a.y - b.y); } });
+cv.tabIndex = 0;
+cv.addEventListener('pointerdown', e => { if (S.mode === 'courseCatalog' && courseCatalog.drone.active) cv.focus({ preventScroll: true }); cv.setPointerCapture(e.pointerId); ptrs.set(e.pointerId, { x: e.clientX, y: e.clientY }); if (ptrs.size === 2) { const [a, b] = [...ptrs.values()]; pinch0 = Math.hypot(a.x - b.x, a.y - b.y); } });
 cv.addEventListener('pointermove', e => {
   const p = ptrs.get(e.pointerId); if (!p) return;
   const dx = e.clientX - p.x, dy = e.clientY - p.y; p.x = e.clientX; p.y = e.clientY;
   if (S.mode === 'courseCatalog') {
+    const d = courseCatalog.drone;
+    if (d.active) {
+      if (e.pointerId === ptrs.keys().next().value) { d.yaw += dx * 0.006; d.pitch = clamp(d.pitch - dy * 0.004, -Math.PI * 89 / 180, Math.PI * 89 / 180); }
+      return;
+    }
     if (ptrs.size === 2) {
       const [a, b] = [...ptrs.values()], d = Math.hypot(a.x - b.x, a.y - b.y);
       if (pinch0 && d > 0) courseCatalog.distance = clamp(courseCatalog.distance * pinch0 / d, 4, courseCatalog.maxDistance);
@@ -9664,8 +9914,9 @@ cv.addEventListener('pointermove', e => {
 });
 const endPtr = e => { ptrs.delete(e.pointerId); if (ptrs.size < 2) pinch0 = 0; };
 cv.addEventListener('pointerup', endPtr); cv.addEventListener('pointercancel', endPtr);
+cv.addEventListener('lostpointercapture', endPtr);
 cv.addEventListener('contextmenu', e => { if (S.mode === 'courseCatalog') e.preventDefault(); });
-cv.addEventListener('wheel', e => { e.preventDefault(); if (S.mode === 'courseCatalog') { courseCatalog.distance = clamp(courseCatalog.distance * Math.exp(e.deltaY * 0.0012), 4, courseCatalog.maxDistance); return; } if (S.mode === 'catalog') { catalog.zoom = clamp(catalog.zoom * Math.exp(e.deltaY * 0.0012), 0.65, 2.5); return; } if ((S.mode === 'race' || S.mode === 'finish') && S.cam !== 'free') setCam('free'); cam.dist = clamp(cam.dist * (1 + e.deltaY * 0.0012), 4, 140); cam.drag = realClock; }, { passive: false });
+cv.addEventListener('wheel', e => { e.preventDefault(); if (S.mode === 'courseCatalog') { if (!courseCatalog.drone.active) courseCatalog.distance = clamp(courseCatalog.distance * Math.exp(e.deltaY * 0.0012), 4, courseCatalog.maxDistance); return; } if (S.mode === 'catalog') { catalog.zoom = clamp(catalog.zoom * Math.exp(e.deltaY * 0.0012), 0.65, 2.5); return; } if ((S.mode === 'race' || S.mode === 'finish') && S.cam !== 'free') setCam('free'); cam.dist = clamp(cam.dist * (1 + e.deltaY * 0.0012), 4, 140); cam.drag = realClock; }, { passive: false });
 addEventListener('resize', () => {
   camera.aspect = innerWidth / innerHeight; camera.updateProjectionMatrix();
   applyQuality();
@@ -10333,6 +10584,7 @@ function frame(now) {
 }
 
 function applyQuality() {
+  courseCatalog.drone.collision = null; if (courseCatalog.drone.active) courseCatalog.drone.pendingStart = true;
   courseCatalog.width = 0; courseCatalog.height = 0;
   catalog.width = 0; catalog.height = 0;
   const q = $('#quality').value;
