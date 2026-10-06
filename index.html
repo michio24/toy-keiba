@@ -1237,7 +1237,13 @@ const TRACKS = [
     segs: fantasyLoop(220, [[340, 120, 120, 85], [165, 290, 180, 70], [65, 205, 180, 45], [-90, 250, 240, 65], [-120, 90, 280, 70], [0, 0, 0, 70]]), finish: [0, 195], elevEx: 1.5,
     elev: [[0, 0, 0], [1, 1, -2], [2, 0.5, -5], [2, 1, -3], [3, 1, -1], [4, 1, -3], [5, 0.7, 0], [6, 1, 0]],
     zones: [{ seg: 4, from: 0.15, to: 0.85, name: 'パール海流', color: '#83edff', speed: 1.065, drain: -0.15, motion: 10 }],
-    desc: '珊瑚ラグーンを回り込む入り江形の芝。深さ5mの低地へ潜り、海流区間で加速して浮上する。下りの勢いと上りへの余力が鍵。',
+    // 先頭馬が通過したときの地点実況（コース上の距離。発走はブー・マーヒル砦の脇、コース上の328m地点）
+    placeCalls: [[445, '真珠採りの船の下へ潜っていく！海面から潜り手が降りてくる中、先頭は{L}！'], [560, 'ハイル・ブー・アマーマの真珠貝の海床、いちばん深いところ！先頭は{L}、2番手{B}！'],
+      [740, '入り江のくびれの浅瀬へ駆け上がる！ハドラの脇を抜けて先頭は{L}！'],
+      [945, '沈められたジャンボ機の横を通過！魚の群れとウミガメと一緒に、海流に乗って{L}が先頭！'], [1080, 'ジュゴンの藻場を抜けていく！沈められた真珠商人の家の前、先頭は{L}、追う{B}！'],
+      [1240, 'ファシュト・アル＝アズムの珊瑚礁を回って最後の直線へ！先頭は{L}！']],
+    motif: 'バーレーンの真珠採り（世界遺産「真珠採り、島の経済の証し」）', motifNote: 'ペルシャ湾の真珠採りで栄えたバーレーンの海を、海の底を走るコースに見立てました。ムハッラクの真珠商人の家並みを模したスタンドから、真珠採りの船が出ていったブー・マーヒル砦の脇で発走。海面に浮かぶ真珠採りの船（ジャールブート）から、石の錘で潜り手が降りてくる真珠貝の海床ハイル・ブー・アマーマの最深部を抜け、入り江のくびれの浅瀬で、杭と網で魚を囲い込む伝統の定置漁具ハドラの脇を上る。パール海流では回遊魚の群れとアオウミガメが並走し、海中テーマパーク「ダイブ・バーレーン」に沈められたジャンボ機と真珠商人の家の前を通って、ジュゴンが海草を食む藻場、ファシュト・アル＝アズムの珊瑚礁を回ってホーム直線へ。名所の位置・距離・地形はゲーム用のアレンジで、海の底を走る馬・パール海流・大真珠貝はファンタジーの演出です。',
+    desc: '真珠採りの海の底、入り江形の芝。真珠貝の海床へ深さ5mまで潜り、くびれの浅瀬を上ってから、パール海流に乗って加速する。下りの勢いと上りへの余力が鍵。',
     grad: 'linear-gradient(135deg,#155f9f,#60d5d7 55%,#f9ddf3)' },
   { name: 'ゼンマイ王国トロフィー', theme: 'clockwork', surf: 'dirt', D: 1000, S: 220, R: 48, kick: 0.75, time: '昼',
     segs: fantasyLoop(220, [[290, 70, 90, 50], [290, 245, 90, 55], [210, 315, 180, 50], [20, 315, 180, 55], [-55, 245, 270, 50], [-110, 125, 270, 50], [-60, 40, 320, 45], [0, 0, 0, 30]]), finish: [0, 195], elevEx: 1.5,
@@ -1345,8 +1351,9 @@ THEMES.candy = { ...THEMES.sakura, sky: ['#72ccec', '#ffdeed', '#fff0cf'], groun
 THEMES.moonForest = { ...THEMES.neon, sky: ['#070f2c', '#384365', '#192d38'], ground: 'grass', sunCol: '#ceeaff', sun: [0.2, 0.55, -0.8], sunSize: 1800,
   hemi: ['#b4d8ef', '#42595a', 0.85], dir: ['#d0e3ff', 1.1], fog: ['#32445e', 240, 1100], rail: '#b8f2df', railGlow: 0.7, dust: '#9fceb1', bloom: [0.55, 0.5, 1.5] };
 THEMES.dragonCrater = { ...THEMES.dune, sky: ['#241c35', '#ef825c', '#58444b'], ground: 'basalt', rail: '#e9d6b5', dust: '#827978', fog: ['#95604f', 300, 1400] };
-THEMES.pearlOcean = { ...THEMES.tokyo, sky: ['#07385d', '#459ba9', '#91c6bc'], ground: 'sand', sunCol: '#b9ffff', sunSize: 70,
-  hemi: ['#b2efff', '#73a69e', 0.9], dir: ['#d5ffff', 1.15], fog: ['#5caaa9', 450, 1500], rail: '#fce5fa', railGlow: 0.4, dust: '#b9e2d0', bloom: [0.45, 0.5, 1.5] };
+// 海の底：見上げると明るい海面、水平線の先は深い青。水の濁りで遠くがかすむ
+THEMES.pearlOcean = { ...THEMES.tokyo, sky: ['#6fd0dc', '#3c97a8', '#0d3f5c'], ground: 'seabed', sunCol: '#b9ffff', sunSize: 70,
+  hemi: ['#b2efff', '#5a8188', 0.85], dir: ['#d5ffff', 1.0], fog: ['#3c97a8', 170, 950], rail: '#fce5fa', railGlow: 0.4, dust: '#d6ece4', bloom: [0.45, 0.5, 1.5] };
 THEMES.clockwork = { ...THEMES.tokyo, sky: ['#5c95c4', '#f2e6c6', '#a9b98a'], rail: '#d8ad64', mount: '#5d7d54', dust: '#c6a782', fog: ['#e2e2c8', 420, 1600] };
 THEMES.hakone = { ...THEMES.tokyo, sky: ['#4c8db4', '#d8e8dc', '#8fa677'], ground: 'grass', mount: '#607e70', rail: '#e4e8e1', dust: '#a1aaa0', fog: ['#c6d7cb', 550, 1800] };
 THEMES.boxHill = { ...THEMES.tokyo, sky: ['#69a9d2', '#e5efd8', '#9fc17b'], rail: '#c8b58a', mount: '#829d73', fog: ['#dbe9c8', 420, 1600], dust: '#c6d69b' };
@@ -2953,6 +2960,7 @@ function buildWorld(ti) {
     city: g => { g.fillStyle = '#a3a69f'; g.fillRect(0, 0, 256, 256); speck(g, 256, 256, 2600, ['#979a93', '#b1b3ac', '#8d918b', '#aaa79c'], 1, 3, 0.8); },
     winter: g => { g.fillStyle = '#9fa36a'; g.fillRect(0, 0, 256, 256); speck(g, 256, 256, 2600, ['#8e935a', '#b7b77c', '#7f8a52', '#a8a070'], 1, 3, 0.8); },
     snow: g => { g.fillStyle = '#dfe9f6'; g.fillRect(0, 0, 256, 256); speck(g, 256, 256, 1600, ['#dce9fa', '#ffffff', '#cfe0f5'], 1, 4, 0.8); },
+    seabed: g => { g.fillStyle = '#b9ad88'; g.fillRect(0, 0, 256, 256); for (let y = 0; y < 256; y += 11) { g.strokeStyle = 'rgba(120,105,70,.2)'; g.lineWidth = 2; g.beginPath(); for (let x = 0; x <= 256; x += 8) g.lineTo(x, y + Math.sin(x * 0.06 + y * 0.4) * 3); g.stroke(); } speck(g, 256, 256, 900, ['#d3c8a6', '#a49874', '#e2d9bd'], 1, 2, 0.7); speck(g, 256, 256, 120, ['#7e9a6a', '#a0897a'], 1, 3, 0.6); },
     sand: g => { g.fillStyle = '#e4b271'; g.fillRect(0, 0, 256, 256); for (let y = 0; y < 256; y += 9) { g.strokeStyle = 'rgba(160,100,40,.18)'; g.beginPath(); for (let x = 0; x <= 256; x += 8) g.lineTo(x, y + Math.sin(x * 0.05 + y) * 3); g.stroke(); } speck(g, 256, 256, 900, ['#f0c488', '#d29c5a'], 1, 2, 0.7); }
   }[th.ground];
   const gTex = ctex(256, 256, gt, true); gTex.repeat.set(260, 260);
@@ -2965,6 +2973,8 @@ function buildWorld(ti) {
   // Keep near-coplanar harbor water and asphalt clear of terrain at long distances.
   const groundDepthOffset = def.theme === 'monaco' || RAIL_LINES[def.theme] ? { polygonOffset: true, polygonOffsetFactor: 1, polygonOffsetUnits: 2 } : {};
   Object.assign(gMat, groundDepthOffset);
+  // 海の底：海面の揺らぎが落とす光の網（コースティクス）
+  if (def.theme === 'pearlOcean') seaCaustics(gMat);
   if (def.theme === 'skyGarden') {
     // A finite floating island; no infinite ground plane beneath the clouds.
     const stone = toon('#a8a6bc'), top = new THREE.Mesh(new THREE.CircleGeometry(1, 64), gMat);
@@ -2981,6 +2991,7 @@ function buildWorld(ti) {
     g.computeVertexNormals();
     const tex2 = gTex.clone(); tex2.needsUpdate = true; tex2.repeat.set(sz / 10, sz / 10);
     const hill = new THREE.Mesh(g, toon('#ffffff', { map: tex2, ...groundDepthOffset })); hill.receiveShadow = true; world.add(hill);
+    if (def.theme === 'pearlOcean') seaCaustics(hill.material);
     const ground = new THREE.Mesh(new THREE.PlaneGeometry(2600, 2600), gMat); ground.rotation.x = -Math.PI / 2; ground.position.y = Math.min(-0.2, ...track.ys) - (def.zones ? 1 : 0); ground.receiveShadow = true; world.add(ground);
   } else if (def.theme !== 'dune') {
     const size = Math.max(2600, (track.extent + 200) * 2);
@@ -3017,6 +3028,7 @@ function buildWorld(ti) {
   }
   const tg = new THREE.BufferGeometry(); tg.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3)); tg.setAttribute('uv', new THREE.Float32BufferAttribute(uv, 2)); tg.setIndex(idx); tg.computeVertexNormals(); if (track.sgn < 0) { const nm = tg.attributes.normal; for (let i = 0; i < nm.count; i++) nm.setXYZ(i, -nm.getX(i), -nm.getY(i), -nm.getZ(i)); tg.index.array.reverse(); }
   const tMesh = new THREE.Mesh(tg, toon('#ffffff', { map: sTex })); tMesh.receiveShadow = true; world.add(tMesh);
+  if (def.theme === 'pearlOcean') seaCaustics(tMesh.material, 0.7);
   WR = { hemi, tMat: tMesh.material, th, puddles: null };
 
   // rails
@@ -3791,36 +3803,550 @@ function decorDragonCrater() {
   themeUpd.push(t => { dragon.scale.y = 1 + Math.sin(t * 0.7) * 0.025; });
   ambient(TEX_SOFT, true, 10, (a, c) => a.emit(c.x + rand(-70, 70), rand(2, 20), c.z + rand(-70, 70), rand(-0.5, 0.5), rand(0.5, 2), rand(-0.5, 0.5), 5, 0.25, C('#ffae66').multiplyScalar(2), 0, 0), true);
 }
+/* ---- 海底パール記念：バーレーンの真珠採り（世界遺産「真珠採り、島の経済の証し」）を下敷きにした海の底 ---- */
+// 見立て：ペルシャ湾の浅い海の底を走る。海面には真珠採りの船が浮かび、潜り手が綱を伝って真珠貝の海床へ潜る。
+// 区間の役割：1 ブー・マーヒル砦（真珠採りの船出の浜）と発走／2 ハイル・ブー・アマーマの真珠貝の海床（最深部）と真珠採りの船・潜り手／
+// 3 入り江のくびれの浅瀬とハドラ（杭と網の定置漁具）／4 パール海流（回遊魚の群れとウミガメ）とダイブ・バーレーンの沈められたジャンボ機／
+// 5 海草の藻場とジュゴン、沈められた真珠商人の家／6 ファシュト・アル＝アズムの珊瑚礁とイソギンチャク／0 ムハッラクの真珠商人の家並みのホーム直線。
+// 内馬場は砂の海底と、ゴールで口を開く大真珠貝（ファンタジーの演出）
+const SEA_U = { time: { value: 0 } };
+// 海面の揺らぎが海底に落とす光の網（コースティクス）。材質の発光に、世界座標で揺れる光を足す
+function seaCaustics(mat, k = 1) {
+  mat.onBeforeCompile = sh => {
+    sh.uniforms.uSeaTime = SEA_U.time; sh.uniforms.uSeaCaus = { value: k };
+    sh.vertexShader = 'varying vec3 vSeaPos;\n' + sh.vertexShader.replace('#include <project_vertex>', '#include <project_vertex>\nvSeaPos = (modelMatrix * vec4(transformed, 1.0)).xyz;');
+    sh.fragmentShader = 'uniform float uSeaTime, uSeaCaus;\nvarying vec3 vSeaPos;\n' +
+      // 水面の光の網（よく知られた反復式）。約11mで繰り返す
+      'float seaCaus(vec2 q, float t) {\n  vec2 p = mod(q * 0.55, 6.28318) - 250.0, i = p; float c = 1.0;\n' +
+      '  for (int n = 0; n < 4; n++) { float tt = t * 0.45 * (1.0 - 3.5 / float(n + 1)); i = p + vec2(cos(tt - i.x) + sin(tt + i.y), sin(tt - i.y) + cos(tt + i.x));\n' +
+      '    c += 1.0 / length(vec2(p.x / (sin(i.x + tt) / 0.005), p.y / (cos(i.y + tt) / 0.005))); }\n' +
+      '  c = 1.17 - pow(c / 4.0, 1.4); return clamp(pow(abs(c), 8.0), 0.0, 1.0);\n}\n' +
+      sh.fragmentShader.replace('#include <emissivemap_fragment>', '#include <emissivemap_fragment>\ntotalEmissiveRadiance += vec3(0.42, 0.62, 0.6) * uSeaCaus * seaCaus(vSeaPos.xz, uSeaTime);');
+  };
+  mat.customProgramCacheKey = () => 'seaCaustics';
+  mat.needsUpdate = true;
+  return mat;
+}
+// 水の揺れ：根元（局所 y = base）を固定し、先端ほど大きく揺らす（海草・イソギンチャクの触手・ウミウチワ）。amp は先端の振れ幅（m）
+function seaSway(mat, amp, base = -0.5, height = 1, speed = 1.3) {
+  mat.onBeforeCompile = sh => {
+    sh.uniforms.uSeaTime = SEA_U.time; sh.uniforms.uSwayAmp = { value: amp };
+    sh.vertexShader = 'uniform float uSeaTime, uSwayAmp;\n' + sh.vertexShader.replace('#include <project_vertex>', `vec4 mvPosition = vec4(transformed, 1.0);
+vec3 swayAt = vec3(0.0);
+#ifdef USE_INSTANCING
+  mvPosition = instanceMatrix * mvPosition; swayAt = instanceMatrix[3].xyz;
+#endif
+float swayK = clamp((position.y - (${base.toFixed(2)})) / ${height.toFixed(2)}, 0.0, 1.0); swayK *= swayK;
+float swayPh = uSeaTime * ${speed.toFixed(2)} + swayAt.x * 0.13 + swayAt.z * 0.09;
+mvPosition.x += sin(swayPh) * uSwayAmp * swayK; mvPosition.z += cos(swayPh * 0.8 + 1.3) * uSwayAmp * 0.6 * swayK;
+mvPosition = modelViewMatrix * mvPosition;
+gl_Position = projectionMatrix * mvPosition;`);
+  };
+  mat.customProgramCacheKey = () => 'seaSway' + base + '/' + height + '/' + speed;
+  return mat;
+}
 function decorPearlOcean() {
-  // A faint shell with depth writes disabled preserves horses and scenery in every view.
-  const radius = track.extent + 170;
-  const dome = new THREE.Mesh(new THREE.SphereGeometry(radius, 48, 20, 0, Math.PI * 2, 0, Math.PI / 2), new THREE.MeshBasicMaterial({ color: C('#aeeffc'), transparent: true, opacity: 0.045, side: THREE.DoubleSide, depthWrite: false }));
-  dome.scale.y = 0.65; dome.renderOrder = 1; world.add(dome);
-  const ribs = new THREE.Group(); world.add(ribs);
-  for (let i = 0; i < 8; i++) { const rib = new THREE.Mesh(new THREE.TorusGeometry(radius, 0.3, 5, 64, Math.PI), toon('#a7d4d9')); rib.rotation.y = i / 8 * Math.PI; rib.scale.y = 0.65; ribs.add(rib); }
-  themeDetails.push(ribs);
-  const corals = [], branches = [], pearls = [], coralMat = toon('#ffffff');
-  for (let i = 0; i < 80; i++) {
-    const p = spotOutside(20, 150, true), h = rand(5, 10), c = C(['#e994b8', '#bf9ce3', '#edbd91'][i % 3]);
-    corals.push({ p: new V3(p.x, p.y + h / 2, p.z), s: new V3(1.2, h, 1.2), c });
-    for (const s of [-1, 1]) branches.push({ p: new V3(p.x + s * 1.5, p.y + h * 0.7, p.z), s: new V3(0.7, h * 0.6, 0.7), r: [0, i, s * -0.6], c });
-    pearls.push({ p: new V3(p.x + 3, p.y + 1.3, p.z), s: new V3(1.3, 1.3, 1.3) });
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)');
+  const { shuffle, occupied, taken, clearAt, groundAt, onGround, local, at, scatter, label, site, PRISM, CYL, addInst, herd } = sceneryKit();
+  // 案内板は深い海の青に真珠色の文字
+  const signAt = (g, text, y, w = 14) => { const sp = label(text, w, w / 4, '#123f5c', '#f6eef6'); sp.position.set(0, y, 0); sp.scale.set(w, w / 4, 1); g.add(sp); return sp; };
+  const SURF = 95, radius = track.extent + 170, updates = [];
+  const coralStone = toon('#e3d5b5'), coralStone2 = toon('#cdbb95'), teak = toon('#7a5536'), darkTeak = toon('#4f3826');
+  const skin = toon('#8a5a3c'), cloth = toon('#f2efe6'), rope = toon('#c9b48a'), win = toon('#2d3b40');
+  const pearlMat = toon('#fff4fa', { emissive: C('#d9c6e0'), emissiveIntensity: 0.35 });
+  const updatesBubbles = [];
+  // 泡：海の底から海面へ、揺れながら昇る（dustP は重力の向きを逆にして使う）
+  const bubbleCol = C('#e6fcff');
+  const bubble = (x, y, z, size = 0.35) => dustP.emit(x, y, z, rand(-0.25, 0.25), rand(1.6, 2.6), rand(-0.25, 0.25), rand(2.5, 4), size, bubbleCol, -0.6, 0.3);
+  // 魚の形：胴（局所 +x が頭）と尾びれ。同じ行列で2つのインスタンスを動かす
+  const fishBody = new THREE.SphereGeometry(1, 8, 6); fishBody.scale(1, 0.42, 0.24);
+  const fishTail = new THREE.BufferGeometry(); fishTail.setAttribute('position', new THREE.Float32BufferAttribute([-0.85, 0, 0, -1.6, 0.45, 0, -1.6, -0.45, 0], 3)); fishTail.computeVertexNormals();
+  // 帯模様の魚は、球の極を頭と尾に向けて、テクスチャの横縞を胴の輪にする
+  const bandBody = new THREE.SphereGeometry(1, 12, 10); bandBody.rotateZ(Math.PI / 2); bandBody.scale(1, 0.42, 0.24);
+  const school = (n, cols, size, bands) => {
+    const mats = [toon('#ffffff', bands ? { map: bands } : {}), toon(bands ? '#f0782c' : '#ffffff', { side: THREE.DoubleSide })];
+    const list = Array.from({ length: n }, (_, i) => ({ p: new V3(), s: new V3(size, size, size), c: C(cols[i % cols.length]) }));
+    const meshes = [bands ? bandBody : fishBody, fishTail].map((geo, k) => { const m = fantasyInst(geo, mats[k], list, false); m.userData.droneIgnore = true; m.frustumCulled = false; return m; });
+    const m4 = new THREE.Matrix4(), q = new THREE.Quaternion(), e = new THREE.Euler(), sc = new V3(size, size, size);
+    // set(i, 位置, 向き yaw, 傾き pitch)
+    return { meshes, set(i, p, yaw, pitch = 0) { m4.compose(p, q.setFromEuler(e.set(0, yaw, pitch, 'YZX')), sc); meshes.forEach(m => m.setMatrixAt(i, m4)); }, done() { meshes.forEach(m => { m.instanceMatrix.needsUpdate = true; }); }, count: () => meshes[0].count };
+  };
+  // 小さな群れ：中心 c のまわりを輪になって泳ぐ
+  const swirl = (c, n, r, cols, size = 0.5, speed = 0.5) => {
+    const sc = school(n, cols, size), ph = Array.from({ length: n }, () => [rand(0, Math.PI * 2), rand(0.7, 1.15), rand(-1, 1)]);
+    updates.push(t => {
+      const m = reduced.matches ? 0 : t, k = sc.count();
+      for (let i = 0; i < k; i++) { const [a0, rr, h] = ph[i], a = a0 + m * speed / rr; sc.set(i, new V3(c.x + Math.cos(a) * r * rr, c.y + h * r * 0.35 + Math.sin(m + a0) * 0.4, c.z + Math.sin(a) * r * rr), -a - Math.PI / 2); }
+      sc.done();
+    });
+    return sc;
+  };
+
+  /* ---- 海面と光の柱：見上げると揺れる海面と、斜めに差し込む光 ---- */
+  {
+    // 海面のさざ波：ボロノイの境目を明るくした網目（端でつながる繰り返し模様）
+    const waveTex = ctex(128, 128, c => {
+      const pts = Array.from({ length: 22 }, () => [rand(0, 128), rand(0, 128)]), img = c.createImageData(128, 128);
+      for (let y = 0; y < 128; y++) for (let x = 0; x < 128; x++) {
+        let f1 = 1e9, f2 = 1e9;
+        for (const [px, py] of pts) { const dx = Math.min(Math.abs(x - px), 128 - Math.abs(x - px)), dy = Math.min(Math.abs(y - py), 128 - Math.abs(y - py)), d = Math.hypot(dx, dy); if (d < f1) { f2 = f1; f1 = d; } else if (d < f2) f2 = d; }
+        const k = Math.max(0, 1 - (f2 - f1) / 9) ** 2 * 0.75 + Math.max(0, 1 - f1 / 40) * 0.12, i = (y * 128 + x) * 4;
+        img.data[i] = 112 + k * 120; img.data[i + 1] = 200 + k * 50; img.data[i + 2] = 214 + k * 41; img.data[i + 3] = 255;
+      }
+      c.putImageData(img, 0, 0);
+    }, true);
+    waveTex.repeat.set(160, 160);
+    const surface = new THREE.Mesh(new THREE.PlaneGeometry(3200, 3200), new THREE.MeshBasicMaterial({ map: waveTex, transparent: true, opacity: 0.72, side: THREE.DoubleSide, depthWrite: false }));
+    surface.rotation.x = Math.PI / 2; surface.position.y = SURF; surface.renderOrder = 1; surface.userData.droneIgnore = true; world.add(surface);
+    // 光の柱：上が明るく下へ消える帯を十字に組み、太陽の向きへ少し傾ける
+    const rayTex = ctex(64, 256, c => {
+      const v = c.createLinearGradient(0, 0, 0, 256); v.addColorStop(0, 'rgba(255,255,255,1)'); v.addColorStop(0.55, 'rgba(255,255,255,.3)'); v.addColorStop(1, 'rgba(255,255,255,0)');
+      c.fillStyle = v; c.fillRect(0, 0, 64, 256); c.globalCompositeOperation = 'destination-in';
+      const h = c.createLinearGradient(0, 0, 64, 0); h.addColorStop(0, 'rgba(0,0,0,0)'); h.addColorStop(0.5, 'rgba(0,0,0,1)'); h.addColorStop(1, 'rgba(0,0,0,0)'); c.fillStyle = h; c.fillRect(0, 0, 64, 256);
+    }, false);
+    const rayGeo = new THREE.PlaneGeometry(1, 1); rayGeo.translate(0, -0.5, 0);
+    const rayMat = new THREE.MeshBasicMaterial({ map: rayTex, color: C('#c9fbff'), transparent: true, opacity: 0.14, blending: THREE.AdditiveBlending, depthWrite: false, side: THREE.DoubleSide, fog: false });
+    const rays = [];
+    for (let i = 0; i < 22; i++) {
+      const a = rand(0, Math.PI * 2), r = Math.sqrt(Math.random()) * (track.extent + 40), g = fantasyGroup(new V3(Math.cos(a) * r, SURF, Math.sin(a) * r));
+      const w = rand(6, 16);
+      for (const y of [0, Math.PI / 2]) { const m = new THREE.Mesh(rayGeo, rayMat); m.scale.set(w, SURF + 12, 1); m.rotation.y = y; g.add(m); }
+      g.rotation.set(0.12, rand(0, Math.PI), 0.22); g.userData.droneIgnore = true; rays.push({ g, ph: rand(0, 6) });
+      if (i % 2) themeDetails.push(g);
+    }
+    updates.push(t => {
+      const m = reduced.matches ? 0 : t;
+      waveTex.offset.set(m * 0.004, m * 0.0025);
+      rays.forEach(({ g, ph }) => { g.rotation.z = 0.22 + Math.sin(m * 0.25 + ph) * 0.06; });
+      rayMat.opacity = 0.12 + Math.sin(m * 0.8) * 0.025;
+    });
   }
-  fantasyInst(new THREE.CylinderGeometry(0.5, 1, 1, 7), coralMat, branches);
-  fantasyInst(new THREE.CylinderGeometry(0.5, 1, 1, 7), coralMat, corals); fantasyInst(SPH_LO, toon('#fff2f6', { emissive: C('#d4bcd5'), emissiveIntensity: 0.2 }), pearls);
-  const jellyfish = [];
-  for (let i = 0; i < 12; i++) {
-    const a = i / 12 * Math.PI * 2, g = fantasyGroup(new V3(Math.cos(a) * (radius + 35), 38 + i % 3 * 22, Math.sin(a) * (radius + 35)));
-    part(g, SPH_LO, toon(i % 2 ? '#b1dfee' : '#e4bdea', { transparent: true, opacity: 0.75, depthWrite: false }), [0, 0, 0], [7, 4, 7], null, 0);
-    for (let j = 0; j < 5; j++) part(g, new THREE.CylinderGeometry(0.15, 0.1, 10, 5), toon('#d2d0eb'), [(j - 2) * 2, -6, 0], null, [0, 0, (j - 2) * 0.1], 0);
-    jellyfish.push({ g, y: g.position.y }); if (i % 2) themeDetails.push(g);
+
+  /* ---- 第1区間：ブー・マーヒル砦（ムハッラク島の南端、真珠採りの船が出ていった浜の砦） ---- */
+  {
+    const g = site('ブー・マーヒル砦', at(1, 0.28), W / 2 + 30, 26, 24, '#d8cfae');
+    // 珊瑚石を積み、しっくいで仕上げた低い城壁と、四隅の塔（海側の角は円い塔）
+    for (const [x, z, w, d] of [[0, -10, 22, 2], [0, 10, 22, 2], [-10, 0, 2, 22], [10, 0, 2, 22]]) addBox(g, [w, 6, d], [x, 3, z], coralStone, null, 0.02);
+    const merlons = [];
+    for (let k = -10; k <= 10; k += 2) for (const [x, z] of [[k, -10], [k, 10], [-10, k], [10, k]]) merlons.push({ p: g.localToWorld(new V3(x, 6.5, z)), s: new V3(0.9, 1, 0.9), r: [0, g.rotation.y, 0] });
+    addInst(BOX, coralStone, merlons, false);
+    part(g, CYL, coralStone, [-10, 4.5, -10], [3.4, 9, 3.4], null, 0.02); part(g, CYL, coralStone2, [-10, 9.4, -10], [3.7, 0.8, 3.7], null, 0);
+    for (const [x, z] of [[10, -10], [-10, 10], [10, 10]]) addBox(g, [4.6, 8, 4.6], [x, 4, z], coralStone, null, 0.02);
+    addBox(g, [3, 4, 0.3], [0, 2, -11.1], darkTeak);
+    for (const x of [-6, 6]) addBox(g, [0.6, 1.4, 0.2], [x, 4.4, -11.05], win);
+    // 浜に引き上げた小舟と、砂に半ば埋もれた錨
+    const boat = new THREE.Group(); boat.position.set(-4, 0.8, -15); boat.rotation.set(0, 0.4, 0.25); g.add(boat);
+    part(boat, SPH_LO, teak, [0, 0, 0], [5, 1.1, 1.5], null, 0.04); addBox(boat, [9, 0.2, 2.4], [0, 0.6, 0], darkTeak);
+    part(g, new THREE.TorusGeometry(1.2, 0.18, 6, 16, Math.PI), toon('#5b4a42'), [6, 0.4, -14], null, [0, 0, Math.PI], 0);
+    addBox(g, [0.25, 3, 0.25], [6, 1.5, -14], toon('#5b4a42'));
+    signAt(g, 'ブー・マーヒル砦（真珠採りの船出の地）', 15, 19);
   }
-  const whale = fantasyGroup(), blue = toon('#669fb9'), pale = toon('#bde1df');
-  part(whale, SPH_LO, blue, [0, 0, 0], [28, 12, 12]); part(whale, SPH_LO, pale, [0, -5, 0], [23, 7, 10]);
-  for (const s of [-1, 1]) { part(whale, SPH_LO, blue, [-29, 0, s * 7], [10, 2, 9], [0, s * 0.3, 0]); part(whale, SPH_LO, blue, [4, -5, s * 13], [9, 2, 7], [s * 0.3, 0, 0]); part(whale, SPH_LO, toon('#233b54'), [19, 2, s * 10], [1, 1, 1]); }
-  whale.userData.droneIgnore = true; jellyfish.forEach(o => { o.g.userData.droneIgnore = true; });
-  themeUpd.push(t => { jellyfish.forEach(({ g, y }, i) => { g.position.y = y + Math.sin(t * 0.5 + i) * 4; g.rotation.y = Math.sin(t * 0.2 + i) * 0.2; }); whale.position.set(Math.sin(t * 0.045) * 220, 100 + Math.sin(t * 0.15) * 8, -radius - 95); whale.rotation.y = Math.cos(t * 0.045) > 0 ? 0 : Math.PI; });
-  ambient(TEX_SOFT, true, 8, (a, c) => a.emit(c.x + rand(-50, 50), rand(2, 15), c.z + rand(-50, 50), 0, rand(0.4, 1), 0, 8, 0.2, C('#b9f5f4'), 0, 0), true);
+
+  /* ---- 第2区間（最深部）：ハイル・ブー・アマーマの真珠貝の海床と、海面に浮かぶ真珠採りの船 ---- */
+  let opened = [];
+  {
+    // 真珠貝の海床：灰色がかった貝が岩に寄り集まる。ところどころ口を開いた貝の中に真珠
+    const shells = [], rocks = [];
+    const bed = scatter(70, at(1, 0.85), at(3, 0.15), -(W / 2 + 70), W / 2 + 70, W / 2 + 4, 0).concat(scatter(25, at(2, 0.1), at(2, 0.9), W / 2 + 70, W / 2 + 130, W / 2 + 4, 0));
+    for (const c of bed) {
+      rocks.push({ p: c.clone().add(new V3(0, 0.2, 0)), s: new V3(rand(1.2, 2.6), rand(0.5, 1), rand(1.2, 2.4)), r: [0, rand(0, 3), 0], c: C(['#8c8576', '#9a9282', '#7d786c'][(Math.random() * 3) | 0]) });
+      for (let k = 0; k < 7; k++) {
+        const a = rand(0, Math.PI * 2), r = rand(0.4, 3.2), p = c.clone().add(new V3(Math.cos(a) * r, 0, Math.sin(a) * r)); onGround(p, 0.25);
+        shells.push({ p, s: new V3(0.5, 0.17, 0.42).multiplyScalar(rand(0.8, 1.3)), r: [rand(-0.5, 0.5), rand(0, 3), rand(-0.5, 0.5)], c: C(['#8f8a90', '#a59a8a', '#7d7480', '#b0a594', '#8a8f86'][(Math.random() * 5) | 0]) });
+      }
+    }
+    addInst(SPH_LO, toon('#ffffff'), shuffle(rocks)); addInst(SPH_LO, toon('#ffffff'), shuffle(shells), false);
+    // 口を開いた真珠貝：殻の内側の真珠層と、ひと粒の真珠。ときどき口を閉じる
+    const nacre = toon('#f2e8f4', { emissive: C('#c7d9f0'), emissiveIntensity: 0.25 });
+    for (const c of shuffle(bed.slice()).slice(0, 14)) {
+      const g = fantasyGroup(onGround(c.clone().add(new V3(rand(-1, 1), 0, rand(-1, 1))), 0.2)); g.rotation.y = rand(0, Math.PI * 2); g.scale.setScalar(rand(1.1, 1.6));
+      part(g, new THREE.SphereGeometry(1, 12, 6, 0, Math.PI * 2, Math.PI / 2, Math.PI / 2), toon('#958c94'), [0, 0.3, 0], [0.9, 0.3, 0.8], null, 0.04);
+      part(g, new THREE.CircleGeometry(0.85, 14), nacre, [0, 0.31, 0], [1, 0.9, 1], [-Math.PI / 2, 0, 0], 0);
+      part(g, SPH_LO, pearlMat, [0, 0.45, 0.1], [0.17, 0.17, 0.17], null, 0);
+      const lid = new THREE.Group(); lid.position.set(0, 0.3, 0.75); g.add(lid);
+      part(lid, new THREE.SphereGeometry(1, 12, 6, 0, Math.PI * 2, 0, Math.PI / 2), toon('#857c86'), [0, 0, -0.75], [0.9, 0.28, 0.8], null, 0.04);
+      opened.push({ lid, ph: rand(0, 20) }); themeDetails.push(g); lid.userData.droneIgnore = true;
+    }
+    const sign = site('ハイル・ブー・アマーマ', at(2, 0.5), -(W / 2 + 26), 10, 8, '#d8cfae', W / 2 + 6);
+    part(sign, SPH_LO, toon('#958c94'), [0, 1, 0], [3, 1, 2.6], null, 0.04); part(sign, SPH_LO, pearlMat, [0, 2.2, 0], [1, 1, 1], null, 0);
+    signAt(sign, 'ハイル・ブー・アマーマ（真珠貝の海床）', 8, 19);
+  }
+  // 真珠採りの船（ジャールブート）：海面に浮かぶ船底を下から見上げる。長い櫂と、潜り手の綱
+  const divers = [];
+  {
+    const hullMat = toon('#7a5536'), sail = toon('#efe6d2', { side: THREE.DoubleSide, transparent: true, opacity: 0.85 });
+    const sailGeo = new THREE.BufferGeometry(); sailGeo.setAttribute('position', new THREE.Float32BufferAttribute([0, 0, 0, 9, 3, 0, -6, 13, 0], 3)); sailGeo.computeVertexNormals();
+    const ropeGeo = new THREE.CylinderGeometry(0.05, 0.05, 1, 4); ropeGeo.translate(0, 0.5, 0);
+    const stoneMat = toon('#6f6a62'), basketMat = toon('#b79a62');
+    [[0.22, 34], [0.55, 52], [0.85, 30]].forEach(([t, v], k) => {
+      const f = tp(at(2, t), W / 2 + v), boat = fantasyGroup(new V3(f.v.x, SURF - 1.2, f.v.z)); boat.rotation.y = -f.h + rand(-0.4, 0.4);
+      registerLandmark(boat, '真珠採りの船'); boat.updateMatrixWorld(true);
+      part(boat, SPH_LO, hullMat, [0, 0, 0], [12, 2.4, 3.4], null, 0.04); addBox(boat, [1.5, 1.2, 0.3], [12.5, 0.2, 0], darkTeak, [0, 0, 0.5]);
+      part(boat, CYL, darkTeak, [0, -1.7, 0], [0.25, 1.6, 0.25], null, 0);
+      addBox(boat, [17, 0.25, 0.4], [0, -2.3, 0], darkTeak);
+      // 帆柱と三角帆（ラティーンセイル）は海面の上に透けて見える
+      part(boat, CYL, darkTeak, [1, 8, 0], [0.3, 16, 0.3], null, 0); const s = new THREE.Mesh(sailGeo, sail); s.position.set(-2, 3, 0.4); boat.add(s);
+      // 長い櫂：両舷の船べりから、斜め下の海へ差し込む
+      for (let j = 0; j < 4; j++) for (const sd of [-1, 1]) part(boat, CYL, teak, [-6 + j * 4, -1.5, sd * 6.5], [0.16, 9, 0.16], [-sd * 0.95, 0, 0], 0);
+      // 潜り手：舷側から綱を下ろし、石の錘（ハジャル）で一気に沈む。貝を籠（ディーン）に集め、綱を引いて合図すると引き上げられる
+      for (const sd of [-1, 1]) {
+        const top = boat.localToWorld(new V3(sd * 2.5 - 1, -1, sd * 2.2)), floor = groundAt(top) + 0.4;
+        const d = new THREE.Group(); d.position.set(top.x, floor, top.z); d.rotation.y = rand(0, Math.PI * 2); world.add(d);
+        const body = new THREE.Group(); d.add(body);
+        part(body, new THREE.CapsuleGeometry(0.32, 0.8, 4, 8), skin, [0, 1.55, 0], null, null, 0.04); part(body, SPH_LO, skin, [0, 2.5, 0], [0.3, 0.32, 0.3], null, 0.04);
+        addBox(body, [0.7, 0.35, 0.42], [0, 1.05, 0], cloth); addBox(body, [0.12, 0.08, 0.1], [0, 2.47, 0.3], toon('#2a2522'));
+        part(body, new THREE.CylinderGeometry(0.35, 0.28, 0.5, 8, 1, true), basketMat, [0, 1.6, 0.42], null, null, 0);
+        const legs = [-1, 1].map(x => { const l = new THREE.Group(); l.position.set(x * 0.17, 0.95, 0); body.add(l); part(l, new THREE.CapsuleGeometry(0.13, 0.75, 3, 6), skin, [0, -0.5, 0], null, null, 0); return l; });
+        const arms = [-1, 1].map(x => { const a = new THREE.Group(); a.position.set(x * 0.42, 2.05, 0); body.add(a); part(a, new THREE.CapsuleGeometry(0.11, 0.7, 3, 6), skin, [0, -0.45, 0], null, null, 0); return a; });
+        const line = new THREE.Mesh(ropeGeo, rope); world.add(line);
+        const stone = new THREE.Group(); world.add(stone); part(stone, SPH_LO, stoneMat, [0, 0, 0], [0.45, 0.35, 0.4], null, 0);
+        const sLine = new THREE.Mesh(ropeGeo, rope); world.add(sLine);
+        [d, line, stone, sLine].forEach(o => { o.userData.droneIgnore = true; });
+        divers.push({ d, body, legs, arms, line, stone, sLine, top, floor, ph: rand(0, 1) + k * 0.33 + (sd > 0 ? 0.5 : 0) });
+      }
+    });
+    updates.push((t, dt) => {
+      const m = reduced.matches ? 3 : t;
+      for (const v of divers) {
+        // 一周 26 秒：沈む（0〜0.12）・貝を集める（〜0.55）・引き上げられる（〜0.7）・海面で息を整える（〜1）
+        const u = mod(m / 26 + v.ph, 1), high = SURF - 2.6;
+        let y, pose;
+        if (u < 0.12) { y = lerp(high, v.floor, THREE.MathUtils.smoothstep(u / 0.12, 0, 1)); pose = 0; }
+        else if (u < 0.55) { y = v.floor; pose = 1; }
+        else if (u < 0.7) { y = lerp(v.floor, high, THREE.MathUtils.smoothstep((u - 0.55) / 0.15, 0, 1)); pose = 2; }
+        else { y = high + Math.sin(m * 1.3 + v.ph * 9) * 0.2; pose = 3; }
+        v.d.position.y = y;
+        // 海の底では前かがみで両手を動かし、昇るときは綱を握って足をそろえる
+        v.body.rotation.x = pose === 1 ? 0.9 + Math.sin(m * 0.7 + v.ph) * 0.1 : 0;
+        v.body.position.y = pose === 1 ? -0.5 : 0;
+        v.arms.forEach((a, i) => { a.rotation.x = pose === 1 ? -1.2 + Math.sin(m * 3 + i * 2) * 0.5 : pose === 3 ? -0.3 : -2.9; a.rotation.z = (i ? -1 : 1) * (pose === 3 ? 0.3 : 0.05); });
+        v.legs.forEach((l, i) => { l.rotation.x = pose === 1 ? 1 : pose === 3 ? Math.sin(m * 2 + i * Math.PI) * 0.35 : 0; });
+        // 命綱：舷側から潜り手の手まで
+        const hand = y + (pose === 1 ? 1.4 : 2.8);
+        v.line.position.set(v.top.x, hand, v.top.z); v.line.scale.y = Math.max(0.1, v.top.y - hand);
+        // 錘の石：沈むときは足元、海の底に着くと舟の上へ引き上げられる
+        const sy = u < 0.12 ? y + 0.3 : u < 0.3 ? lerp(v.floor + 0.3, v.top.y, (u - 0.12) / 0.18) : v.top.y;
+        const sx = v.top.x + 1.2, sz = v.top.z;
+        v.stone.position.set(sx, sy, sz); v.stone.visible = sy < v.top.y - 0.2;
+        v.sLine.position.set(sx, sy, sz); v.sLine.scale.y = Math.max(0.05, v.top.y - sy); v.sLine.visible = v.stone.visible;
+        // 息の泡：海の底と昇る途中で
+        if (!reduced.matches && (pose === 1 || pose === 2) && Math.random() < dt * (lightQuality() ? 1.5 : 4)) bubble(v.d.position.x, y + 2.4, v.d.position.z, 0.3);
+      }
+      opened.forEach(({ lid, ph }) => { const u = mod((reduced.matches ? 0 : t) / 9 + ph, 1); lid.rotation.x = (u < 0.8 ? 0.85 : 0.85 * (1 - Math.sin((u - 0.8) / 0.2 * Math.PI))); });
+    });
+  }
+
+  /* ---- 第3区間：入り江のくびれの浅瀬と、ハドラ（杭と網で魚を囲い込む、バーレーンの伝統の定置漁具） ---- */
+  {
+    const g = site('ハドラ', at(3, 0.5), W / 2 + 30, 30, 36, '#d8cfae');
+    // 岸から沖へ延びる長い垣（導き垣）と、その先の矢じり形の囲い。いちばん奥の小部屋に魚がたまる
+    const pts = [[0, 17], [0, 2]], heart = [];
+    for (let i = 0; i <= 24; i++) { const a = i / 24 * Math.PI * 2, x = 16 * Math.pow(Math.sin(a), 3) * 0.6, z = -(13 * Math.cos(a) - 5 * Math.cos(2 * a) - 2 * Math.cos(3 * a)) * 0.55 - 6; heart.push([x, z]); }
+    const posts = [], nets = [], netMat = toon('#9a8f6e', { transparent: true, opacity: 0.55, side: THREE.DoubleSide, map: ctex(64, 64, c => { c.clearRect(0, 0, 64, 64); c.strokeStyle = '#ffffff'; c.lineWidth = 2; for (let k = 0; k <= 64; k += 8) { c.beginPath(); c.moveTo(k, 0); c.lineTo(k, 64); c.moveTo(0, k); c.lineTo(64, k); c.stroke(); } }, true) });
+    netMat.map.repeat.set(4, 1); netMat.alphaTest = 0.1;
+    for (const line of [pts, heart]) for (let i = 0; i < line.length - 1; i++) {
+      const [x0, z0] = line[i], [x1, z1] = line[i + 1], n = Math.max(1, Math.round(Math.hypot(x1 - x0, z1 - z0) / 1.8));
+      for (let j = 0; j < n; j++) { const p = g.localToWorld(new V3(lerp(x0, x1, j / n), 0, lerp(z0, z1, j / n))); posts.push({ p: onGround(p, 2.2), s: new V3(0.18, 4.4, 0.18) }); }
+      const a = g.localToWorld(new V3(x0, 0, z0)), b = g.localToWorld(new V3(x1, 0, z1)), mid = a.clone().lerp(b, 0.5);
+      nets.push({ p: onGround(mid, 1.8), s: new V3(a.distanceTo(b), 3.4, 0.05), r: [0, -Math.atan2(b.z - a.z, b.x - a.x), 0] });
+    }
+    addInst(CYL, toon('#6d5238'), posts); addInst(BOX, netMat, nets, false);
+    const fishC = g.localToWorld(new V3(0, 0, -12)); fishC.y = groundAt(fishC) + 1.6;
+    swirl(fishC, 14, 2.6, ['#c9d3d8', '#e2c46a', '#b7c4cc'], 0.45, 0.7);
+    signAt(g, 'ハドラ（杭と網の定置漁具）', 9, 15);
+  }
+
+  /* ---- 第4区間：パール海流。流れに乗る回遊魚の群れとアオウミガメ ---- */
+  const current = track.zones[0];
+  if (current) {
+    const n = 90, sc = school(n, ['#c6d4dc', '#9fb6c4', '#e4eef2', '#7fa3b8'], 0.55), len = current.end - current.start + 60;
+    const fish = Array.from({ length: n }, (_, i) => ({ u: rand(0, len), lane: (i % 2 ? 1 : -1) * rand(3, 9) + (i % 2 ? W : 0), y: rand(1.5, 8), w: rand(0, 6) }));
+    const turtles = [0, 1, 2].map(i => {
+      const g = fantasyGroup(); g.userData.droneIgnore = true;
+      part(g, SPH_LO, toon('#6b7a4a'), [0, 0, 0], [1.9, 0.6, 1.5], null, 0.04); part(g, SPH_LO, toon('#d9c99a'), [0, -0.2, 0], [1.7, 0.4, 1.35], null, 0);
+      part(g, SPH_LO, toon('#8d9a6a'), [2, 0.1, 0], [0.55, 0.45, 0.45], null, 0.04);
+      const fl = [-1, 1].map(sd => { const f = new THREE.Group(); f.position.set(0.8, 0, sd * 1.2); g.add(f); part(f, SPH_LO, toon('#8d9a6a'), [0.2, 0, sd * 1], [0.7, 0.12, 1.2], [0, sd * 0.5, 0], 0); return f; });
+      for (const sd of [-1, 1]) part(g, SPH_LO, toon('#8d9a6a'), [-1.6, -0.1, sd * 0.7], [0.5, 0.1, 0.35], null, 0);
+      return { g, fl, u: i / 3 * len, lane: i === 1 ? -6 : W + 6, y: 4 + i };
+    });
+    updates.push(t => {
+      const m = reduced.matches ? 0 : t, k = sc.count(), sp = current.motion * 1.2;
+      for (let i = 0; i < k; i++) {
+        const f = fish[i], s = current.start - 30 + mod(f.u + m * sp, len), p = track.pos(s, f.lane + Math.sin(m * 0.9 + f.w) * 0.6);
+        sc.set(i, new V3(p.x, p.y + f.y + Math.sin(m * 1.7 + f.w) * 0.3, p.z), -p.h);
+      }
+      sc.done();
+      turtles.forEach(o => {
+        const s = current.start - 30 + mod(o.u + m * current.motion * 0.7, len), p = track.pos(s, o.lane);
+        o.g.position.set(p.x, p.y + o.y + Math.sin(m * 0.6 + o.u) * 0.5, p.z); o.g.rotation.y = -p.h;
+        o.fl.forEach((f, i) => { f.rotation.x = Math.sin(m * 2.2) * 0.45 * (i ? 1 : -1); });
+      });
+    });
+  }
+
+  /* ---- 第4区間：ダイブ・バーレーン（2019年開園の海中テーマパーク）に沈められたジャンボ機 ---- */
+  {
+    const g = site('沈められたジャンボ機', at(4, 0.6), W / 2 + 46, 56, 48, '#d8cfae');
+    const jet = new THREE.Group(); jet.position.set(0, 3.6, 4); jet.rotation.set(0, 0.25, 0.06); g.add(jet);
+    const hull = toon('#e9ece6'), stripe = toon('#5a7fa0'), grow = toon('#ffffff');
+    // 胴体（-x が機首）と、機首の上の2階席のこぶ
+    part(jet, CYL, hull, [0, 0, 0], [3.3, 50, 3.3], [0, 0, Math.PI / 2], 0.02);
+    part(jet, SPH_LO, hull, [-25, 0, 0], [4.2, 3.3, 3.3], null, 0.02); part(jet, SPH_LO, hull, [-17, 2.6, 0], [10, 2.1, 2.4], null, 0.02);
+    part(jet, new THREE.ConeGeometry(1, 1, 10), hull, [27.5, 0.6, 0], [3, 7, 3], [0, 0, -Math.PI / 2], 0.02);
+    addBox(jet, [50, 0.6, 0.1], [0, 0.4, 3.32], stripe); addBox(jet, [50, 0.6, 0.1], [0, 0.4, -3.32], stripe);
+    for (let x = -21; x <= 22; x += 1.5) for (const z of [3.34, -3.34]) addBox(jet, [0.5, 0.6, 0.06], [x, 1.4, z], win);
+    // 後退翼と4基のエンジン、尾翼
+    for (const sd of [-1, 1]) {
+      addBox(jet, [9, 0.6, 22], [2 + 5, -1.2, sd * 13], hull, [0, sd * 0.45, 0], 0.02);
+      for (const r of [8, 15]) { part(jet, CYL, toon('#cfd3cf'), [2 + r * 0.45, -2.6, sd * r], [1.1, 4.2, 1.1], [0, 0, Math.PI / 2], 0.02); }
+      addBox(jet, [5, 0.4, 7], [24, 1, sd * 5], hull, [0, sd * 0.4, 0], 0.02);
+    }
+    addBox(jet, [7, 9, 0.5], [24.5, 5.5, 0], hull, [0, 0, -0.35], 0.02); addBox(jet, [3, 5, 0.55], [26, 6.5, 0], stripe, [0, 0, -0.35]);
+    // 胴体に付いた珊瑚と海綿、まわりに群れる魚
+    g.updateMatrixWorld(true); const growth = [];
+    for (let i = 0; i < 110; i++) { const x = rand(-24, 24), a = rand(-1.3, 1.3); growth.push({ p: jet.localToWorld(new V3(x, Math.cos(a) * 3.25, Math.sin(a) * 3.25)), s: new V3(1, 0.6, 1).multiplyScalar(rand(0.2, 0.45)), c: C(['#c97a8e', '#d9a066', '#9a86c2', '#6fae84', '#b08a6a'][i % 5]) }); }
+    addInst(SPH_LO, grow, growth, false);
+    swirl(g.localToWorld(new V3(-6, 9, 4)), 26, 7, ['#f2d24e', '#e9eef0', '#5fa8d8'], 0.55, 0.35);
+    signAt(g, 'ダイブ・バーレーンの沈められたジャンボ機', 17, 20);
+  }
+
+  /* ---- 第5区間：海草の藻場とジュゴン（バーレーンの海は世界有数のジュゴンの生息地） ---- */
+  const dugongs = [];
+  {
+    const blades = [], bladeMat = seaSway(toon('#ffffff'), 0.5);
+    const meadow = scatter(46, at(4, 0.9), at(6, 0.2), -(W / 2 + 60), -(W / 2 + 5), W / 2 + 3, 0).concat(scatter(34, at(5, 0), at(5, 1), W / 2 + 6, W / 2 + 70, W / 2 + 3, 0))
+      .concat(scatter(40, 0, track.L, -(W / 2 + 90), W / 2 + 110, W / 2 + 4, 0));
+    for (const c of meadow) for (let k = 0; k < 30; k++) {
+      const a = rand(0, Math.PI * 2), r = Math.sqrt(Math.random()) * 3.6, p = onGround(c.clone().add(new V3(Math.cos(a) * r, 0, Math.sin(a) * r))), h = rand(1, 2.4);
+      if (!clearAt(p.x, p.z, W / 2 + 2)) continue;
+      blades.push({ p: p.add(new V3(0, h / 2, 0)), s: new V3(0.22, h, 0.05), r: [0, rand(0, 3), 0], c: C(['#3f7a3e', '#557f3a', '#2f6a40', '#6b8a45'][(Math.random() * 4) | 0]) });
+    }
+    addInst(BOX, bladeMat, shuffle(blades), false);
+    // ジュゴン：藻場の上をゆっくり進み、鼻先を下げて海草を食む
+    const grey = toon('#9a8f86'), belly = toon('#c2b6a8');
+    for (let i = 0; i < 3; i++) {
+      const c = onGround(local(at(5, 0.25 + i * 0.25), 0, i === 1 ? W / 2 + 26 : -(W / 2 + 28))), g = fantasyGroup(); g.userData.droneIgnore = true;
+      part(g, SPH_LO, grey, [0, 0, 0], [2.6, 0.95, 1.05], null, 0.04); part(g, SPH_LO, belly, [0, -0.35, 0], [2.3, 0.6, 0.9], null, 0);
+      part(g, SPH_LO, grey, [2.5, -0.25, 0], [0.75, 0.6, 0.65], [0, 0, -0.5], 0.04);
+      const fluke = new THREE.Group(); fluke.position.set(-2.4, 0, 0); g.add(fluke); addBox(fluke, [1, 0.15, 2.6], [-0.5, 0, 0], grey);
+      for (const sd of [-1, 1]) part(g, SPH_LO, grey, [1.2, -0.5, sd * 0.9], [0.55, 0.12, 0.3], [0, sd * 0.6, 0], 0);
+      dugongs.push({ g, fluke, c, r: 6 + i * 2, ph: i * 2.1 });
+      if (i) themeDetails.push(g);
+    }
+    const sign = site('ジュゴンの藻場', at(5, 0.15), -(W / 2 + 16), 6, 6, '#d8cfae', W / 2 + 6);
+    signAt(sign, 'ジュゴンの藻場（海草の草原）', 6, 14);
+    updates.push(t => {
+      const m = reduced.matches ? 0 : t;
+      dugongs.forEach(({ g, fluke, c, r, ph }) => {
+        const a = m * 0.06 + ph, x = c.x + Math.cos(a) * r, z = c.z + Math.sin(a) * r;
+        g.position.set(x, track.groundH(x, z) + 1.6 + Math.sin(m * 0.5 + ph) * 0.15, z); g.rotation.set(0, -a - Math.PI / 2, -0.25);
+        fluke.rotation.z = Math.sin(m * 1.4 + ph) * 0.3;
+      });
+    });
+  }
+
+  /* ---- 第5区間：沈められた真珠商人の家（ダイブ・バーレーンに沈めた、伝統の家のレプリカ） ---- */
+  {
+    const g = site('沈められた真珠商人の家', at(5, 0.6), W / 2 + 30, 18, 16, '#d8cfae');
+    const house = new THREE.Group(); house.rotation.z = 0.04; g.add(house);
+    addBox(house, [14, 9, 11], [0, 4.5, 0], coralStone2, null, 0.02);
+    addBox(house, [14.4, 0.6, 11.4], [0, 9.2, 0], coralStone);
+    for (let x = -6.5; x <= 6.5; x += 1.3) addBox(house, [0.5, 0.9, 0.5], [x, 9.9, -5.5], coralStone);
+    // 風の塔（バードギール）：四方に縦長の開口がある塔で、夏の風を家の中へ落とす
+    addBox(house, [3.6, 7, 3.6], [4, 12.5, 2], coralStone);
+    for (const [x, z, ry] of [[4, 0.15, 0], [4, 3.85, 0], [2.15, 2, Math.PI / 2], [5.85, 2, Math.PI / 2]]) for (const dx of [-0.8, 0, 0.8]) { const o = new THREE.Vector3(dx, 0, 0).applyAxisAngle(new V3(0, 1, 0), ry); addBox(house, [0.35, 4.5, 0.1], [x + o.x, 13, z + o.z], win, [0, ry, 0]); }
+    addBox(house, [2.6, 4, 0.2], [0, 2, -5.55], darkTeak); addBox(house, [12, 1.4, 0.3], [0, 6.2, -5.6], teak);
+    for (const x of [-4.5, 4.5]) addBox(house, [1.4, 2.2, 0.1], [x, 6.4, -5.7], win);
+    g.updateMatrixWorld(true); const growth = [];
+    for (let i = 0; i < 80; i++) growth.push({ p: house.localToWorld(new V3(rand(-7, 7), rand(0.3, 9.4), (Math.random() < 0.5 ? -1 : 1) * 5.55)), s: new V3(1, 1, 0.5).multiplyScalar(rand(0.18, 0.4)), c: C(['#c97a8e', '#d9a066', '#9a86c2', '#6fae84'][i % 4]) });
+    addInst(SPH_LO, toon('#ffffff'), growth, false);
+    swirl(g.localToWorld(new V3(0, 6, -9)), 16, 4, ['#f4a259', '#fff1d0', '#e94f37'], 0.4, 0.6);
+    signAt(g, 'ダイブ・バーレーンの沈められた真珠商人の家', 21, 20);
+  }
+
+  /* ---- 第6区間と沿道：ファシュト・アル＝アズムの珊瑚礁（脳珊瑚・テーブル珊瑚・枝珊瑚・ウミウチワ・イソギンチャク） ---- */
+  const anemoneFish = [];
+  {
+    const brainTex = ctex(128, 128, c => {
+      c.fillStyle = '#f4ecdc'; c.fillRect(0, 0, 128, 128); c.strokeStyle = 'rgba(110,80,40,.5)'; c.lineWidth = 3;
+      for (let k = 0; k < 18; k++) { c.beginPath(); let x = rand(0, 128), y = rand(0, 128); c.moveTo(x, y); for (let j = 0; j < 8; j++) { x += rand(-14, 14); y += rand(-14, 14); c.lineTo(x, y); } c.stroke(); }
+    }, true);
+    const brains = [], tables = [], stalks = [], branches = [], fans = [], urchins = [];
+    const reef = (p, k) => {
+      const kind = k % 4, sc = rand(0.8, 1.4);
+      if (kind === 0) brains.push({ p: onGround(p.clone(), 0.2), s: new V3(2, 1.3, 2).multiplyScalar(sc), r: [0, rand(0, 3), 0], c: C(['#e0b070', '#d39a5e', '#b48ac8'][k % 3]) });
+      else if (kind === 1) { const y = groundAt(p); stalks.push({ p: new V3(p.x, y + 1, p.z), s: new V3(0.4, 2, 0.4) }); tables.push({ p: new V3(p.x, y + 2.1, p.z), s: new V3(3, 0.35, 3).multiplyScalar(sc), c: C(['#7fae8a', '#a990d8', '#e8a070'][k % 3]) }); }
+      else if (kind === 2) { const y = groundAt(p), c = C(['#ff7aa8', '#b07aea', '#ff9a5a', '#ff5f7e'][k % 4]); for (let j = 0; j < 5; j++) { const h = rand(2, 4.5) * sc; branches.push({ p: new V3(p.x + rand(-0.8, 0.8), y + h / 2, p.z + rand(-0.8, 0.8)), s: new V3(0.35, h, 0.35), r: [rand(-0.5, 0.5), 0, rand(-0.5, 0.5)], c }); } }
+      else fans.push({ p: onGround(p.clone(), 1.8 * sc), s: new V3(3.2, 3.6, 1).multiplyScalar(sc), r: [0, rand(0, 3), 0], c: C(['#c25a7c', '#e07a4f', '#9c5ab8'][k % 3]) });
+    };
+    // 珊瑚礁の本体は第6区間の外、ほかは沿道にまばらに
+    const g = site('ファシュト・アル＝アズムの珊瑚礁', at(6, 0.45), W / 2 + 22, 12, 10, '#d8cfae');
+    scatter(70, at(6, 0), at(6, 1), W / 2 + 6, W / 2 + 70, W / 2 + 4, 1.5).forEach((p, k) => reef(p, k));
+    scatter(26, at(6, 0.1), at(6, 0.9), -(W / 2 + 40), -(W / 2 + 6), W / 2 + 4, 1.5).forEach((p, k) => reef(p, k + 1));
+    scatter(90, 0, track.L, W / 2 + 8, W / 2 + 120, W / 2 + 5, 1.5).forEach((p, k) => reef(p, k + 2));
+    addInst(SPH_LO, toon('#ffffff', { map: brainTex }), shuffle(brains)); addInst(CYL, toon('#a99c84'), shuffle(stalks)); addInst(new THREE.CylinderGeometry(1, 0.85, 1, 12), toon('#ffffff'), shuffle(tables));
+    addInst(new THREE.CylinderGeometry(0.5, 1, 1, 7), toon('#ffffff'), shuffle(branches));
+    // ウミウチワ：網目の扇。水に合わせて揺れる
+    const fanTex = ctex(128, 128, c => {
+      c.clearRect(0, 0, 128, 128); c.strokeStyle = '#ffffff'; c.lineWidth = 2.5;
+      for (let k = 0; k < 14; k++) { const a = -Math.PI * 0.95 + k / 13 * Math.PI * 0.9; c.beginPath(); c.moveTo(64, 128); c.quadraticCurveTo(64 + Math.cos(a) * 30, 128 + Math.sin(a) * 60, 64 + Math.cos(a) * 62, 128 + Math.sin(a) * 124); c.stroke(); }
+      for (let r = 20; r < 128; r += 11) { c.beginPath(); c.arc(64, 128, r, Math.PI, Math.PI * 2); c.stroke(); }
+    });
+    const fanMat = seaSway(toon('#ffffff', { map: fanTex, transparent: true, alphaTest: 0.3, side: THREE.DoubleSide }), 0.35);
+    addInst(new THREE.PlaneGeometry(1, 1), fanMat, shuffle(fans), false);
+    // ウニとナマコ、ヒトデ（沿道と内馬場の砂の上）
+    for (const p of scatter(80, 0, track.L, -(W / 2 + 90), W / 2 + 90, W / 2 + 3, 0)) urchins.push({ p: onGround(p, 0.3), s: new V3(0.45, 0.4, 0.45), r: [rand(0, 3), rand(0, 3), 0], c: C(['#3b2a4a', '#2b2b3a', '#5a2f3e'][(Math.random() * 3) | 0]) });
+    addInst(new THREE.OctahedronGeometry(1, 0), toon('#ffffff'), urchins, false);
+    const star = new THREE.Shape(); for (let i = 0; i < 10; i++) { const a = i / 10 * Math.PI * 2, r = i % 2 ? 0.4 : 1; star[i ? 'lineTo' : 'moveTo'](Math.cos(a) * r, Math.sin(a) * r); }
+    const starGeo = new THREE.ExtrudeGeometry(star, { depth: 0.18, bevelEnabled: false }); starGeo.rotateX(-Math.PI / 2);
+    addInst(starGeo, toon('#ffffff'), scatter(130, 0, track.L, -(W / 2 + 100), W / 2 + 100, W / 2 + 2.5, 0).map(p => ({ p: onGround(p, 0.05), s: new V3(1, 1, 1).multiplyScalar(rand(0.4, 0.75)), r: [0, rand(0, 3), 0], c: C(['#f07a3a', '#e8483e', '#f3b13c', '#4f7fd0', '#c45bb0'][(Math.random() * 5) | 0]) })), false);
+    addInst(new THREE.CapsuleGeometry(0.3, 1, 3, 8), toon('#ffffff'), scatter(45, 0, track.L, -(W / 2 + 80), W / 2 + 80, W / 2 + 3, 0).map(p => ({ p: onGround(p, 0.28), s: new V3(1, 1, 1), r: [Math.PI / 2, 0, rand(0, 3)], c: C(['#6b4a35', '#3e3229', '#8a6a42'][(Math.random() * 3) | 0]) })), false);
+    // イソギンチャクと、クマノミ（湾にすむクラウンアネモネフィッシュの仲間）
+    const tentacles = [], discs = [], tentMat = seaSway(toon('#ffffff'), 0.35, -0.5, 1, 1.8);
+    const anemones = [g.localToWorld(new V3(-3, 0, 0)), g.localToWorld(new V3(3, 0, 1))].concat(scatter(10, at(6, 0), at(0, 0.5), W / 2 + 6, W / 2 + 30, W / 2 + 4, 2));
+    anemones.forEach((c, i) => {
+      onGround(c); const col = C(['#f39ab8', '#b8e07a', '#ffd38a', '#c6a0f0'][i % 4]);
+      discs.push({ p: c.clone().add(new V3(0, 0.3, 0)), s: new V3(1.3, 0.6, 1.3), c: C('#a0605a') });
+      for (let k = 0; k < 26; k++) { const a = rand(0, Math.PI * 2), r = rand(0, 1.2), h = rand(0.9, 1.5); tentacles.push({ p: c.clone().add(new V3(Math.cos(a) * r, 0.5 + h / 2, Math.sin(a) * r)), s: new V3(0.12, h, 0.12), r: [Math.sin(a) * r * 0.4, 0, -Math.cos(a) * r * 0.4], c: col }); }
+      if (i < 6) anemoneFish.push({ c: c.clone().add(new V3(0, 1.5, 0)), ph: rand(0, 6) });
+    });
+    addInst(CYL, toon('#ffffff'), discs, false); addInst(new THREE.CylinderGeometry(0.4, 1, 1, 5), tentMat, shuffle(tentacles), false);
+    // クマノミ：橙の胴に白い帯が2本。2匹ずつ、イソギンチャクのすぐ上を出たり入ったり
+    const bands = ctex(16, 64, c => { c.fillStyle = '#f0782c'; c.fillRect(0, 0, 16, 64); c.fillStyle = '#2a1a14'; for (const y of [19, 27, 37, 45]) c.fillRect(0, y, 16, 2); c.fillStyle = '#fff7ee'; for (const y of [21, 39]) c.fillRect(0, y, 16, 6); c.fillStyle = '#2a1a14'; c.fillRect(0, 0, 16, 4); }, false);
+    const clown = school(anemoneFish.length * 2, ['#ffffff'], 0.36, bands);
+    updates.push(t => {
+      const m = reduced.matches ? 0 : t;
+      anemoneFish.forEach(({ c, ph }, i) => {
+        for (let j = 0; j < 2; j++) {
+          const a = m * 0.9 + ph + j * Math.PI, r = 0.7 + Math.sin(m * 0.7 + ph + j) * 0.4;
+          clown.set(i * 2 + j, new V3(c.x + Math.cos(a) * r, c.y + Math.sin(m * 1.3 + j) * 0.3, c.z + Math.sin(a) * r), -a - Math.PI / 2);
+        }
+      });
+      clown.done();
+    });
+    signAt(g, 'ファシュト・アル＝アズムの珊瑚礁', 10, 16);
+  }
+
+  /* ---- 内馬場：パール記念の大真珠貝（ゴールで口を開く、ファンタジーの演出） ---- */
+  let lidG, bigPearl, pearlGlow;
+  {
+    let c = local(at(0, 0.4), 0, -(W / 2 + 64));
+    for (let k = 0; k < 10 && (!clearAt(c.x, c.z, W / 2 + 18, 16) || c.distanceTo(boardPos) < 34); k++) c = local(at(0, 0.4 + k * 0.04), 0, -(W / 2 + 64 + k * 3));
+    occupied.push({ x: c.x, z: c.z, r: 18 });
+    const g = registerLandmark(fantasyGroup(onGround(c.clone())), 'パール記念の大真珠貝');
+    // 殻：成長線の同心円と放射状の筋
+    const shellTex = ctex(256, 256, cx => {
+      cx.fillStyle = '#8b7e8c'; cx.fillRect(0, 0, 256, 256);
+      for (let r = 12; r < 190; r += 10) { cx.strokeStyle = r % 20 ? 'rgba(60,45,70,.35)' : 'rgba(220,205,225,.35)'; cx.lineWidth = 4; cx.beginPath(); cx.arc(128, 256, r * 1.4, Math.PI, Math.PI * 2); cx.stroke(); }
+      for (let k = 0; k < 22; k++) { const a = Math.PI + k / 21 * Math.PI; cx.strokeStyle = 'rgba(255,255,255,.12)'; cx.lineWidth = 3; cx.beginPath(); cx.moveTo(128, 256); cx.lineTo(128 + Math.cos(a) * 260, 256 + Math.sin(a) * 260); cx.stroke(); }
+    });
+    const shell = toon('#ffffff', { map: shellTex }), nacre = toon('#f3eaf6', { emissive: C('#bcd6ef'), emissiveIntensity: 0.35, side: THREE.DoubleSide });
+    part(g, new THREE.CylinderGeometry(15, 17, 1.6, 28), toon('#d8cfae'), [0, 0.3, 0], null, null, 0);
+    part(g, new THREE.SphereGeometry(1, 28, 10, 0, Math.PI * 2, Math.PI / 2, Math.PI / 2), shell, [0, 3.6, 0], [12, 3.4, 10.5], null, 0.03);
+    part(g, new THREE.CircleGeometry(1, 28), nacre, [0, 3.62, 0], [11.4, 10, 1], [-Math.PI / 2, 0, 0], 0);
+    bigPearl = part(g, new THREE.SphereGeometry(1, 28, 18), new THREE.MeshStandardMaterial({ color: C('#fff7fb'), roughness: 0.18, metalness: 0.25, emissive: C('#f6e7ff'), emissiveIntensity: 0.25 }), [0, 5.4, -1], [2.6, 2.6, 2.6], null, 0);
+    // 上の殻は奥の蝶番で開く
+    lidG = new THREE.Group(); lidG.position.set(0, 3.6, 10.2); g.add(lidG);
+    part(lidG, new THREE.SphereGeometry(1, 28, 10, 0, Math.PI * 2, 0, Math.PI / 2), shell, [0, 0, -10.2], [12, 3.2, 10.5], null, 0.03);
+    part(lidG, new THREE.CircleGeometry(1, 28), nacre, [0, -0.02, -10.2], [11.4, 10, 1], [Math.PI / 2, 0, 0], 0);
+    pearlGlow = bigPearl.material;
+    // 足元の砂紋とヒトデ、まわりを回る小魚
+    swirl(new V3(c.x, groundAt(c) + 9, c.z), 34, 17, ['#ffe08a', '#ff9fb2', '#a8e6ff', '#ffffff'], 0.5, 0.3);
+    signAt(g, 'パール記念の大真珠貝', 20, 13);
+    [lidG, bigPearl].forEach(o => { o.userData.droneIgnore = true; });
+  }
+
+  /* ---- 外洋：ゆっくり回るトビエイとクジラ、漂うクラゲ ---- */
+  const rays = [];
+  {
+    const top = toon('#33405a'), spot = toon('#e9eef5');
+    for (let i = 0; i < 4; i++) {
+      const g = fantasyGroup(); g.userData.droneIgnore = true;
+      part(g, SPH_LO, top, [0, 0, 0], [1.4, 0.45, 0.9], null, 0.04); part(g, SPH_LO, top, [1.4, 0, 0], [0.6, 0.35, 0.5], null, 0);
+      part(g, CYL, top, [-4, 0, 0], [0.06, 6, 0.06], [0, 0, Math.PI / 2], 0);
+      const wings = [-1, 1].map(sd => { const w = new THREE.Group(); w.position.z = sd * 0.6; g.add(w); part(w, SPH_LO, top, [-0.2, 0, sd * 2.4], [1.3, 0.12, 2.6], [0, sd * 0.35, 0], 0.04); for (let j = 0; j < 4; j++) part(w, SPH_LO, spot, [-0.2 + rand(-0.6, 0.6), 0.1, sd * rand(1, 3.4)], [0.18, 0.05, 0.18], null, 0); return w; });
+      rays.push({ g, wings, r: 60 + i * 26, y: 22 + i * 7, ph: i * 1.6, sp: 0.07 - i * 0.008 });
+      if (i > 1) themeDetails.push(g);
+    }
+    const jellyfish = [];
+    for (let i = 0; i < 12; i++) {
+      const a = i / 12 * Math.PI * 2, g = fantasyGroup(new V3(Math.cos(a) * (radius - 60), 32 + i % 3 * 16, Math.sin(a) * (radius - 60)));
+      part(g, new THREE.SphereGeometry(1, 14, 8, 0, Math.PI * 2, 0, Math.PI / 2), toon(i % 2 ? '#b1dfee' : '#e4bdea', { transparent: true, opacity: 0.7, depthWrite: false, emissive: C(i % 2 ? '#4fa9c9' : '#a46fb5'), emissiveIntensity: 0.35 }), [0, 0, 0], [3.6, 2.6, 3.6], null, 0);
+      for (let j = 0; j < 6; j++) part(g, new THREE.CylinderGeometry(0.08, 0.04, 6, 4), toon('#d2d0eb', { transparent: true, opacity: 0.7 }), [Math.cos(j) * 1.6, -3, Math.sin(j) * 1.6], null, null, 0);
+      g.userData.droneIgnore = true; jellyfish.push({ g, y: g.position.y }); if (i % 2) themeDetails.push(g);
+    }
+    // クジラ（湾にもすむニタリクジラ）：海面近くをゆっくり横切る
+    const whale = fantasyGroup(), blue = toon('#5b7f95'), pale = toon('#c9d8d6');
+    part(whale, SPH_LO, blue, [0, 0, 0], [26, 7, 7]); part(whale, SPH_LO, pale, [2, -3, 0], [22, 4, 6]);
+    for (let k = 0; k < 7; k++) addBox(whale, [16, 0.25, 0.5], [8, -5.3, -3 + k], toon('#a8b8b6'));
+    const tail = new THREE.Group(); tail.position.set(-25, 0, 0); whale.add(tail); part(tail, SPH_LO, blue, [-5, 0, 0], [6, 0.8, 8], null, 0.04);
+    for (const s of [-1, 1]) { part(whale, SPH_LO, blue, [8, -4, s * 7], [7, 1.2, 4], [s * 0.4, 0, 0], 0.04); part(whale, SPH_LO, toon('#1f2f3a'), [17, 0.5, s * 5.5], [0.7, 0.7, 0.7], null, 0); }
+    whale.userData.droneIgnore = true;
+    updates.push(t => {
+      const m = reduced.matches ? 0 : t;
+      rays.forEach(({ g, wings, r, y, ph, sp }) => {
+        const a = m * sp + ph; g.position.set(Math.cos(a) * r, y + Math.sin(a * 2) * 3, Math.sin(a) * r * 0.8); g.rotation.set(0, -a - Math.PI / 2, -0.15);
+        wings.forEach((w, k) => { w.rotation.x = Math.sin(m * 1.1 + ph) * 0.35 * (k ? -1 : 1); });
+      });
+      jellyfish.forEach(({ g, y }, i) => { const pulse = Math.sin(m * 1.4 + i); g.position.y = y + Math.sin(m * 0.4 + i) * 4; g.scale.set(1 + pulse * 0.08, 1 - pulse * 0.1, 1 + pulse * 0.08); });
+      whale.position.set(Math.sin(m * 0.035) * (radius + 40), SURF - 22 + Math.sin(m * 0.15) * 3, -radius + 60); whale.rotation.y = Math.cos(m * 0.035) > 0 ? 0 : Math.PI;
+      tail.rotation.z = Math.sin(m * 0.8) * 0.25;
+    });
+  }
+
+  // 海の底から昇る細かな泡。ゴールの瞬間は大真珠貝が口を開き、真珠色の光と泡があふれる
+  ambient(TEX_SOFT, true, 9, (a, c) => a.emit(c.x + rand(-50, 50), c.y + rand(-14, 4), c.z + rand(-50, 50), rand(-0.1, 0.1), rand(0.6, 1.4), rand(-0.1, 0.1), 9, rand(0.15, 0.3), C('#c9f7f6'), 0, 0), true);
+  const finish = tp(track.finishS, W / 2).v; let celebration = 0, open = 0;
+  themeFinish = () => { celebration = 7; }; themeReset = () => { celebration = 0; open = 0; };
+  const burstCols = ['#fff4fb', '#f6d9ff', '#cdf6ff', '#ffe9c4'].map(c => C(c).multiplyScalar(2));
+  updates.push((t, dt) => {
+    SEA_U.time.value = reduced.matches ? 0 : t;
+    celebration = Math.max(0, celebration - dt);
+    // 大真珠貝：ふだんはゆっくり息をするように開閉し、ゴールでは大きく開いて真珠が輝く
+    const target = celebration ? 1.05 : 0.28 + Math.sin((reduced.matches ? 0 : t) * 0.35) * 0.1;
+    open += (target - open) * Math.min(1, dt * 2);
+    lidG.rotation.x = open; pearlGlow.emissiveIntensity = 0.25 + Math.max(0, open - 0.4) * 1.6;
+    bigPearl.position.y = 5.4 + Math.max(0, open - 0.4) * 3;
+    if (celebration > 3.5) {
+      const n = reduced.matches ? 1 : lightQuality() ? 3 : 6, p = bigPearl.getWorldPosition(new V3());
+      for (let i = 0; i < n; i++) {
+        sparkP.emit(finish.x + rand(-W / 2, W / 2), finish.y + rand(2, 9), finish.z + rand(-W / 2, W / 2), rand(-1.5, 1.5), rand(1, 3), rand(-1.5, 1.5), rand(1.4, 2.4), rand(0.4, 0.9), burstCols[i % burstCols.length], -0.6, 0.8);
+        bubble(finish.x + rand(-W / 2, W / 2), finish.y + rand(0, 2), finish.z + rand(-W / 2, W / 2), rand(0.3, 0.6));
+        sparkP.emit(p.x + rand(-2, 2), p.y + rand(0, 2), p.z + rand(-2, 2), rand(-2, 2), rand(2, 5), rand(-2, 2), rand(1.5, 2.5), rand(0.5, 1), burstCols[i % burstCols.length], -0.3, 0.6);
+      }
+    }
+  });
+  themeUpd.push((t, dt) => { for (const f of updates) f(t, dt); });
+}
+function decorPearlOceanStand(stand, len, z0, roof) {
+  const g = new THREE.Group(); stand.add(g); registerLandmark(g, 'pearlOcean-stand');
+  roof.visible = false;
+  // ムハッラクの真珠商人の家：珊瑚石としっくいの壁、チーク材の柱
+  const recolor = { [C('#f2eef8').getHex()]: '#e8dcc0', [C('#e3dcef').getHex()]: '#d6c6a2', [C('#d9d3e6').getHex()]: '#7a5536' };
+  stand.children.forEach(o => { if (o.isMesh && !o.isInstancedMesh && o.material.color && recolor[o.material.color.getHex()]) o.material.color.set(recolor[o.material.color.getHex()]); });
+  const stone = toon('#e3d5b5'), teak = toon('#7a5536'), dark = toon('#2d3b40');
+  // 平らな屋根と、三角の飾り（シャラファート）を並べた胸壁
+  addBox(g, [len + 6, 0.8, 22], [0, 13.4, z0 + 8.5], stone, null, 0.02);
+  addBox(g, [len + 6, 1.2, 0.6], [0, 14.4, z0 - 2.2], stone);
+  const tri = new THREE.ExtrudeGeometry(new THREE.Shape([new THREE.Vector2(-0.5, 0), new THREE.Vector2(0.5, 0), new THREE.Vector2(0, 1)]), { depth: 0.4, bevelEnabled: false });
+  const crest = []; for (let x = -len / 2 - 2.5; x <= len / 2 + 2.5; x += 1.4) crest.push({ p: new V3(x, 15, z0 - 2.4), s: new V3(0.9, 1.1, 1) });
+  g.add(inst(tri, stone, crest, false));
+  // 透かし彫りの木の格子窓（マシュラビーヤ）の帯
+  const lattice = ctex(128, 64, c => { c.fillStyle = '#7a5536'; c.fillRect(0, 0, 128, 64); c.fillStyle = '#2d3b40'; for (let y = 4; y < 64; y += 10) for (let x = (y / 10 % 2) * 5 + 2; x < 128; x += 10) c.fillRect(x, y, 6, 6); }, true);
+  lattice.repeat.set(len / 8, 1);
+  addBox(g, [len + 4, 1.6, 0.3], [0, 12.4, z0 - 2], toon('#ffffff', { map: lattice }));
+  // 風の塔（バードギール）：屋根の上に5本
+  for (let i = 0; i < 5; i++) {
+    const x = -len / 2 + (i + 0.5) * len / 5, z = z0 + 12;
+    addBox(g, [4, 9, 4], [x, 18.3, z], stone, null, 0.02);
+    // 四方の面に縦長の開口を3つずつ
+    for (let k = -1; k <= 1; k++) for (const sd of [-1, 1]) { addBox(g, [0.45, 5, 0.1], [x + k, 19, z + sd * 2.02], dark); addBox(g, [0.1, 5, 0.45], [x + sd * 2.02, 19, z + k], dark); }
+    addBox(g, [4.6, 0.6, 4.6], [x, 23, z], teak);
+  }
+  // 軒先の真珠の首飾り：柱の間に真珠の粒を連ねて垂らす
+  const pearls = [];
+  for (let x = -len / 2; x < len / 2; x += len / 5) for (let k = 0; k <= 24; k++) { const u = k / 24, px = x + u * len / 5; pearls.push({ p: new V3(px, 11.6 - Math.sin(u * Math.PI) * 2.2, z0 - 2.4), s: new V3(0.32, 0.32, 0.32) }); }
+  g.add(inst(SPH_LO, toon('#fff4fa', { emissive: C('#d9c6e0'), emissiveIntensity: 0.4 }), pearls, false));
 }
 /* ---- ゼンマイ王国：スイス・ジュラ山地の時計の町（ラ・ショー＝ド＝フォン／ル・ロックル）を下敷きにした沿道 ---- */
 // 見立て：向正面の外（北）に碁盤目の時計の町、東の搬送路の外に時計職人の工房、西の歯車シケインにジャケ＝ドローのからくり人形。
@@ -6360,6 +6886,7 @@ function decorLandmarkStand(stand, len, z0, roof, sc0) {
   if (theme === 'boxHill') return decorBoxHillStand(stand, len, z0, roof);
   if (theme === 'clockwork') return decorClockworkStand(stand, len, z0, roof);
   if (theme === 'skyGarden') return decorSkyGardenStand(stand, len, z0, roof);
+  if (theme === 'pearlOcean') return decorPearlOceanStand(stand, len, z0, roof);
   if (!['sapporo', 'niigata', 'tokyo', 'nakayama', 'kyoto', 'hanshin', 'chukyo', 'longchamp', 'churchill'].includes(theme)) return;
   const g = new THREE.Group(); stand.add(g); registerLandmark(g, theme + '-stand');
   const cream = theme === 'longchamp' ? null : toon('#eee8d8'), glass = theme === 'churchill' ? null : toon('#7ca6b9');
@@ -6658,7 +7185,7 @@ function decorRacecourseLandmarks() {
     for (let z = 4; z <= 116; z += 16) { addBox(jr, [1, 8, 1], [0, 4, z], steel, null, 0); for (const x of [-3.6, 3.6]) addBox(jr, [0.3, 4, 0.3], [x, 10.5, z], steel, null, 0); }
     addBox(jr, [90, 1.4, 8], [0, 0.7, 128], toon('#c9c3b5'), null, 0); addBox(jr, [90, 0.5, 9], [0, 6, 128], toon('#8c969c'), null, 0);
     addBox(jr, [16, 12, 10], [0, 6, 120], toon('#eee8d8'), null, 0);
-    for (const z of [134, 138]) addBox(jr, [200, 0.25, 0.3], [0, 0.4, z], toon('#5d5a57'), null, 0);
+    for (const z of [134, 138]) addBox(jr, [160, 0.25, 0.3], [0, 0.4, z], toon('#5d5a57'), null, 0);
     const train = new THREE.Group(); train.position.set(0, 0.5, 136); jr.add(train);
     const silver = toon('#d3d8dc'), orange = toon('#e8742c'), pane = toon('#3f4b55');
     for (let i = 0; i < 4; i++) {
@@ -6668,7 +7195,86 @@ function decorRacecourseLandmarks() {
     }
     // 駅に止まってから線路の端まで行って戻ってくる
     train.userData.droneIgnore = true;
-    themeUpd.push(t => { const c = (t * 0.05) % 2, u = c < 1 ? c : 2 - c; train.position.x = 60 * (2 * THREE.MathUtils.smootherstep(u, 0.15, 0.85) - 1); });
+    themeUpd.push(t => { const c = (t * 0.05) % 2, u = c < 1 ? c : 2 - c; train.position.x = 40 * (2 * THREE.MathUtils.smootherstep(u, 0.15, 0.85) - 1); });
+    // ここから下の配置は直線上の位置s（ゲーム内の長さ、ゴールは約263）と外側のレーンで決める。スタンドはs=24〜274、
+    // メモリアル60スタンドが4コーナー寄り（東門側）、フジビュースタンドがゴール寄り。スタンドの裏（北側）に府中の街が広がる
+    const grp = (name, s, lane) => landmarkGroup(name, (s - track.homeS0) / (track.homeS1 - track.homeS0), lane);
+    const white = toon('#f4f2ea'), cream = toon('#eee8d8'), glassM = toon('#7ca6b9'), roofGray = toon('#8c969c');
+    const label = (g, text, w, pos, rotY = 0, bg = '#2f4f7a') => {
+      const tex = ctex(512, 96, c => { c.fillStyle = bg; c.fillRect(0, 0, 512, 96); c.fillStyle = '#ffffff'; c.font = '800 54px "Zen Maru Gothic", sans-serif'; c.textAlign = 'center'; c.textBaseline = 'middle'; c.fillText(text, 256, 50); });
+      const m = new THREE.Mesh(new THREE.PlaneGeometry(w, w * 96 / 512), new THREE.MeshBasicMaterial({ map: tex, side: THREE.DoubleSide })); m.position.set(...pos); m.rotation.y = rotY; g.add(m);
+    };
+    // 正門：けやき並木の突き当たり。門柱と大きな庇、「東京競馬場」の看板（トキノミノル像は門を入ってすぐ右）
+    const gate = grp('正門', 174, W + 128);
+    for (const x of [-14, -5, 5, 14]) addBox(gate, [1.6, 8, 1.6], [x, 4, 0], cream, null, 0.03);
+    addBox(gate, [36, 1, 9], [0, 8.4, 0], white, null, 0.03); addBox(gate, [30, 2, 0.4], [0, 10, 4.2], toon('#2f4f7a'), null, 0);
+    label(gate, '東京競馬場', 28, [0, 10, 4.45]);
+    // 京王線 府中競馬正門前駅：正門の先にある競馬場線の終着駅（位置関係はデフォルメ）。駅と正門は3階分の高さを渡る専用歩道橋で結ばれる
+    const kx = -64, kz = 72, dx = kx + 8 - (-6), dz = kz - 8 - 6, wl = Math.hypot(dx, dz);
+    addBox(gate, [wl, 0.9, 6], [(-6 + kx + 8) / 2, 7, (6 + kz - 8) / 2], toon('#d9d4c8'), [0, Math.atan2(-dz, dx), 0], 0);
+    for (let i = 1; i < 5; i++) addBox(gate, [1, 7, 1], [-6 + dx * i / 5, 3.5, 6 + dz * i / 5], toon('#9aa3a8'), null, 0);
+    addBox(gate, [60, 1.4, 9], [kx, 0.7, kz], toon('#c9c3b5'), null, 0); addBox(gate, [60, 0.5, 10], [kx, 6, kz], roofGray, null, 0);
+    addBox(gate, [14, 13, 10], [kx + 8, 6.5, kz - 9], cream, null, 0.02); label(gate, '府中競馬正門前', 13, [kx + 8, 10.5, kz - 14.05], Math.PI, '#c8006e');
+    for (const z of [kz + 6, kz + 10]) addBox(gate, [150, 0.25, 0.3], [kx - 45, 0.4, z], toon('#5d5a57'), null, 0);
+    const keio = new THREE.Group(); keio.position.set(kx, 0.5, kz + 8); gate.add(keio); keio.userData.droneIgnore = true;
+    const kWhite = toon('#eef0f2'), kRed = toon('#d4006f'), kBlue = toon('#1f3a8f');
+    for (let i = 0; i < 4; i++) {
+      const x = (i - 1.5) * 15;
+      addBox(keio, [14.5, 3.6, 3.2], [x, 2.2, 0], kWhite, null, 0.03);
+      for (const z of [-1.62, 1.62]) { addBox(keio, [14.6, 0.3, 0.1], [x, 1.45, z], kRed, null, 0); addBox(keio, [14.6, 0.3, 0.1], [x, 1.1, z], kBlue, null, 0); for (let j = 0; j < 3; j++) addBox(keio, [2.6, 1.2, 0.1], [x - 4.5 + j * 4.5, 2.9, z], pane, null, 0); }
+    }
+    // 終着駅に止まってから、線路の先（東府中方面）へ出て戻ってくる
+    themeUpd.push(t => { const c = (t * 0.045 + 0.4) % 2, u = c < 1 ? c : 2 - c; keio.position.x = kx - 70 * THREE.MathUtils.smootherstep(u, 0.2, 0.8); });
+    // JRA競馬博物館：東門の近く、メモリアル60スタンドの裏。アーチ窓の並ぶ2階建てと玄関の列柱、隣にミニ新幹線が回る広場
+    const mu = grp('JRA競馬博物館', 40, W + 100); landmarkFoundation(mu, 64, 34, '#d8d2c4');
+    addBox(mu, [34, 11, 20], [-10, 5.5, 2], toon('#efe2c8'), null, 0.02); addBox(mu, [36, 1, 22], [-10, 11.5, 2], toon('#9a6a4f'), null, 0.02);
+    for (let i = 0; i < 6; i++) for (const y of [3, 8]) addBox(mu, [2.6, 3, 0.2], [-23 + i * 5.2, y, -8.1], glassM, null, 0);
+    for (const x of [-15, -10, -5]) part(mu, new THREE.CylinderGeometry(0.6, 0.6, 7, 10), white, [x, 3.5, -11], null, null, 0);
+    addBox(mu, [14, 0.8, 5], [-10, 7.4, -10.5], white, null, 0.02);
+    landmarkHorse(mu, [-10, 12, 2], 'gallop', '#7a6a4a', 0.9);
+    label(mu, 'JRA競馬博物館', 16, [-10, 9.4, -8.25], Math.PI, '#5b3b2a');
+    const loopRx = 11, loopRz = 7.5;
+    { const pts = []; for (let i = 0; i < 48; i++) { const a = i / 48 * Math.PI * 2; pts.push(new V3(18 + Math.cos(a) * loopRx, 0.25, Math.sin(a) * loopRz)); }
+      mu.add(new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts, true), 96, 0.15, 4, true), toon('#6d6a66'))); }
+    const mini = [];
+    for (let i = 0; i < 3; i++) {
+      const c = new THREE.Group(); mu.add(c); mini.push(c); c.userData.droneIgnore = true;
+      addBox(c, [3, 1.1, 1.1], [0, 0.9, 0], toon('#f5f5f2'), null, 0.03); addBox(c, [3.02, 0.3, 1.12], [0, 0.65, 0], toon('#2b6cb0'), null, 0);
+    }
+    part(mini[0], CONE, toon('#f5f5f2'), [2.1, 0.9, 0], [0.55, 1.4, 0.55], [0, 0, -Math.PI / 2], 0.03);
+    themeUpd.push(t => mini.forEach((c, i) => { const a = t * 0.5 - i * 0.3; c.position.set(18 + Math.cos(a) * loopRx, 0, Math.sin(a) * loopRz); c.rotation.y = -Math.atan2(Math.cos(a) * loopRz, -Math.sin(a) * loopRx); }));
+    // 日吉が丘：東門を入ってすぐの芝生の丘。海賊船ダービー号の遊具と、馬シャ馬シャパークの噴水
+    const hill = grp('日吉が丘', -35, W + 92); landmarkFoundation(hill, 60, 44, '#8fc46a');
+    part(hill, new THREE.SphereGeometry(1, 24, 10, 0, Math.PI * 2, 0, Math.PI / 2), toon('#86c062'), [-8, 0, 4], [22, 5, 16], null, 0);
+    { const ship = new THREE.Group(); ship.position.set(-8, 5, 4); ship.rotation.y = 0.4; hill.add(ship);
+      const wood = toon('#8a5a3a');
+      addBox(ship, [14, 3, 5], [0, 1.5, 0], wood, null, 0.03); addBox(ship, [4, 2.2, 5.2], [-6, 3.6, 0], wood, null, 0.03); part(ship, CONE, wood, [8, 1.5, 0], [1.8, 3.5, 1.8], [0, 0, -Math.PI / 2], 0.03);
+      part(ship, new THREE.CylinderGeometry(0.3, 0.35, 11, 6), toon('#5a3e2b'), [1, 7.5, 0], null, null, 0);
+      addBox(ship, [0.2, 5, 6], [1.3, 8.5, 0], white, null, 0.02); addBox(ship, [0.15, 1.6, 2.4], [1, 13.6, 0], toon('#222831'), null, 0); }
+    part(hill, new THREE.CylinderGeometry(6, 6.5, 0.8, 32), toon('#ddd3bf'), [18, 0.4, -10], null, null, 0);
+    part(hill, new THREE.CircleGeometry(5.4, 32), toon('#6bbdcf', { polygonOffset: true, polygonOffsetFactor: -1, polygonOffsetUnits: -1 }), [18, 0.82, -10], null, [-Math.PI / 2, 0, 0], 0);
+    { const jets = new THREE.Group(); hill.add(jets); themeDetails.push(jets);
+      for (let i = 0; i < 8; i++) { const a = i / 8 * Math.PI * 2, d = new V3(Math.cos(a), 0, Math.sin(a));
+        jets.add(new THREE.Mesh(new THREE.TubeGeometry(new THREE.QuadraticBezierCurve3(new V3(18, 0.9, -10), new V3(18 + d.x * 1.5, 5, -10 + d.z * 1.5), new V3(18 + d.x * 3.5, 0.9, -10 + d.z * 3.5)), 10, 0.1, 4), toon('#a7e5ed'))); } }
+    // けやき並木を行き来する馬車（乗馬センターの馬車）
+    const cart = new THREE.Group(), road = grp('けやき並木の馬車', 174, W + 150); road.add(cart); cart.userData.droneIgnore = true;
+    { const h = landmarkHorse(cart, [0, 0, 6.5], 'walk', '#7a4a2a', 0.75); h.rotation.y = -Math.PI / 2; h.children[0].visible = false; }
+    addBox(cart, [3.6, 2.4, 5], [0, 2.2, 0], toon('#f2efe6'), null, 0.03); addBox(cart, [4, 0.4, 5.6], [0, 3.6, 0], toon('#3d5a40'), null, 0.02);
+    for (const x of [-1.9, 1.9]) for (const z of [-1.6, 1.6]) part(cart, new THREE.CylinderGeometry(0.9, 0.9, 0.25, 12), toon('#5a3e2b'), [x, 0.9, z], null, [0, 0, Math.PI / 2], 0);
+    themeUpd.push(t => { const c = (t * 0.03) % 2, u = c < 1 ? c : 2 - c; cart.position.z = 6 + 96 * THREE.MathUtils.smootherstep(u, 0.05, 0.95); cart.rotation.y = c < 1 ? 0 : Math.PI; });
+    // 乗馬センター：並木と府中本町側の線路の間。砂の馬場と厩舎
+    const rc = grp('乗馬センター', 226, W + 236); landmarkFoundation(rc, 52, 34, '#cfc6b0');
+    addBox(rc, [30, 0.2, 22], [-8, 0.1, 0], toon('#d8c49a'), null, 0);
+    for (const [x, z, w, d] of [[-8, -11, 30, 0.2], [-8, 11, 30, 0.2], [-23, 0, 0.2, 22], [7, 0, 0.2, 22]]) addBox(rc, [w, 0.2, d], [x, 1.1, z], white, null, 0);
+    addBox(rc, [12, 5, 22], [18, 2.5, 0], toon('#e8e2d4'), null, 0.02); addBox(rc, [13, 0.8, 23], [18, 5.4, 0], toon('#6b3d33'), null, 0);
+    landmarkHorse(rc, [-8, 0.2, 0], 'walk', '#8a5a3a', 1.1);
+    // 大國魂神社：けやき並木（馬場大門のケヤキ並木）の先にある府中の総社。鳥居と拝殿
+    const jinja = grp('大國魂神社', 174, W + 266); landmarkFoundation(jinja, 44, 40, '#c9c3b5');
+    const sumi = toon('#3d3a36');
+    for (const x of [-4.5, 4.5]) part(jinja, new THREE.CylinderGeometry(0.55, 0.6, 9, 10), sumi, [x, 4.5, -14], null, null, 0);
+    addBox(jinja, [13, 0.9, 1.2], [0, 9.2, -14], sumi, null, 0.02); addBox(jinja, [10.5, 0.6, 0.8], [0, 7.6, -14], sumi, null, 0);
+    addBox(jinja, [18, 5, 10], [0, 2.5, 6], toon('#a8402e'), null, 0.02);
+    for (const sx of [-1, 1]) addBox(jinja, [20, 0.7, 7.5], [0, 6.6, 6 + sx * 3], toon('#4a4f55'), [sx * 0.55, 0, 0], 0.02);
   }
   if (theme === 'nakayama') {
     // 配置は公式の場内マップとOpenStreetMap・衛星写真に合わせる（座標は実寸m、nakayamaAtの直線基準）。スタンドの裏はすぐ県道（松戸原木線）で、
@@ -6888,12 +7494,35 @@ function decorTokyo(th) {
   const infield = Array.from({ length: 18 }, () => { const q = tp(Math.random() * track.L, -rand(26, Math.max(30, track.R - 14))); q.v.y = track.groundH(q.v.x, q.v.z); return { p: q.v }; })
     .filter(it => it.p.distanceTo(boardPos) > 26 && it.p.distanceTo(gardenPos) > 38);
   // スタンドの裏（パドック・トキノミノル像・連絡通路）には木を置かない
-  const behind = p => { for (let s = track.homeS0; s <= track.homeS1 + 40; s += 4) { const q = track.pos(s, W + 120); if ((q.x - p.x) ** 2 + (q.z - p.z) ** 2 < 70 ** 2) return true; } return false; };
+  const behind = p => { for (let s = track.homeS0 - 80; s <= track.homeS1 + 40; s += 4) { const q = track.pos(s, W + 120); if ((q.x - p.x) ** 2 + (q.z - p.z) ** 2 < 70 ** 2) return true; } return false; };
   roundTrees([...treeSpots(110, 0).filter(it => !behind(it.p)), ...infield], ['#3f8f3a', '#4fa546', '#5fb853', '#377d34']);
   // けやき並木：正門の先へまっすぐ延びる2列の大きなケヤキ（府中の馬場大門のケヤキ並木をイメージ）
   { const avenue = [];
     for (let k = 0; k < 9; k++) for (const ds of [-9, 9]) { const q = tp(lerp(track.homeS0, track.homeS1, 0.62) + ds, W + 150 + k * 14); q.v.y = track.groundH(q.v.x, q.v.z); avenue.push({ p: q.v, s: rand(1.9, 2.3) }); }
-    roundTrees(avenue, ['#3a7f36', '#4a9442', '#5aa54c'], '#5a3e2b'); }
+    roundTrees(avenue, ['#3a7f36', '#4a9442', '#5aa54c'], '#5a3e2b');
+    // 大國魂神社の鎮守の森（社殿の左右と奥）
+    const forest = [];
+    for (let i = 0; i < 16; i++) { const q = tp(174 + (i % 2 ? 1 : -1) * rand(24, 40), W + 250 + rand(0, 40)); q.v.y = track.groundH(q.v.x, q.v.z); forest.push({ p: q.v, s: rand(1.6, 2.2) }); }
+    roundTrees(forest, ['#2f6e2c', '#3a7f36', '#4a9442'], '#5a3e2b'); }
+  // 府中の街並み：スタンドの裏（北側）に広がる低層〜中層のビル。正門・駅・並木・乗馬センター・JRの線路の周りは空ける
+  { const keep = [[150, 198, 0, W + 320], [-15, 180, 0, W + 222], [195, 257, W + 210, W + 262], [195, 365, 0, W + 208]];
+    const blocks = [], cols = ['#e7e2d8', '#d9d4ca', '#cfd6dc', '#ece6da', '#c9c2b6', '#dfe6e8'].map(C);
+    for (let s = -90; s <= 340; s += 15) for (let lane = W + 200; lane <= W + 330; lane += 17) {
+      if (Math.random() < 0.25 || keep.some(([s0, s1, l0, l1]) => s >= s0 && s <= s1 && lane >= l0 && lane <= l1)) continue;
+      const q = tp(s + rand(-2, 2), lane + rand(-2, 2)), w = rand(9, 13), d = rand(9, 13), h = rand(5, 18) + (lane > W + 280 ? rand(0, 10) : 0);
+      blocks.push({ p: new V3(q.v.x, h / 2, q.v.z), s: new V3(w, h, d), r: [0, -q.h, 0], c: cols[(Math.random() * cols.length) | 0] });
+    }
+    // 府中駅前の高層ビル（並木の西側、街並みの奥）
+    for (const [s, lane, h] of [[96, W + 318, 52], [118, W + 330, 40]]) { const q = tp(s, lane); blocks.push({ p: new V3(q.v.x, h / 2, q.v.z), s: new V3(16, h, 16), r: [0, -q.h, 0], c: C('#bfc9d1') }); }
+    inst(BOX, toon('#ffffff'), blocks); }
+  // 多摩川：向正面の向こう（南側）を流れる川。水面と河川敷、川を渡る橋
+  { const mid = track.segStart[2] + track.segs[2].len2 / 2, P = track.pos(mid, W + 200), d = new V3(Math.cos(P.h), 0, Math.sin(P.h));
+    const river = decorPath([new V3(P.x - d.x * 700, 0, P.z - d.z * 700), new V3(P.x + d.x * 700, 0, P.z + d.z * 700)]);
+    decorCourseLane(river, 'turf', 0, river.L, { lanes: [W / 2 - 34, W / 2 + 34], cols: 2, step: 20, onGround: true, lift: 0.12, mat: toon('#b9cf8f', { side: THREE.DoubleSide }) });
+    decorCourseLane(river, 'water', 0, river.L, { lanes: [W / 2 - 16, W / 2 + 16], cols: 2, step: 20, onGround: true, lift: 0.2, mat: toon('#6fa9c9', { side: THREE.DoubleSide }) });
+    const b = new THREE.Group(); b.position.set(P.x + d.x * 160, 0, P.z + d.z * 160); b.rotation.y = -P.h; world.add(b);
+    addBox(b, [9, 1, 84], [0, 5, 0], toon('#c9c6bd'), null, 0.02);
+    for (const z of [-24, -8, 8, 24]) addBox(b, [6, 5, 2], [0, 2.5, z], toon('#a9a59b'), null, 0); }
   // 芝の内側のダートコース（飾り）。内柵を挟んで並走し、1周は約1/2縮尺で実物の1899mに近い
   decorCourseLane(track, 'dirt', 0, track.L, { lanes: [-3.5, -14.5], onGround: true });
   decorInnerRail(-15.3, th.rail);
@@ -10254,8 +10883,8 @@ const COURSE_CALLS = {
     straight: ['最後の直線！火口の舞台で燃える追い比べ！{L}、追う{B}！{BAND}'],
     finish: ['{RESULT}{M}、1着！竜の舞台で勝利の炎をともしました！'] },
   'pearlOcean:turf': {
-    intro: ['珊瑚の舞台に夢がきらめく！海底の栄光を目指せ！', '海流と起伏の海底決戦！真珠のような勝利は誰に！'],
-    straight: ['最後の直線！海底の夢をゴールへ！{L}、追う{B}！{BAND}'],
+    intro: ['珊瑚の舞台に夢がきらめく！海底の栄光を目指せ！', '海流と起伏の海底決戦！真珠のような勝利は誰に！', '真珠採りの海の底へ！ブー・マーヒル砦の脇から、真珠貝の海床と珊瑚礁を巡る一周です！'],
+    straight: ['最後の直線！海底の夢をゴールへ！{L}、追う{B}！{BAND}', '真珠商人の家並みのスタンドへ帰ってきた！最後の直線、{L}、追う{B}！{BAND}'],
     finish: ['{RESULT}{M}、1着！海底の舞台で真珠のような勝利！'] },
   'clockwork:dirt': {
     intro: ['歯車の王国、勝負の時計が動き出す！', '回廊とシケインの舞台！ぴたりと合う走りを見せるのは誰か！', '時計の町の搬送路からスタート！カリヨン、大時計台、からくり人形の前を巡るゼンマイ王国の一周です！'],
