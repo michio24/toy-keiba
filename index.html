@@ -1106,8 +1106,40 @@ const TRACKS = [
     desc: 'ラップランドの雪原をひと回りする雪1300m、高低差10m。深雪の上りはパワーで速度が変化し、サーミの焚き火で体力を回復。トナカイ橇の下りで加速・消耗を軽減し、凍った湖の氷上は器用な馬ほど速い。足元が重く、パワーとスタミナのある馬が有利。',
     grad: 'linear-gradient(135deg,#0a1d3f,#3cd6a0 55%,#c9b6ff)' },
   { name: '夕陽デザート記念', theme: 'dune', surf: 'sand', D: 1300, S: 240, R: 70, time: '夕暮れ',
-    desc: '灼熱の砂の長距離戦。スタミナが尽きた馬から脱落していくサバイバル。',
+    // モロッコのサハラ砂漠の入口をひと回りする：カスバのスタンドのホーム直線から、アイット・ベン・ハドゥの前を回ってシェビ砂丘の大砂丘を上り、
+    // 砂丘のてっぺん（高さ12m）のベルベルのキャンプから滑り下りて、オアシスのヤシ林、カスバの路地のS字、リッサニのスークを抜ける
+    segs: fantasyLoop(240, [[375, 90, 75, 75], [365, 255, 110, 60], [225, 350, 175, 70], [50, 330, 200, 70], [-50, 230, 250, 55], [-135, 125, 235, 50], [-95, 25, 320, 55], [0, 0, 0, 55]]), finish: [0, 215], elevEx: 1.5,
+    elev: [[0, 0, 0], [1, 0.7, 0], [2, 0.08, 0.5], [2, 0.95, 10], [3, 0.3, 12], [3, 0.85, 12], [4, 0.1, 11], [4, 0.92, 1.5], [5, 0.3, 0], [8, 1, 0]],
+    zones: [{ seg: 2, from: 0.1, to: 0.9, name: '大砂丘の上り', color: '#ffb26b', speed: 0.97, power: 0.004, motion: 2 },
+      { seg: 3, from: 0.25, to: 0.8, name: 'ベルベルのテント', color: '#7fe0a0', speed: 0.99, recover: 2, motion: 2 },
+      { seg: 4, from: 0.1, to: 0.9, name: '砂丘の滑り下り', color: '#ffe27a', speed: 1.06, drain: -0.12, motion: 9 },
+      { seg: 6, from: 0.15, to: 0.85, name: 'カスバの路地', color: '#ff8a6a', speed: 1.02, agility: 0.004, motion: 4 }],
+    // 先頭馬が通過したときの地点実況（コース上の距離。発走はアイット・ベン・ハドゥの前、コース上の約369m地点）
+    placeCalls: [[405, 'アイット・ベン・ハドゥの土の城塞を背に、砂の大地へ！先頭は{L}！'], [480, 'シェビ砂丘の大砂丘を上る！ラクダのキャラバンと並んで先頭は{L}、2番手{B}！'],
+      [660, '砂丘のてっぺん、ベルベルのテントの前！ミントティーでひと息つけるか、先頭は{L}！'], [800, '大砂丘を一気に滑り下りる！サンドボードと並んで先頭は{L}、追う{B}！'],
+      [985, 'オアシスのヤシ林へ！「トンブクトゥまで52日」の道しるべを過ぎて先頭は{L}！'], [1105, 'カスバの門をくぐって路地のS字！右へ左へ切り返して先頭は{L}、2番手{B}！'],
+      [1260, 'リッサニのスークの屋台の間を駆け抜ける！先頭は{L}！'], [1385, 'グナワの太鼓が鳴り響く中、夕陽のホーム直線へ！先頭は{L}！']],
+    motif: 'モロッコのサハラ砂漠の入口（世界遺産「アイット－ベン－ハドゥの集落」）', motifNote: 'アトラス山脈の南、ワルザザートからメルズーガのシェビ砂丘へ、土の城（カスバ）が点々と続く道を、夕陽の砂漠をひと回りするコースに見立てました。土を突き固めた壁に模様を刻んだカスバのスタンドから、オウニラ川の涸れ川の向こうの丘に土の家が重なるアイット・ベン・ハドゥの集落（クサル）の前で発走。多くの映画の舞台になった集落を撮る撮影隊を横目に、ヤシの葉の砂よけの柵が並ぶ斜面をラクダのキャラバンとともにシェビ砂丘の大砂丘へ上る。てっぺんにはハイマ（毛織りの天幕）を張ったベルベルの砂漠キャンプがあり、大砂丘の稜線をキャラバンが影絵になって行き、滑り面をサンドボードが滑り降りる。砂丘の陰のフェネックを過ぎて下ると、ナツメヤシのオアシスに畑と水路、地下水路ハッターラの縦穴、井戸、アルガンの木に登るヤギ、ザゴラの「トンブクトゥまで52日」の道しるべ。走路をまたぐカスバの門をくぐって土の壁の路地をS字に切り返し、タウリルトのカスバを過ぎて、香辛料の山とタジン鍋が並ぶリッサニのスーク（ロバの駐車場と水売り）、ハムリアのグナワの楽団の太鼓を聞きながら最後の直線へ。内馬場はフラミンゴの来るダヤト・スルジの湖で、遠くには雪をいただくアトラス山脈、空には熱気球。名所の位置・距離・地形はゲーム用のアレンジで、名所がひとつの砂漠に並ぶ配置、走路をまたぐカスバの門、内馬場の夕陽の大砂時計とゴールで舞い上がる光の砂はファンタジーの演出です。',
+    desc: '夕陽のサハラをひと回りする砂1300m、高低差12m。大砂丘の上りはパワーで速度が変化し、ベルベルのテントで体力を回復。砂丘の滑り下りで加速・消耗を軽減し、カスバの路地のS字は器用な馬ほど速い。足元の砂は重く、最後はスタミナの残った馬が抜け出すサバイバル。',
     grad: 'linear-gradient(135deg,#3b1d5e,#ff7a3a 55%,#ffd27a)' },
+  { name: 'お菓子の国カップ', theme: 'candy', surf: 'dirt', surfaceLook: 'biscuit', D: 1200, S: 210, R: 50, kick: 0.8, time: '昼',
+    // ジンジャーブレッドの町トルンをお菓子の国に見立てて一周する：ジンジャーブレッドの家並みのスタンドから、チョコレートのヴィスワ川のほとりを回って
+    // ケーキの丘を上り、頂（高さ6m）のジンジャーブレッドの工房と騎士団の城を過ぎて、旧市街の路地のS字を抜け、シュガーダッシュの坂を大聖堂の前へ下る
+    segs: fantasyLoop(210, [[300, 90, 90, 60], [255, 215, 135, 50], [150, 275, 180, 45], [55, 225, 200, 35], [-35, 270, 165, 35], [-125, 190, 270, 55], [-75, 55, 315, 45], [0, 0, 0, 50]]), finish: [0, 185], elevEx: 1.5,
+    elev: [[0, 0, 0], [1, 0.6, 0], [2, 0.08, 0.4], [2, 0.95, 5], [3, 0.5, 6], [4, 0.4, 6], [5, 0.5, 5.5], [6, 0.08, 5], [6, 0.92, 0.6], [7, 0.5, 0], [8, 1, 0]],
+    zones: [{ seg: 2, from: 0.1, to: 0.9, name: '生クリームの上り', color: '#ffd1e6', speed: 0.97, power: 0.004, motion: 2 },
+      { seg: 3, from: 0.2, to: 0.85, name: 'ジンジャーブレッドの工房', color: '#f0a860', speed: 0.99, recover: 2, motion: 2 },
+      { seg: 4, from: 0.1, to: 1, name: '旧市街の路地', color: '#9fe0ff', speed: 1.02, agility: 0.004, motion: 4 },
+      { seg: 6, from: 0.1, to: 0.9, name: 'シュガーダッシュ', color: '#ff87be', speed: 1.06, drain: -0.12, motion: 9 }],
+    // 先頭馬が通過したときの地点実況（コース上の距離。発走はジンジャーブレッドのスタンドの先、コース上の約200m地点）
+    placeCalls: [[285, 'チョコレートのヴィスワ川のほとりへ！鉄のアーチ橋を遊覧船がくぐる中、先頭は{L}！'], [425, '生クリームの上り！いちごのショートケーキの丘を見上げて、先頭は{L}、2番手{B}！'],
+      [545, 'いちばん高いところ、ジンジャーブレッドの工房！焼きたてのカタジンカの香りでひと息つけるか、先頭は{L}！'], [640, '旧市街の路地へ！パステルの家並みと斜塔の間を右へ左へ、先頭は{L}、追う{B}！'],
+      [790, 'コペルニクスの家の前を通過！船乗りの門を横目に先頭は{L}！'], [850, 'キャンディケインの門をくぐってシュガーダッシュ！甘い坂を一気に駆け下りる、先頭は{L}！'],
+      [925, 'キャンディの森！グミのくまが手を振る中、先頭は{L}、2番手{B}！'], [1000, '筏師の噴水の前を通過！カエルたちが水を吹いて見送る、先頭は{L}！'],
+      [1045, '聖ヨハネ大聖堂、大きな鐘トゥバ・デイの下を駆け抜ける！先頭は{L}、追う{B}！'], [1170, 'ジンジャーブレッドの博物館を回って最後の直線へ！先頭は{L}！']],
+    motif: 'ポーランドのジンジャーブレッドの町トルン（世界遺産「中世都市トルン」）', motifNote: '中世のハンザ都市の町並みが残るポーランドのトルンは、中世から続くジンジャーブレッド（ピェルニク）の町として知られます。ゴシックのれんがの町並みをジンジャーブレッドの家に、ヴィスワ川を溶けたチョコレートの川に見立てて、お菓子の国をひと回りするコースにしました。ジンジャーブレッドの家並みのスタンドの先で発走し、川岸の穀物倉と、川へ下りる橋の門（ブラマ・モストヴァ）の前を回る。チョコレートの川にはアーチを連ねた鉄の橋（ピウスツキ橋）が架かり、遊覧船が行き交う。生クリームの上りでいちごのショートケーキの丘を見上げ、いちばん高いところには、6つの円をつないだトルン名物のカタジンカを木の焼き型で焼くジンジャーブレッドの工房と、ドイツ騎士団の城跡、アーチの回廊の先に張り出した塔ダンスカー。旧市街の路地では、パステルの家並みと城壁の斜塔（クシヴァ・ヴィエジャ）、船乗りの門の間を右へ左へ切り返し、1473年にコペルニクスが生まれたゴシックの家の前を抜ける。キャンディケインの門をくぐってシュガーダッシュの坂を下り、大きな鐘トゥバ・デイの聖ヨハネ大聖堂と、バイオリンでカエルを町から連れ出したという伝説の筏師の噴水（フリサク）、ロバの像を過ぎて、ジンジャーブレッドの工場の建物を生かした博物館の前から最後の直線へ。内馬場は旧市街の広場で、旧市庁舎の前にコペルニクス像が立ち、ジンジャーブレッドマンが行進する。名所の位置・距離・地形はゲーム用のアレンジで、チョコレートの川、ケーキの丘、キャンディの森、お菓子の汽車、巨大カタジンカはファンタジーの演出です。',
+    desc: 'ジンジャーブレッドの町トルンをお菓子の国に見立てて一周するダート1200m、高低差6m。生クリームの上りはパワーで速度が変化し、頂のジンジャーブレッドの工房で体力を回復。旧市街の路地のS字は器用な馬ほど速く、シュガーダッシュの下りで加速・消耗を軽減。くびれたクッキー形でカーブがきつく、小回りからの立ち上がりが勝負。',
+    grad: 'linear-gradient(135deg,#ffb4da,#fff0bd 55%,#bdeee9)' },
   // ---- 実在の競馬場モチーフ（公式平面図をもとに中心線を近似。距離約1/2、坂は視覚的に誇張） ----
   // curve: absolute cubic Bézier controls/end in metres; z is mirrored for left-handed courses.
   { name: '府中ダービーコース', kick: 1.25, real: true, theme: 'tokyo', surf: 'turf', dir: 'left', D: 1200, time: '左回り', scale: 0.5, stand: 'big',
@@ -1258,12 +1290,6 @@ const TRACKS = [
     motif: 'ペルー・アンデスの天空都市マチュ・ピチュ', motifNote: '尾根の上に築かれたインカの都市を、雲海に浮かぶ島に見立てたコースです。石垣と芝が交互に重なる段々畑（アンデネス）の観覧席から、見張り小屋の段々畑と、弧を描く切石の太陽の神殿（トレオン）の脇を回る。神殿の脇の16の水汲み場の水路は浮島の縁から滝になって落ちる。虹橋を上り切った最高地点で、インカ道の終点の太陽の門インティプンクをくぐり、三つの窓の神殿と主神殿、段を重ねた丘の上のインティワタナを見ながら下る。コンドルの神殿と、背後の山の稜線をなぞる聖なる岩を過ぎてホーム直線へ。内馬場は中央広場で、リャマとアルパカが草を食む。周りの小島は草の綱の吊り橋ケスワチャカで結ばれ、雲海からワイナ・ピチュ、雪のサルカンタイ、虹の山ビニクンカがそびえる。名所の位置・距離・地形はゲーム用のアレンジで、浮島・虹橋・ペガサスはファンタジーの演出です。',
     desc: '雲海に浮かぶ天空都市を巡る三角形の大回り。高さ12mの虹橋へ上り、太陽の門をくぐって追い風で加速してから大きく下る。坂を越えるスタミナと末脚が鍵。',
     grad: 'linear-gradient(135deg,#69baff,#fff1fc 55%,#a5dfad)' },
-  { name: 'お菓子の国カップ', theme: 'candy', surf: 'dirt', surfaceLook: 'biscuit', D: 800, S: 160, R: 45, kick: 0.7, time: '昼',
-    segs: fantasyLoop(160, [[235, 95, 120, 55], [110, 160, 90, 45], [45, 285, 180, 55], [-95, 200, 270, 65], [-65, 80, 290, 50], [0, 0, 0, 30]]), finish: [0, 135], elevEx: 1.5,
-    elev: [[0, 0, 0], [1, 1, 0], [2, 1, 1], [3, 0.5, 3], [4, 0.3, 1], [5, 0.5, 0], [6, 1, 0]],
-    zones: [{ seg: 0, from: 0.12, to: 0.8, name: 'シュガーダッシュ', color: '#ff87be', speed: 1.04, recover: 3.5, motion: 5 }],
-    desc: 'くびれたジンジャークッキー形のダート。ケーキの丘を越え、ゴール前の砂糖区間で加速・スタミナ回復！ 小回りからの立ち上がりが勝負。',
-    grad: 'linear-gradient(135deg,#ffb4da,#fff0bd 55%,#bdeee9)' },
   { name: '月光きのこ森ステークス', theme: 'moonForest', surf: 'turf', D: 1100, S: 170, R: 50, kick: 0.9, time: '夜', night: true,
     segs: fantasyLoop(170, [[255, 95, 135, 65], [105, 180, 90, 40], [40, 285, 180, 60], [-75, 290, 230, 70], [-65, 115, 270, 50], [0, 0, 0, 55]]), finish: [0, 145], elevEx: 1.5,
     elev: [[0, 0, 0], [1, 1, 1], [2, 0.4, 3], [3, 1, 1], [4, 0.5, 5], [5, 1, 0], [6, 1, 0]],
@@ -1383,9 +1409,9 @@ const THEMES = {
   churchill: { sky: ['#3a4f9a', '#ffb27a', '#c29a6a'], sun: [-0.6, 0.12, -0.8], sunCol: '#ffb070', sunSize: 300, light: [-0.6, 0.42, -0.7],
     fog: ['#e9a77e', 280, 1400], hemi: ['#c9cff0', '#a28a60', 0.62], dir: ['#ffc08a', 1.6], exposure: 0.92, bloom: [0.7, 0.55, 1.3], stars: 0,
     rail: '#ffffff', railGlow: 0, ground: 'grass', dust: '#b98a6a', mount: '#8a7fa8' },
-  dune: { sky: ['#3a1f66', '#ff7a3a', '#ffcf7a'], sun: [0.25, 0.06, -1], sunCol: '#ffcf8a', sunSize: 260, light: [0.35, 0.45, -1],
-    fog: ['#f7955e', 220, 1150], hemi: ['#ffc9a0', '#c88a4c', 0.68], dir: ['#ffb070', 1.6], exposure: 0.92, bloom: [0.7, 0.55, 1.4], stars: 0,
-    rail: '#fff0d8', railGlow: 0, ground: 'sand', dust: '#e6bb7c' },
+  dune: { sky: ['#3a1f66', '#ff7a3a', '#ffcf7a'], sun: [0.2, 0.06, 1], sunCol: '#ffcf8a', sunSize: 260, light: [0.3, 0.45, 1],
+    fog: ['#f7955e', 260, 1300], hemi: ['#ffc9a0', '#c88a4c', 0.68], dir: ['#ffb070', 1.6], exposure: 0.92, bloom: [0.7, 0.55, 1.4], stars: 0,
+    rail: '#fff0d8', railGlow: 0, ground: 'erg', dust: '#e6bb7c' },
 };
 
 THEMES.hanshin = { ...THEMES.tokyo, sky: ['#458bdf', '#ffe1ed', '#92c882'], mount: '#91a9be' };
@@ -1397,7 +1423,7 @@ THEMES.meydan = { sky: ['#07122f', '#273760', '#79664e'], sun: [0.3, 0.35, -0.8]
   exposure: 1.0, bloom: [0.65, 0.5, 1.2], stars: 1, rail: '#f6ead4', railGlow: 0, ground: 'sand', dust: '#deb883' };
 THEMES.shatin = { ...THEMES.tokyo, sky: ['#468fba', '#d8e4d3', '#88b186'], fog: ['#c5d7c4', 400, 1600], mount: '#59856b' };
 THEMES.skyGarden = { ...THEMES.sakura, sky: ['#479fea', '#e6efff', '#cbdcff'], fog: ['#dceaff', 380, 1500], rail: '#f6dcff', dust: '#c4edb2', ground: 'grass' };
-THEMES.candy = { ...THEMES.sakura, sky: ['#72ccec', '#ffdeed', '#fff0cf'], ground: 'biscuit', rail: '#ff7aa8', dust: '#edc68c', fog: ['#ffe5d8', 320, 1200] };
+THEMES.candy = { ...THEMES.sakura, sky: ['#72ccec', '#ffdeed', '#fff0cf'], ground: 'sugarMeadow', rail: '#ff7aa8', dust: '#edc68c', fog: ['#ffe5d8', 320, 1200] };
 THEMES.moonForest = { ...THEMES.neon, sky: ['#070f2c', '#384365', '#192d38'], ground: 'grass', sunCol: '#ceeaff', sun: [0.2, 0.55, -0.8], sunSize: 1800,
   hemi: ['#b4d8ef', '#42595a', 0.85], dir: ['#d0e3ff', 1.1], fog: ['#32445e', 240, 1100], rail: '#b8f2df', railGlow: 0.7, dust: '#9fceb1', bloom: [0.55, 0.5, 1.5] };
 // ブロモ山の夜明け：紫の空から朝焼けの地平へ。カルデラの外の雲海とかすみで遠くが淡くなる
@@ -3048,10 +3074,23 @@ function buildWorld(ti) {
       for (let y = 0; y < 256; y += 12) { g.strokeStyle = `rgba(255,255,255,${rand(0.25, 0.5)})`; g.lineWidth = rand(2, 4); g.beginPath(); for (let x = 0; x <= 256; x += 8) g.lineTo(x, y + Math.sin(x * 0.045 + y) * 4); g.stroke(); }
       speck(g, 256, 256, 1400, ['#bccde3', '#dbe6f3', '#b2c4dc'], 1, 3, 0.8); speck(g, 256, 256, 40, ['#6f6a62', '#5d6b5a'], 0.6, 1.4, 0.6);
     },
+    // お菓子の国の草原：ミントの芝に、色とりどりのスプリンクルと粉砂糖
+    sugarMeadow: g => {
+      g.fillStyle = '#9fd9a8'; g.fillRect(0, 0, 256, 256);
+      speck(g, 256, 256, 2200, ['#8fcf9a', '#b4e6b8', '#a6dcae', '#c3ecc0'], 1, 3, 0.8);
+      for (let i = 0; i < 70; i++) { g.save(); g.translate(rand(0, 256), rand(0, 256)); g.rotate(rand(0, Math.PI)); g.fillStyle = ['#ff7fab', '#ffe27a', '#7fc4ff', '#b99cff', '#ffffff'][i % 5]; g.fillRect(-3, -1, 6, 2.2); g.restore(); }
+      speck(g, 256, 256, 260, ['#ffffff'], 1, 2, 0.7);
+    },
     // 火山砂：ブロモ山のまわりの灰色の砂の海。風が刻む細かな筋と、黒い溶岩の粒
     ash: g => { g.fillStyle = '#9a938e'; g.fillRect(0, 0, 256, 256); for (let y = 0; y < 256; y += 9) { g.strokeStyle = 'rgba(70,62,62,.16)'; g.lineWidth = 2; g.beginPath(); for (let x = 0; x <= 256; x += 8) g.lineTo(x, y + Math.sin(x * 0.05 + y * 0.7) * 3); g.stroke(); } speck(g, 256, 256, 1500, ['#7d7572', '#b0a9a2', '#5f5858', '#a69b8c'], 1, 3, 0.7); },
     seabed: g => { g.fillStyle = '#b9ad88'; g.fillRect(0, 0, 256, 256); for (let y = 0; y < 256; y += 11) { g.strokeStyle = 'rgba(120,105,70,.2)'; g.lineWidth = 2; g.beginPath(); for (let x = 0; x <= 256; x += 8) g.lineTo(x, y + Math.sin(x * 0.06 + y * 0.4) * 3); g.stroke(); } speck(g, 256, 256, 900, ['#d3c8a6', '#a49874', '#e2d9bd'], 1, 2, 0.7); speck(g, 256, 256, 120, ['#7e9a6a', '#a0897a'], 1, 3, 0.6); },
-    sand: g => { g.fillStyle = '#e4b271'; g.fillRect(0, 0, 256, 256); for (let y = 0; y < 256; y += 9) { g.strokeStyle = 'rgba(160,100,40,.18)'; g.beginPath(); for (let x = 0; x <= 256; x += 8) g.lineTo(x, y + Math.sin(x * 0.05 + y) * 3); g.stroke(); } speck(g, 256, 256, 900, ['#f0c488', '#d29c5a'], 1, 2, 0.7); }
+    sand: g => { g.fillStyle = '#e4b271'; g.fillRect(0, 0, 256, 256); for (let y = 0; y < 256; y += 9) { g.strokeStyle = 'rgba(160,100,40,.18)'; g.beginPath(); for (let x = 0; x <= 256; x += 8) g.lineTo(x, y + Math.sin(x * 0.05 + y) * 3); g.stroke(); } speck(g, 256, 256, 900, ['#f0c488', '#d29c5a'], 1, 2, 0.7); },
+    // サハラの砂の海：夕陽に染まる橙の砂に、風が刻んだ風紋と、ところどころに黒い礫（ハマダ）
+    erg: g => {
+      g.fillStyle = '#d99a5a'; g.fillRect(0, 0, 256, 256);
+      for (let y = 0; y < 256; y += 8) { g.strokeStyle = `rgba(${Math.random() < 0.5 ? '150,80,35' : '255,214,150'},${rand(0.14, 0.28)})`; g.lineWidth = rand(1.5, 2.5); g.beginPath(); for (let x = 0; x <= 256; x += 8) g.lineTo(x, y + Math.sin(x * 0.045 + y * 0.6) * 3.5); g.stroke(); }
+      speck(g, 256, 256, 900, ['#f0bc7c', '#cf8f50', '#e9ad6a'], 1, 2, 0.7); speck(g, 256, 256, 50, ['#5a3f2e', '#3e2e24'], 1, 2.4, 0.7);
+    }
   }[th.ground];
   const gTex = ctex(256, 256, gt, true); gTex.repeat.set(260, 260);
   let gMat;
@@ -3088,19 +3127,9 @@ function buildWorld(ti) {
     const crater = def.theme === 'dragonCrater', ground = new THREE.Mesh(crater ? new THREE.RingGeometry(380, 1900, 96, 1) : new THREE.PlaneGeometry(2600, 2600), gMat);
     ground.rotation.x = -Math.PI / 2; ground.position.y = Math.min(-0.2, ...track.ys) - (def.zones ? 1 : 0); ground.receiveShadow = true; world.add(ground);
     if (crater) ground.position.set(track.crater.x, ground.position.y, track.crater.z);
-  } else if (def.theme !== 'dune') {
+  } else {
     const size = Math.max(2600, (track.extent + 200) * 2);
     const ground = new THREE.Mesh(new THREE.PlaneGeometry(size, size), gMat); ground.rotation.x = -Math.PI / 2; ground.position.y = -0.03; ground.receiveShadow = true; world.add(ground);
-  } else {
-    const g = new THREE.PlaneGeometry(2600, 2600, 180, 180); g.rotateX(-Math.PI / 2);
-    const p = g.attributes.position;
-    for (let i = 0; i < p.count; i++) {
-      const x = p.getX(i), z = p.getZ(i), r = Math.hypot(x / 1.35, z);
-      const m = THREE.MathUtils.smoothstep(r, 190, 420);
-      p.setY(i, (Math.sin(x * 0.011) * Math.cos(z * 0.008) * 22 + Math.sin(x * 0.027 + z * 0.019) * 8 + 16) * m - 0.03);
-    }
-    g.computeVertexNormals();
-    const ground = new THREE.Mesh(g, gMat); ground.receiveShadow = true; world.add(ground);
   }
 
   // track surface
@@ -3229,12 +3258,6 @@ function buildWorld(ti) {
     }
     crowd.userData.exc = 0.2;
     stand.add(crowd);
-    if (def.theme === 'candy') {
-      const icing = [], cherries = [];
-      for (let j = 0; j < 20; j++) { const x = x0 + (j + 0.5) * len / 20; icing.push({ p: new V3(x, 13.7, z0 + 8), s: new V3(len / 30, 1.2, 9) }); cherries.push({ p: new V3(x, 15, z0 + 8), s: new V3(0.9, 0.9, 0.9) }); }
-      const cream = new THREE.InstancedMesh(SPH_LO, toon('#fff3dd'), icing.length), fruit = new THREE.InstancedMesh(SPH_LO, toon('#ed5682'), cherries.length), m = new THREE.Matrix4(), q = new THREE.Quaternion();
-      [cream, fruit].forEach((mesh, k) => { (k ? cherries : icing).forEach((o, i) => { m.compose(o.p, q, o.s); mesh.setMatrixAt(i, m); }); stand.add(mesh); });
-    }
     if (def.theme === 'clockwork') {
       for (let i = 0; i < n; i++) crowd.setColorAt(i, C(i % 3 ? '#b9cbd1' : '#d6af68'));
       crowd.instanceColor.needsUpdate = true;
@@ -3837,27 +3860,1022 @@ function decorSkyGardenStand(stand, len, z0, roof) {
   for (let x = -len / 2 - 2; x <= len / 2 + 2; x += 1.6) flags.push({ p: new V3(x, 12.6 - Math.abs(Math.sin((x + len / 2) / 8 * Math.PI)) * 0.6, z0 - 2.7), s: new V3(1, 1, 1), c: cols[(Math.round(x / 1.6) % 6 + 6) % 6] });
   g.add(inst(tri, toon('#ffffff', { side: THREE.DoubleSide }), flags, false));
 }
-function decorCandy() {
-  const pink = toon('#ff93ba'), cream = toon('#fff1d4'), mint = toon('#8dded3');
-  const sweets = [], stems = [];
-  for (let i = 0; i < 44; i++) { const p = spotOutside(18, 100, true), h = rand(5, 13); stems.push({ p: new V3(p.x, p.y + h / 2, p.z), s: new V3(0.4, h, 0.4) }); sweets.push({ p: new V3(p.x, p.y + h, p.z), s: new V3(3, 3, 1), c: C(i % 2 ? '#ff98bd' : '#88ddd4') }); }
-  fantasyInst(new THREE.CylinderGeometry(1, 1, 1, 8), cream, stems); fantasyInst(SPH_LO, toon('#ffffff'), sweets);
-  for (let i = 0; i < 4; i++) {
-    const p = spotOutside(65, 120, true), g = fantasyGroup(p);
-    part(g, new THREE.CylinderGeometry(10, 12, 14, 16), i % 2 ? mint : pink, [0, 7, 0], null, null, 0);
-    part(g, SPH_LO, cream, [0, 15, 0], [13, 6, 13]); part(g, SPH_LO, pink, [0, 21, 0], [3, 3, 3]);
+/* ---- お菓子の国カップ：ポーランドのジンジャーブレッドの町トルン（世界遺産「中世都市トルン」）を下敷きにしたお菓子の国 ---- */
+// 見立て：ゴシックのれんがの町並みをジンジャーブレッドの家に、ヴィスワ川をチョコレートの川に。
+// 区間の役割：0 ジンジャーブレッドの家並みのスタンドのホーム直線／1 チョコレートのヴィスワ川：穀物倉、橋の門、鉄のアーチ橋、遊覧船／
+// 2 生クリームの上り：ケーキの丘（いちごのショートケーキ）とカップケーキ、いちご畑／3 頂：ジンジャーブレッドの工房と、ドイツ騎士団の城跡・ダンスカー塔／
+// 4〜5 旧市街の路地（S字）：パステルの家並み、城壁と斜塔、船乗りの門、コペルニクスの家／6 シュガーダッシュの下り：キャンディの森とキャンディケインの門、グミのくま／
+// 7 聖ヨハネ大聖堂（鐘トゥバ・デイ）と筏師の噴水、ロバの像／8 ジンジャーブレッドの博物館。
+// 内馬場は旧市街の広場：旧市庁舎とコペルニクス像、ジンジャーブレッドの市、回転木馬、行進するジンジャーブレッドマン、巨大カタジンカ（ファンタジー）
+function decorCandy(th) {
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)');
+  const { shuffle, roadDist, occupied, taken, clearAt, groundAt, onGround, local, at, label, site, PRISM, CYL, addInst, beam, route } = sceneryKit();
+  const n0 = world.children.length, updates = [];
+  // 案内板はジンジャーブレッドの茶の地に、白いアイシングの文字
+  const signAt = (g, text, y, w = 14) => { const sp = label(text, w, w / 4, '#7a4626', '#fff6fa'); sp.position.set(0, y, 0); sp.scale.set(w, w / 4, 1); g.add(sp); return sp; };
+  const pick = a => a[(Math.random() * a.length) | 0];
+  const rot = (x, z, yaw) => [x * Math.cos(yaw) + z * Math.sin(yaw), -x * Math.sin(yaw) + z * Math.cos(yaw)];
+  const yawAt = s => -tp(s, W / 2).h;
+  const HALF = new THREE.SphereGeometry(1, 16, 8, 0, Math.PI * 2, 0, Math.PI / 2);
+  let celebration = 0;
+
+  // お菓子の材質
+  const ginger = toon('#b8733a'), gingerDark = toon('#8a5228'), icing = toon('#fffaf4'), choco = toon('#5a3222'), chocoMilk = toon('#7d4b2e');
+  const cream = toon('#fff3dc'), sponge = toon('#f2cf86'), berry = toon('#e8384f'), leaf = toon('#4fae5a'), wood = toon('#8a6244'), darkWood = toon('#4a3324');
+  const pinkM = toon('#ff9cc2'), mintM = toon('#9fe6d8'), lemonM = toon('#ffe58a'), lilacM = toon('#c9b2ff');
+  const warm = toon('#ffd27a', { emissive: C('#ffb347'), emissiveIntensity: 1.1 });   // 窓明かり・ろうそくの火
+  // 屋根：三角柱の屋根の上の方に、白いアイシングをかぶせる（相似の三角柱を少し浮かせる）
+  const iceRoof = (g, mat, pos, scl, rotY = 0, k = 0.55) => {
+    part(g, PRISM, mat, pos, scl, [0, rotY, 0], 0.02);
+    part(g, PRISM, icing, [pos[0], pos[1] + scl[1] * (1 - k) + 0.15, pos[2]], [scl[0] + 0.3, scl[1] * k, scl[2] * k], [0, rotY, 0], 0);
+  };
+  const candyCols = ['#ff7fab', '#7fe0d0', '#ffe27a', '#b99cff', '#ff9f68', '#8ee39a', '#7fc4ff'];
+  // れんが：ジンジャーブレッドの茶に、白いアイシングの目地
+  const brickTex = (base, mortar, rows = 16) => ctex(256, 256, c => {
+    c.fillStyle = mortar; c.fillRect(0, 0, 256, 256);
+    const h = 256 / rows;
+    for (let y = 0, r = 0; y < 256; y += h, r++) for (let x = r % 2 ? -16 : 0; x < 256; x += 32) {
+      const k = rand(-14, 14), b = C(base); c.fillStyle = `rgb(${b.r * 255 + k | 0},${b.g * 255 + k * 0.7 | 0},${b.b * 255 + k * 0.5 | 0})`; c.fillRect(x + 2, y + 2, 28, h - 4);
+    }
+  }, true);
+  const gingerBrick = toon('#ffffff', { map: brickTex('#b06a34', '#fff4e8') }), chocoBrick = toon('#ffffff', { map: brickTex('#6a3a26', '#e8c9a8') });
+  // 縞模様（キャンディケイン）：斜めの赤白
+  const stripeTex = (a, b) => ctex(64, 64, c => { c.fillStyle = a; c.fillRect(0, 0, 64, 64); c.fillStyle = b; for (let k = -64; k < 128; k += 32) { c.beginPath(); c.moveTo(k, 0); c.lineTo(k + 16, 0); c.lineTo(k + 16 - 64, 64); c.lineTo(k - 64, 64); c.closePath(); c.fill(); } }, true);
+  const caneTex = stripeTex('#ffffff', '#e8384f'); caneTex.repeat.set(1, 3);
+  const caneM = toon('#ffffff', { map: caneTex }), caneMintTex = stripeTex('#ffffff', '#3fbfa8'); caneMintTex.repeat.set(1, 3);
+  const caneMint = toon('#ffffff', { map: caneMintTex });
+  // 渦巻きの棒つきキャンディ：面だけに渦巻き、縁は白
+  const swirl = (a, b) => toon('#ffffff', { map: ctex(128, 128, c => {
+    c.fillStyle = b; c.fillRect(0, 0, 128, 128); c.strokeStyle = a; c.lineWidth = 9; c.beginPath();
+    for (let t = 0; t < 26; t += 0.08) { const r = t * 2.4; c.lineTo(64 + Math.cos(t) * r, 64 + Math.sin(t) * r); } c.stroke();
+  }) });
+  const lollyMats = [[swirl('#ff5f9a', '#fff4f8'), '#ffd0e2'], [swirl('#2fbfa8', '#f4fffb'), '#c8f4ea'], [swirl('#ffb12f', '#fffbe8'), '#ffe9b0'], [swirl('#8a5cff', '#f8f4ff'), '#e0d4ff']];
+  const DISC = new THREE.CylinderGeometry(1, 1, 0.3, 28); DISC.rotateX(Math.PI / 2);
+
+  // 人々：パステルの服と毛糸の帽子
+  const people = [], heads = [], hats = [], cloth = ['#ff7fab', '#7fc4ff', '#ffe27a', '#8ee39a', '#f4f1ea', '#b99cff', '#ff9f68', '#e8384f', '#3f6fbf', '#5a3f7a'].map(C);
+  const addPerson = (p, sit = false, col) => {
+    const c = col ? C(col) : pick(cloth);
+    people.push({ p: p.clone().add(new V3(0, sit ? 0.55 : 0.95, 0)), s: new V3(1.12, sit ? 0.62 : 1, 1.12), c });
+    heads.push({ p: p.clone().add(new V3(0, sit ? 1.3 : 1.95, 0)), s: new V3(0.26, 0.28, 0.26) });
+    hats.push({ p: p.clone().add(new V3(0, sit ? 1.46 : 2.11, 0)), s: new V3(0.27, 0.16, 0.27), c: pick(cloth) });
+  };
+  const figure = (g, x, y, z, col, sc = 1, hat = '#ff7fab') => {
+    part(g, new THREE.CapsuleGeometry(0.3 * sc, 0.75 * sc, 3, 8), toon(col), [x, y + 0.95 * sc, z], null, null, 0.03);
+    part(g, SPH_LO, toon('#f1c9a8'), [x, y + 1.95 * sc, z], [0.26 * sc, 0.28 * sc, 0.26 * sc], null, 0);
+    part(g, SPH_LO, toon(hat), [x, y + 2.11 * sc, z], [0.27 * sc, 0.16 * sc, 0.27 * sc], null, 0);
+  };
+  // ジンジャーブレッドマン：平たい茶色の人形に、白いアイシングの縁と、ボタンと笑顔
+  const gingerMan = (parent, sc = 1) => {
+    const g = new THREE.Group(); g.scale.setScalar(sc); parent.add(g);
+    const flat = [1, 1, 0.45];
+    part(g, SPH_LO, ginger, [0, 1.25, 0], [0.55 * flat[0], 0.62, 0.55 * flat[2]], null, 0.04); part(g, SPH_LO, ginger, [0, 2.2, 0], [0.45, 0.45, 0.45 * flat[2]], null, 0.04);
+    const arms = [-1, 1].map(sd => { const a = new THREE.Group(); a.position.set(0, 1.6, sd * 0.45); g.add(a); part(a, SPH_LO, ginger, [0, -0.15, sd * 0.35], [0.2, 0.45, 0.2], [sd * 0.9, 0, 0], 0.04); return a; });
+    const legs = [-1, 1].map(sd => { const l = new THREE.Group(); l.position.set(0, 0.85, sd * 0.25); g.add(l); part(l, SPH_LO, ginger, [0, -0.4, 0], [0.24, 0.5, 0.22], null, 0.04); return l; });
+    for (const y of [1.0, 1.3, 1.6]) part(g, SPH_LO, toon(pick(['#ff5f9a', '#3fbfa8', '#ffb12f'])), [0.26, y, 0], [0.08, 0.08, 0.08], null, 0);
+    for (const z of [-0.15, 0.15]) part(g, SPH_LO, icing, [0.21, 2.3, z], [0.06, 0.07, 0.06], null, 0);
+    part(g, new THREE.TorusGeometry(0.14, 0.03, 6, 12, Math.PI), icing, [0.22, 2.1, 0], null, [0, Math.PI / 2, Math.PI], 0);
+    return { g, arms, legs };
+  };
+
+  // 文字入りの板（屋台・店の看板）。同じ文字は1枚の材質を共有する
+  const boardMats = new Map(), boardLists = new Map();
+  const putBoard = (text, c, yaw, w) => {
+    if (!boardMats.has(text)) {
+      boardMats.set(text, toon('#ffffff', { map: ctex(512, 128, g => {
+        g.fillStyle = '#8a5228'; g.fillRect(0, 0, 512, 128); g.strokeStyle = '#fff4f8'; g.lineWidth = 8; g.setLineDash([18, 10]); g.strokeRect(8, 8, 496, 112);
+        g.fillStyle = '#fff6fa'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.font = '900 60px "Dela Gothic One", sans-serif'; g.fillText(text, 256, 68, 460);
+      }) }));
+      boardLists.set(text, []);
+    }
+    boardLists.get(text).push({ p: c.clone(), s: new V3(w, w / 4, 1), r: [0, yaw, 0] });
+  };
+  // 地面に沿う、テクスチャを貼れる帯（川・岸）。u は幅方向、v は長さ方向（vScale mごとに1回）
+  const ribbon = (pts, width, lift, mat, vScale, margin = W / 2 + 4) => {
+    const positions = [], uvs = [], indices = []; let k = 0, prevOk = false, acc = 0;
+    for (let i = 0; i < pts.length; i++) {
+      const a = pts[Math.max(0, i - 1)], b = pts[Math.min(pts.length - 1, i + 1)], p = pts[i];
+      if (i) acc += p.distanceTo(pts[i - 1]);
+      const tx = b.x - a.x, tz = b.z - a.z, tl = Math.hypot(tx, tz) || 1, sx = -tz / tl * width / 2, sz = tx / tl * width / 2;
+      const ok = roadDist(p.x, p.z, margin + 2) >= margin, l = new V3(p.x + sx, 0, p.z + sz), r = new V3(p.x - sx, 0, p.z - sz);
+      positions.push(l.x, groundAt(l) + lift, l.z, r.x, groundAt(r) + lift, r.z); uvs.push(0, acc / vScale, 1, acc / vScale);
+      if (ok && prevOk) indices.push(k - 2, k - 1, k, k - 1, k + 1, k);
+      prevOk = ok; k += 2;
+    }
+    const geo = new THREE.BufferGeometry(); geo.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3)); geo.setAttribute('uv', new THREE.Float32BufferAttribute(uvs, 2));
+    geo.setIndex(indices); geo.computeVertexNormals();
+    const mesh = new THREE.Mesh(geo, mat); mesh.receiveShadow = true; world.add(mesh); return mesh;
+  };
+  // 走路から外へ V の道筋（川）。両端は ext 本（10mずつ）走路から遠ざかる向きへ伸ばして均す
+  const outerPath = (s0, s1, V, ext = 40, step = 6) => {
+    const pts = []; for (let s = s0; s <= s1; s += step) pts.push(local(s, 0, V));
+    const head = pts[0], d0 = head.clone().sub(pts[1]).setY(0).normalize(), tail = pts[pts.length - 1], d1 = tail.clone().sub(pts[pts.length - 2]).setY(0).normalize();
+    const f0 = tp(s0, W / 2).n.multiplyScalar(Math.sign(V)), f1 = tp(s1, W / 2).n.multiplyScalar(Math.sign(V));
+    for (let k = 1; k <= ext; k++) pts.unshift(head.clone().addScaledVector(d0.clone().lerp(f0, Math.min(1, k / 20)).normalize(), k * 10));
+    for (let k = 1; k <= ext; k++) pts.push(tail.clone().addScaledVector(d1.clone().lerp(f1, Math.min(1, k / 20)).normalize(), k * 10));
+    for (let pass = 0; pass < 10; pass++) for (let i = 1; i < pts.length - 1; i++) pts[i] = pts[i - 1].clone().add(pts[i + 1]).multiplyScalar(0.5).lerp(pts[i], 0.5);
+    return pts;
+  };
+  // 煙の出どころ（毎フレーム少しずつ出す）
+  const smokes = [];
+
+  /* ---- 座標の準備：内馬場の判定、区間の案内板とスタンドの敷地は空けておく ---- */
+  const poly = []; for (let i = 0; i < track.N; i += 8) poly.push([track.xs[i], track.zs[i]]);
+  const inLoop = (x, z) => { let c = false; for (let i = 0, j = poly.length - 1; i < poly.length; j = i++) { const [xi, zi] = poly[i], [xj, zj] = poly[j]; if ((zi > z) !== (zj > z) && x < (xj - xi) * (z - zi) / (zj - zi) + xi) c = !c; } return c; };
+  for (const z of track.zones) { const q = tp((z.start + z.end) / 2, W + 9).v; occupied.push({ x: q.x, z: q.z, r: 11 }); }
+  for (let s = track.homeS0 - 10; s <= track.homeS1 + 10; s += 10) { const p = local(s, 0, W / 2 + 30); occupied.push({ x: p.x, z: p.z, r: 23 }); }
+  occupied.push({ x: boardPos.x, z: boardPos.z, r: 24 });
+
+  /* ---- 外ラチ沿い：キャンディケインと棒つきキャンディ、手を振る観客 ---- */
+  const lollies = lollyMats.map(() => ({ sticks: [], heads: [] }));
+  const lolly = (p, h, r, k = (Math.random() * 4) | 0, yaw = rand(0, Math.PI * 2)) => {
+    const L = lollies[k]; L.sticks.push({ p: p.clone().add(new V3(0, h / 2, 0)), s: new V3(0.12 * r, h, 0.12 * r) });
+    L.heads.push({ p: p.clone().add(new V3(0, h + r * 0.9, 0)), s: new V3(r, r, r), r: [0, yaw, 0] });
+  };
+  const canes = [], caneHooks = [], canesMint = [], caneHooksMint = [];
+  const HOOK = new THREE.TorusGeometry(1, 0.22, 8, 16, Math.PI);
+  const cane = (p, h, sc, yaw, mint = Math.random() < 0.35) => {
+    (mint ? canesMint : canes).push({ p: p.clone().add(new V3(0, h / 2, 0)), s: new V3(0.22 * sc, h, 0.22 * sc) });
+    const [ox, oz] = rot(sc, 0, yaw); (mint ? caneHooksMint : caneHooks).push({ p: p.clone().add(new V3(ox, h, oz)), s: new V3(sc, sc, sc), r: [0, yaw, 0] });
+  };
+  {
+    for (let s = 0; s < track.L; s += 12) {
+      if (s > track.homeS0 - 4 && s < track.homeS1 + 4) continue;   // ホーム直線はジンジャーブレッドのスタンド
+      if (Math.abs(s - at(6, 0.12)) < 4 || Math.abs(s - at(6, 0.88)) < 4) continue;   // キャンディケインの門の柱
+      const p = onGround(local(s, 0, W / 2 + 3.6));
+      if (taken(p.x, p.z, 1)) continue;
+      if (Math.round(s / 12) % 2) lolly(p, 2.2, 0.7, Math.round(s / 24) % 4, yawAt(s) + Math.PI / 2);
+      else cane(p, 2.4, 0.42, yawAt(s) + Math.PI / 2, Math.round(s / 24) % 2 === 0);
+    }
+    const crowdAt = (s0, s1, n) => {
+      for (let k = 0; k < n; k++) {
+        const p = onGround(local(rand(s0, s1), 0, W / 2 + rand(5.5, 10)));
+        if (taken(p.x, p.z, 0.4)) continue;
+        addPerson(p); occupied.push({ x: p.x, z: p.z, r: 0.6 });
+      }
+      for (let s = s0; s < s1; s += 9) { const p = local(s, 0, W / 2 + 7.5); occupied.push({ x: p.x, z: p.z, r: 4 }); }
+    };
+    crowdAt(at(1, 0.05), at(1, 0.3), 40); crowdAt(at(3, 0.08), at(3, 0.22), 25); crowdAt(at(7, 0.55), at(7, 0.95), 45); crowdAt(at(8, 0.1), at(8, 0.3), 25);
   }
-  // Pool the confetti so celebrations allocate nothing and reset immediately in the lobby.
-  const confetti = new THREE.InstancedMesh(new THREE.PlaneGeometry(0.5, 0.8), toon('#ffffff', { side: THREE.DoubleSide }), 100), m = new THREE.Matrix4(), q = new THREE.Quaternion(), e = new THREE.Euler();
-  world.add(confetti); confetti.visible = false;
+
+  /* ---- 遠景：パステルのアイスクリームの丘（生クリームをかけた丸い丘）と、空の虹 ---- */
+  {
+    const base = Math.max(620, track.extent + 320), domes = [], caps = [], drips = [];
+    for (let i = 0; i < 26; i++) {
+      const a = i / 26 * Math.PI * 2 + rand(-0.06, 0.06), r = base + rand(0, 230), rr = rand(130, 220), h = rand(60, 120), p = new V3(Math.cos(a) * r, -12, Math.sin(a) * r);
+      domes.push({ p, s: new V3(rr, h, rr), c: C(pick(['#ffc6dc', '#bdeee2', '#fff0b3', '#d8ccff', '#ffd6b8'])) });
+      caps.push({ p: p.clone().add(new V3(0, h * 0.5, 0)), s: new V3(rr * 0.8, h * 0.55, rr * 0.8) });
+      for (let k = 0; k < 7; k++) { const b = rand(0, Math.PI * 2); drips.push({ p: new V3(p.x + Math.cos(b) * rr * 0.72, p.y + h * 0.62, p.z + Math.sin(b) * rr * 0.72), s: new V3(rand(10, 18), rand(16, 30), rand(10, 18)) }); }
+    }
+    for (const m of [inst(SPH_LO, toon('#ffffff', { fog: true }), domes, false), inst(HALF, toon('#fffaf2', { fog: true }), caps, false), inst(SPH_LO, toon('#fffaf2', { fog: true }), drips, false)]) m.userData.backdrop = true;
+    // 虹：ケーキの丘（第2区間）の向こうに架かる
+    const dir = tp(at(2, 0.5), W / 2).n, c = dir.clone().multiplyScalar(base + 160).setY(-30), g = fantasyGroup(c); g.rotation.y = -Math.atan2(dir.z, dir.x) + Math.PI / 2; g.userData.backdrop = true;
+    ['#ff5f6a', '#ff9f4a', '#ffe14a', '#6fdc7a', '#5ab8ff', '#7a7cff', '#c27aff'].forEach((col, k) => {
+      const m = new THREE.Mesh(new THREE.TorusGeometry(330 - k * 9, 4.6, 6, 64, Math.PI), new THREE.MeshBasicMaterial({ color: C(col), transparent: true, opacity: 0.55, depthWrite: false, fog: true }));
+      g.add(m);
+    });
+  }
+
+  /* ---- 第1区間の外：チョコレートのヴィスワ川。岸の穀物倉、橋の門、鉄のアーチ橋（ピウスツキ橋）、遊覧船 ---- */
+  const riverPts = outerPath(at(1, 0.02), at(1, 0.98), W / 2 + 74, 50);
+  {
+    riverPts.forEach(p => { onGround(p); occupied.push({ x: p.x, z: p.z, r: 21 }); });
+    ribbon(riverPts, 48, 0.04, toon('#f0d6a4', { side: THREE.DoubleSide }), 40, W / 2 + 10);
+    // 溶けたチョコレートの流れ：渦を巻く明るい筋が下流へ流れる
+    const chocoTex = ctex(256, 256, g => {
+      g.fillStyle = '#6a3a24'; g.fillRect(0, 0, 256, 256);
+      for (let i = 0; i < 40; i++) { g.strokeStyle = `rgba(${Math.random() < 0.5 ? '160,100,60' : '60,30,18'},${rand(0.25, 0.5)})`; g.lineWidth = rand(2, 5); g.beginPath(); const x0 = rand(0, 256), y0 = rand(0, 256); for (let k = 0; k < 10; k++) g.lineTo(x0 + Math.sin(k * 0.7 + i) * 18, y0 + k * 12); g.stroke(); }
+      for (let i = 0; i < 30; i++) { g.fillStyle = 'rgba(255,230,200,.18)'; g.beginPath(); g.ellipse(rand(0, 256), rand(0, 256), rand(2, 5), rand(8, 20), 0, 0, Math.PI * 2); g.fill(); }
+    }, true);
+    const river = ribbon(riverPts, 36, 0.12, toon('#ffffff', { map: chocoTex, side: THREE.DoubleSide }), 36, W / 2 + 12);
+    river.material.emissive = C('#3a1a0a'); river.material.emissiveIntensity = 0.2;
+    updates.push(t => { chocoTex.offset.y = -(reduced.matches ? 0 : t) * 0.06; });
+    registerLandmark(fantasyGroup(riverPts[(riverPts.length / 2) | 0].clone()), 'チョコレートのヴィスワ川');
+
+    // 穀物倉（スピフレシュ）：川岸に並ぶ、急な切妻屋根のゴシックのれんがの倉。屋根の縁にアイシング
+    const gr = site('ヴィスワ川の穀物倉', at(1, 0.22), W / 2 + 30, 34, 14, '#f0d6a4', W / 2 + 22);
+    for (let k = 0; k < 3; k++) {
+      const x = -11 + k * 11, h = 13 + k % 2 * 3;
+      addBox(gr, [9.4, h, 11], [x, h / 2, 0], k === 1 ? chocoBrick : gingerBrick, null, 0.02);
+      iceRoof(gr, k === 1 ? pinkM : choco, [x, h, 0], [11.4, 9, 9.8], Math.PI / 2);
+      for (let f = 0; f < 3; f++) for (const xx of [-2.4, 0, 2.4]) addBox(gr, [1, 1.6, 0.2], [x + xx, 3 + f * 3.6, -5.55], toon('#4a2a1e'));
+      addBox(gr, [1.4, 1.4, 0.3], [x, h + 3, -4.6], toon('#4a2a1e'));
+    }
+    signAt(gr, 'ヴィスワ川の穀物倉', 25, 13);
+    // 橋の門（ブラマ・モストヴァ）：川へ下りる門の塔
+    const bg = site('橋の門（ブラマ・モストヴァ）', at(1, 0.55), W / 2 + 28, 14, 10, '#f0d6a4', W / 2 + 22);
+    addBox(bg, [12, 14, 8], [0, 7, 0], gingerBrick, null, 0.02); addBox(bg, [5, 7, 8.2], [0, 3.5, 0], toon('#3a2218'));
+    iceRoof(bg, choco, [0, 14, 0], [12.6, 6, 8.6]);
+    for (const x of [-4, 4]) addBox(bg, [1.2, 2.4, 0.2], [x, 10, -4.15], toon('#4a2a1e'));
+    for (const x of [-6, 6]) part(bg, CONE, pinkM, [x, 16, -4], [0.5, 2.4, 0.5], null, 0);
+    signAt(bg, '橋の門', 23, 8);
+    // 川岸の散歩道（フィラデルフィア遊歩道）の街灯と、散歩する人
+    const posts = [], lamps = [];
+    for (let s = at(1, 0.05); s < at(1, 0.95); s += 10) {
+      const p = onGround(local(s, 0, W / 2 + 48)); if (taken(p.x, p.z, 0.5)) continue;
+      posts.push({ p: p.clone().add(new V3(0, 2, 0)), s: new V3(0.1, 4, 0.1) }); lamps.push({ p: p.clone().add(new V3(0, 4.2, 0)), s: new V3(0.4, 0.5, 0.4) });
+      if (Math.random() < 0.6) addPerson(onGround(local(s + rand(-3, 3), 0, W / 2 + rand(44, 52))));
+    }
+    addInst(CYL, toon('#3a2a2a'), posts, false); addInst(SPH_LO, toon('#fff0c8', { emissive: C('#ffcf7a'), emissiveIntensity: 0.8 }), lamps, false);
+
+    // 鉄のアーチ橋（ピウスツキ橋）：川を渡る、アーチを連ねた鉄の橋。キャンディの縞に塗る
+    const mid = (riverPts.length / 2) | 0, c = riverPts[mid].clone(), d = riverPts[mid + 1].clone().sub(riverPts[mid - 1]).setY(0).normalize(), a = new V3(-d.z, 0, d.x);
+    if (a.dot(c.clone().sub(local(at(1, 0.5), 0, 0))) < 0) a.negate();
+    const bridge = registerLandmark(fantasyGroup(c.clone().setY(0)), '鉄のアーチ橋（ピウスツキ橋）'); bridge.rotation.y = -Math.atan2(a.z, a.x);
+    for (let k = -4; k <= 4; k++) { const q = c.clone().addScaledVector(a, k * 9); occupied.push({ x: q.x, z: q.z, r: 6 }); }
+    const deckY = 4.5, span = 22;
+    addBox(bridge, [74, 0.8, 9], [6, deckY, 0], toon('#c9a27a'), null, 0.02);
+    for (const z of [-4.6, 4.6]) addBox(bridge, [74, 0.6, 0.3], [6, deckY + 0.8, z], icing);
+    const arc = new THREE.TorusGeometry(1, 0.06, 6, 24, Math.PI), hangers = [];
+    for (let k = -1; k <= 1; k++) {
+      const x0 = 6 + k * span;
+      for (const z of [-4.3, 4.3]) {
+        part(bridge, arc, k ? pinkM : mintM, [x0, deckY + 0.4, z], [span / 2, 7, 6], null, 0);
+        for (let j = 1; j < 8; j++) { const u = j / 8, x = x0 - span / 2 + u * span, h = Math.sin(u * Math.PI) * 7; hangers.push({ p: new V3(x, deckY + 0.4 + h / 2, z), s: new V3(0.12, h, 0.12) }); }
+      }
+      if (k < 1) addBox(bridge, [3, deckY + 2, 8], [x0 + span / 2, (deckY - 2) / 2, 0], gingerBrick);
+    }
+    bridge.add(inst(BOX, icing, hangers, false));
+    for (let k = 0; k < 6; k++) figure(bridge, rand(-14, 26), deckY + 0.4, rand(-3, 3), pick(['#ff7fab', '#7fc4ff', '#ffe27a', '#8ee39a']), 1, pick(['#e8384f', '#3fbfa8']));
+
+    // 遊覧船：外輪の付いた白い船と、ジンジャーブレッドを積んだはしけ。川を行き来する
+    const r = route(riverPts.slice(30, riverPts.length - 30), false), boats = [];
+    for (let i = 0; i < 2; i++) {
+      const g = fantasyGroup(); g.userData.droneIgnore = true;
+      if (i === 0) {
+        addBox(g, [14, 1.6, 4.4], [0, 0.6, 0], toon('#fffaf4'), null, 0.02); addBox(g, [9, 2, 3.6], [-0.5, 2.4, 0], toon('#ff9cc2'), null, 0.02);
+        addBox(g, [9.2, 0.3, 4], [-0.5, 3.5, 0], icing); part(g, CYL, toon('#e8384f'), [2.5, 4.6, 0], [0.45, 2, 0.45], null, 0);
+        for (const z of [-2.5, 2.5]) part(g, CYL, toon('#c8302c'), [-4.5, 1.2, z], [1.4, 0.5, 1.4], [Math.PI / 2, 0, 0], 0);
+        for (let k = 0; k < 6; k++) addBox(g, [0.9, 0.9, 0.1], [-4 + k * 1.4, 2.6, -1.85], toon('#bfe8ff'));
+        for (let k = 0; k < 4; k++) figure(g, rand(-5, 3), 3.6, rand(-1.3, 1.3), pick(['#ff7fab', '#7fc4ff', '#ffe27a']), 0.8);
+      } else {
+        addBox(g, [12, 1.2, 4], [0, 0.4, 0], darkWood, null, 0.02);
+        for (let k = 0; k < 10; k++) part(g, DISC, ginger, [-4.5 + (k % 5) * 2.2, 1.5 + Math.floor(k / 5) * 0.2, (k % 2 ? 0.8 : -0.8)], [0.9, 0.9, 1], [0, rand(0, 3), 0], 0);
+        figure(g, 5, 1, 0, '#3f6fbf', 1, '#e8384f');
+      }
+      boats.push({ g, off: i * r.L * 0.55, v: 3 + i });
+    }
+    updates.push(t => {
+      const m = reduced.matches ? 0 : t, sp = r.L - 10;
+      for (const b of boats) {
+        const k = mod(m * b.v + b.off, sp * 2), back = k > sp, { p, yaw } = r.at((back ? sp * 2 - k : k) + 5);
+        b.g.position.set(p.x, 0.25 + Math.sin(m * 1.3 + b.off) * 0.08, p.z); b.g.rotation.y = yaw + (back ? Math.PI : 0);
+      }
+    });
+  }
+
+  /* ---- 第2区間の外：ケーキの丘。いちごのショートケーキ、カップケーキ、立てたドーナツ、マカロンの塔、いちご畑 ---- */
+  const cake = { candles: [], flames: null };
+  {
+    const s = at(2, 0.5), c = onGround(local(s, 0, W / 2 + 112)), g = registerLandmark(fantasyGroup(c), 'ケーキの丘（いちごのショートケーキ）');
+    g.position.y = c.y - 1; g.rotation.y = yawAt(s);
+    const layers = [[0, 9, sponge], [9, 3, cream], [12, 9, sponge], [21, 3.4, cream]];
+    for (const [y, h, m] of layers) part(g, new THREE.CylinderGeometry(42, 42, h, 48), m, [0, y + h / 2, 0], null, null, 0.01);
+    // 側面に垂れる生クリームと、上の縁のクリームといちご
+    const drips = [], dollops = [], berries = [], tops = [];
+    for (let k = 0; k < 40; k++) { const a = k / 40 * Math.PI * 2; drips.push({ p: new V3(Math.cos(a) * 42, 22 - rand(1, 4), Math.sin(a) * 42), s: new V3(1.6, rand(2.5, 5), 1.6) }); }
+    for (let k = 0; k < 24; k++) {
+      const a = k / 24 * Math.PI * 2;
+      dollops.push({ p: new V3(Math.cos(a) * 37, 25, Math.sin(a) * 37), s: new V3(3, 2.4, 3) });
+      berries.push({ p: new V3(Math.cos(a) * 37, 27.8, Math.sin(a) * 37), s: new V3(1.8, 2.2, 1.8), r: [Math.PI, 0, 0] });
+      tops.push({ p: new V3(Math.cos(a) * 37, 29, Math.sin(a) * 37), s: new V3(1.2, 0.3, 1.2) });
+    }
+    g.add(inst(SPH_LO, cream, drips, false), inst(SPH_LO, cream, dollops), inst(new THREE.ConeGeometry(1, 1, 10), berry, berries), inst(SPH_LO, leaf, tops, false));
+    // 中央の大きないちごと、ろうそく（ゴールで炎が大きくなる）
+    part(g, new THREE.ConeGeometry(7, 10, 14), berry, [0, 30, 0], null, [Math.PI, 0, 0], 0.02); part(g, SPH_LO, berry, [0, 32, 0], [7, 4, 7], null, 0.02); part(g, SPH_LO, leaf, [0, 36.2, 0], [4, 1, 4], null, 0);
+    const candleL = [], flameL = [];
+    for (let k = 0; k < 8; k++) { const a = k / 8 * Math.PI * 2 + 0.2, x = Math.cos(a) * 22, z = Math.sin(a) * 22; candleL.push({ p: new V3(x, 29, z), s: new V3(0.7, 8, 0.7), c: C(candyCols[k % candyCols.length]) }); flameL.push({ p: new V3(x, 33.8, z), s: new V3(0.6, 1.1, 0.6) }); }
+    g.add(inst(CYL, toon('#ffffff', { map: caneTex }), candleL, false));
+    cake.flames = inst(SPH_LO, new THREE.MeshBasicMaterial({ color: C('#ffcf5a').multiplyScalar(2.4) }), flameL, false); g.add(cake.flames);
+    g.updateMatrixWorld(true); cake.flamePts = flameL.map(o => g.localToWorld(o.p.clone()));
+    signAt(g, 'ケーキの丘', 44, 12);
+    occupied.push({ x: c.x, z: c.z, r: 48 });
+    // カップケーキ：ひだのある紙の型に、渦巻きのクリームとさくらんぼ
+    const liner = toon('#ffffff', { map: ctex(64, 32, c2 => { for (let x = 0; x < 64; x += 8) { c2.fillStyle = (x / 8) % 2 ? '#ff9cc2' : '#ffd0e2'; c2.fillRect(x, 0, 8, 32); } }, true) });
+    const cupG = new THREE.CylinderGeometry(1, 0.78, 1, 16, 1, true);
+    for (let k = 0; k < 5; k++) {
+      const s2 = at(2, 0.1 + k * 0.2), v = W / 2 + rand(48, 62) + (k % 2) * 70, p = onGround(local(s2, 0, v));
+      if (taken(p.x, p.z, 8)) continue;
+      const cg = registerLandmark(fantasyGroup(p), k ? 'カップケーキ' : 'カップケーキの丘'); const sc = rand(3.2, 4.6);
+      part(cg, cupG, liner, [0, 2 * sc / 2, 0], [2 * sc, 2 * sc, 2 * sc], null, 0.02); part(cg, CYL, sponge, [0, 2 * sc, 0], [2 * sc, 0.2, 2 * sc], null, 0);
+      const fc = pick([pinkM, mintM, lemonM, lilacM, cream]);
+      for (let j = 0; j < 4; j++) part(cg, new THREE.TorusGeometry(1, 0.45, 8, 20), fc, [0, 2 * sc + 0.4 * sc + j * 0.7 * sc, 0], [(1.8 - j * 0.4) * sc, (1.8 - j * 0.4) * sc, sc], [Math.PI / 2, 0, j], 0.02);
+      part(cg, SPH_LO, berry, [0, 5.4 * sc, 0], [0.55 * sc, 0.55 * sc, 0.55 * sc], null, 0.03);
+      const sprinkles = []; for (let j = 0; j < 30; j++) { const a = rand(0, Math.PI * 2), rr = rand(0.4, 1.6) * sc; sprinkles.push({ p: new V3(Math.cos(a) * rr, 2.6 * sc + rand(0, 2) * sc, Math.sin(a) * rr), s: new V3(0.08 * sc, 0.08 * sc, 0.3 * sc), r: [rand(0, 3), rand(0, 3), 0], c: C(pick(candyCols)) }); }
+      cg.add(inst(BOX, toon('#ffffff'), sprinkles, false));
+      occupied.push({ x: p.x, z: p.z, r: 2.4 * sc });
+    }
+    // 立てたドーナツ（ピンクのアイシングにスプリンクル）と、マカロンの塔
+    {
+      const p = onGround(local(at(2, 0.85), 0, W / 2 + 60));
+      if (!taken(p.x, p.z, 10)) {
+        const dg = registerLandmark(fantasyGroup(p), '大きなドーナツ'); dg.rotation.y = yawAt(at(2, 0.85));
+        part(dg, new THREE.TorusGeometry(6, 3, 14, 32), toon('#e2a25e'), [0, 9.6, 0], null, null, 0.02);
+        part(dg, new THREE.TorusGeometry(6, 3.05, 14, 32, Math.PI * 2), pinkM, [0, 9.6, 0.5], [1, 1, 0.6], null, 0);
+        const sp = []; for (let j = 0; j < 50; j++) { const a = rand(0, Math.PI * 2), rr = 6 + rand(-2.2, 2.2); sp.push({ p: new V3(Math.cos(a) * rr, 9.6 + Math.sin(a) * rr, 2.4), s: new V3(0.15, 0.6, 0.15), r: [0, 0, rand(0, 3)], c: C(pick(candyCols)) }); }
+        dg.add(inst(BOX, toon('#ffffff'), sp, false));
+        addBox(dg, [10, 0.6, 4], [0, 0.3, 0], toon('#fff3dc'));
+        occupied.push({ x: p.x, z: p.z, r: 11 });
+      }
+      const q = onGround(local(at(2, 0.3), 0, W / 2 + 30));
+      if (!taken(q.x, q.z, 5)) {
+        const mg = registerLandmark(fantasyGroup(q), 'マカロンの塔');
+        for (let j = 0; j < 7; j++) {
+          const r2 = 3.6 - j * 0.4, col = pick([pinkM, mintM, lemonM, lilacM, toon('#ffb38a')]);
+          part(mg, SPH_LO, col, [0, 0.9 + j * 1.9, 0], [r2, 0.6, r2], null, 0.03); part(mg, SPH_LO, col, [0, 1.9 + j * 1.9, 0], [r2, 0.6, r2], null, 0.03);
+          part(mg, CYL, cream, [0, 1.4 + j * 1.9, 0], [r2 * 0.92, 0.5, r2 * 0.92], null, 0);
+        }
+        occupied.push({ x: q.x, z: q.z, r: 5 });
+      }
+    }
+    // いちご畑：緑の畝に赤い実
+    const rows = [], fruit = [];
+    for (let s2 = at(2, 0.05); s2 < at(3, 0.05); s2 += 3.2) for (let v = W / 2 + 14; v < W / 2 + 26; v += 2.6) {
+      const p = onGround(local(s2, 0, v)); if (taken(p.x, p.z, 1)) continue;
+      rows.push({ p: p.clone().add(new V3(0, 0.3, 0)), s: new V3(1.1, 0.6, 1.1) });
+      for (let k = 0; k < 3; k++) fruit.push({ p: p.clone().add(new V3(rand(-0.8, 0.8), 0.45, rand(-0.8, 0.8))), s: new V3(0.22, 0.28, 0.22) });
+    }
+    addInst(SPH_LO, leaf, rows, false); addInst(SPH_LO, berry, shuffle(fruit), false);
+    if (rows.length) { registerLandmark(fantasyGroup(rows[(rows.length / 2) | 0].p.clone()), 'いちご畑'); for (const o of rows) occupied.push({ x: o.p.x, z: o.p.z, r: 1.2 }); }
+  }
+
+  /* ---- 第3区間：頂のジンジャーブレッドの工房（焼き窯の煙突、木の焼き型、焼きたてのカタジンカ）と、ドイツ騎士団の城跡・ダンスカー塔 ---- */
+  // カタジンカ：6つの円をつないだトルンのジンジャーブレッド（局所 xy 面に立てる。幅は約 3.6r）
+  const katarzynka = (parent, r, mat, edge, pos, rotY = 0) => {
+    const g = new THREE.Group(); g.position.set(...pos); g.rotation.y = rotY; parent.add(g);
+    for (const [x, y] of [[-1.2, 0.55], [0, 0.75], [1.2, 0.55], [-1.2, -0.55], [0, -0.75], [1.2, -0.55]]) {
+      part(g, new THREE.CylinderGeometry(r, r, r * 0.3, 24), mat, [x * r, y * r, 0], null, [Math.PI / 2, 0, 0], 0.02);
+      part(g, new THREE.TorusGeometry(r * 0.78, r * 0.05, 6, 24), edge, [x * r, y * r, r * 0.16], null, null, 0);
+    }
+    return g;
+  };
+  {
+    const g = site('ジンジャーブレッドの工房', at(3, 0.42), W / 2 + 30, 30, 20, '#f0d6a4', W / 2 + 24);
+    addBox(g, [20, 7, 12], [-3, 3.5, 2], gingerBrick, null, 0.02);
+    iceRoof(g, choco, [-3, 7, 2], [21, 6, 13.2]);
+    for (let k = 0; k < 7; k++) part(g, SPH_LO, toon(candyCols[k % candyCols.length]), [-12 + k * 3, 13.2, 2], [0.7, 0.7, 0.7], null, 0);   // 棟のグミ
+    for (let x = -11; x <= 5; x += 4) { addBox(g, [2, 2.4, 0.2], [x, 3.4, -4.05], warm); addBox(g, [2.4, 0.3, 0.3], [x, 4.75, -4.1], icing); }
+    addBox(g, [2.6, 4, 0.2], [-3, 2, -4.06], toon('#5a3a26'));
+    // 焼き窯の大きな煙突
+    addBox(g, [3.4, 14, 3.4], [7.6, 7, 4], chocoBrick, null, 0.02); addBox(g, [4, 0.8, 4], [7.6, 14.2, 4], icing); smokes.push(g.localToWorld(new V3(7.6, 15, 4)));
+    // 木の焼き型：騎士や馬車を彫り込んだ大きな板
+    const mold = toon('#ffffff', { map: ctex(128, 192, c => {
+      c.fillStyle = '#8a5a34'; c.fillRect(0, 0, 128, 192); c.strokeStyle = '#4a2c18'; c.lineWidth = 5; c.strokeRect(8, 8, 112, 176);
+      c.lineWidth = 4; c.beginPath(); c.ellipse(64, 70, 30, 22, 0, 0, Math.PI * 2); c.stroke();
+      c.beginPath(); c.moveTo(30, 140); c.lineTo(50, 112); c.lineTo(80, 112); c.lineTo(98, 140); c.moveTo(42, 140); c.lineTo(42, 160); c.moveTo(86, 140); c.lineTo(86, 160); c.stroke();
+      c.beginPath(); c.arc(64, 70, 10, 0, Math.PI * 2); c.stroke(); for (let k = 0; k < 8; k++) { const a = k / 8 * Math.PI * 2; c.beginPath(); c.moveTo(64 + Math.cos(a) * 14, 70 + Math.sin(a) * 14); c.lineTo(64 + Math.cos(a) * 26, 70 + Math.sin(a) * 18); c.stroke(); }
+    }) });
+    addBox(g, [4, 6, 0.5], [-14.4, 3, -3], mold, [0.18, 0, 0]);
+    // 焼きたての棚：カタジンカとハート形
+    for (const x of [-9, 1]) {
+      addBox(g, [6, 1, 2.4], [x, 0.5, -6.5], wood); addBox(g, [6.2, 0.15, 2.6], [x, 1.05, -6.5], icing);
+      for (let k = 0; k < 3; k++) katarzynka(g, 0.42, ginger, icing, [x - 2 + k * 2, 1.7, -6.5], 0);
+    }
+    // パン職人（白い服に高い帽子）と、はちみつの樽
+    for (let k = 0; k < 4; k++) { const x = rand(-12, 4), z = rand(-9, -7.5); figure(g, x, 0, z, '#fffaf4', 1, '#ffffff'); part(g, CYL, toon('#ffffff'), [x, 2.45, z], [0.26, 0.5, 0.26], null, 0); }
+    for (let k = 0; k < 4; k++) part(g, new THREE.CylinderGeometry(0.75, 0.75, 1.4, 12), toon('#b07a3a'), [10 + (k % 2) * 1.7, 0.7 + Math.floor(k / 2) * 1.4, -4 + (k % 2) * 0.4], null, null, 0.03);
+    g.updateMatrixWorld(true);
+    for (let k = 0; k < 10; k++) addPerson(g.localToWorld(new V3(rand(-12, 8), 0, rand(-12, -10))));
+    signAt(g, 'ジンジャーブレッドの工房', 19, 15);
+  }
+  {
+    // ドイツ騎士団の城跡：崩れたれんがの壁と、川へ張り出したアーチの回廊の先のダンスカー塔（グダニスコ）
+    const s = at(3, 0.75), c = onGround(local(s, 0, W / 2 + 70));
+    if (!taken(c.x, c.z, 22)) {
+      const g = registerLandmark(fantasyGroup(c), 'ドイツ騎士団の城跡とダンスカー塔'); g.rotation.y = yawAt(s);
+      landmarkFoundation(g, 40, 30, '#e7c99a');
+      const walls = [[-14, 0, 0.8, 22], [14, 0, 0.8, 22], [0, -10, 28, 0.8], [0, 10, 28, 0.8]];
+      for (const [x, z, w, d] of walls) {
+        const n = Math.max(w, d) / 4;
+        for (let k = 0; k < n; k++) { const h = rand(2, 9), f = (k + 0.5) / n - 0.5; addBox(g, [w > 1 ? 4 : 1.6, h, d > 1 ? 4 : 1.6], [x + (w > 1 ? f * w : 0), h / 2, z + (d > 1 ? f * d : 0)], chocoBrick, null, 0.02); }
+      }
+      // 回廊のアーチ（下に通り抜けの穴）と、先端の四角い塔
+      for (let k = 0; k < 4; k++) { addBox(g, [1.6, 9, 2.6], [-3 + k * 5, 4.5, 16], chocoBrick, null, 0.02); }
+      addBox(g, [16, 2.4, 3], [4.5, 10.2, 16], chocoBrick, null, 0.02); addBox(g, [16.4, 0.4, 3.4], [4.5, 11.6, 16], icing);
+      addBox(g, [8, 22, 8], [15, 11, 16], chocoBrick, null, 0.02); iceRoof(g, choco, [15, 22, 16], [8.6, 5, 8.6]);
+      for (const y of [8, 14, 19]) addBox(g, [1, 2, 0.2], [15, y, 11.95], toon('#3a2218'));
+      signAt(g, 'ドイツ騎士団の城跡', 28, 13);
+      occupied.push({ x: c.x, z: c.z, r: 26 });
+    }
+  }
+
+  /* ---- 第4〜5区間：旧市街の路地。パステルの家並み、城壁と斜塔、船乗りの門、コペルニクスの家 ---- */
+  // 家並みの壁：白地に窓（チョコの窓と白い枠、花の窓辺）。色はインスタンスごとに塗る
+  const facade = ctex(128, 128, c => {
+    c.fillStyle = '#ffffff'; c.fillRect(0, 0, 128, 128);
+    for (let y = 0; y < 3; y++) for (let x = 0; x < 3; x++) {
+      const px = 14 + x * 38, py = 12 + y * 40;
+      c.fillStyle = '#f2f2f2'; c.fillRect(px - 3, py - 3, 26, 32); c.fillStyle = '#5a3424'; c.fillRect(px, py, 20, 26);
+      c.fillStyle = '#ffffff'; c.fillRect(px + 9, py, 2, 26); c.fillRect(px, py + 11, 20, 2);
+      c.fillStyle = ['#ff6f9a', '#ffd34a', '#ff9f68'][(x + y) % 3]; c.fillRect(px - 2, py + 26, 24, 4);
+    }
+    c.fillStyle = '#e6e0d8'; c.fillRect(0, 124, 128, 4);
+  });
+  const facadeM = toon('#ffffff', { map: facade }), plainM = toon('#ffffff');
+  const houses = [], roofs = [], roofIcing = [], ridges = [];
+  const house = (p, yaw, w, d, h) => {
+    const col = C(pick(['#ffa8c8', '#9fe3d2', '#ffe58a', '#c6b4ff', '#ffc49a', '#a8d4ff', '#ffc2d8', '#f6efe2']));
+    houses.push({ p: p.clone().add(new V3(0, h / 2, 0)), s: new V3(w, h, d), r: [0, yaw, 0], c: col });
+    // 切妻を通りへ向ける（棟は奥行きの向き）
+    const rh = w * rand(0.7, 1.0), rc = C(pick(['#7d4b2e', '#5a3222', '#e86a8a', '#c98a55', '#9a5a3a']));
+    roofs.push({ p: p.clone().add(new V3(0, h, 0)), s: new V3(d + 0.6, rh, w + 0.5), r: [0, yaw + Math.PI / 2, 0], c: rc });
+    roofIcing.push({ p: p.clone().add(new V3(0, h + rh * 0.45 + 0.15, 0)), s: new V3(d + 0.9, rh * 0.55, (w + 0.5) * 0.55), r: [0, yaw + Math.PI / 2, 0] });
+    if (Math.random() < 0.6) ridges.push({ p: p.clone().add(new V3(0, h + rh + 0.25, 0)), s: new V3(0.45, 0.45, 0.45), c: C(pick(candyCols)) });
+  };
+  // 通りの片側に家を並べる（side: 1 外、-1 内馬場）
+  const street = (s0, s1, side, v0, opts = {}) => {
+    for (let s = s0; s < s1;) {
+      const w = rand(6.5, 9), d = rand(9, 12), h = rand(9, 14), v = side * (v0 + d / 2), p = onGround(local(s + w / 2, 0, v)), yaw = yawAt(s + w / 2);
+      s += w + rand(0.3, 1.2);
+      if (!clearAt(p.x, p.z, W / 2 + 7, Math.max(w, d) / 2) || (side < 0 && !inLoop(p.x, p.z)) || (opts.outside && inLoop(p.x, p.z))) continue;
+      house(p, yaw, w, d, h); occupied.push({ x: p.x, z: p.z, r: Math.max(w, d) / 2 + 0.5 });
+    }
+  };
+  {
+    // 城壁と斜塔（クシヴァ・ヴィエジャ）：家並みの外を城壁が囲み、斜塔は傾いたまま立つ
+    const s = at(4, 0.5), lt = site('斜塔（クシヴァ・ヴィエジャ）', s, W / 2 + 40, 10, 10, '#f0d6a4', W / 2 + 30);
+    const tower = new THREE.Group(); tower.rotation.z = 0.12; lt.add(tower);
+    addBox(tower, [7, 16, 7], [0, 8, 0], chocoBrick, null, 0.02); iceRoof(tower, choco, [0, 16, 0], [7.6, 5, 7.6]);
+    for (const y of [5, 10]) addBox(tower, [1.2, 2, 0.2], [0, y, -3.55], toon('#3a2218'));
+    signAt(lt, '斜塔', 25, 6);
+    // 城壁：斜塔の両側へ続く、胸壁の付いたれんがの壁
+    const wall = [], crenel = [];
+    for (let s2 = at(3, 0.95); s2 < at(5, 0.9); s2 += 4) {
+      const p = onGround(local(s2, 0, W / 2 + 40)), q = onGround(local(s2 + 4, 0, W / 2 + 40));
+      if (taken(p.x, p.z, 1.5) && p.distanceTo(lt.position) > 6) continue;
+      if (p.distanceTo(lt.position) < 6) continue;
+      const b = beam(p.clone().add(new V3(0, 3, 0)), q.clone().add(new V3(0, 3, 0)), 6); b.s.z = 1.6; wall.push(b);
+      crenel.push({ p: p.clone().add(new V3(0, 6.5, 0)), s: new V3(1.4, 1.2, 1.8), r: [0, yawAt(s2), 0] });
+      occupied.push({ x: p.x, z: p.z, r: 2.5 });
+    }
+    addInst(BOX, chocoBrick, wall); addInst(BOX, chocoBrick, crenel, false);
+    // 船乗りの門（ブラマ・ジェグラルスカ）
+    const sg = site('船乗りの門（ブラマ・ジェグラルスカ）', at(5, 0.25), W / 2 + 42, 12, 8, '#f0d6a4', W / 2 + 32);
+    addBox(sg, [10, 12, 6], [0, 6, 0], gingerBrick, null, 0.02); addBox(sg, [4, 6, 6.2], [0, 3, 0], toon('#3a2218'));
+    iceRoof(sg, pinkM, [0, 12, 0], [10.6, 5, 6.6]);
+    signAt(sg, '船乗りの門', 20, 9);
+    // コペルニクスの家：段々の破風（ステップ・ゲーブル）を二つ並べたゴシックの家。1473年にコペルニクスが生まれた町の家
+    const ck = site('コペルニクスの家', at(5, 0.62), W / 2 + 16, 14, 11, '#f0d6a4', W / 2 + 11);
+    for (const x of [-3.4, 3.4]) {
+      addBox(ck, [6.6, 12, 10], [x, 6, 0], gingerBrick, null, 0.02);
+      for (let k = 0; k < 5; k++) addBox(ck, [6.6 - k * 1.3, 1.6, 0.8], [x, 12.8 + k * 1.6, -4.6], gingerBrick, null, 0.02);
+      for (let k = 0; k < 5; k++) part(ck, CONE, icing, [x + (k % 2 ? 1 : -1) * (3.3 - k * 0.65), 13.9 + k * 1.6, -4.6], [0.3, 1, 0.3], null, 0);
+      part(ck, PRISM, choco, [x, 12, 0.8], [8.6, 8, 6.6], [0, Math.PI / 2, 0], 0.02);
+      for (let f = 0; f < 3; f++) for (const xx of [-1.6, 1.6]) { addBox(ck, [1.2, 2, 0.2], [x + xx, 2.6 + f * 3.4, -5.05], toon('#4a2a1e')); addBox(ck, [1.6, 0.25, 0.3], [x + xx, 3.7 + f * 3.4, -5.1], icing); }
+      for (const y of [14, 17]) addBox(ck, [1, 1.6, 0.2], [x, y, -5.05], toon('#4a2a1e'));
+    }
+    addBox(ck, [2.2, 3.4, 0.2], [-3.4, 1.7, -5.06], toon('#6a4228'));
+    signAt(ck, 'コペルニクスの家', 24, 11);
+    // 家並み：路地の両側と城壁の内側
+    street(at(3, 0.92), at(5, 0.95), 1, W / 2 + 9, { outside: true });
+    street(at(3, 0.92), at(5, 0.95), 1, W / 2 + 23, { outside: true });
+    street(at(4, 0.0), at(5, 0.9), -1, W / 2 + 10);
+    registerLandmark(fantasyGroup(onGround(local(at(4, 0.5), 0, W / 2 + 14))), '旧市街の路地');
+  }
+
+  /* ---- 第6区間：シュガーダッシュの下り。キャンディの森、キャンディケインの門、グミのくま ---- */
+  {
+    // キャンディケインの門：走路をまたぐ縞の柱とアーチ。坂の入口と出口に
+    for (const t of [0.12, 0.88]) {
+      const s = at(6, t), f = tp(s, W / 2), g = registerLandmark(fantasyGroup(f.v.clone()), t < 0.5 ? 'キャンディケインの門' : 'キャンディケインの門（出口）'); g.rotation.y = -f.h;
+      const R = W / 2 + 2.5;
+      for (const z of [-R, R]) { part(g, CYL, caneM, [0, 4, z], [0.6, 8, 0.6], null, 0.03); part(g, SPH_LO, toon('#ff5f9a'), [0, 8.3, z], [0.9, 0.9, 0.9], null, 0); }
+      part(g, new THREE.TorusGeometry(R, 0.55, 10, 40, Math.PI), caneM, [0, 8, 0], null, [0, Math.PI / 2, 0], 0.03);
+      // アーチの頂の大きな棒つきキャンディ
+      part(g, DISC, lollyMats[t < 0.5 ? 0 : 1][0], [0, 8 + R + 2.2, 0], [2.2, 2.2, 1], [0, Math.PI / 2, 0], 0.03);
+      const p0 = local(s, 0, -R), p1 = local(s, 0, R); occupied.push({ x: p0.x, z: p0.z, r: 2 }, { x: p1.x, z: p1.z, r: 2 });
+    }
+    // グミのくま：半透明の色とりどりのくまが並んで見送る
+    const bears = [];
+    for (let k = 0; k < 7; k++) {
+      const s = at(6, 0.25 + k * 0.08), p = onGround(local(s, 0, W / 2 + 16 + (k % 2) * 4));
+      if (taken(p.x, p.z, 4)) continue;
+      const g = fantasyGroup(p); g.rotation.y = yawAt(s) - Math.PI / 2; g.scale.setScalar(2.1); const m = toon(candyCols[k % candyCols.length], { transparent: true, opacity: 0.82, emissive: C(candyCols[k % candyCols.length]), emissiveIntensity: 0.15 });
+      part(g, SPH_LO, m, [0, 1.6, 0], [1.2, 1.5, 1], null, 0.03); part(g, SPH_LO, m, [0, 3.4, 0], [1, 0.9, 0.9], null, 0.03);
+      for (const x of [-0.7, 0.7]) { part(g, SPH_LO, m, [x, 4.2, 0], [0.35, 0.35, 0.3], null, 0); part(g, SPH_LO, m, [x * 1.5, 2.3, 0.2], [0.4, 0.7, 0.4], [0, 0, x], 0); part(g, SPH_LO, m, [x * 0.8, 0.45, 0.2], [0.45, 0.5, 0.5], null, 0); }
+      const arm = new THREE.Group(); arm.position.set(-1.1, 2.6, 0); g.add(arm); part(arm, SPH_LO, m, [-0.3, 0.5, 0], [0.38, 0.75, 0.38], [0, 0, 0.5], 0);
+      bears.push({ arm, ph: k });
+      occupied.push({ x: p.x, z: p.z, r: 4.6 });
+      if (!k) registerLandmark(g, 'グミのくま');
+    }
+    updates.push(t => { const m = reduced.matches ? 0 : t; for (const b of bears) b.arm.rotation.z = 0.4 + Math.sin(m * 3 + b.ph) * 0.45 * (celebration > 0 ? 1.6 : 1); });
+    registerLandmark(fantasyGroup(onGround(local(at(6, 0.5), 0, W / 2 + 60))), 'キャンディの森');
+  }
+
+  /* ---- 第7区間：聖ヨハネ大聖堂（大きな鐘トゥバ・デイ）と、筏師の噴水（バイオリンを弾く筏師とカエル）、ロバの像 ---- */
+  let bell = null;
+  {
+    const g = site('聖ヨハネ大聖堂', at(7, 0.5), W / 2 + 46, 46, 22, '#f0d6a4', W / 2 + 34);
+    addBox(g, [32, 14, 18], [-6, 7, 1], gingerBrick, null, 0.02);
+    iceRoof(g, choco, [-6, 14, 1], [32.6, 13, 18.8]);
+    // ステンドグラスの尖頭窓（色とりどりのキャンディガラス）
+    for (let x = -20; x <= 8; x += 5) { addBox(g, [2, 7, 0.2], [x, 6.5, -8.05], toon(candyCols[((x + 20) / 5) % candyCols.length], { emissive: C(candyCols[((x + 20) / 5) % candyCols.length]), emissiveIntensity: 0.55 })); part(g, CONE, icing, [x, 10.6, -8.1], [1.1, 1.4, 0.2], null, 0); }
+    // 塔：どっしりとした四角い塔と、低い四角錐の屋根。鐘の開口部にトゥバ・デイ
+    addBox(g, [12, 34, 12], [16, 17, 1], gingerBrick, null, 0.02);
+    const roof4 = new THREE.ConeGeometry(1, 1, 4); roof4.rotateY(Math.PI / 4);
+    part(g, roof4, choco, [16, 37, 1], [9.4, 6, 9.4], null, 0.02); part(g, roof4, icing, [16, 37 + 6 * 0.45 / 2 + 0.15, 1], [9.4 * 0.55, 6 * 0.55, 9.4 * 0.55], null, 0);
+    part(g, SPH_LO, toon('#ffd34a'), [16, 41, 1], [0.7, 0.7, 0.7], null, 0);
+    addBox(g, [6, 8, 0.4], [16, 26, -5.05], toon('#3a2218'));
+    bell = new THREE.Group(); bell.position.set(16, 29.5, -4.4); g.add(bell);
+    part(bell, new THREE.CylinderGeometry(1.2, 2.4, 3.6, 16), toon('#e0b94a'), [0, -2, 0], null, null, 0.04); part(bell, SPH_LO, toon('#e0b94a'), [0, -0.2, 0], [1.2, 0.8, 1.2], null, 0);
+    for (let k = 0; k < 4; k++) addBox(g, [1.4, 3.2, 0.2], [12.5 + k * 2.3, 14, -5.05], toon('#4a2a1e'));
+    g.updateMatrixWorld(true);
+    for (let k = 0; k < 10; k++) addPerson(g.localToWorld(new V3(rand(-18, 10), 0, rand(-12, -10))));
+    signAt(g, '聖ヨハネ大聖堂（鐘トゥバ・デイ）', 46, 18);
+  }
+  const fountain = { jets: [] };
+  {
+    const s = at(7, 0.22), c = onGround(local(s, 0, W / 2 + 22));
+    if (!taken(c.x, c.z, 8)) {
+      const g = registerLandmark(fantasyGroup(c), '筏師の噴水（フリサク）'); g.rotation.y = yawAt(s);
+      part(g, new THREE.CylinderGeometry(6.5, 6.8, 1.2, 28), toon('#e8dccb'), [0, 0.6, 0], null, null, 0.02);
+      part(g, new THREE.CircleGeometry(6, 28), toon('#a8e4ff', { emissive: C('#6fc8ff'), emissiveIntensity: 0.25 }), [0, 1.15, 0], null, [-Math.PI / 2, 0, 0], 0);
+      part(g, CYL, toon('#d8ccbb'), [0, 2.4, 0], [1.4, 2.6, 1.4], null, 0.02);
+      // 筏師：帽子をかぶり、バイオリンを弾く（カエルを町から連れ出した伝説）
+      const bronze = toon('#6f8a6a');
+      part(g, new THREE.CapsuleGeometry(0.55, 1.6, 3, 8), bronze, [0, 5.2, 0], null, null, 0.03); part(g, SPH_LO, bronze, [0, 6.8, 0], [0.45, 0.5, 0.45], null, 0.03);
+      part(g, CYL, bronze, [0, 7.3, 0], [0.75, 0.12, 0.75], null, 0); part(g, CYL, bronze, [0, 7.55, 0], [0.4, 0.45, 0.4], null, 0);
+      addBox(g, [1.2, 0.35, 0.5], [0.5, 6.1, 0.5], toon('#8a5a2a'), [0, 0.6, 0.6]); addBox(g, [1.6, 0.05, 0.05], [0.2, 6.4, -0.2], bronze, [0, -0.5, -0.4]);
+      // 縁のカエル：口から水を吹く
+      for (let k = 0; k < 8; k++) {
+        const a = k / 8 * Math.PI * 2, x = Math.cos(a) * 6.2, z = Math.sin(a) * 6.2, fm = toon('#6fbf4a');
+        part(g, SPH_LO, fm, [x, 1.6, z], [0.7, 0.45, 0.6], [0, -a, 0], 0.03);
+        for (const e of [-0.25, 0.25]) part(g, SPH_LO, toon('#ffffff'), [x - Math.cos(a) * 0.4 - Math.sin(a) * e, 2.05, z - Math.sin(a) * 0.4 + Math.cos(a) * e], [0.16, 0.16, 0.16], null, 0);
+        g.updateMatrixWorld(true);
+        fountain.jets.push({ p: g.localToWorld(new V3(x * 0.92, 1.9, z * 0.92)), d: g.localToWorld(new V3(-Math.cos(a), 0, -Math.sin(a))).sub(g.localToWorld(new V3())).normalize() });
+      }
+      signAt(g, '筏師の噴水', 10, 9);
+      occupied.push({ x: c.x, z: c.z, r: 8 });
+    }
+    // ロバの像：背のとがった木のロバ（かつての罰の道具を再現した像）
+    const q = onGround(local(at(7, 0.85), 0, W / 2 + 16));
+    if (!taken(q.x, q.z, 3)) {
+      const g = registerLandmark(fantasyGroup(q), 'ロバの像'); g.rotation.y = yawAt(at(7, 0.85));
+      const dw = toon('#9a6a44');
+      addBox(g, [3, 0.6, 1.6], [0, 0.3, 0], toon('#d8ccbb')); part(g, PRISM, dw, [0, 1.9, 0], [2.4, 1.1, 0.9], null, 0.03);
+      for (const [x, z] of [[-0.9, -0.3], [-0.9, 0.3], [0.9, -0.3], [0.9, 0.3]]) addBox(g, [0.18, 1.4, 0.18], [x, 1.2, z], dw);
+      part(g, SPH_LO, dw, [1.5, 2.6, 0], [0.5, 0.35, 0.3], [0, 0, -0.5], 0.03); for (const z of [-0.15, 0.15]) part(g, CONE, dw, [1.4, 3.1, z], [0.1, 0.5, 0.1], null, 0);
+      occupied.push({ x: q.x, z: q.z, r: 3 });
+    }
+  }
+
+  /* ---- 第8区間の外：ジンジャーブレッドの博物館（れんがの工場の建物と煙突） ---- */
+  {
+    const g = site('ジンジャーブレッドの博物館', at(8, 0.5), W / 2 + 30, 26, 16, '#f0d6a4', W / 2 + 24);
+    addBox(g, [22, 9, 12], [0, 4.5, 1], chocoBrick, null, 0.02);
+    for (let k = 0; k < 3; k++) { iceRoof(g, choco, [-7.3 + k * 7.3, 9, 1], [12.6, 3.4, 7.3], Math.PI / 2); }
+    addBox(g, [2.4, 18, 2.4], [9, 9, 5], gingerBrick, null, 0.02); addBox(g, [3, 0.8, 3], [9, 18.2, 5], icing);
+    for (let x = -9; x <= 7; x += 4) { addBox(g, [2, 3, 0.2], [x, 5, -5.05], warm); addBox(g, [2.4, 0.3, 0.3], [x, 6.65, -5.1], icing); }
+    putBoard('ジンジャーブレッドの博物館', g.localToWorld(new V3(0, 10.6, -6.2)), g.rotation.y + Math.PI, 12);
+    katarzynka(g, 1.2, ginger, icing, [-8, 3, -6.6]);
+    g.updateMatrixWorld(true);
+    for (let k = 0; k < 8; k++) addPerson(g.localToWorld(new V3(rand(-10, 10), 0, rand(-11, -8))));
+    signAt(g, 'ジンジャーブレッドの博物館', 23, 16);
+  }
+
+  /* ---- 内馬場：旧市街の広場。旧市庁舎を中心に、石畳の広場（コペルニクス像、巨大カタジンカ、チョコレートの噴水、回転木馬、行進するジンジャーブレッドマン）、
+     そのまわりをお菓子の汽車が走り、外にジンジャーブレッドの家の村。ホーム直線の内側にジンジャーブレッドの市 ---- */
+  let hall = null, giant = null, carouselAt = null;
+  {
+    // 旧市庁舎は内馬場のいちばん広いところ
+    let best = null, bestD = 0;
+    for (let k = 0; k < 600; k++) {
+      const i = (Math.random() * track.N) | 0, p = new V3(track.xs[i], 0, track.zs[i]).lerp(new V3(0, 0, 0), rand(0.2, 1));
+      if (!inLoop(p.x, p.z) || p.distanceTo(boardPos) < 50) continue;
+      const d = roadDist(p.x, p.z, 200); if (d > bestD) { bestD = d; best = p; }
+    }
+    const c = onGround(best || new V3(0, 0, 0)), g = registerLandmark(fantasyGroup(c), '旧市庁舎');
+    g.rotation.y = yawAt(track.finishS);
+    hall = { c };
+    g.updateMatrixWorld(true);
+    const H = (x, z) => onGround(g.localToWorld(new V3(x, 0, z)));
+    // 石畳の広場：ビスケット色といちご色の丸い敷石。地面に沿わせた楕円
+    {
+      const plazaTex = ctex(256, 256, c2 => {
+        c2.fillStyle = '#d9bf98'; c2.fillRect(0, 0, 256, 256);
+        for (let y = 0; y < 256; y += 16) for (let x = (y / 16) % 2 ? -8 : 0; x < 256; x += 16) { c2.fillStyle = pick(['#f6e4c8', '#f2d6b8', '#ffd2e0', '#f8ecd8', '#e8c9a0']); c2.beginPath(); if (c2.roundRect) c2.roundRect(x + 1.5, y + 1.5, 13, 13, 4); else c2.rect(x + 1.5, y + 1.5, 13, 13); c2.fill(); }
+      }, true);
+      // 同心の輪と放射の格子で、縁のなめらかな楕円にする
+      const PX = 54, PZ = 50, nr = 14, na = 72, pos = [], uv = [], ix = [];
+      for (let i = 0; i <= nr; i++) for (let j = 0; j <= na; j++) {
+        const a = j / na * Math.PI * 2, lx = Math.cos(a) * PX * i / nr, lz = Math.sin(a) * PZ * i / nr, w = g.localToWorld(new V3(lx, 0, lz));
+        pos.push(w.x, groundAt(w) + 0.07, w.z); uv.push(lx / 8, lz / 8);
+      }
+      for (let i = 0; i < nr; i++) for (let j = 0; j < na; j++) { const a = i * (na + 1) + j; ix.push(a, a + 1, a + na + 1, a + 1, a + na + 2, a + na + 1); }
+      const geo = new THREE.BufferGeometry(); geo.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3)); geo.setAttribute('uv', new THREE.Float32BufferAttribute(uv, 2)); geo.setIndex(ix); geo.computeVertexNormals();
+      const plaza = new THREE.Mesh(geo, toon('#ffffff', { map: plazaTex, polygonOffset: true, polygonOffsetFactor: -1, polygonOffsetUnits: -2 })); plaza.receiveShadow = true; world.add(plaza);
+      // 広場の縁の街灯と、広場を歩く人
+      const lp = [], lh = [];
+      for (let k = 0; k < 20; k++) { const a = k / 20 * Math.PI * 2, q = H(Math.cos(a) * (PX - 1.5), Math.sin(a) * (PZ - 1.5)); lp.push({ p: q.clone().add(new V3(0, 2, 0)), s: new V3(0.1, 4, 0.1) }); lh.push({ p: q.clone().add(new V3(0, 4.2, 0)), s: new V3(0.4, 0.5, 0.4) }); }
+      addInst(CYL, toon('#3a2a2a'), lp, false); addInst(SPH_LO, toon('#fff0c8', { emissive: C('#ffcf7a'), emissiveIntensity: 0.8 }), lh, false);
+      for (let k = 0; k < 40; k++) { const a = rand(0, Math.PI * 2), rr = rand(30, 50); addPerson(H(Math.cos(a) * rr, Math.sin(a) * rr * 0.92)); }
+      // 広場の上には木を植えない
+      for (let k = 0; k < 24; k++) { const a = k / 24 * Math.PI * 2; for (const f of [0, 0.5, 0.85]) { const q = H(Math.cos(a) * PX * f, Math.sin(a) * PZ * f); occupied.push({ x: q.x, z: q.z, r: 12 }); } }
+    }
+    // 中庭を囲む四角い建物：パステルのアイシングで縁取ったジンジャーブレッドのれんが
+    for (const [x, z, w, d] of [[0, -11, 30, 6], [0, 11, 30, 6], [-12, 0, 6, 16], [12, 0, 6, 16]]) addBox(g, [w, 11, d], [x, 5.5, z], gingerBrick, null, 0.02);
+    for (const [x, z, w, d, ry] of [[0, -11, 30, 6, 0], [0, 11, 30, 6, 0], [-12, 0, 16, 6, Math.PI / 2], [12, 0, 16, 6, Math.PI / 2]]) { iceRoof(g, choco, [x, 11, z], [w + 0.6, 4, d + 0.8], ry); }
+    for (let x = -12; x <= 12; x += 3) for (const z of [-14.05, 14.05]) { addBox(g, [1.2, 2.4, 0.2], [x, 3, z], toon('#4a2a1e')); addBox(g, [1.2, 2.4, 0.2], [x, 7.4, z], toon('#4a2a1e')); }
+    // 四隅の小塔と、北側の高い塔
+    for (const [x, z] of [[-15, -14], [15, -14], [-15, 14], [15, 14]]) { part(g, CYL, gingerBrick, [x, 8, z], [1.5, 16, 1.5], null, 0.02); part(g, CONE, pinkM, [x, 18, z], [1.9, 4, 1.9], null, 0.02); }
+    addBox(g, [8, 28, 8], [0, 14, 11], gingerBrick, null, 0.02);
+    part(g, CYL, choco, [0, 30, 11], [3.6, 4, 3.6], null, 0.02); part(g, CONE, choco, [0, 35, 11], [3.8, 6, 3.8], null, 0.02); part(g, SPH_LO, toon('#ffd34a'), [0, 38.6, 11], [0.6, 0.6, 0.6], null, 0);
+    // 塔の時計
+    part(g, CYL, icing, [0, 22, 6.9], [2.2, 0.3, 2.2], [Math.PI / 2, 0, 0], 0); part(g, CYL, icing, [0, 22, 15.1], [2.2, 0.3, 2.2], [Math.PI / 2, 0, 0], 0);
+    signAt(g, '旧市庁舎', 44, 9);
+    occupied.push({ x: c.x, z: c.z, r: 22 });
+    // コペルニクス像：天球儀（アストロラーベ）を掲げて立つ。台座は市庁舎の前
+    g.updateMatrixWorld(true);
+    const cp = H(0, -29);
+    const cg = registerLandmark(fantasyGroup(cp), 'コペルニクス像'); cg.rotation.y = g.rotation.y;
+    const bronze = toon('#6f8a6a');
+    addBox(cg, [3, 3.4, 3], [0, 1.7, 0], toon('#e8dccb'), null, 0.02); addBox(cg, [3.4, 0.4, 3.4], [0, 3.6, 0], toon('#d8ccbb'));
+    part(cg, new THREE.CylinderGeometry(0.5, 0.9, 3, 10), bronze, [0, 5.3, 0], null, null, 0.03); part(cg, SPH_LO, bronze, [0, 7.2, 0], [0.42, 0.48, 0.42], null, 0.03);
+    part(cg, CYL, bronze, [0.6, 7.6, -0.3], [0.08, 1.6, 0.08], [0.5, 0, -0.4], 0);
+    for (const ry of [0, Math.PI / 2, Math.PI / 4]) part(cg, new THREE.TorusGeometry(0.55, 0.05, 6, 20), toon('#d9b24c'), [1, 8.6, -0.6], null, [Math.PI / 2, ry, 0], 0);
+    signAt(cg, 'コペルニクス像', 10.5, 8);
+    occupied.push({ x: cp.x, z: cp.z, r: 4 });
+    // 巨大カタジンカ：市庁舎の脇に立てた、6つの円のジンジャーブレッド（ゴールで光る）
+    const kp = H(-36, 0);
+    if (inLoop(kp.x, kp.z) && clearAt(kp.x, kp.z, W / 2 + 14, 8)) {
+      const kg = registerLandmark(fantasyGroup(kp), '巨大カタジンカ'); kg.rotation.y = g.rotation.y;
+      addBox(kg, [12, 1, 4], [0, 0.5, 0], toon('#fff3dc'), null, 0.02);
+      const gm = toon('#c07a3c', { emissive: C('#ff9a3a'), emissiveIntensity: 0 }), em = toon('#fff6fa', { emissive: C('#ffffff'), emissiveIntensity: 0 });
+      katarzynka(kg, 2.2, gm, em, [0, 5.2, 0]);
+      for (const x of [-3.5, 3.5]) addBox(kg, [0.5, 3, 0.5], [x, 2, 1.2], darkWood, [0.3, 0, 0]);
+      giant = { gm, em, c: kp };
+      signAt(kg, '巨大カタジンカ', 12, 9);
+      occupied.push({ x: kp.x, z: kp.z, r: 8 });
+    }
+    // 広場を行進するジンジャーブレッドマン：市庁舎のまわりをぐるりと
+    const ring = []; for (let k = 0; k < 48; k++) { const a = k / 48 * Math.PI * 2; ring.push(H(Math.cos(a) * 25, Math.sin(a) * 22)); }
+    if (ring.every(p => inLoop(p.x, p.z) && roadDist(p.x, p.z, 40) > W / 2 + 6)) {
+      const r = route(ring, true), men = [];
+      for (let i = 0; i < 9; i++) { const gm2 = fantasyGroup(); gm2.userData.droneIgnore = true; const man = gingerMan(gm2, i === 0 ? 1.4 : 1); men.push({ ...man, root: gm2, off: i * 3.2 }); }
+      // 先頭はドラムをたたく
+      part(men[0].g, CYL, toon('#e8384f'), [0.6, 1.3, 0], [0.5, 0.45, 0.5], [0, 0, Math.PI / 2], 0.03);
+      updates.push(t => {
+        const m = reduced.matches ? 0 : t;
+        for (const mm of men) {
+          const { p, yaw } = r.at(m * 1.4 - mm.off); mm.root.position.set(p.x, p.y + Math.abs(Math.sin(m * 6 + mm.off)) * 0.15, p.z); mm.root.rotation.y = yaw;
+          mm.legs.forEach((l, i) => { l.rotation.z = Math.sin(m * 6 + mm.off + i * Math.PI) * 0.45; });
+          // ゴールでは両手を上げて喜ぶ
+          mm.arms.forEach((a, i) => { a.rotation.z = Math.sin(m * 6 + mm.off + i * Math.PI + Math.PI) * 0.5; a.rotation.x = celebration > 0 ? (i ? -1 : 1) * 1.2 : 0; });
+        }
+      });
+      registerLandmark(fantasyGroup(ring[0].clone()), 'ジンジャーブレッドマンの行進');
+      ring.forEach(p => occupied.push({ x: p.x, z: p.z, r: 2 }));
+    }
+    carouselAt = H(0, 40);
+    if (!inLoop(carouselAt.x, carouselAt.z) || !clearAt(carouselAt.x, carouselAt.z, W / 2 + 16, 11)) carouselAt = null;
+    // チョコレートの噴水：3段の受け皿から、溶けたチョコレートが幕のように流れ落ちる
+    {
+      const fq = H(36, 0), fg = registerLandmark(fantasyGroup(fq), 'チョコレートの噴水');
+      const fallTex = ctex(64, 128, c2 => { c2.fillStyle = '#6a3a24'; c2.fillRect(0, 0, 64, 128); for (let x = 0; x < 64; x += 4) { c2.fillStyle = `rgba(${Math.random() < 0.5 ? '170,110,70' : '50,24,14'},${rand(0.3, 0.6)})`; c2.fillRect(x, 0, 2, 128); } for (let i = 0; i < 20; i++) { c2.fillStyle = 'rgba(255,220,190,.25)'; c2.fillRect(rand(0, 64), rand(0, 128), 1.5, rand(6, 18)); } }, true);
+      fallTex.repeat.set(6, 1);
+      const fall = toon('#ffffff', { map: fallTex, side: THREE.DoubleSide, emissive: C('#3a1a0a'), emissiveIntensity: 0.2 });
+      part(fg, new THREE.CylinderGeometry(6.4, 6.8, 1.4, 28), toon('#fff3dc'), [0, 0.7, 0], null, null, 0.02);
+      part(fg, new THREE.CircleGeometry(5.9, 28), fall, [0, 1.42, 0], null, [-Math.PI / 2, 0, 0], 0);
+      // 受け皿の高さ（下から）。幕は各段の縁から、ひとつ下の段（いちばん下は池）まで
+      const tiers = [3.4, 6.0, 8.6];
+      tiers.forEach((y, k) => {
+        const r = 4 - k * 1.2, below = k ? tiers[k - 1] : 1.4;
+        part(fg, CYL, toon('#fff3dc'), [0, y - 1.3, 0], [0.5, 2.6, 0.5], null, 0);
+        part(fg, new THREE.CylinderGeometry(r, r * 0.55, 0.8, 24), k % 2 ? pinkM : toon('#f6e7cc'), [0, y, 0], null, null, 0.03);
+        part(fg, new THREE.CylinderGeometry(r, r * 1.06, y + 0.4 - below, 24, 1, true), fall, [0, (y + 0.4 + below) / 2, 0], null, null, 0);
+      });
+      part(fg, SPH_LO, toon('#6a3a24'), [0, 9.4, 0], [0.8, 0.8, 0.8], null, 0);
+      // まわりのいちごとマシュマロの串
+      for (let k = 0; k < 10; k++) {
+        const a = k / 10 * Math.PI * 2, x = Math.cos(a) * 7.6, z = Math.sin(a) * 7.6;
+        part(fg, CYL, toon('#e8d8b8'), [x, 1.2, z], [0.06, 2.4, 0.06], null, 0);
+        part(fg, SPH_LO, k % 2 ? berry : toon('#fffaf4'), [x, 2.3, z], [0.45, k % 2 ? 0.55 : 0.4, 0.45], null, 0.03);
+      }
+      updates.push(t => { fallTex.offset.y = (reduced.matches ? 0 : t) * 0.35; });
+      signAt(fg, 'チョコレートの噴水', 13, 11);
+      occupied.push({ x: fq.x, z: fq.z, r: 9 });
+    }
+    // お菓子の汽車：広場のまわりを、ウエハースの枕木の線路でぐるりと回る
+    {
+      const TX = 70, TZ = 63, tpts = [];
+      for (let k = 0; k < 140; k++) { const a = k / 140 * Math.PI * 2; tpts.push(H(Math.cos(a) * TX, Math.sin(a) * TZ)); }
+      if (tpts.every(p => inLoop(p.x, p.z) && roadDist(p.x, p.z, 60) > W / 2 + 14 && p.distanceTo(boardPos) > 24)) {
+        const sleeper = ctex(64, 128, c2 => { c2.fillStyle = '#9fd9a8'; c2.fillRect(0, 0, 64, 128); for (let y = 4; y < 128; y += 16) { c2.fillStyle = '#e8c08a'; c2.fillRect(4, y, 56, 8); c2.fillStyle = '#c99a62'; c2.fillRect(4, y + 3, 56, 1.5); } c2.fillStyle = '#ff7fab'; c2.fillRect(16, 0, 5, 128); c2.fillRect(43, 0, 5, 128); }, true);
+        ribbon(tpts.concat([tpts[0]]), 3.4, 0.1, toon('#ffffff', { map: sleeper, side: THREE.DoubleSide }), 3.4, W / 2 + 4);
+        tpts.forEach(p => occupied.push({ x: p.x, z: p.z, r: 3.2 }));
+        const r = route(tpts, true), cars = [], wheels = [];
+        const wheelAt = (cg, x, z, rad) => { const wg = new THREE.Group(); wg.position.set(x, rad, z); cg.add(wg); part(wg, DISC, toon('#5a3222'), [0, 0, 0], [rad, rad, 0.8], null, 0.03); part(wg, BOX, icing, [0, 0, z > 0 ? 0.13 : -0.13], [rad * 1.6, 0.18, 0.05], null, 0); wheels.push({ wg, rad }); };
+        // 機関車：ジンジャーブレッドのボイラーに、キャンディケインの煙突
+        const loco = fantasyGroup(); loco.userData.droneIgnore = true;
+        part(loco, new THREE.CylinderGeometry(1.1, 1.1, 4.4, 16), ginger, [0.6, 1.9, 0], null, [0, 0, Math.PI / 2], 0.03);
+        for (const x of [-0.6, 0.8, 2.2]) part(loco, new THREE.TorusGeometry(1.12, 0.1, 6, 18), icing, [x, 1.9, 0], null, [0, Math.PI / 2, 0], 0);
+        addBox(loco, [2, 2.8, 2.4], [-2.4, 2.4, 0], pinkM, null, 0.03); iceRoof(loco, choco, [-2.4, 3.8, 0], [2.6, 0.9, 2.8], Math.PI / 2);
+        addBox(loco, [1, 0.9, 0.1], [-2.4, 2.9, -1.22], toon('#bfe8ff')); addBox(loco, [1, 0.9, 0.1], [-2.4, 2.9, 1.22], toon('#bfe8ff'));
+        part(loco, CYL, caneM, [2, 3.6, 0], [0.4, 1.8, 0.4], null, 0.03); part(loco, SPH_LO, toon('#ffd34a'), [2.9, 1.9, 0], [0.3, 0.3, 0.3], null, 0);
+        addBox(loco, [6.6, 0.5, 2.2], [-0.2, 0.75, 0], toon('#5a3222'));
+        for (const x of [-2.4, -0.6, 1.4]) for (const z of [-1.15, 1.15]) wheelAt(loco, x, z, 0.55);
+        figure(loco, -2.4, 0.9, 0, '#3f6fbf', 0.8, '#3f6fbf');
+        cars.push({ g: loco, off: 0 });
+        // 貨車：キャンディ、カタジンカ、ケーキ、わたあめを積む
+        const loads = [
+          g2 => { for (let k = 0; k < 14; k++) part(g2, SPH_LO, toon(pick(candyCols)), [rand(-1.4, 1.4), 1.9 + rand(0, 0.6), rand(-0.7, 0.7)], [0.4, 0.4, 0.4], null, 0); },
+          g2 => { for (let k = 0; k < 3; k++) katarzynka(g2, 0.5, ginger, icing, [-1.1 + k * 1.1, 2.4, 0], Math.PI / 2); },
+          g2 => { part(g2, new THREE.CylinderGeometry(1.1, 1.1, 1, 20), sponge, [0, 2.1, 0], null, null, 0.03); part(g2, new THREE.CylinderGeometry(1.15, 1.15, 0.3, 20), cream, [0, 2.7, 0], null, null, 0); part(g2, SPH_LO, berry, [0, 3.1, 0], [0.35, 0.4, 0.35], null, 0); },
+          g2 => { for (let k = 0; k < 3; k++) part(g2, SPH_LO, toon(['#ff9cc6', '#8fe0cf', '#bba4ff'][k]), [-1.1 + k * 1.1, 2.4, 0], [0.8, 0.8, 0.8], null, 0); }
+        ];
+        loads.forEach((load, i) => {
+          const cg = fantasyGroup(); cg.userData.droneIgnore = true;
+          addBox(cg, [3.8, 1.2, 2], [0, 1.4, 0], toon(['#9fe6d8', '#ffe58a', '#c9b2ff', '#ffb38a'][i]), null, 0.03); addBox(cg, [3.9, 0.2, 2.1], [0, 2.05, 0], icing);
+          addBox(cg, [3.8, 0.4, 1.8], [0, 0.65, 0], toon('#5a3222'));
+          for (const x of [-1.2, 1.2]) for (const z of [-1.05, 1.05]) wheelAt(cg, x, z, 0.45);
+          load(cg); cars.push({ g: cg, off: 6.6 + i * 4.4 });
+        });
+        const steam = ['#ffd6e8', '#fffaf4', '#d6f4ff'].map(C), stack = new V3();
+        updates.push((t, dt) => {
+          const m = reduced.matches ? 0 : t, head = m * 6;
+          for (const c2 of cars) { const { p, yaw } = r.at(head - c2.off); c2.g.position.set(p.x, p.y + 0.12, p.z); c2.g.rotation.y = yaw; }
+          for (const w of wheels) w.wg.rotation.z = -m * 6 / w.rad;
+          // 煙突からパステルの湯気
+          if (!reduced.matches && Math.random() < dt * (lightQuality() ? 4 : 10)) { loco.localToWorld(stack.set(2, 4.6, 0)); dustP.emit(stack.x, stack.y, stack.z, rand(-0.3, 0.3), rand(1.5, 2.4), rand(-0.3, 0.3), rand(2, 3), rand(0.8, 1.4), pick(steam), -0.05, 0.4); }
+        });
+        registerLandmark(fantasyGroup(tpts[0].clone()), 'お菓子の汽車');
+      }
+    }
+    // ジンジャーブレッドの家の村：汽車の線路の外に、アイシングで飾った小さな家が点々と
+    {
+      const vb = [], vr = [], vri = [], doors = [], wins = [], gums = [];
+      for (let k = 0, n = 0; k < 900 && n < 30; k++) {
+        const a = rand(0, Math.PI * 2), rr = rand(82, 130), p = H(Math.cos(a) * rr, Math.sin(a) * rr * 0.92);
+        if (!inLoop(p.x, p.z) || !clearAt(p.x, p.z, W / 2 + 18, 6) || p.distanceTo(boardPos) < 28) continue;
+        const yaw = rand(0, Math.PI * 2), w = rand(5, 7), d = rand(5, 6.5), h = rand(3.5, 4.8), rh = rand(2.6, 3.6);
+        const L = (x, y, z) => { const [ox, oz] = rot(x, z, yaw); return new V3(p.x + ox, p.y + y, p.z + oz); };
+        vb.push({ p: L(0, h / 2, 0), s: new V3(w, h, d), r: [0, yaw, 0] });
+        vr.push({ p: L(0, h, 0), s: new V3(w + 0.8, rh, d + 1), r: [0, yaw, 0], c: C(pick(['#5a3222', '#ff9cc2', '#7d4b2e', '#9fe6d8', '#c9b2ff'])) });
+        vri.push({ p: L(0, h + rh * 0.45 + 0.15, 0), s: new V3(w + 1.1, rh * 0.55, (d + 1) * 0.55), r: [0, yaw, 0] });
+        doors.push({ p: L(0, 1.1, -d / 2 - 0.05), s: new V3(1.3, 2.2, 0.15), r: [0, yaw, 0] });
+        for (const x of [-w / 4 - 0.4, w / 4 + 0.4]) wins.push({ p: L(x, h * 0.58, -d / 2 - 0.05), s: new V3(1, 1, 0.12), r: [0, yaw, 0] });
+        for (let j = 0; j < 3; j++) gums.push({ p: L(-w / 3 + j * w / 3, h + rh + 0.2, 0), s: new V3(0.35, 0.35, 0.35), c: C(pick(candyCols)) });
+        lolly(L(-w / 2 - 0.9, 0, -d / 2 - 0.8), 2, 0.6); lolly(L(w / 2 + 0.9, 0, -d / 2 - 0.8), 2, 0.6);
+        if (Math.random() < 0.5) addPerson(onGround(L(rand(-2, 2), 0, -d / 2 - rand(2, 4))));
+        occupied.push({ x: p.x, z: p.z, r: Math.max(w, d) / 2 + 2.5 }); n++;
+      }
+      addInst(BOX, gingerBrick, vb); addInst(PRISM, toon('#ffffff'), vr); addInst(PRISM, icing, vri, false);
+      addInst(BOX, toon('#6a4228'), doors, false); addInst(BOX, warm, wins, false); addInst(SPH_LO, toon('#ffffff'), gums, false);
+      if (vb.length) registerLandmark(fantasyGroup(vb[0].p.clone()), 'ジンジャーブレッドの家の村');
+    }
+  }
+  let carousel = null;
+  {
+    // 回転木馬：ストライプの屋根に、上下する木馬（この国の競走馬の練習台）
+    let c = carouselAt;
+    for (let k = 0; k < 400 && !c; k++) {
+      const i = (Math.random() * track.N) | 0, p = new V3(track.xs[i], 0, track.zs[i]).lerp(new V3(0, 0, 0), rand(0.25, 0.8));
+      if (inLoop(p.x, p.z) && clearAt(p.x, p.z, W / 2 + 16, 11) && p.distanceTo(boardPos) > 30) c = onGround(p);
+    }
+    if (c) {
+      const g = registerLandmark(fantasyGroup(c), '回転木馬');
+      part(g, CYL, toon('#fff3dc'), [0, 0.4, 0], [8, 0.8, 8], null, 0.02); part(g, CYL, toon('#ffd34a'), [0, 4, 0], [0.8, 8, 0.8], null, 0);
+      const roofTex = ctex(256, 64, c2 => { for (let x = 0; x < 256; x += 32) { c2.fillStyle = (x / 32) % 2 ? '#ff7fab' : '#fffaf4'; c2.fillRect(x, 0, 32, 64); } }, true);
+      part(g, new THREE.ConeGeometry(9, 4, 16, 1), toon('#ffffff', { map: roofTex }), [0, 9.6, 0], null, null, 0.02); part(g, SPH_LO, berry, [0, 11.9, 0], [0.7, 0.7, 0.7], null, 0);
+      const spin = new THREE.Group(); spin.position.y = 0.8; g.add(spin); const horses = [];
+      for (let k = 0; k < 8; k++) {
+        const a = k / 8 * Math.PI * 2, hg = new THREE.Group(); hg.position.set(Math.cos(a) * 6, 0, Math.sin(a) * 6); hg.rotation.y = -a; spin.add(hg);
+        part(hg, CYL, toon('#ffd34a'), [0, 4, 0], [0.1, 8, 0.1], null, 0);
+        const body = new THREE.Group(); hg.add(body); const col = toon(['#ffffff', '#ffc6dc', '#bdeee2', '#fff0b3'][k % 4]);
+        part(body, SPH_LO, col, [0, 2.4, 0], [0.4, 0.45, 1.1], null, 0.03); part(body, SPH_LO, col, [0, 3.1, 0.95], [0.25, 0.45, 0.25], [0.5, 0, 0], 0.03); part(body, SPH_LO, col, [0, 3.45, 1.25], [0.22, 0.22, 0.4], null, 0.03);
+        for (const [x, z] of [[-0.25, 0.6], [0.25, 0.6], [-0.25, -0.6], [0.25, -0.6]]) addBox(body, [0.12, 0.9, 0.12], [x, 1.8, z], col, [z > 0 ? -0.5 : 0.5, 0, 0]);
+        addBox(body, [0.5, 0.2, 0.6], [0, 2.85, 0], toon(candyCols[k % candyCols.length]));
+        horses.push({ body, ph: k * 0.8 });
+      }
+      for (let k = 0; k < 16; k++) { const a = k / 16 * Math.PI * 2; part(g, SPH_LO, glowMat('#fff2c0', 2), [Math.cos(a) * 8.6, 7.6, Math.sin(a) * 8.6], [0.25, 0.25, 0.25], null, 0); }
+      carousel = { spin, horses };
+      occupied.push({ x: c.x, z: c.z, r: 11 });
+      signAt(g, '回転木馬', 15, 7);
+      updates.push((t, dt) => {
+        if (reduced.matches) return;
+        spin.rotation.y += dt * (celebration > 0 ? 1.1 : 0.45);
+        for (const h of horses) h.body.position.y = Math.sin(t * 2.4 + h.ph) * 0.45;
+      });
+    }
+  }
+  {
+    // ジンジャーブレッドの市：ホーム直線の内側に一列。屋根にアイシングの縁、売り台にお菓子
+    const stallNames = ['カタジンカ', 'はちみつのピェルニク', 'チョコがけピェルニク', 'わたあめ', '棒つきキャンディ', 'ホットチョコレート', '木の焼き型', 'アイシングクッキー'];
+    const posts = [], roofsS = [], roofIce = [], counters = [], goods = [];
+    let si = 0;
+    for (let s = track.homeS0 + 22; s < track.homeS1 - 8 && si < stallNames.length; s += 11) {
+      const v = -(W / 2 + 15), c2 = onGround(local(s, 0, v)), yaw = yawAt(s);
+      if (!clearAt(c2.x, c2.z, W / 2 + 10, 3) || c2.distanceTo(boardPos) < 24) continue;
+      const L = (x, y, z) => { const [ox, oz] = rot(x, z, yaw); return new V3(c2.x + ox, c2.y + y, c2.z + oz); };
+      for (const [x, z] of [[-2.8, -1.8], [2.8, -1.8], [-2.8, 1.8], [2.8, 1.8]]) posts.push({ p: L(x, 1.5, z), s: new V3(0.12, 3, 0.12), c: C('#ffffff') });
+      roofsS.push({ p: L(0, 3.2, 0), s: new V3(6.6, 1.3, 4.8), r: [0, yaw, 0], c: C(pick(['#ff9cc2', '#9fe6d8', '#ffe58a', '#c9b2ff', '#ffb38a'])) });
+      roofIce.push({ p: L(0, 3.2 + 1.3 * 0.45 + 0.1, 0), s: new V3(6.9, 1.3 * 0.55, 4.8 * 0.55), r: [0, yaw, 0] });
+      counters.push({ p: L(0, 0.55, -1.4), s: new V3(5.4, 1.1, 1.2), r: [0, yaw, 0], c: C(pick(['#8a6244', '#a07a52', '#c98a55'])) });
+      for (let k = 0; k < 8; k++) goods.push({ p: L(rand(-2.3, 2.3), 1.25, rand(-1.8, -1)), s: new V3(0.36, 0.14, 0.36), c: C(pick(['#c07a3c', '#8a5228', '#ff7fab', '#7fe0d0', '#ffe27a', '#fffaf4'])) });
+      putBoard(stallNames[si], L(0, 4.3, 2.3), yaw, 4.4); putBoard(stallNames[si++], L(0, 4.3, -2.3), yaw + Math.PI, 4.4);
+      for (let k = 0; k < 3; k++) addPerson(onGround(L(rand(-2.6, 2.6), 0, rand(-3, -5.5))));
+      occupied.push({ x: c2.x, z: c2.z, r: 4.4 });
+    }
+    addInst(CYL, toon('#ffffff', { map: caneTex }), posts, false); addInst(PRISM, toon('#ffffff'), roofsS); addInst(PRISM, icing, roofIce, false);
+    addInst(BOX, toon('#ffffff'), counters); addInst(CYL, toon('#ffffff'), shuffle(goods), false);
+    registerLandmark(fantasyGroup(onGround(local(track.homeS0 + 60, 0, -(W / 2 + 15)))), 'ジンジャーブレッドの市');
+  }
+
+  /* ---- キャンディの森：沿道と内馬場に棒つきキャンディの木、わたあめの木、キャンディケイン、ガムドロップの茂み ---- */
+  {
+    const flossTrees = [], drops = [];
+    // わたあめの木：白い幹に、ふわふわのパステルの綿
+    const flossTree = (p, h, col = C(pick(['#ff9cc6', '#8fe0cf', '#bba4ff', '#ffe27a', '#ffb0d4']))) => {
+      const t = { stick: { p: p.clone().add(new V3(0, h / 2, 0)), s: new V3(0.25 * h / 4.5, h, 0.25 * h / 4.5) }, balls: [] };
+      for (let j = 0; j < 3; j++) t.balls.push({ p: p.clone().add(new V3(rand(-1, 1) * h / 4.5, h + rand(0.6, 2.2) * h / 4.5, rand(-1, 1) * h / 4.5)), s: new V3(1, 1, 1).multiplyScalar(rand(1.6, 2.6) * h / 4.5), c: col });
+      flossTrees.push(t);
+    };
+    // ガムドロップの茂み：砂糖をまぶした半球
+    const gumdrop = (p, sc) => drops.push({ body: { p: p.clone(), s: new V3(sc, sc * 1.1, sc), c: C(pick(candyCols)) }, sugar: { p: p.clone().add(new V3(0, sc * 1.05, 0)), s: new V3(sc * 0.3, sc * 0.12, sc * 0.3) } });
+    // シュガーダッシュの坂の外：大きなキャンディが密に並ぶ森
+    const forest0 = at(5, 0.85), forest1 = at(7, 0.12);
+    for (let k = 0, n = 0; k < 4000 && n < 300; k++) {
+      const s = rand(forest0, forest1), v = W / 2 + 9 + 130 * Math.random() ** 1.4, p = local(s, 0, v);
+      if (!clearAt(p.x, p.z, W / 2 + 8, 2.6) || inLoop(p.x, p.z)) continue;
+      onGround(p);
+      const r = Math.random(), grow = 1 + (v - W / 2) / 120;
+      if (r < 0.38) lolly(p, rand(4, 7) * grow, rand(1.6, 2.6) * grow);
+      else if (r < 0.6) cane(p, rand(5, 9) * grow, rand(1, 1.5) * grow, rand(0, Math.PI * 2));
+      else if (r < 0.85) flossTree(p, rand(5, 8) * grow);
+      else gumdrop(p, rand(1.4, 2.4));
+      occupied.push({ x: p.x, z: p.z, r: 2.6 }); n++;
+    }
+    for (let k = 0, n = 0; k < 6000 && n < 650; k++) {
+      const s = rand(0, track.L), v = W / 2 + 10 + 190 * Math.random() ** 1.7, p = local(s, 0, v);
+      if (!clearAt(p.x, p.z, W / 2 + 9, 2.2) || inLoop(p.x, p.z)) continue;
+      onGround(p);
+      const r = Math.random();
+      if (r < 0.12) lolly(p, rand(3, 6), rand(1.2, 2.2));
+      else if (r < 0.2) cane(p, rand(4, 7), rand(0.7, 1.1), rand(0, Math.PI * 2));
+      else if (r < 0.78) flossTree(p, rand(3, 6) * (1 + (v - W / 2) / 260));
+      else gumdrop(p, rand(0.9, 1.8));
+      occupied.push({ x: p.x, z: p.z, r: 1.8 }); n++;
+    }
+    for (let k = 0, n = 0; k < 4000 && n < 160; k++) {
+      const i = (Math.random() * track.N) | 0, p = new V3(track.xs[i], 0, track.zs[i]).lerp(new V3(0, 0, 0), rand(0.05, 1));
+      if (!inLoop(p.x, p.z) || !clearAt(p.x, p.z, W / 2 + 9, 2.6)) continue;
+      onGround(p);
+      const r = Math.random();
+      if (r < 0.6) flossTree(p, rand(3, 5.5)); else if (r < 0.8) lolly(p, rand(3, 5), rand(1.1, 1.8)); else gumdrop(p, rand(0.9, 1.6));
+      occupied.push({ x: p.x, z: p.z, r: 2 }); n++;
+    }
+    shuffle(flossTrees); shuffle(drops);
+    addInst(CYL, toon('#fffaf4'), flossTrees.map(t => t.stick)); addInst(SPH_LO, toon('#ffffff'), flossTrees.flatMap(t => t.balls));
+    addInst(HALF, toon('#ffffff', { emissive: C('#ffffff'), emissiveIntensity: 0.08 }), drops.map(d => d.body)); addInst(SPH_LO, toon('#ffffff'), drops.map(d => d.sugar), false);
+  }
+  // まとめて描く：棒つきキャンディ、キャンディケイン
+  lollies.forEach((L, k) => {
+    const order = shuffle(L.heads.map((_, i) => i));
+    addInst(CYL, toon('#fffaf4'), order.map(i => L.sticks[i]), false);
+    addInst(DISC, [toon(lollyMats[k][1]), lollyMats[k][0], lollyMats[k][0]], order.map(i => L.heads[i]));
+  });
+  {
+    const o1 = shuffle(canes.map((_, i) => i)), o2 = shuffle(canesMint.map((_, i) => i));
+    addInst(CYL, caneM, o1.map(i => canes[i])); addInst(HOOK, toon('#e8384f'), o1.map(i => caneHooks[i]));
+    addInst(CYL, caneMint, o2.map(i => canesMint[i])); addInst(HOOK, toon('#3fbfa8'), o2.map(i => caneHooksMint[i]));
+  }
+
+  /* ---- 空：わたあめの雲と、ジンジャーブレッド色の熱気球 ---- */
+  {
+    const clouds = [];
+    for (let i = 0; i < 9; i++) {
+      const g = fantasyGroup(); g.userData.droneIgnore = true; const col = toon(pick(['#ffd6e8', '#d6f4ff', '#fff3d6', '#e8dcff']), { emissive: C('#ffffff'), emissiveIntensity: 0.25 });
+      for (let k = 0; k < 6; k++) part(g, SPH_LO, col, [rand(-14, 14), rand(-2, 4), rand(-6, 6)], [rand(6, 10), rand(4, 7), rand(6, 9)], null, 0);
+      const a = rand(0, Math.PI * 2), r = rand(120, track.extent + 260);
+      clouds.push({ g, x: Math.cos(a) * r, z: Math.sin(a) * r, y: rand(70, 120), v: rand(1.2, 2.6) });
+    }
+    const balloons = [];
+    [['#c07a3c', '#fff6fa'], ['#ff7fab', '#fffaf4'], ['#7fe0d0', '#ffe27a']].forEach(([a, b], i) => {
+      const g = fantasyGroup(); g.userData.droneIgnore = true;
+      const tex = ctex(256, 128, c => { for (let x = 0; x < 256; x += 32) { c.fillStyle = (x / 32) % 2 ? a : b; c.fillRect(x, 0, 32, 128); } c.fillStyle = b; for (let x = 16; x < 256; x += 32) { c.beginPath(); c.arc(x, 64, 5, 0, Math.PI * 2); c.fill(); } });
+      part(g, new THREE.SphereGeometry(1, 16, 12), toon('#ffffff', { map: tex }), [0, 0, 0], [8, 10, 8], null, 0);
+      part(g, new THREE.ConeGeometry(1, 1, 16), toon(a), [0, -9.5, 0], [5, 5, 5], [Math.PI, 0, 0], 0);
+      addBox(g, [2, 1.6, 2], [0, -13.5, 0], toon('#8a6244'));
+      const ang = i * 2.1, r = track.extent + 60 + i * 50;
+      balloons.push({ g, x: Math.cos(ang) * r, z: Math.sin(ang) * r, y: 70 + i * 18, ph: i * 2 });
+    });
+    updates.push(t => {
+      const m = reduced.matches ? 0 : t, lim = track.extent + 320;
+      for (const c of clouds) { c.g.position.set(mod(c.x + m * c.v + lim, lim * 2) - lim, c.y + Math.sin(m * 0.2 + c.v) * 2, c.z); }
+      for (const b of balloons) b.g.position.set(b.x + Math.sin(m * 0.05 + b.ph) * 30, b.y + Math.sin(m * 0.3 + b.ph) * 4, b.z + Math.cos(m * 0.04 + b.ph) * 30);
+    });
+  }
+
+  // まとめて描く：人々、帽子、家並み、文字の板
+  {
+    const order = shuffle(people.map((_, i) => i));
+    addInst(new THREE.CapsuleGeometry(0.3, 0.75, 3, 8), toon('#ffffff'), order.map(i => people[i]), false); addInst(SPH_LO, toon('#f1c9a8'), order.map(i => heads[i]), false); addInst(SPH_LO, toon('#ffffff'), order.map(i => hats[i]), false);
+    const ho = shuffle(houses.map((_, i) => i));
+    addInst(BOX, [facadeM, facadeM, plainM, plainM, facadeM, facadeM], ho.map(i => houses[i])); addInst(PRISM, toon('#ffffff'), ho.map(i => roofs[i])); addInst(PRISM, icing, ho.map(i => roofIcing[i]), false);
+    addInst(SPH_LO, toon('#ffffff'), ridges, false);
+    for (const [key, list] of boardLists) addInst(new THREE.PlaneGeometry(1, 1), boardMats.get(key), list, false);
+  }
+
+  /* ---- 煙（工房の焼き窯）、噴水のカエルの水、ろうそくの火、粉砂糖のきらめき ---- */
+  const smokeC = C('#fff4ea'), waterC = C('#cfefff').multiplyScalar(1.3), sugarC = C('#ffffff').multiplyScalar(1.4);
+  {
+    let acc = 0, acc2 = 0, acc3 = 0;
+    updates.push((t, dt) => {
+      if (reduced.matches) return;
+      const lq = lightQuality();
+      acc += dt * smokes.length * (lq ? 1.5 : 4);
+      while (acc >= 1 && smokes.length) { acc--; const p = pick(smokes); dustP.emit(p.x + rand(-0.3, 0.3), p.y, p.z + rand(-0.3, 0.3), rand(-0.3, 0.3) + 0.4, rand(1.2, 2), rand(-0.3, 0.3), rand(3, 5), rand(1.4, 2.6), smokeC, -0.05, 0.3); }
+      acc2 += dt * fountain.jets.length * (lq ? 3 : 8);
+      while (acc2 >= 1 && fountain.jets.length) { acc2--; const j = pick(fountain.jets); sparkP.emit(j.p.x, j.p.y, j.p.z, j.d.x * 2.4, rand(2, 2.8), j.d.z * 2.4, rand(0.6, 0.8), rand(0.18, 0.3), waterC, 9, 0); }
+      acc3 += dt * (lq ? 5 : 14);
+      while (acc3 >= 1) { acc3--; const c = camera.position; sparkP.emit(c.x + rand(-25, 25), c.y + rand(-6, 12), c.z + rand(-25, 25), rand(-0.3, 0.3), rand(-0.4, -0.1), rand(-0.3, 0.3), rand(1.5, 3), rand(0.07, 0.14), sugarC, 0, 0); }
+    });
+  }
+
+  /* ---- ゴール：紙吹雪とスプリンクルの花火、聖ヨハネ大聖堂の鐘トゥバ・デイが鳴り、巨大カタジンカとケーキのろうそくが輝く ---- */
+  // 紙吹雪は使い回し、ロビーに戻るとすぐ消す
+  const confetti = new THREE.InstancedMesh(new THREE.PlaneGeometry(0.5, 0.8), toon('#ffffff', { side: THREE.DoubleSide }), 100), m4 = new THREE.Matrix4(), q4 = new THREE.Quaternion(), e4 = new THREE.Euler();
+  world.add(confetti); confetti.visible = false; confetti.frustumCulled = false; confetti.userData.droneIgnore = true;
   const bits = Array.from({ length: 100 }, (_, i) => { confetti.setColorAt(i, C(['#ff7fab', '#ffe182', '#7ae1d3', '#af99ff'][i % 4])); return { x: rand(-14, 14), y: rand(12, 24), z: rand(-12, 12), v: rand(-5, 5), phase: rand(0, 6) }; });
   const finish = tp(track.finishS, W / 2).v; let age = -1;
-  themeFinish = () => { age = 0; }; themeReset = () => { age = -1; confetti.visible = false; };
-  themeUpd.push((t, dt) => {
-    if (age < 0) return; age += dt; confetti.visible = age < 5; if (!confetti.visible) { age = -1; return; }
-    confetti.count = lightQuality() ? 40 : 100;
-    bits.forEach((b, i) => { m.compose(new V3(finish.x + b.x + Math.sin(age + b.phase) * 2, finish.y + b.y - age * 4, finish.z + b.z + b.v * age), q.setFromEuler(e.set(age * 2, b.phase, age + b.phase)), new V3(1, 1, 1)); confetti.setMatrixAt(i, m); }); confetti.instanceMatrix.needsUpdate = true;
+  themeFinish = () => { age = 0; celebration = 9; }; themeReset = () => { age = -1; confetti.visible = false; celebration = 0; };
+  let burst = 0;
+  const fw = candyCols.map(c => C(c).multiplyScalar(1.6));
+  updates.push((t, dt) => {
+    const glow = celebration > 0 ? Math.min(1, celebration / 2) : 0, m = reduced.matches ? 0 : t;
+    if (giant) { giant.gm.emissiveIntensity = glow * (0.6 + 0.25 * Math.sin(m * 5)); giant.em.emissiveIntensity = glow * 0.9; }
+    if (cake.flames) { const k = 1 + glow * 0.8 + Math.sin(m * 9) * 0.06; cake.flames.scale.set(1, k, 1); }
+    if (bell) bell.rotation.x = glow * Math.sin(m * 3.2) * 0.7;
+    if (age >= 0) {
+      age += dt; confetti.visible = age < 5;
+      if (!confetti.visible) age = -1;
+      else {
+        confetti.count = lightQuality() ? 40 : 100;
+        bits.forEach((b, i) => { m4.compose(new V3(finish.x + b.x + Math.sin(age + b.phase) * 2, finish.y + b.y - age * 4, finish.z + b.z + b.v * age), q4.setFromEuler(e4.set(age * 2, b.phase, age + b.phase)), new V3(1, 1, 1)); confetti.setMatrixAt(i, m4); }); confetti.instanceMatrix.needsUpdate = true;
+      }
+    }
+    if (celebration <= 0) return;
+    celebration = Math.max(0, celebration - dt);
+    if (reduced.matches) return;
+    burst += dt * (lightQuality() ? 2 : 4);
+    for (; burst >= 1; burst--) {
+      // スプリンクルの花火：色とりどりの粒が開いて、ゆっくり落ちる
+      const s = track.finishS + rand(-120, 60), f = tp(s, W + rand(30, 90)), y = rand(40, 70), col = pick(fw);
+      for (let i = 0; i < 46; i++) { const a = rand(0, Math.PI * 2), b = Math.acos(rand(-1, 1)), sp = rand(9, 13); sparkP.emit(f.v.x, y, f.v.z, Math.sin(b) * Math.cos(a) * sp, Math.cos(b) * sp, Math.sin(b) * Math.sin(a) * sp, rand(1.3, 1.9), rand(0.5, 0.9), col, 3, 1.2); }
+    }
+    if (cake.flamePts && Math.random() < 0.6) { const p = pick(cake.flamePts); sparkP.emit(p.x, p.y + 0.8, p.z, rand(-0.5, 0.5), rand(2, 4), rand(-0.5, 0.5), rand(0.6, 1), rand(0.3, 0.5), C('#ffcf5a').multiplyScalar(2), -0.5, 0.5); }
+    if (giant && Math.random() < 0.5) { const c = giant.c; sparkP.emit(c.x + rand(-5, 5), c.y + rand(3, 10), c.z + rand(-5, 5), rand(-1, 1), rand(1, 3), rand(-1, 1), rand(1, 1.8), rand(0.8, 1.4), pick(fw), 0.5, 0.5); }
   });
+
+  // 広い範囲に散らばるインスタンスは、原点の境界球で切り捨てられないようにする
+  for (const o of world.children.slice(n0)) o.traverse(x => { if (x.isInstancedMesh) x.frustumCulled = false; });
+  themeUpd.push((t, dt) => { for (const f of updates) f(t, dt); });
+}
+// スタンド：トルンのジンジャーブレッドの家並み。段の前にアイシングの腰壁、屋根の縁に生クリームとさくらんぼ、屋根の上にパステルの破風の家並みと「お菓子の国」の看板
+function decorCandyStand(stand, len, z0, roof) {
+  const g = new THREE.Group(); stand.add(g); registerLandmark(g, 'candy-stand');
+  // 腰壁：ジンジャーブレッドに、白いアイシングの波線と水玉（局所 -z が走路の側）
+  const band = ctex(256, 64, c => {
+    c.fillStyle = '#b8733a'; c.fillRect(0, 0, 256, 64);
+    c.strokeStyle = '#fff6fa'; c.lineWidth = 5; c.beginPath(); for (let x = 0; x <= 256; x += 4) c.lineTo(x, 20 + Math.sin(x / 256 * Math.PI * 8) * 7); c.stroke();
+    c.fillStyle = '#ff7fab'; for (let x = 16; x < 256; x += 32) { c.beginPath(); c.arc(x, 46, 5, 0, Math.PI * 2); c.fill(); }
+    c.fillStyle = '#fff6fa'; c.fillRect(0, 0, 256, 4); c.fillRect(0, 60, 256, 4);
+  }, true);
+  band.repeat.set(len / 8, 1);
+  const wall = new THREE.Mesh(new THREE.PlaneGeometry(len, 1.6), toon('#ffffff', { map: band, side: THREE.DoubleSide })); wall.position.set(0, 0.85, z0 - 0.05); g.add(wall);
+  // 屋根の前の縁：生クリームの絞りと、さくらんぼ
+  const dol = [], cher = [];
+  for (let x = -len / 2; x <= len / 2; x += 2.2) { dol.push({ p: new V3(x, 13.2, z0 - 2.4), s: new V3(1.1, 0.9, 1.1) }); if (Math.round(x / 2.2) % 3 === 0) cher.push({ p: new V3(x, 14.1, z0 - 2.4), s: new V3(0.5, 0.5, 0.5) }); }
+  g.add(inst(SPH_LO, toon('#fff3dc'), dol, false), inst(SPH_LO, toon('#e8384f'), cher, false));
+  // 屋根の上：パステルの家並みの破風（トルンの旧市街の切妻の並び）
+  const facades = [], gables = [], trims = [], wins = [];
+  for (let x = -len / 2 + 4, i = 0; x <= len / 2 - 4; x += 7.4, i++) {
+    const h = rand(4, 7), col = C(['#ffc6dc', '#bdeee2', '#fff0b3', '#d8ccff', '#ffd6b8', '#c8e6ff'][i % 6]);
+    facades.push({ p: new V3(x, 13 + h / 2, z0 + 14), s: new V3(6.8, h, 6), c: col });
+    gables.push({ p: new V3(x, 13 + h, z0 + 14), s: new V3(6.2, rand(3, 5), 7.4), r: [0, Math.PI / 2, 0], c: col });
+    trims.push({ p: new V3(x, 13 + h + 0.05, z0 + 10.9), s: new V3(7, 0.3, 0.3) });
+    for (const xx of [-1.6, 1.6]) wins.push({ p: new V3(x + xx, 13 + h * 0.55, z0 + 10.95), s: new V3(1.1, 1.6, 0.1) });
+  }
+  const PRISM = new THREE.ExtrudeGeometry(new THREE.Shape([new THREE.Vector2(-0.5, 0), new THREE.Vector2(0.5, 0), new THREE.Vector2(0, 1)]), { depth: 1, bevelEnabled: false });
+  PRISM.translate(0, 0, -0.5); PRISM.rotateY(Math.PI / 2);
+  g.add(inst(BOX, toon('#ffffff'), facades), inst(PRISM, toon('#ffffff'), gables), inst(BOX, toon('#fffaf4'), trims, false), inst(BOX, toon('#5a3424'), wins, false));
+  // 屋上の看板：ジンジャーブレッドの板に、アイシングで「お菓子の国」
+  const sign = ctex(512, 200, c => {
+    c.fillStyle = '#b8733a'; c.beginPath(); c.roundRect ? c.roundRect(6, 6, 500, 188, 40) : c.rect(6, 6, 500, 188); c.fill();
+    c.strokeStyle = '#fff6fa'; c.lineWidth = 8; c.setLineDash([16, 10]); c.beginPath(); c.roundRect ? c.roundRect(22, 22, 468, 156, 30) : c.rect(22, 22, 468, 156); c.stroke(); c.setLineDash([]);
+    c.fillStyle = '#fff6fa'; c.shadowColor = '#ff7fab'; c.shadowBlur = 12; c.textAlign = 'center'; c.textBaseline = 'middle'; c.font = '900 84px "Dela Gothic One", sans-serif'; c.fillText('お菓子の国', 256, 104, 440);
+  });
+  const w = Math.min(30, len * 0.3), h = w * 200 / 512;
+  for (const sx of [-w * 0.3, w * 0.3]) addBox(g, [0.6, 3.4, 0.6], [sx, 15.4, z0 + 6], toon('#8a5228'));
+  const bm = new THREE.Mesh(new THREE.PlaneGeometry(w, h), new THREE.MeshBasicMaterial({ map: sign, transparent: true, color: C('#ffffff').multiplyScalar(1.15) })); bm.position.set(0, 17 + h / 2, z0 + 5.98); bm.rotation.y = Math.PI; g.add(bm);
+  const back = new THREE.Mesh(new THREE.PlaneGeometry(w, h), new THREE.MeshBasicMaterial({ map: sign, transparent: true })); back.position.set(0, 17 + h / 2, z0 + 6.02); g.add(back);
+  // 両端のキャンディケインの柱と、スタンドの前の大きな棒つきキャンディ
+  const caneTex = ctex(64, 64, c => { c.fillStyle = '#ffffff'; c.fillRect(0, 0, 64, 64); c.fillStyle = '#e8384f'; for (let k = -64; k < 128; k += 32) { c.beginPath(); c.moveTo(k, 0); c.lineTo(k + 16, 0); c.lineTo(k - 48, 64); c.lineTo(k - 64, 64); c.closePath(); c.fill(); } }, true);
+  caneTex.repeat.set(1, 6);
+  for (const x of [-len / 2 - 1.8, len / 2 + 1.8]) {
+    part(g, new THREE.CylinderGeometry(1, 1, 1, 12), toon('#ffffff', { map: caneTex }), [x, 8, z0 + 1], [0.9, 16, 0.9], null, 0.03);
+    part(g, new THREE.TorusGeometry(1.6, 0.9, 10, 20, Math.PI), toon('#e8384f'), [x + Math.sign(x) * 1.6, 16, z0 + 1], null, null, 0.03);
+  }
 }
 function decorMoonForest() {
   const stems = [], caps = [], trunks = [], leaves = [];
@@ -7467,6 +8485,8 @@ function decorLandmarkStand(stand, len, z0, roof, sc0) {
   if (theme === 'neon') return decorNeonStand(stand, len, z0, roof);
   if (theme === 'sakura') return decorSakuraStand(stand, len, z0, roof);
   if (theme === 'aurora') return decorAuroraStand(stand, len, z0, roof);
+  if (theme === 'candy') return decorCandyStand(stand, len, z0, roof);
+  if (theme === 'dune') return decorDuneStand(stand, len, z0, roof);
   if (!['sapporo', 'niigata', 'tokyo', 'nakayama', 'kyoto', 'hanshin', 'chukyo', 'longchamp', 'churchill'].includes(theme)) return;
   const g = new THREE.Group(); stand.add(g); registerLandmark(g, theme + '-stand');
   const cream = theme === 'longchamp' ? null : toon('#eee8d8'), glass = theme === 'churchill' ? null : toon('#7ca6b9');
@@ -12184,19 +13204,1009 @@ function decorAuroraStand(stand, len, z0, roof) {
   // 両端の氷の柱
   for (const x of [-len / 2 - 1.5, len / 2 + 1.5]) addBox(g, [2, 14, 2], [x, 7, z0 + 1], toon('#c4ebff', { emissive: C('#4fb6ff'), emissiveIntensity: 0.35 }), null, 0.02);
 }
-function decorDune() {
-  const cap = new THREE.CapsuleGeometry(1, 1, 4, 10);
-  const trunks = [], arms = [];
-  for (let i = 0; i < 70; i++) {
-    const p = i < 8 ? spotInfield() : spotOutside(8, 80, true), sc = rand(0.8, 1.6);
-    trunks.push({ p: new V3(p.x, 2.4 * sc, p.z), s: new V3(0.55 * sc, 2.2 * sc, 0.55 * sc) });
-    for (const s of [1, -1]) if (Math.random() < 0.8) { const y = rand(2.2, 3.4) * sc; arms.push({ p: new V3(p.x + 0.9 * s * sc, y, p.z), s: new V3(0.38 * sc, 0.8 * sc, 0.38 * sc) }); arms.push({ p: new V3(p.x + 0.5 * s * sc, y - 0.9 * sc, p.z), s: new V3(0.36 * sc, 0.45 * sc, 0.36 * sc), r: [0, 0, Math.PI / 2] }); }
+/* ---- 夕陽デザート記念：モロッコのサハラ砂漠の入口（世界遺産「アイット－ベン－ハドゥの集落」）を下敷きにした夕暮れの砂漠 ---- */
+// 見立て：アトラス山脈の南、ワルザザートからメルズーガのシェビ砂丘へ続く「カスバ街道」を、夕陽の砂漠をひと回りするコースに。
+// 区間の役割：0 カスバのスタンドのホーム直線／1 アイット・ベン・ハドゥ：オウニラ川の涸れ川の向こうの土の城塞（クサル）と映画の撮影隊／
+// 2 大砂丘の上り：砂よけの柵、ラクダのキャラバン、砂丘のバギー／3 砂丘のてっぺん（最高地点）：ベルベルの砂漠キャンプと、シェビ砂丘の大砂丘の稜線を行くキャラバン／
+// 4 砂丘の滑り下り：大砂丘のサンドボード、フェネック／5 オアシスのヤシ林：ナツメヤシと畑、地下水路ハッターラ、井戸、アルガンの木に登るヤギ、「トンブクトゥまで52日」の道しるべ／
+// 6 カスバの路地（S字）：走路をまたぐカスバの門と土の壁、タウリルトのカスバ／7 リッサニのスーク：屋台、香辛料の山、ロバの駐車場、水売り／
+// 8 ハムリアのグナワの楽団。内馬場はダヤト・スルジの湖とフラミンゴ、夕陽の大砂時計（ファンタジー）。空には熱気球
+function decorDune(th) {
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)');
+  const { shuffle, roadDist, occupied, taken, clearAt, groundAt, onGround, local, at, label, site, PRISM, CYL, CYL_T, addInst, beam, route } = sceneryKit();
+  const n0 = world.children.length, updates = [];
+  // 案内板は素焼きの赤土色の地に、生成りの文字
+  const signAt = (g, text, y, w = 14) => { const sp = label(text, w, w / 4, '#7a2f1f', '#ffe9c2'); sp.position.set(0, y, 0); sp.scale.set(w, w / 4, 1); g.add(sp); return sp; };
+  const pick = a => a[(Math.random() * a.length) | 0];
+  const rot = (x, z, yaw) => [x * Math.cos(yaw) + z * Math.sin(yaw), -x * Math.sin(yaw) + z * Math.cos(yaw)];
+  const yawAt = s => -tp(s, W / 2).h;
+  // 材質：土を突き固めた壁（ピゼ）の赤土色、ヤシの幹、真鍮
+  const pise = toon('#c98a55'), piseDark = toon('#a8673e'), wood = toon('#8a6244'), darkWood = toon('#4a3326'), brass = toon('#c9a046'), steel = toon('#6f7480');
+  const warm = toon('#ffd27a', { emissive: C('#ffb347'), emissiveIntensity: 1.1 });   // 窓明かり・焚き火
+  const roof4 = new THREE.ConeGeometry(1, 1, 4); roof4.rotateY(Math.PI / 4);   // 屋上の角の飾り（狭間）
+  const TOWER = new THREE.CylinderGeometry(0.72, 1, 1, 4); TOWER.rotateY(Math.PI / 4);   // 上すぼまりの四角い塔
+  let celebration = 0;
+
+  /* ---- 型と道具：テクスチャ、人、動物、ヤシ、ランタン、帯、道筋 ---- */
+  // カスバの塔の壁：上のほうに日干し煉瓦を刻んだ菱形と山形の模様、細い窓。塔の4面に同じ模様が回るよう64pxごとに繰り返す
+  const towerTex = ctex(256, 256, g => {
+    g.fillStyle = '#c98a55'; g.fillRect(0, 0, 256, 256); speck(g, 256, 256, 900, ['#b97b48', '#d69a62', '#a86e40'], 1, 3, 0.6);
+    for (let x = 0; x < 256; x += 64) {
+      g.fillStyle = '#8f5532';
+      for (let k = 0; k < 3; k++) { const cx = x + 12 + k * 20; g.beginPath(); g.moveTo(cx, 16); g.lineTo(cx + 8, 28); g.lineTo(cx, 40); g.lineTo(cx - 8, 28); g.closePath(); g.fill(); }
+      g.strokeStyle = '#8f5532'; g.lineWidth = 4; g.beginPath(); for (let k = 0; k <= 8; k++) g.lineTo(x + k * 8, 54 + (k % 2) * 9); g.stroke();
+      g.fillStyle = '#3a2418'; g.fillRect(x + 29, 96, 6, 22); g.fillRect(x + 29, 170, 6, 18);
+    }
+  });
+  const towerM = toon('#ffffff', { map: towerTex });
+  // 家の壁：赤土に小さな窓と、軒の濃い帯
+  const houseM = toon('#ffffff', { map: ctex(128, 128, g => {
+    g.fillStyle = '#c98a55'; g.fillRect(0, 0, 128, 128); speck(g, 128, 128, 300, ['#b97b48', '#d69a62'], 1, 3, 0.6);
+    g.fillStyle = '#a8673e'; g.fillRect(0, 0, 128, 10); g.fillStyle = '#3a2418'; g.fillRect(28, 44, 10, 14); g.fillRect(84, 44, 10, 14); g.fillRect(56, 88, 14, 40);
+  }) });
+  // ゼリージュ（色タイルのモザイク）：八芒星を敷き詰める
+  const zelligeTex = ctex(256, 128, g => {
+    g.fillStyle = '#f4ecdc'; g.fillRect(0, 0, 256, 128);
+    const cols = ['#1f7a5a', '#2b4fa8', '#d9a03a', '#1f2a44'];
+    for (let y = 0; y < 128; y += 32) for (let x = 0; x < 256; x += 32) {
+      g.fillStyle = cols[((x + y) / 32) % 4];
+      for (const a of [0, Math.PI / 4]) { g.save(); g.translate(x + 16, y + 16); g.rotate(a); g.fillRect(-9, -9, 18, 18); g.restore(); }
+      g.fillStyle = '#f4ecdc'; g.beginPath(); g.arc(x + 16, y + 16, 4, 0, Math.PI * 2); g.fill();
+    }
+  }, true);
+  const zellige = (u, v) => { const t = zelligeTex.clone(); t.needsUpdate = true; t.repeat.set(u, v); return toon('#ffffff', { map: t }); };
+  // 絨毯：縁取りと菱形のメダリオン、両端の房
+  const carpetMats = ['#9e2a2b', '#2b3f7a', '#c46a1d', '#6a2b5e'].map((bg, i) => toon('#ffffff', { side: THREE.DoubleSide, map: ctex(128, 192, g => {
+    g.fillStyle = bg; g.fillRect(0, 0, 128, 192);
+    g.strokeStyle = '#f2dfb4'; g.lineWidth = 6; g.strokeRect(8, 8, 112, 176);
+    g.strokeStyle = ['#f2c230', '#e8d6b0', '#2b3f7a', '#f2c230'][i]; g.lineWidth = 3; g.strokeRect(17, 17, 94, 158);
+    for (let k = 0; k < 3; k++) { const cy = 46 + k * 50; g.fillStyle = k % 2 ? '#f2dfb4' : ['#1f2a44', '#c8302c', '#2f5a3a', '#e8a33a'][i]; g.beginPath(); g.moveTo(64, cy - 20); g.lineTo(90, cy); g.lineTo(64, cy + 20); g.lineTo(38, cy); g.closePath(); g.fill(); }
+    g.fillStyle = '#f2e6c8'; for (let x = 4; x < 128; x += 6) { g.fillRect(x, 0, 2, 6); g.fillRect(x, 186, 2, 6); }
+  }) }));
+
+  // 型の部品を、向き yaw・倍率 sc で置いた群れにまとめて描く（ラクダ・ロバ・ヤギ・フラミンゴなど）
+  const stamp = (tpl, spots, shadow = true) => {
+    if (!spots.length) return;
+    tpl.updateMatrixWorld(true);
+    const m4 = new THREE.Matrix4(), q = new THREE.Quaternion(), e = new THREE.Euler();
+    tpl.traverse(o => {
+      if (!o.isMesh) return;
+      addInst(o.geometry, o.material, spots.map(({ p, yaw, sc = 1 }) => {
+        m4.compose(p, q.setFromEuler(e.set(0, yaw, 0)), new V3(sc, sc, sc)).multiply(o.matrixWorld);
+        const pp = new V3(), qq = new THREE.Quaternion(), ss = new V3(); m4.decompose(pp, qq, ss);
+        const ee = new THREE.Euler().setFromQuaternion(qq); return { p: pp, s: ss, r: [ee.x, ee.y, ee.z] };
+      }), shadow);
+    });
+  };
+  // ヒトコブラクダ（局所 +x が前）：長い脚、ひとつのこぶ、前へ伸びる首。saddle で鞍の布、sit で脚を折って座る
+  const camelTpl = (legs = [], saddle = null, sit = false) => {
+    const g = new THREE.Group(), fur = toon(pick(['#c99a63', '#b8875a', '#d6a873'])), dark = toon('#8a6444'), y0 = sit ? -1.25 : 0;
+    part(g, SPH_LO, fur, [0, 2.0 + y0, 0], [1.15, 0.55, 0.5], null, 0); part(g, SPH_LO, fur, [-0.05, 2.45 + y0, 0], [0.6, 0.55, 0.42], null, 0);
+    part(g, CYL, fur, [1.25, 2.45 + y0, 0], [0.2, 1.0, 0.2], [0, 0, -0.75], 0); part(g, SPH_LO, fur, [1.75, 2.95 + y0, 0], [0.42, 0.22, 0.2], null, 0);
+    for (const z of [-0.12, 0.12]) part(g, SPH_LO, dark, [1.55, 3.12 + y0, z], [0.06, 0.1, 0.05], null, 0);
+    part(g, BOX, dark, [-1.15, 1.85 + y0, 0], [0.08, 0.6, 0.08], [0, 0, -0.3], 0);
+    if (!sit) for (const [x, z] of [[0.7, 0.25], [0.7, -0.25], [-0.7, 0.25], [-0.7, -0.25]]) {
+      const l = new THREE.Group(); l.position.set(x, 1.75, z); g.add(l); legs.push(l);
+      part(l, CYL, fur, [0, -0.87, 0], [0.1, 1.75, 0.1], null, 0); part(l, SPH_LO, dark, [0, -1.72, 0], [0.17, 0.06, 0.17], null, 0);
+    }
+    else for (const z of [-0.45, 0.45]) part(g, SPH_LO, fur, [0, 0.32, z], [1.0, 0.3, 0.18], null, 0);
+    if (saddle) {
+      const m = toon(saddle); part(g, BOX, m, [-0.05, 2.95 + y0, 0], [1.0, 0.14, 1.15], null, 0);
+      for (const z of [-0.58, 0.58]) part(g, BOX, m, [-0.05, 2.55 + y0, z], [0.9, 0.8, 0.04], null, 0);
+    }
+    return g;
+  };
+  // ロバ：長い耳と、背の両脇の荷かご
+  const donkeyTpl = () => {
+    const g = new THREE.Group(), fur = toon('#8f8a84'), pale = toon('#d9d4cc'), dark = toon('#4a4643'), basket = toon('#b08a4a');
+    part(g, SPH_LO, fur, [0, 1.1, 0], [0.75, 0.38, 0.3], null, 0); part(g, CYL, fur, [0.72, 1.4, 0], [0.13, 0.6, 0.13], [0, 0, -0.6], 0);
+    part(g, SPH_LO, fur, [1.0, 1.62, 0], [0.32, 0.16, 0.14], [0, 0, -0.4], 0); part(g, SPH_LO, pale, [1.25, 1.52, 0], [0.12, 0.1, 0.11], null, 0);
+    for (const z of [-0.08, 0.08]) part(g, SPH_LO, fur, [0.92, 1.95, z], [0.05, 0.25, 0.06], [z * 2, 0, 0.2], 0);
+    for (const [x, z] of [[0.45, 0.15], [0.45, -0.15], [-0.45, 0.15], [-0.45, -0.15]]) part(g, CYL, dark, [x, 0.42, z], [0.06, 0.85, 0.06], null, 0);
+    for (const z of [-0.42, 0.42]) part(g, BOX, basket, [0, 1.05, z], [0.7, 0.5, 0.25], null, 0);
+    part(g, BOX, toon(pick(['#c8302c', '#2b4fa8', '#f2c230'])), [0, 1.48, 0], [0.8, 0.06, 0.75], null, 0);
+    return g;
+  };
+  // ヤギ：小さな角とあごひげ
+  const goatTpl = col => {
+    const g = new THREE.Group(), fur = toon(col), dark = toon('#3a332e');
+    part(g, SPH_LO, fur, [0, 0.65, 0], [0.45, 0.25, 0.2], null, 0); part(g, SPH_LO, fur, [0.45, 0.88, 0], [0.18, 0.13, 0.11], [0, 0, -0.4], 0);
+    for (const z of [-0.05, 0.05]) part(g, CONE, dark, [0.4, 1.05, z], [0.03, 0.18, 0.03], [0, 0, 0.6], 0);
+    part(g, CONE, dark, [0.55, 0.72, 0], [0.03, 0.12, 0.03], [Math.PI, 0, 0], 0);
+    for (const [x, z] of [[0.28, 0.1], [0.28, -0.1], [-0.28, 0.1], [-0.28, -0.1]]) part(g, CYL, dark, [x, 0.22, z], [0.04, 0.45, 0.04], null, 0);
+    return g;
+  };
+  // フラミンゴ：片脚立ちもいる細い脚、S字の首、先の黒いくちばし
+  const flamingoTpl = (oneLeg = false) => {
+    const g = new THREE.Group(), pink = toon('#ff8fa8'), deep = toon('#e86a8c'), blk = toon('#1a1a1a');
+    part(g, SPH_LO, pink, [0, 1.55, 0], [0.45, 0.28, 0.24], null, 0); part(g, SPH_LO, deep, [-0.35, 1.6, 0], [0.22, 0.12, 0.2], null, 0);
+    part(g, CYL, pink, [0.32, 1.85, 0], [0.05, 0.55, 0.05], [0, 0, -0.5], 0); part(g, CYL, pink, [0.42, 2.25, 0], [0.05, 0.45, 0.05], [0, 0, 0.35], 0);
+    part(g, SPH_LO, pink, [0.38, 2.48, 0], [0.11, 0.1, 0.09], null, 0); part(g, CONE, blk, [0.52, 2.42, 0], [0.04, 0.16, 0.04], [0, 0, -2.2], 0);
+    part(g, CYL, deep, [0, 0.66, 0.06], [0.025, 1.32, 0.025], null, 0);
+    if (!oneLeg) part(g, CYL, deep, [0, 0.66, -0.06], [0.025, 1.32, 0.025], null, 0); else part(g, CYL, deep, [-0.05, 1.18, -0.06], [0.025, 0.5, 0.025], [0, 0, 1.2], 0);
+    return g;
+  };
+  // フェネック：体より大きな耳と、ふさふさの尾
+  const fennecTpl = () => {
+    const g = new THREE.Group(), fur = toon('#ecc995'), pale = toon('#fbeedb'), dark = toon('#3a2a20');
+    part(g, SPH_LO, fur, [0, 0.32, 0], [0.32, 0.18, 0.15], null, 0); part(g, SPH_LO, fur, [0.32, 0.48, 0], [0.13, 0.12, 0.12], null, 0);
+    part(g, CONE, fur, [0.42, 0.47, 0], [0.04, 0.12, 0.04], [0, 0, -Math.PI / 2], 0); part(g, SPH_LO, dark, [0.48, 0.47, 0], [0.025, 0.025, 0.025], null, 0);
+    for (const z of [-0.09, 0.09]) { part(g, CONE, fur, [0.28, 0.72, z * 1.4], [0.09, 0.32, 0.04], [z * 3, 0, 0], 0); part(g, CONE, pale, [0.29, 0.71, z * 1.4], [0.06, 0.24, 0.03], [z * 3, 0, 0], 0); }
+    part(g, SPH_LO, fur, [-0.36, 0.3, 0], [0.22, 0.09, 0.09], [0, 0, 0.4], 0); part(g, SPH_LO, dark, [-0.55, 0.2, 0], [0.06, 0.05, 0.05], null, 0);
+    for (const [x, z] of [[0.18, 0.07], [0.18, -0.07], [-0.18, 0.07], [-0.18, -0.07]]) part(g, CYL, fur, [x, 0.12, z], [0.03, 0.24, 0.03], null, 0);
+    return g;
+  };
+
+  // 立っている人・座っている人。頭には布を巻く（ターバン・頭布）
+  const people = [], heads = [], wraps = [];
+  const robe = ['#f2ece0', '#2b3f8a', '#7a4a2a', '#c8302c', '#e0b25a', '#3d6a8a', '#5a3f6a', '#d8d0c0', '#1f2a4a', '#a8673e', '#2f7a5a'].map(C);
+  const skin = ['#e9c4a4', '#c99a72', '#a8754f', '#8a5a3c'].map(C);
+  const addPerson = (p, sit = false, col) => {
+    people.push({ p: p.clone().add(new V3(0, sit ? 0.55 : 0.95, 0)), s: new V3(1.12, sit ? 0.62 : 1, 1.12), c: col ? C(col) : pick(robe) });
+    heads.push({ p: p.clone().add(new V3(0, sit ? 1.3 : 1.95, 0)), s: new V3(0.26, 0.28, 0.26), c: pick(skin) });
+    wraps.push({ p: p.clone().add(new V3(0, sit ? 1.44 : 2.09, 0)), s: new V3(0.31, 0.18, 0.31), c: pick(robe) });
+  };
+  // 動く人（群れとは別に、ひとりずつ）。トゥアレグの藍色の頭布など、布の色を選べる
+  const figure = (g, x, y, z, col, sc = 1, wrap) => {
+    part(g, new THREE.CapsuleGeometry(0.3 * sc, 0.75 * sc, 3, 8), toon(col), [x, y + 0.95 * sc, z], null, null, 0.03);
+    part(g, SPH_LO, toon(pick(['#e9c4a4', '#c99a72', '#a8754f'])), [x, y + 1.95 * sc, z], [0.26 * sc, 0.28 * sc, 0.26 * sc], null, 0);
+    part(g, SPH_LO, toon(wrap || pick(['#f2ece0', '#2b3f8a', '#c8302c', '#e0b25a'])), [x, y + 2.09 * sc, z], [0.31 * sc, 0.18 * sc, 0.31 * sc], null, 0);
+  };
+
+  // ナツメヤシ：少し傾いた幹の先に、弧を描いて垂れる葉と、橙色の実の房。木ごとに部品をまとめ、低画質では前半の木だけ描く
+  const palms = [], leafCols = ['#4f8a3a', '#5c9a40', '#3f7a34', '#6a9a3e'].map(C);
+  const addPalm = (p, sc = 1) => {
+    const t = { trunk: null, leaves: [], dates: [] }, h = rand(7, 12) * sc, lean = rand(0, 0.16), la = rand(0, Math.PI * 2);
+    const top = p.clone().add(new V3(Math.cos(la) * h * lean, h, Math.sin(la) * h * lean));
+    t.trunk = { p: p.clone().lerp(top, 0.5), s: new V3(0.32 * sc, h, 0.32 * sc), r: [Math.sin(la) * lean, 0, -Math.cos(la) * lean] };
+    for (let k = 0; k < 11; k++) {
+      const yaw = k / 11 * Math.PI * 2 + rand(-0.2, 0.2), L1 = rand(1.6, 2.2) * sc, L2 = rand(1.8, 2.5) * sc, up = rand(0.15, 0.45), dn = -rand(0.5, 0.9);
+      const dir = new V3(Math.cos(yaw), 0, -Math.sin(yaw)), c = pick(leafCols);
+      const e1 = top.clone().addScaledVector(dir, L1 * Math.cos(up)).add(new V3(0, L1 * Math.sin(up), 0));
+      t.leaves.push({ p: top.clone().lerp(e1, 0.5), s: new V3(L1, 0.08 * sc, 0.55 * sc), r: [0, yaw, up], c });
+      t.leaves.push({ p: e1.clone().addScaledVector(dir, L2 / 2 * Math.cos(dn)).add(new V3(0, L2 / 2 * Math.sin(dn), 0)), s: new V3(L2, 0.08 * sc, 0.48 * sc), r: [0, yaw, dn], c });
+    }
+    for (let k = 0; k < 3; k++) { const a = rand(0, Math.PI * 2); t.dates.push({ p: top.clone().add(new V3(Math.cos(a) * 0.5 * sc, -0.6 * sc, Math.sin(a) * 0.5 * sc)), s: new V3(0.35, 0.5, 0.35).multiplyScalar(sc) }); }
+    palms.push(t);
+  };
+  // モロッコのランタン：真鍮の笠をかぶった色ガラスの灯り（まとめて描き、ゴールで明るくする）
+  const lanternCols = ['#ffb347', '#ff6a4a', '#7fe0a0', '#7fb8ff', '#ffd27a', '#ff8fd0'].map(c => C(c));
+  const lanterns = [], lanternCaps = [];
+  const lantern = (p, sc = 1, col) => {
+    lanterns.push({ p: p.clone(), s: new V3(0.3 * sc, 0.45 * sc, 0.3 * sc), c: col || pick(lanternCols) });
+    lanternCaps.push({ p: p.clone().add(new V3(0, 0.52 * sc, 0)), s: new V3(0.26 * sc, 0.3 * sc, 0.26 * sc) });
+  };
+  // 文字入りの板（屋台の看板）。同じ文字は1枚の材質を共有する
+  const boardMats = new Map(), boardLists = new Map();
+  const putBoard = (text, c, yaw, w) => {
+    if (!boardMats.has(text)) {
+      boardMats.set(text, toon('#ffffff', { map: ctex(512, 128, g => {
+        g.fillStyle = '#2b3f7a'; g.fillRect(0, 0, 512, 128); g.strokeStyle = '#e8c06a'; g.lineWidth = 8; g.strokeRect(6, 6, 500, 116);
+        g.fillStyle = '#fff3d6'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.font = '900 64px "Dela Gothic One", sans-serif'; g.fillText(text, 256, 68, 470);
+      }) }));
+      boardLists.set(text, []);
+    }
+    boardLists.get(text).push({ p: c.clone(), s: new V3(w, w / 4, 1), r: [0, yaw, 0] });
+  };
+  // 地面に沿う、テクスチャを貼れる帯（涸れ川・畑の水路）。u は幅方向、v は長さ方向（vScale mごとに1回）
+  const ribbon = (pts, width, lift, mat, vScale, margin = W / 2 + 4) => {
+    const positions = [], uvs = [], indices = []; let k = 0, prevOk = false, acc = 0;
+    for (let i = 0; i < pts.length; i++) {
+      const a = pts[Math.max(0, i - 1)], b = pts[Math.min(pts.length - 1, i + 1)], p = pts[i];
+      if (i) acc += p.distanceTo(pts[i - 1]);
+      const tx = b.x - a.x, tz = b.z - a.z, tl = Math.hypot(tx, tz) || 1, sx = -tz / tl * width / 2, sz = tx / tl * width / 2;
+      const ok = roadDist(p.x, p.z, margin + 2) >= margin, l = new V3(p.x + sx, 0, p.z + sz), r = new V3(p.x - sx, 0, p.z - sz);
+      positions.push(l.x, groundAt(l) + lift, l.z, r.x, groundAt(r) + lift, r.z); uvs.push(0, acc / vScale, 1, acc / vScale);
+      if (ok && prevOk) indices.push(k - 2, k - 1, k, k - 1, k + 1, k);
+      prevOk = ok; k += 2;
+    }
+    const geo = new THREE.BufferGeometry(); geo.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3)); geo.setAttribute('uv', new THREE.Float32BufferAttribute(uvs, 2));
+    geo.setIndex(indices); geo.computeVertexNormals();
+    const mesh = new THREE.Mesh(geo, mat); mesh.receiveShadow = true; world.add(mesh); return mesh;
+  };
+  // 走路から外へ V の道筋（涸れ川・キャラバンの道）。両端は ext 本（10mずつ）走路から遠ざかる向きへ伸ばして均す
+  const outerPath = (s0, s1, V, ext = 40, step = 6) => {
+    const pts = []; for (let s = s0; s <= s1; s += step) pts.push(local(s, 0, V));
+    const head = pts[0], d0 = head.clone().sub(pts[1]).setY(0).normalize(), tail = pts[pts.length - 1], d1 = tail.clone().sub(pts[pts.length - 2]).setY(0).normalize();
+    const f0 = tp(s0, W / 2).n.multiplyScalar(Math.sign(V)), f1 = tp(s1, W / 2).n.multiplyScalar(Math.sign(V));
+    for (let k = 1; k <= ext; k++) pts.unshift(head.clone().addScaledVector(d0.clone().lerp(f0, Math.min(1, k / 20)).normalize(), k * 10));
+    for (let k = 1; k <= ext; k++) pts.push(tail.clone().addScaledVector(d1.clone().lerp(f1, Math.min(1, k / 20)).normalize(), k * 10));
+    for (let pass = 0; pass < 10; pass++) for (let i = 1; i < pts.length - 1; i++) pts[i] = pts[i - 1].clone().add(pts[i + 1]).multiplyScalar(0.5).lerp(pts[i], 0.5);
+    return pts;
+  };
+  // カスバの塔をまとめて描く：上すぼまりの塔と、屋上の四隅の狭間
+  const towerL = [], merlonL = [], houseL = [];
+  const towerAt = (p, side, h, yaw) => {
+    const r = side / 1.414;
+    towerL.push({ p: p.clone().add(new V3(0, h / 2, 0)), s: new V3(r, h, r), r: [0, yaw, 0] });
+    const top = side * 0.72 / 2 - 0.2;
+    for (const [a, b] of [[-1, -1], [1, -1], [-1, 1], [1, 1]]) { const [ox, oz] = rot(a * top, b * top, yaw); merlonL.push({ p: p.clone().add(new V3(ox, h + 0.45, oz)), s: new V3(0.32, 0.9, 0.32), r: [0, yaw, 0] }); }
+  };
+  // 平屋根の家：屋上の四隅に小さな狭間
+  const houseAt = (p, w, h, d, yaw) => {
+    houseL.push({ p: p.clone().add(new V3(0, h / 2, 0)), s: new V3(w, h, d), r: [0, yaw, 0] });
+    for (const [a, b] of [[-1, -1], [1, -1], [-1, 1], [1, 1]]) { const [ox, oz] = rot(a * (w / 2 - 0.3), b * (d / 2 - 0.3), yaw); merlonL.push({ p: p.clone().add(new V3(ox, h + 0.3, oz)), s: new V3(0.25, 0.6, 0.25), r: [0, yaw, 0] }); }
+  };
+  // 煙・火の粉の出どころ（毎フレーム少しずつ出す）
+  const smokes = [], fires = [];
+
+  /* ---- 座標の準備：内馬場の判定、区間の案内板とスタンドの敷地は空けておく ---- */
+  const poly = []; for (let i = 0; i < track.N; i += 8) poly.push([track.xs[i], track.zs[i]]);
+  const inPoly = (pl, x, z) => { let c = false; for (let i = 0, j = pl.length - 1; i < pl.length; j = i++) { const [xi, zi] = pl[i], [xj, zj] = pl[j]; if ((zi > z) !== (zj > z) && x < (xj - xi) * (z - zi) / (zj - zi) + xi) c = !c; } return c; };
+  const inLoop = (x, z) => inPoly(poly, x, z);
+  for (const z of track.zones) { const q = tp((z.start + z.end) / 2, W + 9).v; occupied.push({ x: q.x, z: q.z, r: 11 }); }
+  for (let s = track.homeS0 - 10; s <= track.homeS1 + 10; s += 10) { const p = local(s, 0, W / 2 + 30); occupied.push({ x: p.x, z: p.z, r: 23 }); }
+  occupied.push({ x: boardPos.x, z: boardPos.z, r: 24 });
+  let cx0 = 0, cz0 = 0; for (let i = 0; i < track.N; i++) { cx0 += track.xs[i] / track.N; cz0 += track.zs[i] / track.N; }
+  const center = new V3(cx0, 0, cz0);
+  // 区間 s0〜s1、外向き v0〜v1 の範囲で、空いている地点を探す（見つからなければ null）
+  const findSpot = (s0, s1, v0, v1, margin, r) => {
+    for (let k = 0; k < 80; k++) { const s = rand(s0, s1), p = local(s, 0, rand(v0, v1)); if (clearAt(p.x, p.z, margin, r)) return { s, p: onGround(p) }; }
+    return null;
+  };
+
+  /* ---- 内馬場の場所取り：いちばん広いところにダヤト・スルジの湖、次に広いところに夕陽の大砂時計 ---- */
+  const spots = [];
+  for (let k = 0; k < 900; k++) {
+    const i = (Math.random() * track.N) | 0, p = new V3(track.xs[i], 0, track.zs[i]).lerp(center, rand(0.15, 1));
+    if (!inLoop(p.x, p.z) || p.distanceTo(boardPos) < 50) continue;
+    spots.push({ p, d: roadDist(p.x, p.z, 200) });
   }
-  inst(cap, toon('#3f9e5a'), trunks); inst(cap, toon('#46a862'), arms);
-  const pyr = new THREE.ConeGeometry(1, 1, 4); pyr.translate(0, 0.5, 0);
-  inst(pyr, toon('#e6a86a'), [{ p: new V3(-160, 10, -760), s: new V3(140, 120, 140), r: [0, 0.4, 0] }, { p: new V3(80, 10, -820), s: new V3(110, 90, 110), r: [0, 0.2, 0] }, { p: new V3(250, 10, -740), s: new V3(70, 55, 70), r: [0, 0.6, 0] }], false);
-  const sc = C('#f3c98f');
-  ambient(TEX_SOFT, false, 50, (a, c) => a.emit(c.x + rand(-70, 20), rand(0.2, 6), c.z + rand(-60, 60), rand(5, 10), rand(-0.2, 0.3), rand(-1, 1), 5, rand(0.4, 0.9), sc, 0, 0.2));
+  spots.sort((a, b) => b.d - a.d);
+  const lakeSpot = spots[0] || { p: center.clone(), d: 80 };
+  const lake = { c: onGround(lakeSpot.p.clone()), rx: clamp(lakeSpot.d - W / 2 - 34, 18, 58), rz: 0 };
+  lake.rz = lake.rx * 0.68;
+  const onLake = (x, z, m = 1) => ((x - lake.c.x) / (lake.rx * m)) ** 2 + ((z - lake.c.z) / (lake.rz * m)) ** 2 < 1;
+  occupied.push({ x: lake.c.x, z: lake.c.z, r: lake.rx + 6 });
+  const glassSpot = spots.find(o => o.p.distanceTo(lake.c) > lake.rx + 42 && o.d > W / 2 + 22) || { p: lake.c.clone().add(new V3(lake.rx + 50, 0, 0)) };
+  const glassC = onGround(glassSpot.p.clone());
+  occupied.push({ x: glassC.x, z: glassC.z, r: 16 });
+
+  /* ---- 外ラチ沿い：ヤシの幹の杭に縄を渡し、ところどころにランタンの柱。手を振る観客（アイット・ベン・ハドゥ、キャンプ、スーク、グナワ） ---- */
+  {
+    const posts = [], ropes = [], poles = []; let prev = null;
+    for (let s = 0; s < track.L; s += 6) {
+      if (s > track.homeS0 - 4 && s < track.homeS1 + 4) { prev = null; continue; }   // ホーム直線はカスバのスタンド
+      const p = onGround(local(s, 0, W / 2 + 3.4));
+      if (taken(p.x, p.z, 1)) { prev = null; continue; }
+      posts.push({ p: p.clone().add(new V3(0, 0.6, 0)), s: new V3(0.12, 1.2, 0.12) });
+      if (prev) ropes.push(beam(prev.clone().add(new V3(0, 1.0, 0)), p.clone().add(new V3(0, 1.0, 0)), 0.06));
+      prev = p;
+      if (Math.round(s / 6) % 5 === 0) { const q = onGround(local(s + 3, 0, W / 2 + 4.6)); poles.push({ p: q.clone().add(new V3(0, 1.4, 0)), s: new V3(0.07, 2.8, 0.07) }); lantern(q.clone().add(new V3(0, 3.1, 0)), 1.2); }
+    }
+    addInst(CYL, toon('#7d5f40'), posts, false); addInst(BOX, toon('#c9a46a'), ropes, false); addInst(CYL, darkWood, poles, false);
+    const crowdAt = (s0, s1, n) => {
+      for (let k = 0; k < n; k++) {
+        const p = onGround(local(rand(s0, s1), 0, W / 2 + rand(5.5, 10)));
+        if (taken(p.x, p.z, 0.4)) continue;
+        addPerson(p); occupied.push({ x: p.x, z: p.z, r: 0.6 });
+      }
+      for (let s = s0; s < s1; s += 9) { const p = local(s, 0, W / 2 + 7.5); occupied.push({ x: p.x, z: p.z, r: 4 }); }
+    };
+    crowdAt(at(1, 0.15), at(1, 0.4), 35); crowdAt(at(3, 0.2), at(3, 0.42), 30); crowdAt(at(7, 0.05), at(7, 0.3), 30); crowdAt(at(8, 0.1), at(8, 0.85), 55);
+  }
+
+  /* ---- 第1区間の外：オウニラ川の涸れ川（夕陽を映す細い流れ）と、対岸の丘に重なるアイット・ベン・ハドゥの集落（クサル） ---- */
+  const riverPts = outerPath(at(1, 0.08), at(1, 0.94), W / 2 + 50, 50);
+  {
+    riverPts.forEach(p => { onGround(p); occupied.push({ x: p.x, z: p.z, r: 17 }); });
+    const bedTex = ctex(256, 256, g => {
+      g.fillStyle = '#ad8a60'; g.fillRect(0, 0, 256, 256);
+      speck(g, 256, 256, 1400, ['#93764f', '#c9a878', '#7a6448', '#bf9c6c'], 2, 6, 0.8);
+      g.strokeStyle = 'rgba(120,90,60,.25)'; g.lineWidth = 2; for (let i = 0; i < 10; i++) { g.beginPath(); let x = rand(0, 256), y = 0; g.moveTo(x, y); for (; y < 256; y += 16) g.lineTo(x += rand(-8, 8), y); g.stroke(); }
+    }, true);
+    ribbon(riverPts, 28, 0.04, toon('#ffffff', { map: bedTex, side: THREE.DoubleSide }), 28, W / 2 + 10);
+    ribbon(riverPts, 6, 0.1, toon('#6fa8c8', { emissive: C('#ff9a5a'), emissiveIntensity: 0.3, side: THREE.DoubleSide }), 20, W / 2 + 14);
+    // 川岸のナツメヤシ
+    for (let i = 1; i < riverPts.length - 1; i += 2) {
+      const p = riverPts[i], d = riverPts[i + 1].clone().sub(riverPts[i - 1]).setY(0).normalize();
+      for (const sd of [-1, 1]) {
+        const q = p.clone().add(new V3(-d.z * sd * rand(19, 26), 0, d.x * sd * rand(19, 26)));
+        if (!clearAt(q.x, q.z, W / 2 + 12, 2.5) || inLoop(q.x, q.z) || Math.random() < 0.35) continue;
+        onGround(q); addPalm(q, rand(0.9, 1.2)); occupied.push({ x: q.x, z: q.z, r: 2.4 });
+      }
+    }
+    // 涸れ川に渡した歩道橋と、流れに置いた土のうの飛び石
+    const s = at(1, 0.5), a = onGround(local(s, 0, W / 2 + 50 - 20)), b = onGround(local(s, 0, W / 2 + 50 + 20)), deck = beam(a.clone().add(new V3(0, 1.2, 0)), b.clone().add(new V3(0, 1.2, 0)), 0.4);
+    addInst(BOX, toon('#d8c4a0'), [{ ...deck, s: new V3(deck.s.x, 0.4, 2.6) }], true);
+    const rails2 = []; for (const sd of [-1.2, 1.2]) { const n = new V3(-(b.z - a.z), 0, b.x - a.x).normalize().multiplyScalar(sd); rails2.push(beam(a.clone().add(n).add(new V3(0, 2.1, 0)), b.clone().add(n).add(new V3(0, 2.1, 0)), 0.12)); }
+    addInst(BOX, steel, rails2, false);
+    const bags = []; for (let k = -2; k <= 2; k++) { const q = onGround(local(s + 8, 0, W / 2 + 50 + k * 1.4)); bags.push({ p: q.clone().add(new V3(0, 0.15, 0)), s: new V3(0.55, 0.3, 0.45), r: [0, rand(0, 3), 0] }); }
+    addInst(SPH_LO, toon('#b89a6a'), bags, false);
+  }
+  {
+    // アイット・ベン・ハドゥ：丘の斜面に土の家が重なり、カスバの塔が立ち、頂に穀物倉（アガディール）
+    const s = at(1, 0.5), c = onGround(local(s, 0, W / 2 + 140)), rx = 46, ry = 24, y0 = c.y - 6;
+    const hillY = p => { const a = (p.x - c.x) / rx, b = (p.z - c.z) / rx, q = 1 - a * a - b * b; return q > 0 ? y0 + ry * Math.sqrt(q) : -1e9; };
+    part(world, SPH, toon('#a8774a'), [c.x, y0, c.z], [rx, ry, rx], null, 0);
+    occupied.push({ x: c.x, z: c.z, r: rx + 4 });
+    for (let ring = 0; ring < 7; ring++) {
+      const f = 0.92 - ring * 0.13, n = Math.round(44 * f);
+      for (let k = 0; k < n; k++) {
+        const a = k / n * Math.PI * 2 + ring * 0.4 + rand(-0.05, 0.05), p = new V3(c.x + Math.cos(a) * rx * f, 0, c.z + Math.sin(a) * rx * f); p.y = hillY(p) - 1.2;
+        if (Math.random() < 0.18 && ring > 0) towerAt(p, rand(3.4, 4.2), rand(10, 14), -a);
+        else houseAt(p, rand(5, 8), rand(4, 6.5) + ring * 0.3, rand(5, 8), -a + rand(-0.2, 0.2));
+      }
+    }
+    // 麓をめぐる城壁と見張りの塔（走路の側の半分）
+    const toT = local(s, 0, 0).sub(c).setY(0).normalize(), a0 = Math.atan2(toT.z, toT.x);
+    for (let k = -9; k <= 9; k++) {
+      const a = a0 + k * 0.14, p = new V3(c.x + Math.cos(a) * (rx + 1), 0, c.z + Math.sin(a) * (rx + 1)); p.y = groundAt(p) - 0.5;
+      if (k % 4 === 0) towerAt(p, 4.4, 11, -a); else houseAt(p, 7.6, 4.2, 1.4, -a + Math.PI / 2);
+    }
+    const top = new V3(c.x, y0 + ry - 1, c.z), g = registerLandmark(fantasyGroup(top), 'アイット・ベン・ハドゥの集落（クサル）');
+    g.rotation.y = -a0 + Math.PI / 2;
+    addBox(g, [16, 8, 12], [0, 4, 0], houseM, null, 0.02); addBox(g, [16.4, 0.6, 12.4], [0, 8.1, 0], piseDark);
+    g.updateMatrixWorld(true);
+    for (const [x, z] of [[-8, -6], [8, -6], [-8, 6], [8, 6]]) towerAt(g.localToWorld(new V3(x, 0, z)), 3.6, 13, g.rotation.y);
+    for (let k = 0; k < 14; k++) addBox(g, [0.8, 0.5, 0.2], [rand(-6, 6), rand(2, 6), -6.05], warm);
+    signAt(g, 'アイット・ベン・ハドゥ（世界遺産）', 22, 20);
+    // 夕暮れの窓明かり
+    const lit = []; for (const h of houseL.slice(-140)) if (Math.random() < 0.3) { const ax = Math.atan2(h.p.z - c.z, h.p.x - c.x); lit.push({ p: h.p.clone().add(new V3(Math.cos(ax) * h.s.x * 0.5, 0, Math.sin(ax) * h.s.x * 0.5)), s: new V3(0.5, 0.7, 0.5) }); }
+    addInst(BOX, warm, lit, false);
+  }
+  {
+    // 映画の撮影隊：多くの映画の舞台になった集落を、川のこちらから撮る
+    const spot = findSpot(at(1, 0.15), at(1, 0.55), W / 2 + 18, W / 2 + 30, W / 2 + 16, 5);
+    if (spot) {
+      const { s, p } = spot;
+      const g = registerLandmark(fantasyGroup(p), '映画の撮影隊'); g.rotation.y = yawAt(s);   // カメラ（局所 +z）を集落へ向ける
+      const blk = toon('#24242a');
+      addBox(g, [0.9, 0.7, 0.6], [0, 2.0, 0], blk); part(g, CYL, blk, [0, 2.0, 0.55], [0.2, 0.5, 0.2], [Math.PI / 2, 0, 0], 0);
+      for (let k = 0; k < 3; k++) { const a = k / 3 * Math.PI * 2; addBox(g, [0.06, 1.9, 0.06], [Math.cos(a) * 0.45, 0.85, Math.sin(a) * 0.45], blk, [Math.sin(a) * 0.25, 0, -Math.cos(a) * 0.25]); }
+      // 監督の椅子と、レフ板、ブームマイク、カチンコ
+      addBox(g, [0.7, 0.08, 0.6], [-2.4, 0.9, -1], toon('#2b3f7a')); addBox(g, [0.7, 0.6, 0.06], [-2.4, 1.3, -1.3], toon('#2b3f7a')); for (const [x, z] of [[-2.7, -0.75], [-2.1, -0.75], [-2.7, -1.25], [-2.1, -1.25]]) addBox(g, [0.06, 0.9, 0.06], [x, 0.45, z], wood);
+      part(g, new THREE.CircleGeometry(1, 20), toon('#f2f2f2', { side: THREE.DoubleSide, emissive: C('#ffffff'), emissiveIntensity: 0.3 }), [2.6, 1.6, -0.6], [1.1, 1.1, 1], [0, 0.6, 0], 0);
+      addBox(g, [0.05, 0.05, 3.6], [1.0, 3.2, 0.8], steel, [0.4, 0, 0]); part(g, SPH_LO, toon('#5a5a60'), [1.0, 3.9, 2.4], [0.18, 0.18, 0.4], null, 0);
+      addBox(g, [0.5, 0.4, 0.05], [-1.2, 1.5, 0.9], toon('#1a1a1a'));
+      figure(g, -2.4, 0.3, -1, '#d8d0c0', 0.9); figure(g, -0.6, 0, -0.4, '#1f2a4a'); figure(g, 1.6, 0, -0.2, '#7a4a2a'); figure(g, -1.2, 0, 1.4, '#c8302c');
+      signAt(g, '映画の撮影隊', 6.5, 9);
+      occupied.push({ x: p.x, z: p.z, r: 5 });
+    }
+  }
+
+  /* ---- 第2区間：大砂丘の上り。斜面にヤシの葉の砂よけの柵、ラクダのキャラバン、輪を描く砂丘のバギー ---- */
+  {
+    const sticks = [];
+    for (let k = 0; k < 9; k++) {
+      const s = at(2, 0.08 + k * 0.1), v = W / 2 + rand(16, 46), yaw = yawAt(s) + rand(-0.3, 0.3);
+      const c0 = local(s, 0, v); if (!clearAt(c0.x, c0.z, W / 2 + 12, 10)) continue;
+      for (let u = -9; u <= 9; u += 0.32) {
+        const [ox, oz] = rot(u, 0, yaw), p = onGround(new V3(c0.x + ox, 0, c0.z + oz)), h = rand(0.7, 1.3);
+        sticks.push({ p: p.clone().add(new V3(0, h / 2 - 0.1, 0)), s: new V3(0.1, h, 0.06), r: [0, yaw, rand(-0.12, 0.12)], c: C(pick(['#8a6a40', '#a8844e', '#6f5434'])) });
+      }
+      occupied.push({ x: c0.x, z: c0.z, r: 10 });
+    }
+    addInst(BOX, toon('#ffffff'), sticks, false);
+    if (sticks.length) registerLandmark(fantasyGroup(sticks[(sticks.length / 2) | 0].p.clone()), '砂よけの柵（ヤシの葉）');
+  }
+  // キャラバン：先導する藍色の頭布の男と、荷を載せて綱でつながったラクダの列が行き来する
+  const caravan = (pts, n, name, speed = 1.2) => {
+    const r = route(pts, false), walkers = [];
+    const lead = fantasyGroup(); lead.userData.droneIgnore = true; figure(lead, 0, 0, 0, '#2b3f8a', 1, '#1f2a6a'); walkers.push({ g: lead, off: 0, legs: [] });
+    for (let i = 0; i < n; i++) {
+      const g = fantasyGroup(); g.userData.droneIgnore = true; const legs = [];
+      g.add(camelTpl(legs, pick(['#c8302c', '#2b4fa8', '#e0b25a', '#2f7a5a', '#6a2b5e'])));
+      if (i % 2 === 0) for (const z of [-0.75, 0.75]) part(g, BOX, toon(pick(['#d8c4a0', '#8a6244', '#e8dcc0'])), [-0.1, 2.6, z], [0.7, 0.6, 0.35], null, 0);
+      addBox(g, [2.2, 0.03, 0.03], [1.9, 2.4, 0], darkWood, [0, 0, -0.5]);
+      walkers.push({ g, off: 2.6 + i * 4.3, legs });
+    }
+    updates.push(t => {
+      const m = reduced.matches ? 0 : t, M = n * 4.3 + 6, span = Math.max(10, r.L - M * 2);
+      for (const w of walkers) {
+        const k = mod(m * speed + 30, span * 2), back = k > span, u = (back ? span * 2 - k : k) + M + (back ? w.off : -w.off), { p, yaw } = r.at(u);
+        w.g.position.set(p.x, p.y, p.z); w.g.rotation.y = yaw + (back ? Math.PI : 0);
+        w.legs.forEach((l, i) => { l.rotation.z = Math.sin(m * 4.2 + (i % 2 ? Math.PI : 0) + (i > 1 ? Math.PI : 0)) * 0.3; });
+      }
+    });
+    registerLandmark(fantasyGroup(pts[(pts.length / 2) | 0].clone()), name);
+  };
+  {
+    const pts = outerPath(at(2, 0.02), at(3, 0.3), W / 2 + 26, 10, 6).map(p => onGround(p));
+    pts.forEach(p => occupied.push({ x: p.x, z: p.z, r: 3 }));
+    caravan(pts, 6, 'ラクダのキャラバン');
+  }
+  {
+    // 砂丘のバギー：砂の上で大きな輪を描き、後ろに砂けむり
+    const buggies = [];
+    for (let i = 0; i < 3; i++) {
+      const cc = onGround(local(at(2, 0.25 + i * 0.25), 0, W / 2 + 92 + i * 14)), rr = rand(16, 24);
+      if (taken(cc.x, cc.z, rr) || roadDist(cc.x, cc.z, 80) < W / 2 + rr + 14) continue;
+      occupied.push({ x: cc.x, z: cc.z, r: rr + 4 });
+      const g = fantasyGroup(); g.userData.droneIgnore = true;
+      addBox(g, [1.9, 0.6, 1.1], [0, 0.75, 0], toon(['#f2c230', '#d8343a', '#2f8fe0'][i]), null, 0.02); addBox(g, [0.7, 0.3, 0.9], [-0.4, 1.2, 0], toon('#24242a'));
+      for (const [x, z] of [[0.7, 0.62], [0.7, -0.62], [-0.7, 0.62], [-0.7, -0.62]]) part(g, CYL, toon('#222428'), [x, 0.42, z], [0.42, 0.35, 0.42], [Math.PI / 2, 0, 0], 0);
+      addBox(g, [0.08, 0.5, 1.0], [0.7, 1.25, 0], steel); figure(g, -0.3, 0.75, 0, pick(['#f2ece0', '#c8302c', '#1f2a4a']), 0.8);
+      buggies.push({ g, c: cc, r: rr, ph: rand(0, 6), v: rand(0.35, 0.5) * (i % 2 ? 1 : -1) });
+    }
+    const spray = C('#e9b47a');
+    updates.push((t, dt) => {
+      const m = reduced.matches ? 0 : t;
+      for (const b of buggies) {
+        const a = m * b.v + b.ph, x = b.c.x + Math.cos(a) * b.r, z = b.c.z + Math.sin(a) * b.r * 0.7, p = new V3(x, 0, z);
+        b.g.position.set(x, groundAt(p) + 0.05, z);
+        const dx = -Math.sin(a) * b.v, dz = Math.cos(a) * 0.7 * b.v; b.g.rotation.y = -Math.atan2(dz, dx);
+        if (!reduced.matches && Math.random() < dt * 18) dustP.emit(x - dx * 4, b.g.position.y + 0.4, z - dz * 4, rand(-0.5, 0.5), rand(0.4, 1.2), rand(-0.5, 0.5), 1.4, rand(0.8, 1.4), spray, 0.3, 1.2);
+      }
+    });
+    if (buggies.length) registerLandmark(fantasyGroup(buggies[0].c.clone()), '砂丘のバギー');
+  }
+
+  /* ---- 第3区間：砂丘のてっぺん。ベルベルの砂漠キャンプ（ハイマの天幕、絨毯、ミントティー、焚き火と太鼓、座ったラクダ、四駆） ---- */
+  {
+    const s = at(3, 0.45), g = site('ベルベルの砂漠キャンプ（シェビ砂丘）', s, W / 2 + 30, 48, 32, '#e0a866', W / 2 + 22);
+    g.updateMatrixWorld(true);
+    const Wp = (x, z) => g.localToWorld(new V3(x, 0, z));
+    // ハイマ：ヤギやラクダの毛で織った黒褐色の天幕。前に絨毯を敷く
+    const tent = (x, z, w, d, h, yaw) => {
+      const t = new THREE.Group(); t.position.set(x, 0, z); t.rotation.y = yaw; g.add(t);
+      part(t, PRISM, toon(pick(['#3e2c22', '#4a3529', '#5a4030'])), [0, 0, 0], [w, h, d], null, 0.02);
+      addBox(t, [w + 0.1, 0.25, d * 0.6], [0, h * 0.42, 0], toon(pick(['#c8302c', '#e0b25a', '#f2ece0'])));
+      addBox(t, [w * 0.8, 0.05, 2.6], [0, 0.03, -d / 2 - 1.3], pick(carpetMats));
+      for (const sx of [-w / 2 + 0.3, 0, w / 2 - 0.3]) addBox(t, [0.12, h + 0.3, 0.12], [sx, (h + 0.3) / 2, 0], wood);
+    };
+    tent(-15, 4, 7, 5, 2.8, 0.15); tent(-5, 9, 8, 5.5, 3, 0); tent(6, 9, 7, 5, 2.8, -0.1); tent(16, 3, 7, 5, 2.8, -0.3); tent(-19, -7, 6, 4.5, 2.6, 0.9);
+    // 中庭：絨毯を敷き、低い丸卓に真鍮のティーポット（ミントティー）
+    for (const [x, z, i] of [[-6, -2, 0], [2, -1, 1], [9, -4, 2], [-1, -8, 3]]) {
+      part(g, new THREE.PlaneGeometry(4.2, 6), carpetMats[i], [x, 0.04, z], null, [-Math.PI / 2, 0, 0.3 * i], 0);
+      part(g, CYL, wood, [x, 0.25, z], [0.7, 0.5, 0.7], null, 0); part(g, SPH_LO, brass, [x, 0.66, z], [0.18, 0.16, 0.18], null, 0);
+      part(g, CONE, brass, [x, 0.86, z], [0.1, 0.2, 0.1], null, 0); part(g, CYL, brass, [x + 0.22, 0.7, z], [0.03, 0.25, 0.03], [0, 0, -0.9], 0);
+      for (let k = 0; k < 4; k++) { const a = k / 4 * Math.PI * 2 + 0.4; addPerson(Wp(x + Math.cos(a) * 1.6, z + Math.sin(a) * 1.6), true); }
+    }
+    // 焚き火を囲む太鼓の輪
+    const fireP0 = Wp(4, -11); fires.push(fireP0.clone().setY(g.position.y + 0.6));
+    part(g, new THREE.ConeGeometry(0.6, 1.4, 8), warm, [4, 0.7, -11], null, null, 0);
+    for (let k = 0; k < 4; k++) addBox(g, [1.6, 0.2, 0.2], [4, 0.15, -11], darkWood, [0, k * 0.8, 0]);
+    smokes.push(fireP0.clone().setY(g.position.y + 2));
+    for (let k = 0; k < 6; k++) { const a = k / 6 * Math.PI * 2; addPerson(Wp(4 + Math.cos(a) * 2.8, -11 + Math.sin(a) * 2.8), true); if (k % 2 === 0) part(g, CYL, toon('#8a6244'), [4 + Math.cos(a) * 2.1, 0.45, -11 + Math.sin(a) * 2.1], [0.35, 0.5, 0.35], null, 0); }
+    // 座ったラクダと四駆
+    stamp(camelTpl([], '#c8302c', true), [[-20, 10], [-17, 13], [20, 11], [22, 7]].map(([x, z]) => ({ p: Wp(x, z).setY(g.position.y), yaw: g.rotation.y + rand(-1, 1) })));
+    for (const [x, z, col] of [[-12, 14, '#e8dcc0'], [12, 15, '#f2f2f2']]) {
+      const j = new THREE.Group(); j.position.set(x, 0, z); j.rotation.y = 0.3; g.add(j);
+      addBox(j, [4.4, 1.3, 2], [0, 1.2, 0], toon(col), null, 0.02); addBox(j, [2.6, 0.9, 1.9], [-0.5, 2.3, 0], toon(col)); addBox(j, [2.5, 0.75, 1.95], [-0.5, 2.3, 0], toon('#6a8aa0'));
+      addBox(j, [2.4, 0.15, 1.8], [-0.5, 2.85, 0], toon('#2a2a2a')); addBox(j, [1.2, 0.5, 1.4], [-0.7, 3.15, 0], toon('#8a6244'));
+      for (const [wx, wz] of [[1.4, 1], [1.4, -1], [-1.4, 1], [-1.4, -1]]) part(j, CYL, toon('#222428'), [wx, 0.5, wz], [0.5, 0.35, 0.5], [Math.PI / 2, 0, 0], 0);
+    }
+    for (const [x, z] of [[-23, -12], [-23, 14], [23, -12], [23, 15], [0, 14]]) { addBox(g, [0.1, 2.6, 0.1], [x, 1.3, z], darkWood); lantern(Wp(x, z).setY(g.position.y + 2.9)); }
+    signAt(g, 'ベルベルの砂漠キャンプ', 9, 15);
+  }
+
+  /* ---- 砂丘：蛇行する稜線の風上はなだらかに、風下の滑り面は急に落ちる。シェビ砂丘の大砂丘は滑り面を走路へ向ける ---- */
+  // 型（長さ・幅・高さ 1）：局所 +z が風下
+  const crestZ = x => 0.2 + 0.035 * Math.sin(x * 9 + 1);
+  const duneH = (x, z) => {
+    const a = 1 - (2 * x) ** 2; if (a <= 0 || z <= -0.5 || z >= 0.5) return 0;
+    const hc = Math.pow(a, 0.55), zc = crestZ(x);
+    if (z < zc) { const u = (zc - z) / (zc + 0.5); return hc * Math.pow(1 - Math.pow(u, 1.4), 1.3); }
+    return hc * (1 - (z - zc) / (0.5 - zc));
+  };
+  // 頂点の色：風上は明るい橙、稜線は夕陽に光り、風下の滑り面は影で濃い
+  const duneGeo = (nx, nz) => {
+    const g = new THREE.PlaneGeometry(1, 1, nx, nz); g.rotateX(-Math.PI / 2);
+    const p = g.attributes.position, col = [], lee = C('#bd7446'), wind = C('#e2a462'), crest = C('#f4c784'), c = new THREE.Color();
+    for (let i = 0; i < p.count; i++) {
+      const x = p.getX(i), z = p.getZ(i), zc = crestZ(x);
+      p.setY(i, duneH(x, z));
+      if (z > zc + 0.005) c.copy(lee).lerp(wind, 0.12); else c.copy(wind).lerp(crest, Math.max(0, 1 - (zc - z) / 0.12) * 0.7);
+      col.push(c.r, c.g, c.b);
+    }
+    g.setAttribute('color', new THREE.Float32BufferAttribute(col, 3)); g.computeVertexNormals(); return g;
+  };
+  const duneMat = toon('#ffffff', { vertexColors: true });
+  const duneList = [];
+  const duneFoot = (c, yaw, len, wid) => [[-0.4, -0.4], [0.4, -0.4], [-0.4, 0.4], [0.4, 0.4], [0, 0], [0, -0.45], [0, 0.45], [-0.45, 0], [0.45, 0], [-0.25, 0.3], [0.25, 0.3]]
+    .map(([a, b]) => { const [ox, oz] = rot(a * len, b * wid, yaw); return new V3(c.x + ox, 0, c.z + oz); });
+  // 砂丘の表面の高さ（どの砂丘にも載っていなければ -1e9）
+  const duneTop = (x, z) => {
+    let best = -1e9;
+    for (const d of duneList) {
+      const dx = x - d.c.x, dz = z - d.c.z; if (Math.abs(dx) > d.R || Math.abs(dz) > d.R) continue;
+      const h = duneH((dx * Math.cos(d.yaw) - dz * Math.sin(d.yaw)) / d.len, (dx * Math.sin(d.yaw) + dz * Math.cos(d.yaw)) / d.wid);
+      if (h > 0) best = Math.max(best, d.c.y + h * d.H);
+    }
+    return best;
+  };
+  const onSand = (x, z) => duneTop(x, z) > groundAt({ x, z }) + 0.3;
+  const windYaw = Math.atan2(-th.sun[0], -th.sun[2]);   // 風下の滑り面は、どの砂丘もおおむね夕陽と反対を向く
+  let erg = null;
+  {
+    // シェビ砂丘の大砂丘：キャンプの向こうに、滑り面を走路へ向けて
+    const s = at(3, 0.8), len = 320, wid = 150, H = 46;
+    for (let v = W / 2 + 95; v < W / 2 + 420 && !erg; v += 8) {
+      const c = local(s, 0, v), d = local(s, 0, 0).sub(c).setY(0).normalize(), yaw = Math.atan2(d.x, d.z), foot = duneFoot(c, yaw, len, wid);
+      if (foot.some(p => roadDist(p.x, p.z, W / 2 + 40) < W / 2 + 38 || taken(p.x, p.z, 0) || inLoop(p.x, p.z))) continue;
+      c.y = Math.min(...foot.map(groundAt)) - 1;
+      erg = { c, yaw, len, wid, H, R: Math.max(len, wid) / 2 };
+    }
+  }
+  const ergAt = (lx, lz) => { const [ox, oz] = rot(lx * erg.len, lz * erg.wid, erg.yaw); return new V3(erg.c.x + ox, erg.c.y + duneH(lx, lz) * erg.H, erg.c.z + oz); };
+  if (erg) {
+    const m = new THREE.Mesh(duneGeo(96, 120), duneMat); m.position.copy(erg.c); m.rotation.y = erg.yaw; m.scale.set(erg.len, erg.H, erg.wid); m.receiveShadow = true; m.castShadow = true; world.add(m);
+    duneList.push(erg); occupied.push({ x: erg.c.x, z: erg.c.z, r: erg.wid * 0.5 });
+    const top = registerLandmark(fantasyGroup(ergAt(0, crestZ(0))), 'シェビ砂丘の大砂丘（メルズーガ）'); signAt(top, 'シェビ砂丘の大砂丘', 12, 15);
+    // 稜線を行くキャラバン（夕陽に影絵になる）
+    const crest = []; for (let lx = -0.36; lx <= 0.36; lx += 0.015) crest.push(ergAt(lx, crestZ(lx)).add(new V3(0, -0.15, 0)));
+    caravan(crest, 5, '大砂丘の稜線を行くキャラバン', 1.0);
+    // サンドボード：稜線から滑り面を滑り降り、板をかついで登り返す
+    const boarders = [], spray = C('#f0b26c');
+    for (let i = 0; i < 5; i++) {
+      const lx = -0.22 + i * 0.11 + rand(-0.02, 0.02), g = fantasyGroup(); g.userData.droneIgnore = true;
+      figure(g, 0, 0.12, 0, pick(['#c8302c', '#2f8fe0', '#f2c230', '#2f7a5a', '#f2ece0']));
+      const bm = toon(pick(['#ff6a4a', '#2f8fe0', '#f2c230', '#46c08a'])), board = addBox(g, [1.5, 0.08, 0.42], [0, 0.07, 0], bm), carried = addBox(g, [0.42, 1.5, 0.08], [-0.15, 1.3, 0.42], bm);
+      boarders.push({ g, board, carried, lx, z0: crestZ(lx) + 0.012, z1: 0.44, ph: rand(0, 1) });
+    }
+    updates.push((t, dt) => {
+      const m = reduced.matches ? 0 : t;
+      for (const b of boarders) {
+        const k = mod(m / 28 + b.ph, 1), slide = k < 0.22, u = slide ? (k / 0.22) ** 1.6 : 1 - (k - 0.22) / 0.78;
+        const p = ergAt(b.lx, lerp(b.z0, b.z1, u)); b.g.position.copy(p);
+        b.g.rotation.y = erg.yaw - Math.PI / 2 + (slide ? 0 : Math.PI); b.g.rotation.z = slide ? -0.25 : 0;
+        b.board.visible = slide; b.carried.visible = !slide;
+        if (slide && !reduced.matches && Math.random() < dt * 14) dustP.emit(p.x, p.y + 0.2, p.z, rand(-0.6, 0.6), rand(0.4, 1.2), rand(-0.6, 0.6), 1.2, rand(0.5, 0.9), spray, 0.3, 1.2);
+      }
+    });
+    registerLandmark(fantasyGroup(ergAt(0, 0.35)), 'サンドボード');
+  }
+
+  /* ---- 第4〜5区間の外：砂丘の陰からのぞくフェネック ---- */
+  {
+    const fen = [];
+    for (let k = 0; k < 14 && fen.length < 7; k++) {
+      const p = onGround(local(rand(at(4, 0.1), at(5, 0.3)), 0, W / 2 + rand(12, 34)));
+      if (!clearAt(p.x, p.z, W / 2 + 10, 1.5)) continue;
+      fen.push({ p, yaw: rand(0, Math.PI * 2), sc: rand(1.1, 1.4) }); occupied.push({ x: p.x, z: p.z, r: 1.5 });
+    }
+    stamp(fennecTpl(), fen);
+    if (fen.length) registerLandmark(fantasyGroup(fen[0].p.clone()), 'フェネック');
+  }
+
+  /* ---- 第5区間：オアシスのヤシ林。「トンブクトゥまで52日」の道しるべ、畑と水路、地下水路ハッターラ、井戸、アルガンの木に登るヤギ ---- */
+  {
+    // ザゴラの道しるべ：ラクダのキャラバンの絵と「TOMBOUCTOU 52 JOURS」
+    const g = site('「トンブクトゥまで52日」の道しるべ（ザゴラ）', at(5, 0.15), W / 2 + 20, 12, 5, '#d9a066', W / 2 + 13);
+    addBox(g, [11, 6.5, 1.2], [0, 3.25, 0.4], pise, null, 0.02); addBox(g, [11.4, 0.5, 1.5], [0, 6.7, 0.4], piseDark);
+    for (let x = -5; x <= 5; x += 2) part(g, roof4, piseDark, [x, 7.3, 0.4], [0.35, 0.8, 0.35], null, 0);
+    const tex = ctex(512, 300, c => {
+      c.fillStyle = '#ecd2a0'; c.fillRect(0, 0, 512, 300); c.strokeStyle = '#6a3a1e'; c.lineWidth = 10; c.strokeRect(8, 8, 496, 284);
+      c.fillStyle = '#6a3a1e'; c.textAlign = 'center'; c.font = '900 66px sans-serif'; c.fillText('TOMBOUCTOU', 256, 82, 470);
+      c.font = '900 50px sans-serif'; c.fillText('52 JOURS', 330, 158, 300);
+      // ラクダと乗り手の影絵
+      c.beginPath(); c.ellipse(120, 170, 46, 20, 0, 0, Math.PI * 2); c.fill(); c.beginPath(); c.ellipse(112, 150, 22, 18, 0, 0, Math.PI * 2); c.fill();
+      c.lineWidth = 9; c.strokeStyle = '#6a3a1e'; c.beginPath(); c.moveTo(160, 165); c.lineTo(182, 128); c.lineTo(198, 130); c.stroke();
+      for (const x of [88, 100, 140, 152]) { c.beginPath(); c.moveTo(x, 180); c.lineTo(x + (x % 3) - 1, 228); c.stroke(); }
+      c.beginPath(); c.ellipse(112, 118, 9, 16, 0, 0, Math.PI * 2); c.fill();
+      c.font = 'bold 32px sans-serif'; c.fillText('トンブクトゥまで ラクダで52日', 256, 272, 470);
+    });
+    const bd = new THREE.Mesh(new THREE.PlaneGeometry(9.6, 5.6), new THREE.MeshBasicMaterial({ map: tex })); bd.position.set(0, 3.3, -0.22); bd.rotation.y = Math.PI; g.add(bd);
+    g.updateMatrixWorld(true); for (let k = 0; k < 6; k++) addPerson(g.localToWorld(new V3(rand(-5, 5), 0, rand(-4.5, -2.5))));
+  }
+  {
+    // 畑：ヤシの木陰に小さな区画。小麦・アルファルファ・ミントを、細い水路でつなぐ
+    const plots = [], ditches = [];
+    for (let k = 0, n = 0; k < 120 && n < 22; k++) {
+      const s = rand(at(4, 0.85), at(6, 0.05)), v = (Math.random() < 0.7 ? 1 : -1) * (W / 2 + rand(16, 80)), p = local(s, 0, v);
+      if (!clearAt(p.x, p.z, W / 2 + 12, 5) || onLake(p.x, p.z, 1.4) || (v > 0 && inLoop(p.x, p.z))) continue;
+      onGround(p); const yaw = yawAt(s) + rand(-0.15, 0.15);
+      plots.push({ p: p.clone().add(new V3(0, 0.25, 0)), s: new V3(8, 0.5, 5.5), r: [0, yaw, 0], c: C(pick(['#6aa84f', '#c9b04a', '#3f9a5a', '#8ab84a'])) });
+      const [ox, oz] = rot(0, 3.3, yaw); ditches.push({ p: new V3(p.x + ox, p.y + 0.06, p.z + oz), s: new V3(8, 0.08, 0.6), r: [0, yaw, 0] });
+      occupied.push({ x: p.x, z: p.z, r: 5 }); n++;
+    }
+    addInst(BOX, toon('#ffffff'), shuffle(plots)); addInst(BOX, toon('#5f9ac0', { emissive: C('#ff9a5a'), emissiveIntensity: 0.25 }), ditches, false);
+    if (plots.length) registerLandmark(fantasyGroup(plots[0].p.clone()), 'オアシスの畑');
+    // ハッターラ：地下水路の縦穴が、砂漠から畑へ点々と続く
+    const holes = [], mounds = [];
+    for (let k = 0; k < 16; k++) {
+      const p = onGround(local(at(5, 0.55), 0, W / 2 + 90 + k * 13));
+      if (taken(p.x, p.z, 2.5)) continue;
+      mounds.push({ p: p.clone().add(new V3(0, 0.2, 0)), s: new V3(1, 1, 1), r: [Math.PI / 2, 0, 0] }); holes.push({ p: p.clone().add(new V3(0, 0.45, 0)), s: new V3(0.6, 1, 0.6) });
+      occupied.push({ x: p.x, z: p.z, r: 3 });
+    }
+    addInst(new THREE.TorusGeometry(1.4, 0.75, 8, 16), toon('#b9874f'), mounds, false); addInst(new THREE.CircleGeometry(1, 12).rotateX(-Math.PI / 2), toon('#2a1a12'), holes, false);
+    if (mounds.length) registerLandmark(fantasyGroup(mounds[(mounds.length / 2) | 0].p.clone()), '地下水路ハッターラの縦穴');
+    // 井戸：石積みの井筒と、滑車をかけた木の枠
+    const wp = onGround(local(at(5, 0.4), 0, W / 2 + 30));
+    if (clearAt(wp.x, wp.z, W / 2 + 18, 4)) {
+      const g = registerLandmark(fantasyGroup(wp), 'オアシスの井戸');
+      part(g, new THREE.CylinderGeometry(1.4, 1.5, 1.1, 14), toon('#a99a86'), [0, 0.55, 0], null, null, 0.04);
+      for (const x of [-1.2, 1.2]) addBox(g, [0.2, 2.8, 0.2], [x, 1.4, 0], wood); addBox(g, [2.8, 0.2, 0.2], [0, 2.8, 0], wood);
+      part(g, CYL, darkWood, [0, 2.6, 0], [0.3, 0.2, 0.3], [Math.PI / 2, 0, 0], 0); addBox(g, [0.03, 1.6, 0.03], [0, 1.8, 0], toon('#c9a46a')); part(g, CYL, wood, [0, 0.95, 0], [0.25, 0.4, 0.25], null, 0);
+      figure(g, 1.8, 0, 0.6, '#2b3f8a'); stamp(donkeyTpl(), [{ p: wp.clone().add(new V3(-2.6, 0, 1)), yaw: 0.6 }]);
+      occupied.push({ x: wp.x, z: wp.z, r: 4 });
+    }
+    // アルガンの木：低く枝を広げた木の上に、ヤギが登って実を食べる
+    const ap = onGround(local(at(5, 0.72), 0, W / 2 + 34));
+    if (clearAt(ap.x, ap.z, W / 2 + 18, 7)) {
+      const g = registerLandmark(fantasyGroup(ap), 'アルガンの木に登るヤギ'), bark = toon('#5e4a36');
+      part(g, CYL_T, bark, [0, 1.2, 0], [0.5, 2.4, 0.5], [0.1, 0, 0.1], 0.03);
+      for (let k = 0; k < 5; k++) { const a = k / 5 * Math.PI * 2; part(g, CYL_T, bark, [Math.cos(a) * 1.3, 2.6, Math.sin(a) * 1.3], [0.22, 2.4, 0.22], [Math.sin(a) * 0.9, 0, -Math.cos(a) * 0.9], 0); }
+      for (let k = 0; k < 7; k++) { const a = k / 7 * Math.PI * 2; part(g, SPH_LO, toon(pick(['#4f7a3a', '#5a8a42', '#46703a'])), [Math.cos(a) * 2.6, 3.4 + rand(-0.3, 0.4), Math.sin(a) * 2.6], [2.2, 0.9, 2.2], null, 0.03); }
+      part(g, SPH_LO, toon('#4f7a3a'), [0, 3.9, 0], [2.6, 1.1, 2.6], null, 0.03);
+      const goats = [[0, 4.9, 0], [2.4, 4.2, 1], [-2.3, 4.25, -0.8], [1, 4.3, -2.6], [-1.2, 4.4, 2.4]].map(([x, y, z]) => ({ p: ap.clone().add(new V3(x, y, z)), yaw: rand(0, Math.PI * 2) }));
+      const cols = ['#f2ece0', '#3a332e', '#8a6244'];
+      cols.forEach((c, i) => stamp(goatTpl(c), goats.filter((_, k) => k % 3 === i)));
+      stamp(goatTpl('#d8d0c0'), [{ p: ap.clone().add(new V3(3.6, 0, -1)), yaw: 2 }, { p: ap.clone().add(new V3(-3.4, 0, 1.8)), yaw: 4 }]);
+      figure(g, 4.2, 0, 2.2, '#7a4a2a');
+      occupied.push({ x: ap.x, z: ap.z, r: 6 });
+    }
+  }
+
+  /* ---- 第6区間：カスバの路地（S字）。入口で走路をまたぐカスバの門、両側の土の壁、タウリルトのカスバ ---- */
+  {
+    const s = at(6, 0.1), f = tp(s, W / 2), gate = registerLandmark(fantasyGroup(f.v.clone()), 'カスバの門'), R = W / 2 + 5;
+    gate.rotation.y = -f.h;
+    gate.updateMatrixWorld(true);
+    for (const z of [-R, R]) {
+      part(gate, TOWER, towerM, [0, 9, z], [3.2, 22, 3.2], null, 0.02);
+      for (const [a, b] of [[-1, -1], [1, -1], [-1, 1], [1, 1]]) part(gate, roof4, piseDark, [a * 1.3, 20.5, z + b * 1.3], [0.35, 1, 0.35], null, 0);
+      lantern(gate.localToWorld(new V3(-2.6, 8, z * 0.86)), 1.6); lantern(gate.localToWorld(new V3(2.6, 8, z * 0.86)), 1.6);
+    }
+    // 馬蹄形のアーチ（ゼリージュの帯）と、その上の狭間のついた壁
+    part(gate, new THREE.TorusGeometry(R - 1.6, 0.7, 8, 40, Math.PI * 1.15), zellige(10, 1), [0, 3.5, 0], null, [0, Math.PI / 2, -Math.PI * 0.075], 0.03);
+    const zm = zellige(6, 1);
+    part(gate, BOX, [zm, zm, pise, pise, pise, pise], [0, 16.3, 0], [2.6, 4.6, 2 * R], null, 0.02);
+    for (let z = -R + 1; z <= R - 1; z += 1.8) part(gate, roof4, piseDark, [0, 19, z], [0.4, 0.9, 0.4], null, 0);
+    signAt(gate, 'カスバの門', 23, 10);
+    occupied.push({ x: f.v.x, z: f.v.z, r: R + 4 });
+    // 路地の両側の土の壁：ところどころに戸口
+    const walls = [], doors = [];
+    for (let s2 = at(6, 0.16); s2 < at(6, 0.95); s2 += 9) for (const sd of [-1, 1]) {
+      const p = onGround(local(s2, 0, sd * (W / 2 + 9))); if (!clearAt(p.x, p.z, W / 2 + 8, 2)) continue;
+      const yaw = yawAt(s2), h = rand(4, 5.5);
+      houseAt(p.clone().add(new V3(0, -0.4, 0)), 8.4, h, 1.4, yaw); occupied.push({ x: p.x, z: p.z, r: 4.6 });
+      if (Math.random() < 0.35) { const [ox, oz] = rot(rand(-2, 2), -sd * 0.72, yaw); doors.push({ p: new V3(p.x + ox, p.y + 1.1, p.z + oz), s: new V3(1.3, 2.2, 0.1), r: [0, yaw, 0], c: C(pick(['#2b4fa8', '#1f7a5a', '#8a2a22', '#4a3326'])) }); }
+      if (Math.random() < 0.5) { const [ox, oz] = rot(rand(-3, 3), -sd * 0.9, yaw); lantern(new V3(p.x + ox, p.y + h - 1, p.z + oz)); }
+    }
+    addInst(BOX, toon('#ffffff'), doors, false);
+  }
+  {
+    // タウリルトのカスバ：模様を刻んだ塔の群れと、中庭のヤシ
+    const g = site('タウリルトのカスバ（ワルザザート）', at(6, 0.55), W / 2 + 36, 44, 32, '#d9a066', W / 2 + 24);
+    addBox(g, [30, 9, 18], [0, 4.5, 2], houseM, null, 0.02); addBox(g, [16, 13, 10], [-4, 6.5, 4], houseM, null, 0.02); addBox(g, [10, 11, 8], [9, 5.5, 8], houseM, null, 0.02);
+    g.updateMatrixWorld(true);
+    for (const [x, z, h] of [[-17, -8, 17], [17, -8, 17], [-17, 12, 15], [17, 12, 15], [-4, -2, 20], [6, 2, 18]]) towerAt(g.localToWorld(new V3(x, 0, z)), x === -4 || x === 6 ? 4.6 : 5.2, h, g.rotation.y);
+    for (let k = 0; k < 18; k++) addBox(g, [0.7, 1, 0.2], [rand(-13, 13), rand(2, 8), -7.05], warm);
+    addBox(g, [4, 5, 0.3], [0, 2.5, -7.1], toon('#4a3326'));
+    part(g, new THREE.TorusGeometry(2.2, 0.35, 6, 20, Math.PI * 1.15), zellige(3, 1), [0, 4.6, -7.3], null, [0, 0, -Math.PI * 0.075], 0);
+    for (let k = 0; k < 8; k++) addPerson(g.localToWorld(new V3(rand(-12, 12), 0, rand(-14, -10))));
+    addPalm(g.localToWorld(new V3(-20, 0, -12)), 1); addPalm(g.localToWorld(new V3(20, 0, -12)), 1.1);
+    signAt(g, 'タウリルトのカスバ', 26, 14);
+  }
+
+  /* ---- 第7区間の外：リッサニのスーク。日よけの布の屋台に、香辛料の山・タジン鍋・絨毯・ランプ。ロバの駐車場と水売り ---- */
+  {
+    const names = ['香辛料', 'タジン鍋', '絨毯', 'ランプ', 'バブーシュ', 'ナツメヤシ', 'ミントティー', '化石', '銀の装身具', 'オリーブ'];
+    const stripeTex = ctex(128, 64, g => { for (let x = 0; x < 128; x += 16) { g.fillStyle = (x / 16) % 2 ? '#ffffff' : '#c9c0b0'; g.fillRect(x, 0, 16, 64); } });
+    const posts = [], awnings = [], counters = [], cones = [], pots = [], potLids = [], hung = [], slippers = [];
+    let si = 0;
+    for (let s = at(7, 0.06); s < at(7, 0.96) && si < names.length; s += 11) {
+      const v = W / 2 + 17, c2 = onGround(local(s, 0, v)), yaw = yawAt(s);
+      if (!clearAt(c2.x, c2.z, W / 2 + 12, 4)) continue;
+      // 局所 -z が走路の側。売り台は走路の側を向く
+      const L = (x, y, z) => { const [ox, oz] = rot(x, z, yaw); return new V3(c2.x + ox, c2.y + y, c2.z + oz); }, kind = names[si];
+      for (const [x, z] of [[-3, -2], [3, -2], [-3, 2], [3, 2]]) posts.push({ p: L(x, 1.6, z), s: new V3(0.1, 3.2, 0.1) });
+      awnings.push({ p: L(0, 3.3, -0.6), s: new V3(6.6, 0.12, 5.6), r: [0, yaw, 0], c: C(pick(['#c8302c', '#2b4fa8', '#e0b25a', '#2f7a5a', '#d86a2a'])) });
+      counters.push({ p: L(0, 0.5, -1.5), s: new V3(5.6, 1, 1.2), r: [0, yaw, 0], c: C(pick(['#8a6244', '#6b4a33', '#a07a52'])) });
+      if (kind === '香辛料') for (let k = 0; k < 7; k++) cones.push({ p: L(-2.4 + k * 0.8, 1.35, -1.5), s: new V3(0.32, 0.7, 0.32), c: C(['#c8302c', '#f2c230', '#8a5a2a', '#2f7a3a', '#e07a2a', '#a82a2a', '#d9b24c'][k]) });
+      else if (kind === 'タジン鍋') for (let k = 0; k < 6; k++) { const col = C(pick(['#c8302c', '#2b4fa8', '#e0b25a', '#2f7a5a', '#c98a55'])); pots.push({ p: L(-2.2 + k * 0.9, 1.06, -1.5), s: new V3(0.4, 0.12, 0.4), c: col }); potLids.push({ p: L(-2.2 + k * 0.9, 1.4, -1.5), s: new V3(0.34, 0.6, 0.34), c: col }); }
+      else if (kind === '絨毯') for (let k = 0; k < 3; k++) hung.push({ p: L(-2 + k * 2, 1.8, 1.8), s: new V3(1.8, 2.6, 1), r: [0, yaw, 0], m: k % 4 });
+      else if (kind === 'ランプ') for (let k = 0; k < 7; k++) lantern(L(-2.6 + k * 0.85, 2.5 - (k % 2) * 0.4, -1.4), 0.9);
+      else if (kind === 'バブーシュ') for (let k = 0; k < 10; k++) slippers.push({ p: L(-2.4 + (k % 5) * 1.1, 1.08, -1.8 + Math.floor(k / 5) * 0.5), s: new V3(0.5, 0.14, 0.2), r: [0, yaw, 0], c: C(pick(['#f2c230', '#c8302c', '#2b4fa8', '#f2ece0', '#2f7a5a'])) });
+      else for (let k = 0; k < 8; k++) cones.push({ p: L(rand(-2.4, 2.4), 1.15, rand(-1.8, -1.2)), s: new V3(0.3, 0.3, 0.3), c: C(pick(['#7a3a1e', '#4a5a2a', '#c9c0b0', '#d9b24c', '#5a3f2a'])) });
+      putBoard(kind, L(0, 3.9, -3.2), yaw + Math.PI, 4.2);
+      for (let k = 0; k < 3; k++) addPerson(onGround(L(rand(-2.6, 2.6), 0, rand(-3.4, -5))));
+      occupied.push({ x: c2.x, z: c2.z, r: 4.6 }); si++;
+    }
+    addInst(CYL, darkWood, posts, false); addInst(BOX, toon('#ffffff', { map: stripeTex }), awnings); addInst(BOX, toon('#ffffff'), counters);
+    addInst(CONE, toon('#ffffff'), shuffle(cones), false); addInst(CYL, toon('#ffffff'), pots, false); addInst(CONE, toon('#ffffff'), potLids, false); addInst(BOX, toon('#ffffff'), slippers, false);
+    carpetMats.forEach((mat, i) => addInst(new THREE.PlaneGeometry(1, 1), mat, hung.filter(o => o.m === i), false));
+    registerLandmark(fantasyGroup(onGround(local(at(7, 0.5), 0, W / 2 + 17))), 'リッサニのスーク（市場）');
+    // ロバの駐車場：市場の裏の柵に、荷かごを積んだロバがずらりとつながれる
+    const s = at(7, 0.45), c = onGround(local(s, 0, W / 2 + 34)), yaw = yawAt(s);
+    if (clearAt(c.x, c.z, W / 2 + 26, 10)) {
+      const [ax, az] = rot(-9, 0, yaw), [bx, bz] = rot(9, 0, yaw), a = onGround(new V3(c.x + ax, 0, c.z + az)), b = onGround(new V3(c.x + bx, 0, c.z + bz));
+      addInst(BOX, wood, [beam(a.clone().add(new V3(0, 1.1, 0)), b.clone().add(new V3(0, 1.1, 0)), 0.15)], false);
+      addInst(CYL, wood, [-9, -3, 3, 9].map(x => { const [ox, oz] = rot(x, 0, yaw); const p = onGround(new V3(c.x + ox, 0, c.z + oz)); return { p: p.add(new V3(0, 0.6, 0)), s: new V3(0.12, 1.2, 0.12) }; }), false);
+      const ds = []; for (let k = 0; k < 9; k++) { const [ox, oz] = rot(-8 + k * 2, -1.6, yaw); ds.push({ p: onGround(new V3(c.x + ox, 0, c.z + oz)), yaw: yaw - Math.PI / 2 + rand(-0.15, 0.15) }); }
+      stamp(donkeyTpl(), ds);
+      const g = registerLandmark(fantasyGroup(c), 'ロバの駐車場（リッサニのスーク）'); signAt(g, 'ロバの駐車場', 5, 9);
+      occupied.push({ x: c.x, z: c.z, r: 11 });
+    }
+    // 水売り（ゲッラブ）：赤い服に房のついた大きな帽子、真鍮の杯と鈴。屋台の前を行き来する
+    const wg = fantasyGroup(); wg.userData.droneIgnore = true; figure(wg, 0, 0, 0, '#c8302c', 1, '#c8302c');
+    part(wg, CYL, toon('#d8343a'), [0, 2.35, 0], [0.75, 0.12, 0.75], null, 0); part(wg, CONE, toon('#d8343a'), [0, 2.7, 0], [0.32, 0.6, 0.32], null, 0);
+    const fr = []; for (let k = 0; k < 16; k++) { const a = k / 16 * Math.PI * 2; fr.push({ p: new V3(Math.cos(a) * 0.72, 2.12, Math.sin(a) * 0.72), s: new V3(0.06, 0.35, 0.06), c: C(pick(['#f2c230', '#2b4fa8', '#2f7a5a', '#f2ece0'])) }); }
+    wg.add(inst(SPH_LO, toon('#ffffff'), fr, false));
+    part(wg, SPH_LO, toon('#5a3f2a'), [-0.3, 1.2, 0.25], [0.32, 0.45, 0.28], null, 0); for (const z of [-0.36, 0.36]) part(wg, CYL, brass, [0.15, 1.5, z], [0.12, 0.1, 0.12], null, 0);
+    const wpts = []; for (let s2 = at(7, 0.1); s2 <= at(7, 0.9); s2 += 6) wpts.push(onGround(local(s2, 0, W / 2 + 11)));
+    const wr = route(wpts, false);
+    updates.push(t => {
+      const m = reduced.matches ? 0 : t, k = mod(m * 0.9, wr.L * 2), back = k > wr.L, { p, yaw } = wr.at(back ? wr.L * 2 - k : k);
+      wg.position.set(p.x, p.y + Math.abs(Math.sin(m * 5)) * 0.06, p.z); wg.rotation.y = yaw + (back ? Math.PI : 0);
+    });
+    registerLandmark(fantasyGroup(wr.at(wr.L / 2).p.clone()), '水売り（ゲッラブ）');
+  }
+
+  /* ---- 第8区間の外：ハムリアのグナワの楽団。鉄のカスタネット（カルカベ）と弦楽器ゲンブリ、太鼓、房のついた帽子を回して踊る ---- */
+  let gnawa = null;
+  {
+    const spot = findSpot(at(8, 0.2), at(8, 0.8), W / 2 + 21, W / 2 + 30, W / 2 + 14, 8);
+    if (spot) {
+      const { s, p: c } = spot;
+      const g = registerLandmark(fantasyGroup(c), 'ハムリアのグナワの楽団'); g.rotation.y = yawAt(s) + Math.PI; g.updateMatrixWorld(true);
+      part(g, new THREE.PlaneGeometry(9, 6), carpetMats[0], [0, 0.04, 0], null, [-Math.PI / 2, 0, 0], 0);
+      const players = [];
+      for (let k = 0; k < 5; k++) {
+        const pg = new THREE.Group(); pg.position.set(-3.6 + k * 1.8, 0, 1.6); g.add(pg);
+        figure(pg, 0, 0, 0, '#f2ece0', 1, k % 2 ? '#c8302c' : '#2b4fa8');
+        for (let j = 0; j < 6; j++) part(pg, SPH_LO, toon('#f6f0e0'), [Math.cos(j) * 0.28, 2.15, Math.sin(j) * 0.28], [0.05, 0.05, 0.05], null, 0);   // 帽子の子安貝
+        if (k === 2) { part(pg, BOX, toon('#8a6244'), [0.2, 1.1, -0.4], [0.7, 0.35, 0.3], [0, 0, 0.4], 0); part(pg, BOX, darkWood, [0.75, 1.5, -0.4], [0.8, 0.06, 0.06], [0, 0, 0.4], 0); }
+        else for (const sd of [-1, 1]) part(pg, BOX, steel, [0.35, 1.3, sd * 0.3], [0.2, 0.06, 0.1], null, 0);
+        players.push({ g: pg, ph: k * 0.7 });
+      }
+      part(g, CYL, toon('#8a6244'), [-2.4, 0.45, -1.4], [0.5, 0.9, 0.5], null, 0.03); figure(g, -3.2, 0, -1.4, '#2b3f8a');
+      // 踊り手：子安貝の帽子の房を振り回してまわる
+      const dancer = new THREE.Group(); dancer.position.set(1.2, 0, -1); g.add(dancer); figure(dancer, 0, 0, 0, '#2b4fa8', 1, '#f2ece0');
+      const tassel = new THREE.Group(); tassel.position.set(0, 2.25, 0); dancer.add(tassel); addBox(tassel, [0.6, 0.03, 0.03], [0.3, 0, 0], toon('#1a1a1a')); part(tassel, SPH_LO, toon('#1a1a1a'), [0.62, 0, 0], [0.09, 0.09, 0.09], null, 0);
+      for (let k = 0; k < 4; k++) { addBox(g, [0.1, 2.4, 0.1], [-4.6 + k * 3.1, 1.2, 3.2], darkWood); lantern(g.localToWorld(new V3(-4.6 + k * 3.1, 2.6, 3.2))); }
+      for (let k = 0; k < 14; k++) { const a = rand(-1.2, 1.2) + Math.PI * 1.5, r = rand(5.5, 7.5); addPerson(g.localToWorld(new V3(Math.cos(a) * r, 0, Math.sin(a) * r * 0.7 - 1))); }
+      signAt(g, 'ハムリアのグナワの楽団', 6.5, 13);
+      occupied.push({ x: c.x, z: c.z, r: 8 });
+      gnawa = { players, dancer, tassel, speed: 1 };
+      updates.push((t, dt) => {
+        if (reduced.matches) return;
+        gnawa.ph = (gnawa.ph || 0) + dt * gnawa.speed;
+        const m = gnawa.ph;
+        for (const p of players) p.g.position.y = Math.abs(Math.sin(m * 5 + p.ph)) * 0.08;
+        dancer.rotation.y = m * 2.2; tassel.rotation.y = m * 7; dancer.position.y = Math.abs(Math.sin(m * 4.4)) * 0.15;
+      });
+    }
+  }
+
+  /* ---- 内馬場：ダヤト・スルジの湖とフラミンゴ ---- */
+  {
+    const shore = new THREE.Mesh(new THREE.CircleGeometry(1, 48), toon('#b8865a')); shore.rotation.x = -Math.PI / 2; shore.scale.set(lake.rx * 1.12, lake.rz * 1.12, 1); shore.position.set(lake.c.x, lake.c.y + 0.04, lake.c.z); shore.receiveShadow = true; world.add(shore);
+    const water = new THREE.Mesh(new THREE.CircleGeometry(1, 48), toon('#3a8fd8', { emissive: C('#2f6fb0'), emissiveIntensity: 0.5 })); water.rotation.x = -Math.PI / 2; water.scale.set(lake.rx, lake.rz, 1); water.position.set(lake.c.x, lake.c.y + 0.08, lake.c.z); world.add(water);
+    const reeds = [];
+    for (let k = 0; k < 140; k++) { const a = rand(0, Math.PI * 2), r = rand(0.95, 1.1); reeds.push({ p: new V3(lake.c.x + Math.cos(a) * lake.rx * r, lake.c.y + 0.6, lake.c.z + Math.sin(a) * lake.rz * r), s: new V3(0.12, rand(1, 1.8), 0.12), r: [rand(-0.2, 0.2), 0, rand(-0.2, 0.2)], c: C(pick(['#6a7a3a', '#8a8a4a', '#5a6a32'])) }); }
+    addInst(CONE, toon('#ffffff'), reeds, false);
+    const flock = [];
+    for (let k = 0; k < 30; k++) { const a = rand(0, Math.PI * 2), r = Math.sqrt(rand(0.3, 0.85)); flock.push({ p: new V3(lake.c.x + Math.cos(a) * lake.rx * r, lake.c.y + 0.08, lake.c.z + Math.sin(a) * lake.rz * r), yaw: rand(0, Math.PI * 2), sc: rand(1.1, 1.4) }); }
+    stamp(flamingoTpl(false), flock.filter((_, i) => i % 3)); stamp(flamingoTpl(true), flock.filter((_, i) => i % 3 === 0));
+    const g = registerLandmark(fantasyGroup(lake.c.clone()), 'ダヤト・スルジの湖とフラミンゴ'); signAt(g, 'ダヤト・スルジの湖', 9, 12);
+  }
+
+  /* ---- 内馬場：夕陽の大砂時計（ファンタジー）。上の玉から砂が落ち続け、ゴールで光る ---- */
+  let hourglass = null;
+  {
+    const g = registerLandmark(fantasyGroup(glassC), '夕陽の大砂時計'), frame = toon('#6b4a33'), sandC = toon('#e8a965');
+    for (const y of [0.6, 23.4]) part(g, new THREE.CylinderGeometry(7, 7.4, 1.2, 8), frame, [0, y, 0], null, null, 0.03);
+    for (let k = 0; k < 4; k++) { const a = k / 4 * Math.PI * 2 + Math.PI / 4; part(g, CYL, frame, [Math.cos(a) * 6, 12, Math.sin(a) * 6], [0.5, 22, 0.5], null, 0.03); part(g, SPH_LO, brass, [Math.cos(a) * 6, 24.4, Math.sin(a) * 6], [0.8, 0.8, 0.8], null, 0); }
+    part(g, CONE, sandC, [0, 3.0, 0], [4.4, 3.6, 4.4], null, 0); part(g, CONE, sandC, [0, 16.6, 0], [3.6, 3.4, 3.6], [Math.PI, 0, 0], 0);
+    const glass = toon('#fff2d8', { transparent: true, opacity: 0.3, emissive: C('#ffb060'), emissiveIntensity: 0.2, depthWrite: false });
+    for (const y of [6.6, 17.4]) part(g, SPH, glass, [0, y, 0], [5.2, 5.6, 5.2], null, 0);
+    const streamM = toon('#ffd08a', { emissive: C('#ffb050'), emissiveIntensity: 0.5 }); part(g, CYL, streamM, [0, 9, 0], [0.12, 6, 0.12], null, 0);
+    const lp = [];
+    for (let k = 0; k < 12; k++) { const a = k / 12 * Math.PI * 2, q = onGround(glassC.clone().add(new V3(Math.cos(a) * 10, 0, Math.sin(a) * 10))); lp.push({ p: q.clone().add(new V3(0, 0.7, 0)), s: new V3(0.08, 1.4, 0.08) }); lantern(q.clone().add(new V3(0, 1.7, 0)), 1.3); }
+    addInst(CYL, darkWood, lp, false);
+    signAt(g, '夕陽の大砂時計', 28, 10);
+    hourglass = { glass, streamM, c: glassC };
+  }
+
+  /* ---- 砂丘を並べる：コースの外の砂の海と、地平まで続くシェビ砂丘の連なり。遠くにアトラス山脈 ---- */
+  {
+    const near = [];
+    for (let k = 0, n = 0; k < 900 && n < 70; k++) {
+      const s = rand(0, track.L), v = W / 2 + 40 + 260 * Math.random() ** 1.3, c = local(s, 0, v);
+      if (inLoop(c.x, c.z)) continue;
+      const len = rand(40, 110), wid = len * rand(0.45, 0.6), H = len * rand(0.1, 0.18), yaw = windYaw + rand(-0.35, 0.35), foot = duneFoot(c, yaw, len, wid);
+      if (foot.some(p => roadDist(p.x, p.z, W / 2 + 22) < W / 2 + 20 || taken(p.x, p.z, 0) || inLoop(p.x, p.z))) continue;
+      c.y = Math.min(...foot.map(groundAt)) - 0.6;
+      const d = { c, yaw, len, wid, H, R: Math.max(len, wid) / 2 }; duneList.push(d);
+      near.push({ p: c, s: new V3(len, H, wid), r: [0, yaw, 0] }); occupied.push({ x: c.x, z: c.z, r: wid * 0.45 }); n++;
+    }
+    addInst(duneGeo(40, 24), duneMat, shuffle(near));
+    const base = Math.max(640, track.extent + 330), far = [];
+    for (let i = 0; i < 46; i++) {
+      const a = i / 46 * Math.PI * 2 + rand(-0.04, 0.04), r = base + rand(0, 320), len = rand(240, 460);
+      far.push({ p: new V3(center.x + Math.cos(a) * r, -2, center.z + Math.sin(a) * r), s: new V3(len, len * rand(0.16, 0.26), len * rand(0.45, 0.6)), r: [0, windYaw + rand(-0.3, 0.3), 0] });
+    }
+    const farMesh = inst(duneGeo(32, 20), toon('#ffffff', { vertexColors: true }), far, false); farMesh.userData.backdrop = true;
+    // アトラス山脈：雪をいただく高い峰が、砂丘の向こうにかすむ（夕陽と反対の側）
+    // 横に長くつらなる山なみ：なだらかな山塊を重ね、ところどころにとがった峰
+    const atlas = [], caps = [], peaks = [], coneG = new THREE.ConeGeometry(1, 1, 7); coneG.translate(0, 0.5, 0);
+    for (let i = 0; i < 16; i++) {
+      const a = -Math.PI / 2 - 1.0 + i * 0.13 + rand(-0.03, 0.03), r = base + 560 + rand(0, 120), rr = rand(150, 230), h = rand(90, 150), yaw = a + Math.PI / 2;
+      const p = new V3(center.x + Math.cos(a) * r, -20, center.z + Math.sin(a) * r);
+      atlas.push({ p, s: new V3(rr, h, rr * 0.6), r: [0, -yaw, 0], c: C(pick(['#8a6070', '#7a5a6a', '#94687a'])) });
+      caps.push({ p: new V3(p.x, p.y + h * 0.72, p.z), s: new V3(rr * 0.42, h * 0.32, rr * 0.28), r: [0, -yaw, 0] });
+      if (i % 3 === 1) { const ph = h * rand(1.15, 1.35); peaks.push({ p: p.clone(), s: new V3(rr * 0.55, ph, rr * 0.45), r: [0, rand(0, 3), 0] }); caps.push({ p: new V3(p.x, p.y + ph * 0.62, p.z), s: new V3(rr * 0.22, ph * 0.38, rr * 0.18), r: [0, 0, 0], cone: true }); }
+    }
+    for (const m of [inst(SPH_LO, toon('#ffffff', { fog: true }), atlas, false), inst(coneG, toon('#86606e', { fog: true }), peaks, false),
+      inst(SPH_LO, toon('#fff0e6', { fog: true }), caps.filter(o => !o.cone), false), inst(coneG, toon('#fff0e6', { fog: true }), caps.filter(o => o.cone), false)]) m.userData.backdrop = true;
+  }
+
+  /* ---- 木と草：オアシス（第4〜6区間）と涸れ川のほとりはナツメヤシの林、砂の上にはタマリスクの茂みとアカシア、礫の石 ---- */
+  {
+    const oasisS0 = at(4, 0.75), oasisS1 = at(6, 0.2);
+    for (let k = 0, n = 0; k < 4000 && n < 300; k++) {
+      const s = rand(oasisS0, oasisS1), v = (Math.random() < 0.65 ? 1 : -1) * (W / 2 + 10 + 110 * Math.random() ** 1.4), p = local(s, 0, v);
+      if (!clearAt(p.x, p.z, W / 2 + 9, 2.4) || onLake(p.x, p.z, 1.3) || onSand(p.x, p.z)) continue;
+      onGround(p); addPalm(p, rand(0.85, 1.25)); occupied.push({ x: p.x, z: p.z, r: 2.2 }); n++;
+    }
+    // 湖のまわりと内馬場の木立
+    for (let k = 0, n = 0; k < 1200 && n < 70; k++) {
+      const a = rand(0, Math.PI * 2), r = rand(1.2, 2.2), p = new V3(lake.c.x + Math.cos(a) * lake.rx * r, 0, lake.c.z + Math.sin(a) * lake.rz * r);
+      if (!inLoop(p.x, p.z) || !clearAt(p.x, p.z, W / 2 + 10, 2.4) || p.distanceTo(boardPos) < 26) continue;
+      onGround(p); addPalm(p, rand(0.8, 1.15)); occupied.push({ x: p.x, z: p.z, r: 2.2 }); n++;
+    }
+    for (let k = 0, n = 0; k < 2000 && n < 40; k++) {
+      const i = (Math.random() * track.N) | 0, p = new V3(track.xs[i], 0, track.zs[i]).lerp(center, rand(0.1, 1));
+      if (!inLoop(p.x, p.z) || !clearAt(p.x, p.z, W / 2 + 10, 3) || p.distanceTo(boardPos) < 26) continue;
+      onGround(p); addPalm(p, rand(0.8, 1.1)); occupied.push({ x: p.x, z: p.z, r: 2.4 }); n++;
+    }
+    // 砂の上のヤシ（ところどころ）と、タマリスクの茂み・アカシア・礫
+    const bushes = [], acTrunk = [], acTop = [], stones = [];
+    for (let k = 0, n = 0; k < 5000 && n < 420; k++) {
+      const s = rand(0, track.L), v = (Math.random() < 0.8 ? 1 : -1) * (W / 2 + 8 + 240 * Math.random() ** 1.6), p = local(s, 0, v);
+      if (!clearAt(p.x, p.z, W / 2 + 7, 1.2) || onLake(p.x, p.z, 1.3) || onSand(p.x, p.z)) continue;
+      onGround(p); const r = Math.random();
+      if (r < 0.08) { addPalm(p, rand(0.8, 1.1)); occupied.push({ x: p.x, z: p.z, r: 2.2 }); }
+      else if (r < 0.16) {
+        const h = rand(2.4, 3.6); acTrunk.push({ p: p.clone().add(new V3(0, h / 2, 0)), s: new V3(0.18, h, 0.18), r: [rand(-0.15, 0.15), 0, rand(-0.15, 0.15)] });
+        acTop.push({ p: p.clone().add(new V3(0, h + 0.2, 0)), s: new V3(rand(2.4, 3.4), 0.55, rand(2.4, 3.4)), c: C(pick(['#7a8a3a', '#6a7a34', '#8a9446'])) }); occupied.push({ x: p.x, z: p.z, r: 3 });
+      } else if (r < 0.55) { const sc = rand(0.6, 1.4); bushes.push({ p: p.clone().add(new V3(0, 0.3 * sc, 0)), s: new V3(1.1 * sc, 0.7 * sc, 1.1 * sc), c: C(pick(['#8a8f5a', '#9a9a62', '#7a7a4e', '#a39a6a'])) }); occupied.push({ x: p.x, z: p.z, r: 1.2 }); }
+      else stones.push({ p: p.clone().add(new V3(0, 0.05, 0)), s: new V3(rand(0.3, 0.9), rand(0.15, 0.4), rand(0.3, 0.9)), r: [0, rand(0, 3), 0], c: C(pick(['#5a3f2e', '#7a5a42', '#3e2e24'])) });
+      n++;
+    }
+    addInst(SPH_LO, toon('#ffffff'), shuffle(bushes)); addInst(CYL_T, toon('#5e4a36'), acTrunk); addInst(SPH_LO, toon('#ffffff'), acTop); addInst(SPH_LO, toon('#ffffff'), shuffle(stones), false);
+    shuffle(palms);
+    addInst(CYL_T, toon('#7d5f40'), palms.map(t => t.trunk)); addInst(BOX, toon('#ffffff'), palms.flatMap(t => t.leaves)); addInst(SPH_LO, toon('#d9822b'), palms.flatMap(t => t.dates), false);
+  }
+
+  /* ---- 内馬場：草を食むラクダの群れ ---- */
+  {
+    const herd = [];
+    for (let k = 0; k < 300 && herd.length < 7; k++) {
+      const p = lake.c.clone().add(new V3(rand(-1, 1) * lake.rx * 2, 0, rand(-1, 1) * lake.rz * 2.4));
+      if (!inLoop(p.x, p.z) || !clearAt(p.x, p.z, W / 2 + 12, 3) || onLake(p.x, p.z, 1.15)) continue;
+      herd.push({ p: onGround(p), yaw: rand(0, Math.PI * 2) }); occupied.push({ x: p.x, z: p.z, r: 3 });
+    }
+    stamp(camelTpl(), herd);
+  }
+
+  /* ---- 空：夕陽の砂漠の上をゆっくり漂う熱気球 ---- */
+  const balloons = [];
+  {
+    const sets = [['#c8302c', '#f2c230'], ['#2b4fa8', '#f2ece0'], ['#2f7a5a', '#e0b25a'], ['#6a2b5e', '#ff8a3a']];
+    sets.forEach(([a, b], i) => {
+      const tex = ctex(256, 64, c => { for (let x = 0; x < 256; x += 16) { c.fillStyle = (x / 16) % 2 ? a : b; c.fillRect(x, 0, 16, 64); } });
+      const g = fantasyGroup(); g.userData.droneIgnore = true;
+      const env = toon('#ffffff', { map: tex });
+      part(g, SPH, env, [0, 9, 0], [6, 7.2, 6], null, 0.02); part(g, new THREE.ConeGeometry(1, 1, 16, 1, true), toon('#ffffff', { map: tex, side: THREE.DoubleSide }), [0, 2.9, 0], [3.4, 2.6, 3.4], [Math.PI, 0, 0], 0);
+      addBox(g, [1.6, 1.1, 1.6], [0, 0.55, 0], toon('#8a6244'));
+      for (const [x, z] of [[-0.7, -0.7], [0.7, -0.7], [-0.7, 0.7], [0.7, 0.7]]) addBox(g, [0.04, 1.6, 0.04], [x, 1.9, z], darkWood);
+      const flame = part(g, SPH_LO, glowMat('#ffb040', 3), [0, 2.0, 0], [0.25, 0.45, 0.25], null, 0);
+      figure(g, -0.35, 0.3, 0, pick(['#f2ece0', '#2b3f8a']), 0.6); figure(g, 0.35, 0.3, 0, pick(['#c8302c', '#e0b25a']), 0.6);
+      balloons.push({ g, flame, r: rand(260, 420), h: rand(70, 130), ph: i * 1.6 + rand(0, 0.5), v: rand(0.012, 0.02) * (i % 2 ? 1 : -1) });
+    });
+    updates.push(t => {
+      const m = reduced.matches ? 0 : t, flare = celebration > 0 ? 1 : 0;
+      for (const b of balloons) {
+        const a = m * b.v + b.ph; b.g.position.set(center.x + Math.cos(a) * b.r, b.h + Math.sin(m * 0.2 + b.ph) * 4, center.z + Math.sin(a) * b.r);
+        const f = (Math.sin(m * 3 + b.ph * 5) > 0.6 ? 1.6 : 0.9) + flare * 1.2; b.flame.scale.set(0.25 * f, 0.45 * f, 0.25 * f);
+      }
+    });
+  }
+
+  // まとめて描く：人々、頭布、文字の板、ランタン、塔と家
+  let lanternMesh = null;
+  {
+    const order = shuffle(people.map((_, i) => i));
+    addInst(new THREE.CapsuleGeometry(0.3, 0.75, 3, 8), toon('#ffffff'), order.map(i => people[i]), false); addInst(SPH_LO, toon('#ffffff'), order.map(i => heads[i]), false); addInst(SPH_LO, toon('#ffffff'), order.map(i => wraps[i]), false);
+    for (const [key, list] of boardLists) addInst(new THREE.PlaneGeometry(1, 1), boardMats.get(key), list, false);
+    const lo = shuffle(lanterns.map((_, i) => i));
+    lanternMesh = addInst(SPH_LO, new THREE.MeshBasicMaterial({ color: C('#ffffff').multiplyScalar(1.5) }), lo.map(i => lanterns[i]), false); addInst(CONE, brass, lo.map(i => lanternCaps[i]), false);
+    addInst(TOWER, towerM, towerL); addInst(BOX, houseM, houseL); addInst(roof4, piseDark, merlonL, false);
+  }
+
+  /* ---- 煙と火の粉、風に流れる砂 ---- */
+  const smokeC = C('#d9c2a8'), ember = C('#ffb050').multiplyScalar(1.6), sandC = C('#f3c98f');
+  {
+    let acc = 0, acc2 = 0;
+    updates.push((t, dt) => {
+      if (reduced.matches) return;
+      const lq = lightQuality();
+      acc += dt * smokes.length * (lq ? 1 : 2.5);
+      while (acc >= 1 && smokes.length) { acc--; const p = pick(smokes); dustP.emit(p.x + rand(-0.2, 0.2), p.y, p.z + rand(-0.2, 0.2), rand(-0.3, 0.3) + 0.4, rand(1, 1.8), rand(-0.3, 0.3), rand(3, 5), rand(1, 2), smokeC, -0.05, 0.3); }
+      acc2 += dt * fires.length * (lq ? 3 : 8);
+      while (acc2 >= 1 && fires.length) { acc2--; const p = pick(fires); sparkP.emit(p.x + rand(-0.3, 0.3), p.y + 0.4, p.z + rand(-0.3, 0.3), rand(-0.4, 0.4), rand(2, 4), rand(-0.4, 0.4), rand(0.6, 1.2), rand(0.15, 0.3), ember, -0.5, 0.5); }
+    });
+  }
+
+  /* ---- ゴール：ランタンが一斉に明るく灯り、大砂時計が金色に輝いて砂が光の粒になって舞い上がる。夕空に花火 ---- */
+  themeFinish = () => { celebration = 9; }; themeReset = () => { celebration = 0; };
+  let burst = 0;
+  const lanternBase = C('#ffffff').multiplyScalar(1.5), fw = ['#ffb347', '#ff5a5a', '#7fe0a0', '#ffd27a', '#7fb8ff', '#ff8fd0'].map(c => C(c).multiplyScalar(1.6)), gold = C('#ffd27a').multiplyScalar(1.6);
+  updates.push((t, dt) => {
+    const glow = celebration > 0 ? Math.min(1, celebration / 2) : 0, m = reduced.matches ? 0 : t;
+    if (lanternMesh) lanternMesh.material.color.copy(lanternBase).multiplyScalar(1 + glow * 1.2 + 0.08 * Math.sin(m * 3));
+    if (hourglass) { hourglass.glass.emissiveIntensity = 0.2 + glow * 1.4; hourglass.streamM.emissiveIntensity = 0.5 + glow * 2 + 0.2 * Math.sin(m * 9); }
+    if (gnawa) gnawa.speed = 1 + glow * 1.5;
+    if (celebration <= 0) return;
+    celebration = Math.max(0, celebration - dt);
+    if (reduced.matches) return;
+    burst += dt * (lightQuality() ? 2 : 4);
+    for (; burst >= 1; burst--) {
+      const s = track.finishS + rand(-120, 60), f = tp(s, W + rand(30, 90)), y = rand(45, 75), col = pick(fw);
+      for (let i = 0; i < 46; i++) { const a = rand(0, Math.PI * 2), b = Math.acos(rand(-1, 1)), sp = rand(9, 13); sparkP.emit(f.v.x, y, f.v.z, Math.sin(b) * Math.cos(a) * sp, Math.cos(b) * sp, Math.sin(b) * Math.sin(a) * sp, rand(1.3, 1.9), rand(0.5, 0.9), col, 3, 1.2); }
+    }
+    if (hourglass && Math.random() < 0.6) { const c = hourglass.c; sparkP.emit(c.x + rand(-5, 5), c.y + rand(2, 22), c.z + rand(-5, 5), rand(-1, 1), rand(1, 3), rand(-1, 1), rand(1, 1.8), rand(0.8, 1.4), gold, 0.5, 0.5); }
+  });
+
+  // 風に流れる砂けむり（地面すれすれを風下へ）
+  const wx = Math.sin(windYaw), wz = Math.cos(windYaw);
+  ambient(TEX_SOFT, false, 50, (a, c) => a.emit(c.x + rand(-60, 60) - wx * 30, groundAt(c) + rand(0.2, 5), c.z + rand(-60, 60) - wz * 30, wx * rand(5, 10) + rand(-1, 1), rand(-0.2, 0.3), wz * rand(5, 10) + rand(-1, 1), 5, rand(0.4, 0.9), sandC, 0, 0.2));
+  // 広い範囲に散らばるインスタンスは、原点の境界球で切り捨てられないようにする
+  for (const o of world.children.slice(n0)) if (o.isInstancedMesh) o.frustumCulled = false;
+  themeUpd.push((t, dt) => { for (const f of updates) f(t, dt); });
+}
+// スタンド：カスバのような土の城のスタンド。段の前に幾何学模様の腰壁と掛けた絨毯、両端に模様を刻んだ塔、屋根の縁に狭間、
+// 屋上に馬蹄形のアーチの「夕陽デザート」の看板、軒にモロッコのランタン
+function decorDuneStand(stand, len, z0, roof) {
+  const g = new THREE.Group(); stand.add(g); registerLandmark(g, 'dune-stand');
+  const pise = toon('#c98a55'), piseDark = toon('#a8673e');
+  // 腰壁：赤土に、白と藍のベルベルの菱形の帯（局所 -z が走路の側）
+  const band = ctex(256, 64, c => {
+    c.fillStyle = '#c98a55'; c.fillRect(0, 0, 256, 64);
+    c.fillStyle = '#f4ecdc'; c.fillRect(0, 22, 256, 20);
+    for (let x = 0; x < 256; x += 32) { c.fillStyle = '#2b3f7a'; c.beginPath(); c.moveTo(x + 16, 22); c.lineTo(x + 26, 32); c.lineTo(x + 16, 42); c.lineTo(x + 6, 32); c.closePath(); c.fill(); }
+    c.fillStyle = '#8f5532'; for (let x = 0; x < 256; x += 8) { c.fillRect(x, 8, 4, 6); c.fillRect(x + 4, 50, 4, 6); }
+  }, true);
+  band.repeat.set(len / 8, 1);
+  const wall = new THREE.Mesh(new THREE.PlaneGeometry(len, 1.6), toon('#ffffff', { map: band, side: THREE.DoubleSide })); wall.position.set(0, 0.85, z0 - 0.05); g.add(wall);
+  // 腰壁に掛けた絨毯
+  const rugCols = [['#9e2a2b', '#f2dfb4'], ['#2b3f7a', '#e8d6b0'], ['#c46a1d', '#2b3f7a'], ['#6a2b5e', '#f2c230']];
+  const rugs = rugCols.map(([bg, fg]) => toon('#ffffff', { side: THREE.DoubleSide, map: ctex(64, 96, c => {
+    c.fillStyle = bg; c.fillRect(0, 0, 64, 96); c.strokeStyle = fg; c.lineWidth = 4; c.strokeRect(5, 5, 54, 86);
+    c.fillStyle = fg; for (const y of [30, 66]) { c.beginPath(); c.moveTo(32, y - 12); c.lineTo(46, y); c.lineTo(32, y + 12); c.lineTo(18, y); c.closePath(); c.fill(); }
+  }) }));
+  for (let x = -len / 2 + 4, i = 0; x <= len / 2 - 4; x += 7, i++) { const r = new THREE.Mesh(new THREE.PlaneGeometry(1.8, 2.4), rugs[i % 4]); r.position.set(x, 0.6, z0 - 0.12); g.add(r); }
+  // 屋根の前の縁の狭間と、軒に下がるランタン
+  const mer = [], lamps = [], cols = ['#ffb347', '#ff6a4a', '#7fe0a0', '#7fb8ff', '#ffd27a'].map(C);
+  const merG = new THREE.ConeGeometry(1, 1, 4); merG.rotateY(Math.PI / 4);
+  for (let x = -len / 2; x <= len / 2; x += 1.6) mer.push({ p: new V3(x, 14.1, z0 - 2.2), s: new V3(0.4, 1, 0.4) });
+  for (let x = -len / 2 + 1.5; x <= len / 2 - 1.5; x += 3) lamps.push({ p: new V3(x, 11.4, z0 - 2.2), s: new V3(0.3, 0.45, 0.3), c: cols[Math.round(x / 3 + 100) % cols.length] });
+  g.add(inst(merG, piseDark, mer, false), inst(SPH_LO, new THREE.MeshBasicMaterial({ color: C('#ffffff').multiplyScalar(1.6) }), lamps, false));
+  // 屋根に載る土の胸壁
+  addBox(g, [len + 6, 1.2, 0.8], [0, 13.6, z0 - 2.4], pise);
+  // 両端の塔：上すぼまりで、上のほうに刻んだ模様
+  const tex = ctex(128, 256, c => {
+    c.fillStyle = '#c98a55'; c.fillRect(0, 0, 128, 256);
+    c.fillStyle = '#8f5532'; for (let x = 0; x < 128; x += 32) { for (const y of [24, 48]) { c.beginPath(); c.moveTo(x + 16, y - 10); c.lineTo(x + 26, y); c.lineTo(x + 16, y + 10); c.lineTo(x + 6, y); c.closePath(); c.fill(); } c.fillStyle = '#3a2418'; c.fillRect(x + 13, 110, 6, 20); c.fillStyle = '#8f5532'; }
+  });
+  const tg = new THREE.CylinderGeometry(0.72, 1, 1, 4); tg.rotateY(Math.PI / 4);
+  for (const x of [-len / 2 - 3, len / 2 + 3]) {
+    part(g, tg, toon('#ffffff', { map: tex }), [x, 11, z0 + 3], [3.4, 22, 3.4], null, 0.02);
+    for (const [a, b] of [[-1, -1], [1, -1], [-1, 1], [1, 1]]) part(g, merG, piseDark, [x + a * 1.4, 22.6, z0 + 3 + b * 1.4], [0.45, 1.2, 0.45], null, 0);
+  }
+  // 屋上の看板：馬蹄形のアーチに縁取った「夕陽デザート」
+  const sign = ctex(512, 320, c => {
+    c.clearRect(0, 0, 512, 320);
+    const arch = () => { c.beginPath(); c.moveTo(70, 320); c.lineTo(70, 241); c.arc(256, 200, 190, Math.PI * 0.93, Math.PI * 2.07); c.lineTo(441, 320); c.closePath(); };
+    arch(); c.fillStyle = '#1f7a5a'; c.fill();
+    c.save(); c.translate(256, 320); c.scale(0.9, 0.92); c.translate(-256, -320); arch(); c.fillStyle = '#2b1f4a'; c.fill(); c.restore();
+    c.fillStyle = '#ffd27a'; c.shadowColor = '#ff8a3a'; c.shadowBlur = 16; c.textAlign = 'center'; c.textBaseline = 'middle'; c.font = '900 64px "Dela Gothic One", sans-serif'; c.fillText('夕陽デザート', 256, 215, 330);
+  });
+  const w = Math.min(30, len * 0.3), h = w * 320 / 512;
+  for (const sx of [-w * 0.3, w * 0.3]) addBox(g, [0.6, 3.4, 0.6], [sx, 15.4, z0 + 6], piseDark);
+  const bm = new THREE.Mesh(new THREE.PlaneGeometry(w, h), new THREE.MeshBasicMaterial({ map: sign, transparent: true, color: C('#ffffff').multiplyScalar(1.25) })); bm.position.set(0, 16.6 + h / 2, z0 + 5.98); bm.rotation.y = Math.PI; g.add(bm);
+  const back = new THREE.Mesh(new THREE.PlaneGeometry(w, h), new THREE.MeshBasicMaterial({ map: sign, transparent: true })); back.position.set(0, 16.6 + h / 2, z0 + 6.02); g.add(back);
+  // スタンドの前の植木鉢のナツメヤシ
+  for (const x of [-len / 2 + 1, len / 2 - 1]) {
+    part(g, new THREE.CylinderGeometry(0.9, 0.7, 1.2, 10), toon('#2b4fa8'), [x, 0.6, z0 - 2], null, null, 0.04);
+    part(g, new THREE.CylinderGeometry(0.7, 1, 1, 7), toon('#7d5f40'), [x, 3.6, z0 - 2], [0.25, 5, 0.25], null, 0);
+    for (let k = 0; k < 9; k++) { const a = k / 9 * Math.PI * 2; part(g, BOX, toon('#4f8a3a'), [x + Math.cos(a) * 1.2, 6.1, z0 - 2 - Math.sin(a) * 1.2], [2.6, 0.06, 0.45], [0, a, -0.45], 0); }
+  }
 }
 
 /* ============ WEATHER ============ */
@@ -13733,9 +15743,9 @@ const COURSE_CALLS = {
     straight: ['最後の直線！白い大地の追い比べ、{L}を追う{B}！{BAND}', '氷のスタンドへ帰ってきた！雪けむりを上げて先頭{L}、追う{B}！{BAND}'],
     finish: ['{RESULT}{M}、1着！雪原の舞台に勝利の蹄跡を刻みました！', '{RESULT}{M}、1着！ラップランドの夜空に、オーロラの冠が開きます！'] },
   'dune:sand': {
-    intro: ['夕陽の砂漠、最後まで続く脚がものを言う！', '砂の長丁場に挑む各馬！夕陽に栄光を誓います！'],
-    straight: ['最後の直線！砂の勝負はもうひと踏ん張り！{L}、追う{B}！{BAND}'],
-    finish: ['{RESULT}{M}、1着！砂の長丁場を走り抜きました！'] },
+    intro: ['夕陽の砂漠、最後まで続く脚がものを言う！', '砂の長丁場に挑む各馬！夕陽に栄光を誓います！', '夕陽に染まるサハラの入口！シェビ砂丘の大砂丘を上り、カスバの路地を抜ける砂漠の大一番です！'],
+    straight: ['最後の直線！砂の勝負はもうひと踏ん張り！{L}、追う{B}！{BAND}', 'カスバのスタンドへ帰ってきた！砂けむりを上げて先頭{L}、追う{B}！{BAND}'],
+    finish: ['{RESULT}{M}、1着！砂の長丁場を走り抜きました！', '{RESULT}{M}、1着！ランタンが灯り、大砂時計の砂が光になって夕空へ舞い上がります！'] },
   'tokyo:turf': {
     intro: ['府中の舞台に夢が集う！長い直線に何を描くか！', '大ケヤキのある府中、広い舞台で夢の競演です！'],
     straight: ['最後の直線！府中の長い追い比べ！先頭{L}、追う{B}！{BAND}'],
@@ -13797,9 +15807,9 @@ const COURSE_CALLS = {
     straight: ['最後の直線！天空の栄光を目指す{L}、追う{B}！{BAND}', '段々畑の観覧席へ帰ってきた！最後の直線、{L}、追う{B}！{BAND}'],
     finish: ['{RESULT}{M}、1着！天空の庭園に勝利の虹を描きました！'] },
   'candy:dirt': {
-    intro: ['甘い景色に熱い勝負！お菓子の国の主役は誰だ！', 'クッキーの道とケーキの丘！勝利のごほうびを目指せ！'],
-    straight: ['最後の直線！甘い栄光は譲れない！{L}、追う{B}！{BAND}'],
-    finish: ['{RESULT}{M}、1着！お菓子の国で甘い勝利をつかみました！'] },
+    intro: ['甘い景色に熱い勝負！お菓子の国の主役は誰だ！', 'クッキーの道とケーキの丘！勝利のごほうびを目指せ！', 'ジンジャーブレッドの町トルンがお菓子の国に！チョコレートの川からケーキの丘、旧市街の路地を巡る一周です！'],
+    straight: ['最後の直線！甘い栄光は譲れない！{L}、追う{B}！{BAND}', 'ジンジャーブレッドのスタンドへ帰ってきた！最後の直線、{L}、追う{B}！{BAND}'],
+    finish: ['{RESULT}{M}、1着！お菓子の国で甘い勝利をつかみました！', '{RESULT}{M}、1着！大聖堂の鐘が揺れて、お菓子の国が祝福に包まれます！'] },
   'moonForest:turf': {
     intro: ['月光の森に蹄音が響く！夢の道を切り開け！', 'きのこの光と森の起伏！静かな舞台に熱い勝負です！'],
     straight: ['最後の直線！森の舞台に響く追い比べ！{L}、{B}！{BAND}'],
