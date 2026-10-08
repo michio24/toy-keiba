@@ -1287,7 +1287,7 @@ const TRACKS = [
     // 先頭馬が通過したときの地点実況（コース上の距離。発走はホーム直線の途中、コース上の115m地点）
     placeCalls: [[335, '太陽の神殿の前を通過！段々畑の脇を回って先頭は{L}！'], [555, '虹橋を駆け上がった！太陽の門インティプンクをくぐって先頭は{L}！'],
       [700, '三つの窓の神殿を横目に下っていく！インティワタナの丘の脇、先頭は{L}、2番手{B}！'], [860, 'コンドルの神殿が翼を広げる！先頭は{L}！'], [1000, '聖なる岩の前を通過！ワイナ・ピチュを背に先頭は{L}、追う{B}！']],
-    motif: 'ペルー・アンデスの天空都市マチュ・ピチュ', motifNote: '尾根の上に築かれたインカの都市を、雲海に浮かぶ島に見立てたコースです。石垣と芝が交互に重なる段々畑（アンデネス）の観覧席から、見張り小屋の段々畑と、弧を描く切石の太陽の神殿（トレオン）の脇を回る。神殿の脇の16の水汲み場の水路は浮島の縁から滝になって落ちる。虹橋を上り切った最高地点で、インカ道の終点の太陽の門インティプンクをくぐり、三つの窓の神殿と主神殿、段を重ねた丘の上のインティワタナを見ながら下る。コンドルの神殿と、背後の山の稜線をなぞる聖なる岩を過ぎてホーム直線へ。内馬場は中央広場で、リャマとアルパカが草を食む。周りの小島は草の綱の吊り橋ケスワチャカで結ばれ、雲海からワイナ・ピチュ、雪のサルカンタイ、虹の山ビニクンカがそびえる。名所の位置・距離・地形はゲーム用のアレンジで、浮島・虹橋・ペガサスはファンタジーの演出です。',
+    motif: 'ペルー・アンデスの天空都市マチュ・ピチュ', motifNote: '尾根の上に築かれたインカの都市を、雲海に浮かぶ島に見立てたコースです。石垣と芝が交互に重なる段々畑（アンデネス）の観覧席から、見張り小屋の段々畑と、弧を描く切石の太陽の神殿（トレオン）の脇を回る。神殿の脇の16の水汲み場の水路は浮島の縁から滝になって落ちる。虹橋を上り切った最高地点で、インカ道の終点の太陽の門インティプンクをくぐり、三つの窓の神殿と主神殿、段を重ねた丘の上のインティワタナを見ながら下る。コンドルの神殿と、背後の山の稜線をなぞる聖なる岩を過ぎてホーム直線へ。内馬場は中央広場で、ペルーの国花カンツータの花壇に囲まれ、リャマとアルパカが草を食み、ハチドリが花を訪れる。草地には赤い樹皮のケーニュアの木とイチュ草、屋根の落ちた家の石垣が残り、太陽の門からはインカ道の石畳が浮島の縁へ下る。周りの小島は草の綱の吊り橋ケスワチャカで結ばれ、雲海からワイナ・ピチュ、雪のサルカンタイ、虹の山ビニクンカがそびえる。名所の位置・距離・地形はゲーム用のアレンジで、浮島・虹橋・ペガサスはファンタジーの演出です。',
     desc: '雲海に浮かぶ天空都市を巡る三角形の大回り。高さ12mの虹橋へ上り、太陽の門をくぐって追い風で加速してから大きく下る。坂を越えるスタミナと末脚が鍵。',
     grad: 'linear-gradient(135deg,#69baff,#fff1fc 55%,#a5dfad)' },
   { name: '月光きのこ森ステークス', theme: 'moonForest', surf: 'turf', D: 1100, S: 170, R: 50, kick: 0.9, time: '夜', night: true,
@@ -3425,6 +3425,18 @@ function decorCourseZones() {
     }
   }
 }
+// インカの石組み：大きさの揃わない花崗岩の切石を、目地の細い段に積む
+function incaMasonry(base, shades) {
+  return ctex(256, 256, c => {
+    c.fillStyle = base; c.fillRect(0, 0, 256, 256);
+    for (let y = 0; y < 256;) {
+      const h = rand(22, 40), hh = Math.min(h, 256 - y);
+      for (let x = -rand(0, 40); x < 256;) { const w = rand(26, 64); c.fillStyle = shades[(Math.random() * shades.length) | 0]; c.fillRect(x + 2, y + 2, w - 4, hh - 4); x += w; }
+      y += h;
+    }
+    speck(c, 256, 256, 900, ['#6f6a62', '#d8d2c4'], 1, 2, 0.35);
+  }, true);
+}
 /* ---- 天空庭園：ペルー・アンデスの天空都市マチュ・ピチュを下敷きにした浮島 ---- */
 // 見立て：雲海に浮かぶ浮島そのものを尾根の上の遺跡に、ホーム直線のスタンドを段々畑（アンデネス）の観覧席に。
 // 区間の役割：0 段々畑のホーム直線／1 見張り小屋の段々畑と太陽の神殿（16の水汲み場の水路は浮島の縁から滝になって落ちる）／
@@ -3432,7 +3444,7 @@ function decorCourseZones() {
 // 5 聖なる岩と段々畑。内馬場は中央広場（リャマとアルパカ）。雲海からワイナ・ピチュ、雪のサルカンタイ、虹色の山ビニクンカがそびえる
 function decorSkyGarden() {
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
-  const { shuffle, roadDist, occupied, clearAt, local, at, scatter, label, site, PRISM, addInst, herd } = sceneryKit();
+  const { shuffle, roadDist, occupied, clearAt, local, at, scatter, label, site, PRISM, CYL, addInst, herd, pathRibbon } = sceneryKit();
   // 案内板は赤土色の地に金の文字（インカの太陽神インティの金）
   const signAt = (g, text, y, w = 14) => { const sp = label(text, w, w / 4, '#7a3b22', '#f6d77a'); sp.position.set(0, y, 0); sp.scale.set(w, w / 4, 1); g.add(sp); return sp; };
   const updates = [];
@@ -3442,16 +3454,7 @@ function decorSkyGarden() {
   const rimPoint = p => { const k = 1 / Math.hypot(p.x / rx, p.z / rz); return new V3(p.x * k, 0, p.z * k); };
   const spread = (n, ...a) => shuffle(scatter(n * 2, ...a).filter(p => onIsland(p))).slice(0, n);
 
-  // インカの石組み：大きさの揃わない花崗岩の切石を、目地の細い段に積む
-  const masonry = (base, shades) => ctex(256, 256, c => {
-    c.fillStyle = base; c.fillRect(0, 0, 256, 256);
-    for (let y = 0; y < 256;) {
-      const h = rand(22, 40), hh = Math.min(h, 256 - y);
-      for (let x = -rand(0, 40); x < 256;) { const w = rand(26, 64); c.fillStyle = shades[(Math.random() * shades.length) | 0]; c.fillRect(x + 2, y + 2, w - 4, hh - 4); x += w; }
-      y += h;
-    }
-    speck(c, 256, 256, 900, ['#6f6a62', '#d8d2c4'], 1, 2, 0.35);
-  }, true);
+  const masonry = incaMasonry;
   const granite = toon('#ffffff', { map: masonry('#5e5a54', ['#b9b2a4', '#aaa395', '#c4beb1', '#a19a8c']) });
   const fineStone = toon('#ffffff', { map: masonry('#6d6559', ['#d6cdb9', '#cbc2ad', '#dfd7c5']) });
   // 面ごとに UV を実寸（tile m で1枚）にそろえた箱。大きな壁でも石が伸びない
@@ -3479,10 +3482,14 @@ function decorSkyGarden() {
 
   /* ---- 浮島の縁：雲海の上に切り立つ岩の縁と、低い石垣 ---- */
   {
-    const posts = [];
-    for (let i = 0; i < 160; i++) {
-      const a = i / 160 * Math.PI * 2, p = new V3(Math.cos(a) * (rx - 2.5), 0.7, Math.sin(a) * (rz - 2.5));
-      if (clearAt(p.x, p.z, W / 2 + 8)) posts.push({ p, s: new V3(rand(5.5, 7), rand(1.1, 1.6), 1.3), r: [0, -a + Math.PI / 2, 0] });
+    // 石垣は隙間なく続け、ところどころ崩れて低くなる。内側の根元にはイチュ草の株
+    const posts = [], n = 300;
+    for (let i = 0; i < n; i++) {
+      const a = (i + 0.5) / n * Math.PI * 2, p = new V3(Math.cos(a) * (rx - 2.5), 0, Math.sin(a) * (rz - 2.5));
+      const b = new V3(Math.cos(a + Math.PI * 2 / n) * (rx - 2.5), 0, Math.sin(a + Math.PI * 2 / n) * (rz - 2.5));
+      if (!clearAt(p.x, p.z, W / 2 + 8)) continue;
+      const h = i % 11 === 3 ? 0.5 : rand(1.1, 1.5), len = p.distanceTo(b) + 0.3;
+      posts.push({ p: p.clone().setY(h / 2), s: new V3(len, h, 1.4), r: [0, -Math.atan2(b.z - p.z, b.x - p.x), 0] });
     }
     addInst(BOX, fineStone, posts);
     // 縁の下に垂れる岩の塊（浮島の底の円錐に凹凸をつける）
@@ -3558,13 +3565,16 @@ function decorSkyGarden() {
       const m = new THREE.Mesh(geo, mat); m.receiveShadow = true; world.add(m); return m;
     };
     mk(tops, tIdx, toon('#86c463', { side: THREE.DoubleSide })); mk(walls, wIdx, toon('#ffffff', { map: granite.map, side: THREE.DoubleSide }));
-    // 段の上にとうもろこしとキヌアの畝（低画質では省く）
-    const crops = [];
-    for (let k = 0; k < steps; k++) for (let s = sa + 4; s < sb - 2; s += rand(5, 8)) {
-      const p = local(s, 0, v0 + (k + 0.5) * stepW); if (!onIsland(p, 8)) continue;
-      crops.push({ p: new V3(p.x, (k + 1) * stepH + 0.6, p.z), s: new V3(rand(0.8, 1.2), rand(0.9, 1.4), rand(0.8, 1.2)), c: C(['#e7c14f', '#b9503d', '#d98a3b', '#6aa34e'][k % 4]) });
+    // 段ごとに作物を変えて畝を2列：とうもろこし（茎と穂）、赤や橙のキヌアの穂、紫の花のじゃがいも
+    const stalks = [], heads = [], bushes = [];
+    for (let k = 0; k < steps; k++) for (const row of [0.3, 0.7]) for (let s = sa + 3; s < sb - 2; s += 2.4) {
+      const p = local(s + rand(-0.4, 0.4), 0, v0 + (k + row) * stepW); if (!onIsland(p, 8) || !clearAt(p.x, p.z, v0 - 2)) continue;
+      const y = (k + 1) * stepH, crop = k % 3;
+      if (crop === 0) { const h = rand(2, 2.6); stalks.push({ p: new V3(p.x, y + h / 2, p.z), s: new V3(0.12, h, 0.12), c: C('#5d9a3e') }); heads.push({ p: new V3(p.x, y + h + 0.2, p.z), s: new V3(0.18, 0.45, 0.18), c: C('#e9cf6a') }); }
+      else if (crop === 1) { const h = rand(1.2, 1.6); stalks.push({ p: new V3(p.x, y + h / 2, p.z), s: new V3(0.1, h, 0.1), c: C('#6f9a44') }); heads.push({ p: new V3(p.x, y + h + 0.25, p.z), s: new V3(0.35, 0.6, 0.35), c: C(['#c2452f', '#e0822f', '#b8326a'][(s | 0) % 3]) }); }
+      else bushes.push({ p: new V3(p.x, y + 0.35, p.z), s: new V3(0.8, 0.5, 0.8), c: C(Math.random() < 0.35 ? '#b28ad8' : '#5f9a45') });
     }
-    addInst(SPH_LO, toon('#ffffff'), shuffle(crops), false);
+    addInst(CYL, toon('#ffffff'), shuffle(stalks), false); addInst(SPH_LO, toon('#ffffff'), shuffle(heads), false); addInst(SPH_LO, toon('#ffffff'), shuffle(bushes), false);
     occupied.push(...[0.2, 0.5, 0.8].map(t => { const p = local(lerp(sa, sb, t), 0, v0 + steps * stepW / 2); return { x: p.x, z: p.z, r: steps * stepW / 2 + 4 }; }));
     return steps * stepH;
   };
@@ -3573,12 +3583,18 @@ function decorSkyGarden() {
     // 見張り小屋（ワイナ・ピチュを一望する段々畑の上の茅葺きの小屋）と葬祭の石
     const p = local(lerp(sa, sb, 0.55), 0, v0 + steps * 5 + 6);
     if (onIsland(p, 12)) {
-      const f = tp(lerp(sa, sb, 0.55), W / 2), g = registerLandmark(fantasyGroup(new V3(p.x, topY, p.z)), '見張り小屋');
+      // 段々畑の最上段より一段高い岩の丘。3段の石垣を重ね、走路側に石段をつける
+      const f = tp(lerp(sa, sb, 0.55), W / 2), g = registerLandmark(fantasyGroup(new V3(p.x, 0, p.z)), '見張り小屋');
       g.rotation.y = -f.h;
-      wall(g, [16, topY + 0.2, 12], [0, -topY / 2 - 0.1, 0], granite);
-      house(g, 0, 1.5, 7, 4.5, 3.2, Math.PI);
-      wall(g, [3.2, 1.1, 2.2], [-5, 0.55, -3], fineStone);
-      signAt(g, '見張り小屋', 9.5, 10);
+      const tiers = [[18, 14], [14.5, 11], [11, 8.5]], th = (topY + 0.6) / 3;
+      tiers.forEach(([w, d], k) => { wall(g, [w, th, d], [0, th * (k + 0.5), 0], granite); part(g, BOX, grass, [0, th * (k + 1) + 0.05, 0], [w - 0.6, 0.1, d - 0.6], null, 0); });
+      for (let k = 0; k < 6; k++) wall(g, [2.2, th * 3 * (k + 1) / 6, 1.2], [6.5, th * 3 * (k + 1) / 12, -7.6 + k * 1.15], fineStone);
+      const top = new THREE.Group(); top.position.y = th * 3; g.add(top);
+      house(top, 0, 1, 6, 4.2, 3, Math.PI);
+      // 葬祭の石：段を彫り込んだ平たい岩と、小さな輪
+      part(top, new THREE.DodecahedronGeometry(1, 0), toon('#9a9284'), [-3.5, 0.5, -2.6], [2.4, 0.9, 1.6], [0, 0.4, 0], 0.03);
+      wall(top, [0.8, 0.5, 0.8], [-2.6, 1.2, -2.6], fineStone);
+      signAt(top, '見張り小屋', 8, 10);
       occupied.push({ x: p.x, z: p.z, r: 12 });
     }
     andenes(at(5, 0.4), at(5, 0.95), W / 2 + 14, 4);
@@ -3676,16 +3692,20 @@ function decorSkyGarden() {
   /* ---- 第4区間：コンドルの神殿。天然の岩を広げた翼に、床の石を頭に見立てた祭壇 ---- */
   {
     const g = site('コンドルの神殿', at(4, 0.5), W / 2 + 24, 26, 20, '#b3ab9a');
+    // 翼：風切羽のぎざぎざを刻んだ板状の岩を、背中側から斜め上へ V 字に広げる。根元は切石の壁で受ける
     const rock = toon('#8a8276');
+    const wingShape = new THREE.Shape([[0, 0], [11, 1.5], [12.5, 4.2], [11, 4.6], [11.6, 6.4], [9.6, 6.2], [9.8, 8], [7.6, 7.2], [7.2, 8.6], [5, 7.2], [2.2, 5.6], [0, 3.4]].map(([x, y]) => new THREE.Vector2(x, y)));
+    const wingGeo = new THREE.ExtrudeGeometry(wingShape, { depth: 1.8, bevelEnabled: true, bevelSize: 0.35, bevelThickness: 0.35, bevelSegments: 1 }); wingGeo.translate(0, 0, -0.9);
     for (const sx of [-1, 1]) {
-      const wing = new THREE.Group(); wing.position.set(sx * 2.5, 0, 5); wing.rotation.set(0, sx * -0.35, sx * 0.25); g.add(wing);
-      part(wing, new THREE.DodecahedronGeometry(1, 0), rock, [sx * 5.5, 5, 0], [6.5, 6, 2.6], [0, 0, sx * -0.35], 0.03);
-      wall(wing, [9, 1.2, 2.6], [sx * 5, 1.2, 0.3], fineStone);
+      const wing = new THREE.Group(); wing.position.set(sx * 1.2, 0.2, 6); wing.rotation.set(0, sx > 0 ? -0.3 : Math.PI + 0.3, 0.32); g.add(wing);
+      part(wing, wingGeo, rock, [0, 0, 0], null, null, 0.02);
+      wall(g, [7, 2.4, 1.6], [sx * 6, 1.2, 8.6], fineStone, [0, sx * 0.3, 0]);
     }
-    // 頭と白い襟：床の三角の石
-    wall(g, [2.4, 0.5, 3.6], [0, 0.25, -2.5], fineStone, [0, Math.PI / 4, 0]);
-    part(g, SPH_LO, toon('#f3efe6'), [0, 0.55, 0.3], [1.6, 0.35, 0.9], null, 0);
-    trap(g, 1.2, 0.8, 2, [0, 1.5, 5.6], Math.PI);
+    // 床：くちばしと頭を彫った三角の石と、白い襟の帯（祭壇の前の石畳）
+    wall(g, [7, 0.3, 9], [0, 0.15, 0], granite);
+    const head = new THREE.Shape([[-1.6, 0], [1.6, 0], [0, -4.2]].map(([x, y]) => new THREE.Vector2(x, y)));
+    part(g, new THREE.ExtrudeGeometry(head, { depth: 0.5, bevelEnabled: false }), toon('#cfc7b4'), [0, 0.3, -1.4], null, [Math.PI / 2, 0, 0], 0.03);
+    part(g, BOX, toon('#f3efe6'), [0, 0.42, -0.8], [3.6, 0.12, 1], null, 0);
     signAt(g, 'コンドルの神殿', 13, 12);
   }
 
@@ -3717,6 +3737,67 @@ function decorSkyGarden() {
     } else g.visible = false;
   }
 
+  /* ---- 天空の庭園：中央広場を囲む花壇、ケーニュアの木とイチュ草、崩れた石垣の遺構、インカ道の石畳、ハチドリ ---- */
+  const beds = [];
+  {
+    const mark = name => (world.userData.landmarks || []).find(g => g.name === name);
+    // 花壇：中央広場の縁に、石の縁取りの細長い花壇を輪に並べる。ペルーの国花カンツータ（赤・桃・黄の釣鐘の花）と青紫のルピナス
+    const rims = [], soil = [], blooms = [], petals = ['#e2364f', '#f06a9a', '#f7c93f', '#7f6bd6', '#f39a3c'];
+    for (let i = 0; i < 14; i++) {
+      const a = i / 14 * Math.PI * 2, rr = plazaR + 5, p = new V3(plazaC.x + Math.cos(a) * rr, 0, plazaC.z + Math.sin(a) * rr * 0.8);
+      if (!clearAt(p.x, p.z, W / 2 + 8, 4) || p.distanceTo(boardPos) < 22) continue;
+      const yaw = -a + Math.PI / 2, c = Math.cos(yaw), sn = Math.sin(yaw);
+      rims.push({ p: p.clone().setY(0.3), s: new V3(7.5, 0.6, 2.6), r: [0, yaw, 0] }); soil.push({ p: p.clone().setY(0.62), s: new V3(6.9, 0.06, 2), r: [0, yaw, 0] });
+      for (let k = 0; k < 18; k++) { const u = rand(-3.2, 3.2), v = rand(-0.8, 0.8); blooms.push({ p: new V3(p.x + u * c + v * sn, 0.95, p.z - u * sn + v * c), s: new V3(0.38, 0.32, 0.38), c: C(petals[(i + (k % 3)) % petals.length]) }); }
+      beds.push(p); occupied.push({ x: p.x, z: p.z, r: 4 });
+    }
+    addInst(BOX, fineStone, rims); addInst(BOX, toon('#6b4a35'), soil, false); addInst(SPH_LO, toon('#ffffff'), shuffle(blooms), false);
+    // 野の花：草地にカンツータと黄色いアマンカイの小さな群れ
+    const wild = [];
+    for (const p of spread(46, 0, track.L, -90, 95, W / 2 + 8, 1.5)) for (let k = 0; k < 6; k++) wild.push({ p: new V3(p.x + rand(-1.6, 1.6), 0.3, p.z + rand(-1.6, 1.6)), s: new V3(0.3, 0.26, 0.3), c: C(['#e2364f', '#f7c93f', '#f06a9a', '#ffffff'][k % 4]) });
+    addInst(SPH_LO, toon('#ffffff'), shuffle(wild), false);
+
+    // ケーニュア（ポリレピス）：赤茶の樹皮がめくれた曲がった幹に、平たく重なる濃い緑の葉。アンデスの高地に育つ木
+    const trunks = [], crowns = [];
+    for (const p of spread(34, 0, track.L, -80, 90, W / 2 + 16, 4)) {
+      const h = rand(4, 6.5), lean = rand(-0.25, 0.25), yaw = rand(0, 6);
+      trunks.push({ p: new V3(p.x, h / 2, p.z), s: new V3(0.45, h, 0.45), r: [lean, yaw, rand(-0.2, 0.2)] });
+      for (let k = 0; k < 3; k++) crowns.push({ p: new V3(p.x + rand(-1.4, 1.4), h * (0.75 + k * 0.14), p.z + rand(-1.4, 1.4)), s: new V3(rand(2.2, 3.2), rand(0.8, 1.1), rand(2.2, 3.2)), c: C(['#3f6f3d', '#4f7f45', '#5d8c4a'][k]) });
+      occupied.push({ x: p.x, z: p.z, r: 3 });
+    }
+    addInst(CYL, toon('#9a5238'), trunks); addInst(SPH_LO, toon('#ffffff'), crowns);
+    // イチュ草：高地の草原の、穂先の黄ばんだ細い草の株（浮島の縁と小島に多い）
+    const tufts = [], TUFT = new THREE.ConeGeometry(1, 1, 5); TUFT.translate(0, 0.5, 0);
+    for (let i = 0; i < 260; i++) {
+      const a = rand(0, Math.PI * 2), k = Math.sqrt(rand(0.45, 0.93)), p = new V3(Math.cos(a) * rx * k, 0, Math.sin(a) * rz * k);
+      if (!clearAt(p.x, p.z, W / 2 + 6, 1)) continue;
+      for (let j = 0; j < 3; j++) tufts.push({ p: new V3(p.x + rand(-0.6, 0.6), 0, p.z + rand(-0.6, 0.6)), s: new V3(0.35, rand(0.9, 1.5), 0.35), r: [rand(-0.35, 0.35), 0, rand(-0.35, 0.35)], c: C(['#c8b25a', '#a9a84f', '#d7c26e'][j]) });
+    }
+    addInst(TUFT, toon('#ffffff'), shuffle(tufts), false);
+
+    // 遺構：屋根の落ちた家の石垣。L字やコの字に低く残り、台形の壁がんがのぞく
+    for (const p of spread(14, 0, track.L, -70, 85, W / 2 + 18, 8)) {
+      const g = fantasyGroup(p); g.rotation.y = rand(0, Math.PI * 2);
+      const w = rand(6, 9), d = rand(5, 7), h1 = rand(1.6, 2.8), h2 = rand(0.7, 1.6);
+      wall(g, [w, h1, 0.9], [0, h1 / 2, -d / 2]); wall(g, [0.9, h2, d], [-w / 2, h2 / 2, 0]);
+      if (Math.random() < 0.5) wall(g, [0.9, h1 * 0.8, d * 0.6], [w / 2, h1 * 0.4, -d * 0.2]);
+      if (h1 > 2) trap(g, 0.7, 0.5, 0.9, [rand(-2, 2), 0.8, -d / 2 + 0.46], 0);
+      for (let k = 0; k < 3; k++) part(g, BOX, granite, [rand(-w / 2, w / 2), 0.25, rand(-d / 2, d / 2)], [rand(0.7, 1.2), 0.5, rand(0.6, 1)], [0, rand(0, 3), 0], 0);
+      occupied.push({ x: p.x, z: p.z, r: 7 }); themeDetails.push(g);
+    }
+
+    // インカ道の石畳：太陽の門から浮島の縁へ下る道（雲海の向こうから来た旅人の道）と、中央広場から神殿へ向かう小道
+    const flag = toon('#b5ab95', { side: THREE.DoubleSide });
+    const line = (a, b, n = 24) => Array.from({ length: n + 1 }, (_, k) => a.clone().lerp(b, k / n));
+    const gateOut = local(at(2, 0.75), 0, W / 2 + 10);
+    pathRibbon(line(gateOut, rimPoint(gateOut).multiplyScalar(0.985)), 3.2, 0.06, flag);
+    for (const name of ['インティワタナ', '住居群']) {
+      const g = mark(name); if (!g || !g.visible) continue;
+      const a = plazaC.clone().lerp(g.position, plazaR / Math.max(1, plazaC.distanceTo(g.position)));
+      pathRibbon(line(a, g.position.clone().lerp(a, 0.25)), 2.4, 0.06, flag);
+    }
+  }
+
   /* ---- 生きもの：リャマとアルパカの群れ、空を回るアンデスコンドル ---- */
   {
     const llamaParts = (body, face) => [
@@ -3730,8 +3811,10 @@ function decorSkyGarden() {
       ...[[0.5, 0.25], [0.5, -0.25], [-0.5, 0.25], [-0.5, -0.25]].map(([x, z]) => ({ geo: BOX, mat: body, off: [x, 0.4, z], s: [0.18, 0.8, 0.18] }))
     ];
     const c = plazaC;
-    const plaza = Array.from({ length: 40 }, () => { const a = rand(0, Math.PI * 2), r = Math.sqrt(Math.random()) * plazaR * 0.9; return new V3(c.x + Math.cos(a) * r, 0, c.z + Math.sin(a) * r * 0.8); }).filter(p => clearAt(p.x, p.z, W / 2 + 10, 2) && p.distanceTo(boardPos) > 20);
-    const spots = shuffle([...plaza, ...spread(10, at(0, 0.05), at(0, 0.95), -60, -20, W / 2 + 12, 2), ...spread(8, at(4, 0.1), at(5, 0.4), W / 2 + 14, W / 2 + 60, W / 2 + 12, 2)]).map(p => ({ p, yaw: rand(0, Math.PI * 2) }));
+    const plaza = Array.from({ length: 18 }, () => { const a = rand(0, Math.PI * 2), r = Math.sqrt(Math.random()) * plazaR * 0.9; return new V3(c.x + Math.cos(a) * r, 0, c.z + Math.sin(a) * r * 0.8); }).filter(p => clearAt(p.x, p.z, W / 2 + 10, 2) && p.distanceTo(boardPos) > 20);
+    // 中央広場に寄せすぎず、内馬場や段々畑の下の草地にも小さな群れで散らす
+    const spots = shuffle([...plaza, ...spread(8, at(0, 0.05), at(0, 0.95), -60, -20, W / 2 + 12, 2), ...spread(8, at(4, 0.1), at(5, 0.4), W / 2 + 14, W / 2 + 60, W / 2 + 12, 2),
+      ...spread(6, at(2, 0.1), at(3, 0.9), W / 2 + 30, W / 2 + 70, W / 2 + 14, 2), ...spread(6, at(1, 0.2), at(3, 0.2), -70, -25, W / 2 + 12, 2)]).map(p => ({ p, yaw: rand(0, Math.PI * 2) }));
     spots.forEach(s => occupied.push({ x: s.p.x, z: s.p.z, r: 2 }));
     const n = spots.length, k1 = Math.ceil(n * 0.35), k2 = Math.ceil(n * 0.6);
     herd(spots.slice(0, k1), llamaParts(toon('#f4efe4'), toon('#e6dccb')));
@@ -3751,6 +3834,21 @@ function decorSkyGarden() {
       if (i) themeDetails.push(g);
     }
     condors.forEach(o => { o.g.userData.droneIgnore = true; });
+    // ハチドリ：花壇の花のまわりを、羽を震わせながら止まっては移る
+    const birds = beds.slice(0, 8).map((p, i) => {
+      const g = fantasyGroup(); g.userData.droneIgnore = true;
+      part(g, SPH_LO, glowMat(i % 2 ? '#3fd6a0' : '#4fb8ff', 0.9), [0, 0, 0], [0.18, 0.16, 0.38], null, 0);
+      addBox(g, [0.03, 0.03, 0.3], [0, 0.02, 0.45], toon('#222222'));
+      const wings = [-1, 1].map(s => { const w = new THREE.Group(); w.position.x = s * 0.12; g.add(w); part(w, SPH_LO, toon('#d8f3ff'), [s * 0.28, 0, 0], [0.28, 0.03, 0.1], null, 0); return w; });
+      if (i > 3) themeDetails.push(g);
+      return { g, wings, p, ph: i * 1.7 };
+    });
+    updates.push(t => birds.forEach(({ g, wings, p, ph }) => {
+      const m = reduced.matches ? 0 : t, a = Math.floor(m * 0.5 + ph) * 2.3 + ph, k = Math.min(1, (m * 0.5 + ph) % 1 * 3);
+      const b = a - 2.3, x = lerp(Math.cos(b) * 3, Math.cos(a) * 3, k), z = lerp(Math.sin(b) * 1.2, Math.sin(a) * 1.2, k);
+      g.position.set(p.x + x, 1.5 + Math.sin(m * 3 + ph) * 0.15, p.z + z); g.rotation.y = -a;
+      wings.forEach((w, j) => { w.rotation.z = (reduced.matches ? 0.3 : Math.sin(t * 60 + j * Math.PI) * 0.9); });
+    }));
     updates.push(t => condors.forEach(({ g, wings, r, y, ph, sp }) => {
       const a = (reduced.matches ? 0 : t) * sp + ph;
       g.position.set(Math.cos(a) * r, y + Math.sin(a * 3) * 4, Math.sin(a) * r * 0.75);
@@ -3811,17 +3909,39 @@ function decorSkyGarden() {
     updates.push(t => { cloudMesh.position.x = reduced.matches ? 0 : Math.sin(t * 0.035) * 10; });
     const fogMat = col => toon(col, { fog: true });
     // 浮島の向こう（虹橋の奥）に、ワイナ・ピチュの尖った緑の峰と、頂の段々畑
-    const hp = new V3(40, 0, -(rz + 420)), peaks = [];
-    peaks.push({ p: hp.clone().setY(-60), s: new V3(85, 280, 75), c: C('#4f8a4e') }, { p: hp.clone().add(new V3(-95, -70, 40)), s: new V3(70, 170, 60), c: C('#5a9654') });
-    // プトゥクシ（丸い緑の山）と、スタンドの裏にマチュ・ピチュ山
-    peaks.push({ p: new V3(rx + 260, -70, -120), s: new V3(110, 200, 110), c: C('#5e9a58') }, { p: new V3(-60, -70, rz + 380), s: new V3(140, 250, 110), c: C('#58905a') });
-    const peakMesh = inst(SPH_LO, fogMat('#ffffff'), peaks, false); peakMesh.userData.backdrop = true;
-    const ruins = []; for (let k = 0; k < 4; k++) ruins.push({ p: hp.clone().setY(170 + k * 12), s: new V3(26 - k * 6, 3, 22 - k * 5), r: [0, 0.4, 0] });
+    // 熱帯の雲霧林に覆われた急な峰：細る柱を少しずつずらして積み、山肌に灰色の岩壁をのぞかせる
+    const hp = new V3(40, 0, -(rz + 420)), slabs = [], cliffs = [], SLAB = new THREE.CylinderGeometry(0.8, 1, 1, 7);
+    const peak = (x, z, r0, h, steep, greens) => {
+      const n = 7, y0 = -90;
+      for (let k = 0; k < n; k++) {
+        const t = k / n, r = r0 * Math.pow(1 - t, steep) + 6, hh = h / n * 1.25;
+        const p = new V3(x + rand(-0.06, 0.06) * r0 * t, y0 + h * t + hh / 2, z + rand(-0.06, 0.06) * r0 * t);
+        slabs.push({ p, s: new V3(r, hh, r * rand(0.8, 0.95)), r: [0, rand(0, 3), 0], c: C(greens[k % greens.length]) });
+        if (k > 1 && k < n - 1) for (let j = 0; j < 2; j++) { const a = rand(0, Math.PI * 2); cliffs.push({ p: new V3(p.x + Math.cos(a) * r * 0.82, p.y, p.z + Math.sin(a) * r * 0.82), s: new V3(r * 0.32, hh * 0.9, r * 0.22), r: [0, -a, 0] }); }
+      }
+      return new V3(x, y0 + h, z);
+    };
+    // ワイナ・ピチュ（遺跡の背後の尖った峰）と、肩に並ぶ小さな峰
+    const hpTop = peak(hp.x, hp.z, 78, 300, 1.25, ['#3f7a45', '#4a8a4c', '#3c7442']);
+    peak(hp.x - 110, hp.z + 50, 62, 190, 1.1, ['#4b8b4d', '#55964f']);
+    // プトゥクシ（丸い緑の山）と、スタンドの裏のマチュ・ピチュ山
+    peak(rx + 270, -110, 95, 210, 0.75, ['#55934f', '#5f9d55']);
+    peak(-50, rz + 520, 120, 290, 0.95, ['#4d884b', '#58925a', '#4a8048']);
+    const slabMesh = inst(SLAB, fogMat('#ffffff'), slabs, false), cliffMesh = inst(new THREE.DodecahedronGeometry(1, 0), fogMat('#8d8b84'), cliffs, false);
+    slabMesh.userData.backdrop = cliffMesh.userData.backdrop = true;
+    // ワイナ・ピチュの頂の段々畑と石の祭殿
+    const ruins = []; for (let k = 0; k < 3; k++) ruins.push({ p: hpTop.clone().add(new V3(0, -14 + k * 4, 0)), s: new V3(14 - k * 3.5, 4, 12 - k * 3), r: [0, 0.4, 0] });
     const ruinMesh = inst(new THREE.CylinderGeometry(1, 1, 1, 10), fogMat('#a7a294'), ruins, false); ruinMesh.userData.backdrop = true;
-    // 雪をいただくサルカンタイとベロニカ
-    const snowy = [[-(rx + 520), -90, -(rz + 380), 190, 330], [rx + 560, -90, rz + 200, 170, 280], [-(rx + 640), -90, rz + 260, 150, 240]];
-    const rockMesh = inst(new THREE.ConeGeometry(1, 1, 7).translate(0, 0.5, 0), fogMat('#7d8794'), snowy.map(([x, y, z, r, h]) => ({ p: new V3(x, y, z), s: new V3(r, h, r), r: [0, rand(0, 3), 0] })), false);
-    const capMesh = inst(new THREE.ConeGeometry(1, 1, 7).translate(0, 0.5, 0), fogMat('#f6f8ff'), snowy.map(([x, y, z, r, h]) => ({ p: new V3(x, y + h * 0.62, z), s: new V3(r * 0.4, h * 0.39, r * 0.4), r: [0, rand(0, 3), 0] })), false);
+    // 雪をいただくサルカンタイとベロニカ：主峰のまわりに肩の峰を寄せた山塊
+    const snowy = [], caps = [], CONE7 = new THREE.ConeGeometry(1, 1, 7).translate(0, 0.5, 0);
+    for (const [x, z, r, h] of [[-(rx + 520), -(rz + 380), 190, 330], [rx + 560, rz + 200, 170, 280], [-(rx + 640), rz + 260, 150, 240]]) {
+      for (const [dx, dz, k] of [[0, 0, 1], [r * 0.75, r * 0.2, 0.7], [-r * 0.7, -r * 0.15, 0.62], [r * 0.25, -r * 0.6, 0.55]]) {
+        const p = new V3(x + dx, -90, z + dz), rot = [0, rand(0, 3), 0];
+        snowy.push({ p, s: new V3(r * k, h * k, r * k), r: rot });
+        caps.push({ p: p.clone().setY(-90 + h * k * 0.55), s: new V3(r * k * 0.46, h * k * 0.46, r * k * 0.46), r: rot });
+      }
+    }
+    const rockMesh = inst(CONE7, fogMat('#7d8794'), snowy, false), capMesh = inst(CONE7, fogMat('#f6f8ff'), caps, false);
     rockMesh.userData.backdrop = capMesh.userData.backdrop = true;
     // 虹の山ビニクンカ：鉱物の色が縞になった稜線
     const stripes = ctex(64, 256, c => { ['#b5523b', '#e0a35a', '#f0d07a', '#7fae8a', '#d98a8a', '#8e6aa8', '#c87a4a', '#e8c06a'].forEach((col, i) => { c.fillStyle = col; c.fillRect(0, i * 32, 64, 32); }); });
@@ -3829,7 +3949,7 @@ function decorSkyGarden() {
     vini.userData.backdrop = true;
     // 峰にかかる雲
     const wisps = [];
-    for (const [x, y, z] of [[hp.x, 120, hp.z + 30], [hp.x - 60, 60, hp.z + 50], [rx + 260, 80, -90], [-60, 110, rz + 340]]) for (let k = 0; k < 3; k++) wisps.push({ p: new V3(x + rand(-40, 40), y + rand(-8, 8), z + rand(-15, 15)), s: new V3(rand(30, 50), rand(7, 11), rand(16, 26)) });
+    for (const [x, y, z] of [[hp.x, 120, hp.z + 30], [hp.x - 60, 60, hp.z + 50], [rx + 260, 80, -90], [-50, 140, rz + 470]]) for (let k = 0; k < 3; k++) wisps.push({ p: new V3(x + rand(-40, 40), y + rand(-8, 8), z + rand(-15, 15)), s: new V3(rand(30, 50), rand(7, 11), rand(16, 26)) });
     const wispMesh = fantasyInst(SPH_LO, toon('#ffffff', { fog: true }), wisps, false); wispMesh.userData.backdrop = true;
     updates.push(t => { wispMesh.position.x = reduced.matches ? 0 : Math.sin(t * 0.05) * 14; });
   }
@@ -3861,15 +3981,48 @@ function decorSkyGarden() {
   });
   themeUpd.push((t, dt) => { for (const f of updates) f(t, dt); });
 }
-// 天空庭園のスタンド：白い共通スタンドを、石垣と芝が交互に重なる段々畑の観覧席に。茅葺きの切妻屋根と虹色の三角旗
+// 天空庭園のスタンド：白い共通スタンドを、石垣と芝が交互に重なる段々畑の観覧席に。
+// 屋根はイチュ草の茅葺きの切妻、両端は切石の妻壁、背面の壁には台形の壁がん。軒には虹色の三角旗
 function decorSkyGardenStand(stand, len, z0, roof) {
   const g = new THREE.Group(); stand.add(g); registerLandmark(g, 'skyGarden-stand');
   roof.visible = false;
   const recolor = { [C('#f2eef8').getHex()]: '#b9ae9a', [C('#e3dcef').getHex()]: '#86c463', [C('#d9d3e6').getHex()]: '#6e4f35' };
   stand.children.forEach(o => { if (o.isMesh && !o.isInstancedMesh && o.material.color && recolor[o.material.color.getHex()]) o.material.color.set(recolor[o.material.color.getHex()]); });
+  // 茅葺き：草の束の筋と、段に重ねた刈り込みの線
+  const thatch = ctex(256, 256, c => {
+    c.fillStyle = '#9a7a42'; c.fillRect(0, 0, 256, 256);
+    for (let i = 0; i < 900; i++) { c.strokeStyle = ['#b8964f', '#7d5f2e', '#a8873f', '#c4a462'][i % 4]; c.lineWidth = rand(1, 2.5); const x = rand(0, 256), y = rand(0, 256); c.beginPath(); c.moveTo(x, y); c.lineTo(x + rand(-3, 3), y + rand(14, 30)); c.stroke(); }
+    for (let y = 0; y < 256; y += 64) { c.fillStyle = 'rgba(80,55,25,.35)'; c.fillRect(0, y, 256, 4); }
+  }, true);
+  thatch.repeat.set(len / 8, 2);
+  const straw = toon('#ffffff', { map: thatch }), ridgeY = 18.2, zc = z0 + 8.5, half = 13, slope = 0.4;
+  for (const sd of [-1, 1]) {
+    const m = part(g, BOX, straw, [0, ridgeY - Math.sin(slope) * half / 2 - 0.3, zc + sd * Math.cos(slope) * half / 2], [len + 8, 0.9, half + 0.6], [sd * slope, 0, 0], 0);
+    m.receiveShadow = true;
+  }
+  addBox(g, [len + 8.4, 0.9, 1.4], [0, ridgeY, zc], toon('#7a5a30'));
+  for (let x = -len / 2 - 4; x <= len / 2 + 4; x += 6) addBox(g, [0.5, 0.5, 1.6], [x, ridgeY + 0.5, zc], toon('#7a5a30'));
+  // 切石の壁：実寸でタイルした箱
+  const stoneMat = toon('#ffffff', { map: incaMasonry('#6d6559', ['#d6cdb9', '#cbc2ad', '#dfd7c5']) });
+  const stone = (size, pos) => {
+    const geo = new THREE.BoxGeometry(...size), uv = geo.attributes.uv, [w, h, d] = size, dims = [[d, h], [d, h], [w, d], [w, d], [w, h], [w, h]];
+    for (let i = 0; i < uv.count; i++) { const f = dims[(i / 4) | 0]; uv.setXY(i, uv.getX(i) * f[0] / 5, uv.getY(i) * f[1] / 5); }
+    // 輪郭線は大きさに比例して太るので、長い壁にはつけない
+    return part(g, geo, stoneMat, pos, null, null, 0);
+  };
+  // 両端の妻壁（三角の破風まで石で積む）
   const PRISM = new THREE.ExtrudeGeometry(new THREE.Shape([new THREE.Vector2(-0.5, 0), new THREE.Vector2(0.5, 0), new THREE.Vector2(0, 1)]), { depth: 1, bevelEnabled: false });
   PRISM.translate(0, 0, -0.5); PRISM.rotateY(Math.PI / 2);
-  part(g, PRISM, toon('#caa45a'), [0, 13, z0 + 8.5], [len + 6, 5, 24], null, 0.02);
+  for (const sx of [-1, 1]) {
+    stone([1.4, 13.2, 20], [sx * (len / 2 + 1.2), 6.6, z0 + 8.4]);
+    part(g, PRISM, stoneMat, [sx * (len / 2 + 1.2), 13.2, zc], [1.4, ridgeY - 13.4, 22], null, 0);
+  }
+  // 背面の壁：切石を張り、台形の壁がんを並べる
+  stone([len + 2, 10.4, 0.6], [0, 5.2, z0 + 18.9]);
+  const niche = new THREE.MeshBasicMaterial({ color: C('#3a302a') });
+  const nicheGeo = new THREE.ShapeGeometry(new THREE.Shape([new THREE.Vector2(-0.8, 0), new THREE.Vector2(0.8, 0), new THREE.Vector2(0.55, 1.9), new THREE.Vector2(-0.55, 1.9)]));
+  for (let x = -len / 2 + 5; x <= len / 2 - 5; x += 7) { const m = new THREE.Mesh(nicheGeo, niche); m.position.set(x, 4.2, z0 + 19.22); g.add(m); }
+  // 軒の三角旗
   addBox(g, [len + 6.4, 0.6, 0.6], [0, 13, z0 - 2.6], toon('#6e4f35'));
   const flags = [], cols = ['#ff7f8f', '#ffb36b', '#ffe27a', '#8fe39b', '#7fc8f4', '#b39cff'].map(C), tri = new THREE.BufferGeometry();
   tri.setAttribute('position', new THREE.Float32BufferAttribute([-0.5, 0, 0, 0.5, 0, 0, 0, -1, 0], 3)); tri.computeVertexNormals();
