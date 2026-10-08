@@ -9596,19 +9596,11 @@ function decorLandmarkStand(stand, len, z0, roof, sc0) {
     box([mw + 4, 0.8, 30], [mc, 24.6, 37], white, [-0.04, 0, 0]);
     box([mw + 4, 0.5, 0.6], [mc, 25.2, 22.2], steel, [-0.04, 0, 0]);
     for (let x = ma + 6; x <= mb - 6; x += (mw - 12) / 6) box([0.9, 24, 0.9], [x, 12, 50.5], steel);
-    // 4コーナー側の端の白い塔：コース側の角はガラス張り、テラス側の白い壁に緑のJRAのマーク
+    // 4コーナー側の端の白い塔：コース側の角はガラス張り
     { const ta = lx(127), tw = ma - ta, tc = (ta + ma) / 2;
       box([tw, 30, 24], [tc, 15, 38], white);
       box([tw - 1, 22, 3], [tc + 0.5, 17, 26], glass);
-      box([tw + 1, 0.8, 26], [tc, 30.2, 38], white);
-      const logo = ctex(256, 128, g2 => {
-        g2.fillStyle = '#ffffff'; g2.fillRect(0, 0, 256, 128);
-        g2.strokeStyle = '#0f8a4f'; g2.lineWidth = 12; g2.beginPath(); g2.arc(56, 64, 36, 0.5, Math.PI * 2 - 0.5); g2.stroke();
-        g2.fillStyle = '#0f8a4f'; g2.font = '900 60px "Oxanium", sans-serif'; g2.textBaseline = 'middle'; g2.fillText('JRA', 104, 68);
-      });
-      // スタンドは回る向きに合わせて鏡像になるので、文字が裏返らないよう板も反転させる
-      const plate = new THREE.Mesh(new THREE.PlaneGeometry(9, 4.5), new THREE.MeshBasicMaterial({ map: logo }));
-      plate.position.set(ta - 0.06, 24, 40); plate.rotation.y = -Math.PI / 2; plate.scale.x = track.sgn; g.add(plate); }
+      box([tw + 1, 0.8, 26], [tc, 30.2, 38], white); }
     // もいわテラス：4コーナー側の棟の2階の屋上。長さ120mのウッドデッキから藻岩山と札幌の街並み、コース全体を見渡す
     { const t = new THREE.Group(); g.add(t); registerLandmark(t, 'もいわテラス');
       const ta = lx(5), tb = lx(127), tw = tb - ta, tc = (ta + tb) / 2, tb2 = (s, p, m = white) => addBox(t, s, p, m, null, 0);
