@@ -78,7 +78,7 @@ function decorLandmarkStand(stand, len, z0, roof, sc0) {
   if (theme === 'candy') return decorCandyStand(stand, len, z0, roof);
   if (theme === 'dune') return decorDuneStand(stand, len, z0, roof);
   if (theme === 'moonForest') return decorMoonForestStand(stand, len, z0, roof);
-  if (!['sapporo', 'niigata', 'tokyo', 'nakayama', 'kyoto', 'hanshin', 'chukyo', 'longchamp', 'churchill'].includes(theme)) return;
+  if (!['sapporo', 'niigata', 'tokyo', 'nakayama', 'kyoto', 'hanshin', 'chukyo', 'longchamp', 'churchill', 'shatin'].includes(theme)) return;
   const g = new THREE.Group(); stand.add(g); registerLandmark(g, theme + '-stand');
   const cream = theme === 'longchamp' ? null : toon('#eee8d8'), glass = theme === 'churchill' ? null : toon('#7ca6b9');
   const gold = theme === 'longchamp' || theme === 'churchill' ? toon('#ad8a51') : null;
@@ -342,6 +342,27 @@ function decorLandmarkStand(stand, len, z0, roof, sc0) {
     // パドックの1コーナー側を囲む別棟
     box([lx(280) - lx(233), 9, lz(-152) - lz(-107)], [(lx(233) + lx(280)) / 2, 4.5, (lz(-107) + lz(-152)) / 2], white);
     box([lx(233) - lx(197), 6, 8], [(lx(197) + lx(233)) / 2, 3, lz(-158)], white);
+  } else if (theme === 'shatin') {
+    roof.visible = false;
+    // 地図の実寸（x：4コーナー出口から直線の向き、z：コースの内側が正）をスタンドの座標へ。奥行きはコースの中心線からの外向きの距離
+    const k = track.def.scale, lx = x => x * k - sc0, lz = z => -z * k, white = toon('#f2f1ec'), steel = toon('#9aa3a8'), seat = toon('#2f7a4a');
+    // グランドスタンド2号（4コーナー寄り）と1号（ゴール前）：ガラス張りの観覧階が後ろへ下がりながら重なり、屋上から大屋根が張り出す
+    for (const [a, b, n] of [[130, 292, 5], [300, 470, 6]]) {
+      const ma = lx(a), mb = lx(b), mw = mb - ma, mc = (ma + mb) / 2, back = lz(-150);
+      box([mw, 10, back - 44], [mc, 5, (44 + back) / 2], white);
+      for (let i = 0; i < n; i++) {
+        const y = 10 + i * 3.8, zf = 36 + i * 1.6;
+        box([mw + 1, 0.6, back - zf + 1], [mc, y, (zf + back) / 2], white);
+        box([mw - 2, 3.1, 0.4], [mc, y + 1.9, zf], glass);
+        if (i < 2) for (let j = 0; j < 2; j++) box([mw - 4, 0.5 + j * 0.5, 1.4], [mc, y + 0.4 + j * 0.25, zf - 1.6 - j * 1.4], seat);
+      }
+      const top = 10 + n * 3.8;
+      box([mw - 6, 4, back - 50], [mc, top + 2, (50 + back) / 2], white);
+      box([mw + 6, 0.8, back - 28], [mc, top + 4.4, (28 + back) / 2], white, [-0.04, 0, 0]);
+      for (let x = ma + 6; x <= mb - 5; x += (mw - 11) / 6) box([0.8, top - 8, 0.8], [x, 8 + (top - 8) / 2, 33], steel);
+    }
+    // 2棟をつなぐ低い棟
+    box([lx(300) - lx(292) + 1, 18, lz(-150) - 44], [(lx(292) + lx(300)) / 2, 9, (44 + lz(-150)) / 2], white);
   } else if (theme === 'churchill') {
     roof.visible = false;
     // 地図の実寸（x：4コーナー出口から直線の向き）をスタンドの座標へ
@@ -670,24 +691,6 @@ function decorRacecourseLandmarks() {
     const gl = landmarkGroup('グラディアトゥール像', 0.93, W + 80); landmarkFoundation(gl, 18, 14);
     addBox(gl, [10, 5, 5.5], [0, 2.5, 0], toon('#d8d0bc'), null, 0); addBox(gl, [11, 0.6, 6.5], [0, 5.3, 0], toon('#c9c0aa'), null, 0);
     landmarkHorse(gl, [0, 5.6, 0], 'walk', '#4f5a52', 1.6); landmarkFlowers(gl, 8, 6, '#d9493a');
-  }
-  if (theme === 'shatin') {
-    const g = landmarkGroup('屋根付きパドック', 0.5, W + 100); landmarkFoundation(g, 68, 42);
-    const roof = toon('#cadbd5'), ground = toon('#b4b091');
-    part(g, new THREE.RingGeometry(0.68, 1, 48), ground, [0, 0.3, 0], [31, 18, 1], [-Math.PI / 2, 0, 0], 0);
-    for (let i = 0; i < 12; i++) {
-      const a = i / 12 * Math.PI * 2;
-      addBox(g, [0.6, 12, 0.6], [Math.cos(a) * 31, 6, Math.sin(a) * 18], roof, null, 0);
-    }
-    part(g, new THREE.RingGeometry(0.55, 1, 48), roof, [0, 12, 0], [33, 20, 1], [-Math.PI / 2, 0, 0], 0);
-    const park = landmarkGroup('ペンフォールド公園', 0.65, -Math.max(35, track.R * 0.75));
-    landmarkFoundation(park, 44, 28, '#7ca76b');
-    for (const x of [-13, 13]) {
-      part(park, new THREE.CylinderGeometry(0.4, 0.6, 6, 6), toon('#8a7155'), [x, 3, 0], null, null, 0);
-      part(park, SPH_LO, toon('#5d9564'), [x, 8, 0], [5, 4, 5], null, 0);
-    }
-    const pond = part(park, new THREE.CircleGeometry(1, 32), toon('#78bdca'), [0, 0.3, 0], [9, 6, 1], [-Math.PI / 2, 0, 0], 0);
-    pond.receiveShadow = true; landmarkFlowers(park, 19, 11, '#f0c67f');
   }
 }
 // 本線と並走する飾りの内柵（ダートコースの内側など）

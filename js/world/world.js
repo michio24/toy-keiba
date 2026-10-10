@@ -315,8 +315,8 @@ function buildWorld(ti) {
     const g = new THREE.Group(); g.position.copy(boardPos); g.rotation.y = -bf.h + (track.sgn < 0 ? Math.PI : 0) + (def.boardLane > W / 2 ? Math.PI : 0); world.add(g);
     if (def.stand === 'big') g.scale.setScalar(1.35);
     const frameM = toon('#231a3d');
-    if (def.theme === 'tokyo' || def.theme === 'nakayama' || def.theme === 'kyoto' || def.theme === 'hanshin') {
-      // 東京・中山・阪神のマルチ画面ターフビジョン、京都の横長のマルチビジョン（幅64m）：中央の大画面の左右に横長の画面が続く、幅の広い構え
+    if (def.theme === 'tokyo' || def.theme === 'nakayama' || def.theme === 'kyoto' || def.theme === 'hanshin' || def.theme === 'shatin') {
+      // 東京・中山・阪神のマルチ画面ターフビジョン、京都の横長のマルチビジョン（幅64m）、シャティンの横長の大型スクリーン（長さ約70m）：中央の大画面の左右に横長の画面が続く、幅の広い構え
       for (const x of [-27, 27]) {
         addBox(g, [18, 11, 1.4], [x, 11, -0.8], frameM, null, 0.02); addBox(g, [1.2, 5.5, 1.2], [x, 2.75, -0.8], frameM);
         const side = new THREE.Mesh(new THREE.PlaneGeometry(16.6, 9.6), glowMat(x < 0 ? '#7cc7ff' : '#9fe38a', 1.1)); side.position.set(x, 11, 0.01); g.add(side);
