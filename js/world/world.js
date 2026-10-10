@@ -257,7 +257,8 @@ function buildWorld(ti) {
     // standAt・standLen（実寸m）があれば、地図のスタンドの位置と長さに合わせる
     const k0 = def.scale || 1, len = def.standLen ? def.standLen * k0 : Math.min(track.S - 20, def.stand === 'meydan' ? 420 : 250);
     const sc0 = def.standAt != null ? def.standAt * k0 : clamp(track.finishS - len * 0.35, track.homeS0 + len / 2 + 6, track.homeS1 - len / 2 - 6);
-    const x0 = -len / 2, z0 = W / 2 + (def.stand === 'meydan' ? 42 : 18);
+    // standGap：外ラチからスタンドまでの離れ（メイダンは外側の芝コースのさらに外に建つ）
+    const x0 = -len / 2, z0 = W / 2 + (def.standGap ?? (def.stand === 'meydan' ? 42 : 18));
     let ymin = 1e9; for (let s2 = sc0 - len / 2; s2 <= sc0 + len / 2; s2 += 4) ymin = Math.min(ymin, track.pos(s2, W / 2).y);
     const sf = tp(sc0, W / 2); const stand = new THREE.Group(); stand.position.set(sf.v.x, ymin - 0.3, sf.v.z); stand.rotation.y = -sf.h; stand.scale.z = track.sgn; world.add(stand);
     const tall = def.stand === 'meydan' ? 1.65 : def.stand === 'big' ? 1.35 : 1;

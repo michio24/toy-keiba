@@ -671,16 +671,6 @@ function decorRacecourseLandmarks() {
     addBox(gl, [10, 5, 5.5], [0, 2.5, 0], toon('#d8d0bc'), null, 0); addBox(gl, [11, 0.6, 6.5], [0, 5.3, 0], toon('#c9c0aa'), null, 0);
     landmarkHorse(gl, [0, 5.6, 0], 'walk', '#4f5a52', 1.6); landmarkFlowers(gl, 8, 6, '#d9493a');
   }
-  if (theme === 'meydan') {
-    const g = landmarkGroup('メイダンホテル', 1.18, W + 106); landmarkFoundation(g, 110, 32);
-    const wall = toon('#abc5ce'), glass = toon('#536c8b');
-    for (let i = 0; i < 6; i++) {
-      const x = -45 + i * 18, h = 28 + (2.5 - Math.abs(i - 2.5)) * 3;
-      addBox(g, [18, h, 28], [x, h / 2, 0], wall, null, 0);
-      for (let y = 5; y < h; y += 5) addBox(g, [17.5, 2.5, 0.3], [x, y, -14.2], glass, null, 0);
-      addBox(g, [19, 1.2, 30], [x, h, 0], toon('#d4e1e5'), null, 0);
-    }
-  }
   if (theme === 'shatin') {
     const g = landmarkGroup('屋根付きパドック', 0.5, W + 100); landmarkFoundation(g, 68, 42);
     const roof = toon('#cadbd5'), ground = toon('#b4b091');
