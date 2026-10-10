@@ -216,10 +216,13 @@ function stepRace(R, dt, full) {
           candidates.push(nearby[k].lane - 1.5, nearby[k].lane + 1.5);
           if (k) candidates.push((nearby[k - 1].lane + nearby[k].lane) / 2);
         }
+        // 少し先の理想ライン（先のカーブの内側）に寄せる。新潟千直などは外ラチ沿い
+        const ideal = R.track.def.preferOuter ? W - 0.9 : R.track.idealLane(R.s0 + start.s + 10);
+        candidates.push(ideal);
         for (const l0 of candidates) {
           const l = clamp(l0, 0.9, W - 0.9);
           if (!safePath(l)) continue;
-          let c = (R.track.def.preferOuter ? (W - l) : l) * (nearby.length ? 0.09 : 0.18) + Math.abs(l - r.lane) * 0.045;
+          let c = Math.abs(l - ideal) * (nearby.length ? 0.09 : 0.18) + Math.abs(l - r.lane) * 0.045;
           if (Math.abs(l - r.tLane) > 0.3) c += 0.12;
           for (const o of traffic) {
             if (o.i === r.i || o.fin || o.fly >= 0.3) continue; const ds = o.s - start.s, dl = Math.abs(o.lane - l);

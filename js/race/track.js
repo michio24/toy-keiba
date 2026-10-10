@@ -118,6 +118,19 @@ class Track {
     const gs = new Float32Array(N + 1);
     for (let i = 0; i <= N; i++) { const a = Math.max(0, i - 2), b = Math.min(N, i + 2); gs[i] = (ys[b] - ys[a]) / ((b - a) * ds); }
     Object.assign(this, { xs, zs, hs, ks, ys, gs });
+    // 理想のコース取り：先のカーブの向きを近いほど重く（減衰距離 LINE_DECAY）合計し、その内側を各地点の理想レーンとする。
+    // 向きが揃うオーバルでは常に内ラチ沿い、S字では次のカーブの内側へ早めに移る
+    const LINE_DECAY = 100, decay = Math.exp(-ds / LINE_DECAY), net = new Float32Array(N + 1), abs = new Float32Array(N + 1);
+    let a = 0, b = 0;
+    for (let pass = this.closed ? 2 : 1; pass > 0; pass--) {
+      for (let i = N - 1; i >= 0; i--) {
+        const turn = (hs[i + 1] - hs[i]) * this.turn;  // 正：lane 0 側が内側のカーブ
+        a = turn + decay * a; b = Math.abs(turn) + decay * b; net[i] = a; abs[i] = b;
+      }
+    }
+    net[N] = this.closed ? net[0] : 0; abs[N] = this.closed ? abs[0] : 0;
+    this.line = new Float32Array(N + 1);
+    for (let i = 0; i <= N; i++) this.line[i] = W / 2 - (W / 2 - 0.9) * clamp(net[i] / (abs[i] + 0.01) * 1.5, -1, 1);
     if (this.hasElev && (def.theme === 'monaco' || def.theme === 'hakone' || def.zones)) {
       // Index the same samples as groundH; beyond this radius all heights fade to zero.
       const cells = new Map(); let radius = W / 2 + 80;
@@ -178,6 +191,7 @@ class Track {
   }
   curv(sa) { return this.ks[this.idx(sa)[0]]; }
   onCurve(sa) { return this.curv(sa) > 1e-4; }
+  idealLane(sa) { const [i, t] = this.idx(sa); return lerp(this.line[i], this.line[i + 1], t); }
   grade(sa) { return this.hasElev ? this.gs[this.idx(sa)[0]] / this.ex : 0; }   // true gradient (race physics)
   zoneAt(sa) { const s = this.closed ? mod(sa, this.L) : sa; return this.zones.find(z => s >= z.start && s < z.end) || null; }
   visGrade(sa) { return this.hasElev ? this.gs[this.idx(sa)[0]] : 0; }        // exaggerated gradient (visuals)
